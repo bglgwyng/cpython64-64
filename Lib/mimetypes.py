@@ -246,6 +246,10 @@ class MimeTypes:
                 except EnvironmentError:
                     break
                 try:
+                    ctype = ctype.decode(sys_encoding)
+                except UnicodeDecodeError:
+                    continue
+                try:
                     ctype = ctype.encode(default_encoding) # omit in 3.x!
                 except UnicodeEncodeError:
                     pass
@@ -253,6 +257,8 @@ class MimeTypes:
                     yield ctype
                 i += 1
 
+        import locale
+        sys_encoding = locale.getpreferredencoding()
         default_encoding = sys.getdefaultencoding()
         with _winreg.OpenKey(_winreg.HKEY_CLASSES_ROOT, '') as hkcr:
             for subkeyname in enum_types(hkcr):
