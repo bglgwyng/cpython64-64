@@ -66,7 +66,7 @@ module instead.
 
 static PyObject *error_obj;     /* CSV exception */
 static PyObject *dialects;      /* Dialect registry */
-static long field_limit = 128 * 1024;   /* max parsed field size */
+static REALLYLONG field_limit = 128 * 1024;   /* max parsed field size */
 
 typedef enum {
     START_RECORD, START_FIELD, ESCAPED_CHAR, IN_FIELD,
@@ -120,7 +120,7 @@ typedef struct {
     int field_size;             /* size of allocated buffer */
     int field_len;              /* length of current field */
     int numeric_field;          /* treat field as numeric */
-    unsigned long line_num;     /* Source-file line number */
+    UREALLYLONG line_num;     /* Source-file line number */
 } ReaderObj;
 
 staticforward PyTypeObject Reader_Type;
@@ -1424,7 +1424,7 @@ static PyObject *
 csv_field_size_limit(PyObject *module, PyObject *args)
 {
     PyObject *new_limit = NULL;
-    long old_limit = field_limit;
+    REALLYLONG old_limit = field_limit;
 
     if (!PyArg_UnpackTuple(args, "field_size_limit", 0, 1, &new_limit))
         return NULL;

@@ -287,7 +287,7 @@ dbm_has_key(register dbmobject *dp, PyObject *args)
     if (!PyArg_ParseTuple(args, "s#:has_key", &key.dptr, &key.dsize))
         return NULL;
     check_dbmobject_open(dp);
-    return PyInt_FromLong((long) gdbm_exists(dp->di_dbm, key));
+    return PyInt_FromLong((REALLYLONG) gdbm_exists(dp->di_dbm, key));
 }
 
 PyDoc_STRVAR(dbm_firstkey__doc__,

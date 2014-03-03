@@ -12,7 +12,7 @@ extern "C" {
 typedef char *string;
 
 #define mknewlongobject(x) PyInt_FromLong(x)
-#define mknewshortobject(x) PyInt_FromLong((long)x)
+#define mknewshortobject(x) PyInt_FromLong((REALLYLONG)x)
 #define mknewfloatobject(x) PyFloat_FromDouble(x)
 #define mknewcharobject(ch) Py_BuildValue("c", ch)
 
@@ -32,7 +32,7 @@ typedef char *string;
 extern int PyArg_GetObject(PyObject *args, int nargs,
                            int i, PyObject **p_a);
 extern int PyArg_GetLong(PyObject *args, int nargs,
-                         int i, long *p_a);
+                         int i, REALLYLONG *p_a);
 extern int PyArg_GetShort(PyObject *args, int nargs,
                           int i, short *p_a);
 extern int PyArg_GetFloat(PyObject *args, int nargs,
@@ -42,7 +42,7 @@ extern int PyArg_GetString(PyObject *args, int nargs,
 extern int PyArg_GetChar(PyObject *args, int nargs,
                          int i, char *p_a);
 extern int PyArg_GetLongArray(PyObject *args, int nargs,
-                            int i, int n, long *p_a);
+                            int i, int n, REALLYLONG *p_a);
 extern int PyArg_GetShortArray(PyObject *args, int nargs,
                             int i, int n, short *p_a);
 extern int PyArg_GetDoubleArray(PyObject *args, int nargs,
@@ -50,7 +50,7 @@ extern int PyArg_GetDoubleArray(PyObject *args, int nargs,
 extern int PyArg_GetFloatArray(PyObject *args, int nargs,
                                int i, int n, float *p_a);
 extern int PyArg_GetLongArraySize(PyObject *args, int nargs,
-                                  int i, long *p_a);
+                                  int i, REALLYLONG *p_a);
 extern int PyArg_GetShortArraySize(PyObject *args, int nargs,
                                 int i, short *p_a);
 extern int PyArg_GetDoubleArraySize(PyObject *args, int nargs,

@@ -131,13 +131,13 @@ resource_getrlimit(PyObject *self, PyObject *args)
     }
 
 #if defined(HAVE_LONG_LONG)
-    if (sizeof(rl.rlim_cur) > sizeof(long)) {
+    if (sizeof(rl.rlim_cur) > sizeof(REALLYLONG)) {
         return Py_BuildValue("LL",
                              (PY_LONG_LONG) rl.rlim_cur,
                              (PY_LONG_LONG) rl.rlim_max);
     }
 #endif
-    return Py_BuildValue("ll", (long) rl.rlim_cur, (long) rl.rlim_max);
+    return Py_BuildValue("ll", (REALLYLONG) rl.rlim_cur, (REALLYLONG) rl.rlim_max);
 }
 
 static PyObject *
@@ -177,7 +177,7 @@ resource_setrlimit(PyObject *self, PyObject *args)
     if (rl.rlim_max == (rlim_t)-1 && PyErr_Occurred())
         goto error;
 #else
-    /* The limits are probably bigger than a long */
+    /* The limits are probably bigger than a REALLYLONG */
     rl.rlim_cur = PyLong_Check(curobj) ?
         PyLong_AsLongLong(curobj) : PyInt_AsLong(curobj);
     if (rl.rlim_cur == (rlim_t)-1 && PyErr_Occurred())
@@ -213,7 +213,7 @@ resource_setrlimit(PyObject *self, PyObject *args)
 static PyObject *
 resource_getpagesize(PyObject *self, PyObject *unused)
 {
-    long pagesize = 0;
+    REALLYLONG pagesize = 0;
 #if defined(HAVE_GETPAGESIZE)
     pagesize = getpagesize();
 #elif defined(HAVE_SYSCONF)
@@ -332,12 +332,12 @@ initresource(void)
 #endif
 
 #if defined(HAVE_LONG_LONG)
-    if (sizeof(RLIM_INFINITY) > sizeof(long)) {
+    if (sizeof(RLIM_INFINITY) > sizeof(REALLYLONG)) {
         v = PyLong_FromLongLong((PY_LONG_LONG) RLIM_INFINITY);
     } else
 #endif
     {
-        v = PyInt_FromLong((long) RLIM_INFINITY);
+        v = PyInt_FromLong((REALLYLONG) RLIM_INFINITY);
     }
     if (v) {
         PyModule_AddObject(m, "RLIM_INFINITY", v);

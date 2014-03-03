@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 
-PyAPI_FUNC(long) PyImport_GetMagicNumber(void);
+PyAPI_FUNC(REALLYLONG) PyImport_GetMagicNumber(void);
 PyAPI_FUNC(PyObject *) PyImport_ExecCodeModule(char *name, PyObject *co);
 PyAPI_FUNC(PyObject *) PyImport_ExecCodeModuleEx(
 	char *name, PyObject *co, char *pathname);

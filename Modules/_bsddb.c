@@ -625,7 +625,7 @@ static PyObject *BuildValue_IS(int i,const void *p,int s)
   return r;
 }
 
-static PyObject *BuildValue_LS(long l,const void *p,int s)
+static PyObject *BuildValue_LS(REALLYLONG l,const void *p,int s)
 {
   PyObject *a, *r;
 
@@ -846,7 +846,7 @@ static PyObject* _DBCursor_get(DBCursorObject* self, int extra_flags,
 /* add an integer to a dictionary using the given name as a key */
 static void _addIntToDict(PyObject* dict, char *name, int value)
 {
-    PyObject* v = NUMBER_FromLong((long) value);
+    PyObject* v = NUMBER_FromLong((REALLYLONG) value);
     if (!v || PyDict_SetItemString(dict, name, v))
         PyErr_Clear();
 
@@ -859,11 +859,11 @@ static void _addTimeTToDict(PyObject* dict, char *name, time_t value)
     PyObject* v;
         /* if the value fits in regular int, use that. */
 #ifdef PY_LONG_LONG
-        if (sizeof(time_t) > sizeof(long))
+        if (sizeof(time_t) > sizeof(REALLYLONG))
                 v = PyLong_FromLongLong((PY_LONG_LONG) value);
         else
 #endif
-                v = NUMBER_FromLong((long) value);
+                v = NUMBER_FromLong((REALLYLONG) value);
     if (!v || PyDict_SetItemString(dict, name, v))
         PyErr_Clear();
 
@@ -2141,7 +2141,7 @@ DB_get_size(DBObject* self, PyObject* args, PyObject* kwargs)
     err = self->db->get(self->db, txn, &key, &data, flags);
     MYDB_END_ALLOW_THREADS;
     if ((err == DB_BUFFER_SMALL) || (err == 0)) {
-        retval = NUMBER_FromLong((long)data.size);
+        retval = NUMBER_FromLong((REALLYLONG)data.size);
         err = 0;
     }
 
@@ -4697,7 +4697,7 @@ DBC_get_current_size(DBCursorObject* self)
     MYDB_END_ALLOW_THREADS;
     if (err == DB_BUFFER_SMALL || !err) {
         /* DB_BUFFER_SMALL means positive size, !err means zero length value */
-        retval = NUMBER_FromLong((long)data.size);
+        retval = NUMBER_FromLong((REALLYLONG)data.size);
         err = 0;
     }
 
@@ -5308,7 +5308,7 @@ static PyObject*
 DBEnv_set_shm_key(DBEnvObject* self, PyObject* args)
 {
     int err;
-    long shm_key = 0;
+    REALLYLONG shm_key = 0;
 
     if (!PyArg_ParseTuple(args, "l:set_shm_key", &shm_key))
         return NULL;
@@ -5323,7 +5323,7 @@ static PyObject*
 DBEnv_get_shm_key(DBEnvObject* self)
 {
     int err;
-    long shm_key;
+    REALLYLONG shm_key;
 
     CHECK_ENV_NOT_CLOSED(self);
 
@@ -6122,7 +6122,7 @@ DBEnv_txn_recover(DBEnvObject* self)
 #define PREPLIST_LEN 16
     DB_PREPLIST preplist[PREPLIST_LEN];
 #if (DBVER < 48) || (DBVER >= 52)
-    long retp;
+    REALLYLONG retp;
 #else
     u_int32_t retp;
 #endif
@@ -6275,7 +6275,7 @@ static PyObject*
 DBEnv_set_tx_timestamp(DBEnvObject* self, PyObject* args)
 {
     int err;
-    long stamp;
+    REALLYLONG stamp;
     time_t timestamp;
 
     if (!PyArg_ParseTuple(args, "l:set_tx_timestamp", &stamp))
@@ -6339,7 +6339,7 @@ DBEnv_lock_id(DBEnvObject* self)
     MYDB_END_ALLOW_THREADS;
     RETURN_IF_ERR();
 
-    return NUMBER_FromLong((long)theID);
+    return NUMBER_FromLong((REALLYLONG)theID);
 }
 
 static PyObject*
@@ -7086,7 +7086,7 @@ DBEnv_set_rpc_server(DBEnvObject* self, PyObject* args, PyObject* kwargs)
 {
     int err;
     char *host;
-    long cl_timeout=0, sv_timeout=0;
+    REALLYLONG cl_timeout=0, sv_timeout=0;
 
     static char* kwnames[] = { "host", "cl_timeout", "sv_timeout", NULL};
 

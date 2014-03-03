@@ -845,7 +845,7 @@ typedef struct {
     PyObject_HEAD
     PyObject *func;
     PyObject *it;
-    long         start;
+    REALLYLONG         start;
 } dropwhileobject;
 
 static PyTypeObject dropwhile_type;
@@ -904,7 +904,7 @@ dropwhile_next(dropwhileobject *lz)
 {
     PyObject *item, *good;
     PyObject *it = lz->it;
-    long ok;
+    REALLYLONG ok;
     PyObject *(*iternext)(PyObject *);
 
     iternext = *Py_TYPE(it)->tp_iternext;
@@ -989,7 +989,7 @@ typedef struct {
     PyObject_HEAD
     PyObject *func;
     PyObject *it;
-    long         stop;
+    REALLYLONG         stop;
 } takewhileobject;
 
 static PyTypeObject takewhile_type;
@@ -1048,7 +1048,7 @@ takewhile_next(takewhileobject *lz)
 {
     PyObject *item, *good;
     PyObject *it = lz->it;
-    long ok;
+    REALLYLONG ok;
 
     if (lz->stop == 1)
         return NULL;
@@ -3001,7 +3001,7 @@ ifilter_next(ifilterobject *lz)
 {
     PyObject *item;
     PyObject *it = lz->it;
-    long ok;
+    REALLYLONG ok;
     PyObject *(*iternext)(PyObject *);
 
     iternext = *Py_TYPE(it)->tp_iternext;
@@ -3146,7 +3146,7 @@ ifilterfalse_next(ifilterfalseobject *lz)
 {
     PyObject *item;
     PyObject *it = lz->it;
-    long ok;
+    REALLYLONG ok;
     PyObject *(*iternext)(PyObject *);
 
     iternext = *Py_TYPE(it)->tp_iternext;

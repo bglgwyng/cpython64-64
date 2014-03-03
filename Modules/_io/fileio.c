@@ -421,7 +421,7 @@ fileio_fileno(fileio *self)
 {
     if (self->fd < 0)
         return err_closed();
-    return PyInt_FromLong((long) self->fd);
+    return PyInt_FromLong((REALLYLONG) self->fd);
 }
 
 static PyObject *
@@ -429,7 +429,7 @@ fileio_readable(fileio *self)
 {
     if (self->fd < 0)
         return err_closed();
-    return PyBool_FromLong((long) self->readable);
+    return PyBool_FromLong((REALLYLONG) self->readable);
 }
 
 static PyObject *
@@ -437,7 +437,7 @@ fileio_writable(fileio *self)
 {
     if (self->fd < 0)
         return err_closed();
-    return PyBool_FromLong((long) self->writable);
+    return PyBool_FromLong((REALLYLONG) self->writable);
 }
 
 static PyObject *
@@ -455,7 +455,7 @@ fileio_seekable(fileio *self)
             self->seekable = 1;
         }
     }
-    return PyBool_FromLong((long) self->seekable);
+    return PyBool_FromLong((REALLYLONG) self->seekable);
 }
 
 static PyObject *
@@ -944,7 +944,7 @@ fileio_repr(fileio *self)
 static PyObject *
 fileio_isatty(fileio *self)
 {
-    long res;
+    REALLYLONG res;
 
     if (self->fd < 0)
         return err_closed();
@@ -1055,13 +1055,13 @@ static PyMethodDef fileio_methods[] = {
 static PyObject *
 get_closed(fileio *self, void *closure)
 {
-    return PyBool_FromLong((long)(self->fd < 0));
+    return PyBool_FromLong((REALLYLONG)(self->fd < 0));
 }
 
 static PyObject *
 get_closefd(fileio *self, void *closure)
 {
-    return PyBool_FromLong((long)(self->closefd));
+    return PyBool_FromLong((REALLYLONG)(self->closefd));
 }
 
 static PyObject *

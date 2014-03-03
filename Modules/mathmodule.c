@@ -881,9 +881,9 @@ FUNC1(tanh, tanh, 0,
    Note 3: The intermediate values lo, yr, and hi are declared volatile so
    aggressive compilers won't algebraically reduce lo to always be exactly 0.0.
    Also, the volatile declaration forces the values to be stored in memory as
-   regular doubles instead of extended long precision (80-bit) values.  This
+   regular doubles instead of extended REALLYLONG precision (80-bit) values.  This
    prevents double rounding because any addition or subtraction of two doubles
-   can be resolved exactly into double-sized hi and lo values.  As long as the
+   can be resolved exactly into double-sized hi and lo values.  As REALLYLONG as the
    hi value gets forced into a double before yr and lo are computed, the extra
    bits in downstream extended precision operations (x87 for example) will be
    exactly zero and therefore can be losslessly stored back into a double,
@@ -1087,7 +1087,7 @@ Assumes IEEE-754 floating point arithmetic.");
 static PyObject *
 math_factorial(PyObject *self, PyObject *arg)
 {
-    long i, x;
+    REALLYLONG i, x;
     PyObject *result, *iobj, *newresult;
 
     if (PyFloat_Check(arg)) {
@@ -1184,7 +1184,7 @@ math_ldexp(PyObject *self, PyObject *args)
 {
     double x, r;
     PyObject *oexp;
-    long exp;
+    REALLYLONG exp;
     int overflow;
     if (! PyArg_ParseTuple(args, "dO:ldexp", &x, &oexp))
         return NULL;
@@ -1200,7 +1200,7 @@ math_ldexp(PyObject *self, PyObject *args)
     }
     else {
         PyErr_SetString(PyExc_TypeError,
-                        "Expected an int or long as second argument "
+                        "Expected an int or REALLYLONG as second argument "
                         "to ldexp.");
         return NULL;
     }
@@ -1269,13 +1269,13 @@ PyDoc_STRVAR(math_modf_doc,
    can contain no more than INT_MAX * SHIFT bits, so has value certainly less
    than 2**(2**64 * 2**16) == 2**2**80, and log2 of that is 2**80, which is
    small enough to fit in an IEEE single.  log and log10 are even smaller.
-   However, intermediate overflow is possible for a long if the number of bits
-   in that long is larger than PY_SSIZE_T_MAX. */
+   However, intermediate overflow is possible for a REALLYLONG if the number of bits
+   in that REALLYLONG is larger than PY_SSIZE_T_MAX. */
 
 static PyObject*
 loghelper(PyObject* arg, double (*func)(double), char *funcname)
 {
-    /* If it is long, do it ourselves. */
+    /* If it is REALLYLONG, do it ourselves. */
     if (PyLong_Check(arg)) {
         double x, result;
         Py_ssize_t e;
@@ -1548,7 +1548,7 @@ math_isnan(PyObject *self, PyObject *arg)
     double x = PyFloat_AsDouble(arg);
     if (x == -1.0 && PyErr_Occurred())
         return NULL;
-    return PyBool_FromLong((long)Py_IS_NAN(x));
+    return PyBool_FromLong((REALLYLONG)Py_IS_NAN(x));
 }
 
 PyDoc_STRVAR(math_isnan_doc,
@@ -1561,7 +1561,7 @@ math_isinf(PyObject *self, PyObject *arg)
     double x = PyFloat_AsDouble(arg);
     if (x == -1.0 && PyErr_Occurred())
         return NULL;
-    return PyBool_FromLong((long)Py_IS_INFINITY(x));
+    return PyBool_FromLong((REALLYLONG)Py_IS_INFINITY(x));
 }
 
 PyDoc_STRVAR(math_isinf_doc,

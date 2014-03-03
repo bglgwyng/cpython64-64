@@ -29,7 +29,7 @@
 #include <linux/soundcard.h>
 
 #ifndef HAVE_STDINT_H
-typedef unsigned long uint32_t;
+typedef unsigned REALLYLONG uint32_t;
 #endif
 
 #elif defined(__FreeBSD__)
@@ -196,7 +196,7 @@ lad_write(lad_t *self, PyObject *args)
 
     while (size > 0) {
       select_retval = select(self->x_fd+1, NULL, &write_set_fds, NULL, &tv);
-      tv.tv_sec = 1; tv.tv_usec = 0; /* willing to wait this long next time*/
+      tv.tv_sec = 1; tv.tv_usec = 0; /* willing to wait this REALLYLONG next time*/
       if (select_retval) {
         if ((rv = write(self->x_fd, cp, size)) == -1) {
           if (errno != EAGAIN) {
@@ -482,23 +482,23 @@ initlinuxaudiodev(void)
     if (LinuxAudioError)
         PyModule_AddObject(m, "error", LinuxAudioError);
 
-    if (PyModule_AddIntConstant(m, "AFMT_MU_LAW", (long)AFMT_MU_LAW) == -1)
+    if (PyModule_AddIntConstant(m, "AFMT_MU_LAW", (REALLYLONG)AFMT_MU_LAW) == -1)
         return;
-    if (PyModule_AddIntConstant(m, "AFMT_A_LAW", (long)AFMT_A_LAW) == -1)
+    if (PyModule_AddIntConstant(m, "AFMT_A_LAW", (REALLYLONG)AFMT_A_LAW) == -1)
         return;
-    if (PyModule_AddIntConstant(m, "AFMT_U8", (long)AFMT_U8) == -1)
+    if (PyModule_AddIntConstant(m, "AFMT_U8", (REALLYLONG)AFMT_U8) == -1)
         return;
-    if (PyModule_AddIntConstant(m, "AFMT_S8", (long)AFMT_S8) == -1)
+    if (PyModule_AddIntConstant(m, "AFMT_S8", (REALLYLONG)AFMT_S8) == -1)
         return;
-    if (PyModule_AddIntConstant(m, "AFMT_U16_BE", (long)AFMT_U16_BE) == -1)
+    if (PyModule_AddIntConstant(m, "AFMT_U16_BE", (REALLYLONG)AFMT_U16_BE) == -1)
         return;
-    if (PyModule_AddIntConstant(m, "AFMT_U16_LE", (long)AFMT_U16_LE) == -1)
+    if (PyModule_AddIntConstant(m, "AFMT_U16_LE", (REALLYLONG)AFMT_U16_LE) == -1)
         return;
-    if (PyModule_AddIntConstant(m, "AFMT_S16_BE", (long)AFMT_S16_BE) == -1)
+    if (PyModule_AddIntConstant(m, "AFMT_S16_BE", (REALLYLONG)AFMT_S16_BE) == -1)
         return;
-    if (PyModule_AddIntConstant(m, "AFMT_S16_LE", (long)AFMT_S16_LE) == -1)
+    if (PyModule_AddIntConstant(m, "AFMT_S16_LE", (REALLYLONG)AFMT_S16_LE) == -1)
         return;
-    if (PyModule_AddIntConstant(m, "AFMT_S16_NE", (long)AFMT_S16_NE) == -1)
+    if (PyModule_AddIntConstant(m, "AFMT_S16_NE", (REALLYLONG)AFMT_S16_NE) == -1)
         return;
 
     return;

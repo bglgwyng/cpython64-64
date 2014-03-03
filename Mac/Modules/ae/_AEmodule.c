@@ -30,13 +30,13 @@ extern int _AEDesc_Convert(PyObject *, AEDesc *);
 #define AEDesc_Convert _AEDesc_Convert
 #endif
 
-typedef long refcontype;
+typedef REALLYLONG refcontype;
 
 static pascal OSErr GenericEventHandler(const AppleEvent *request, AppleEvent *reply, refcontype refcon); /* Forward */
 
 AEEventHandlerUPP upp_GenericEventHandler;
 
-static pascal Boolean AEIdleProc(EventRecord *theEvent, long *sleepTime, RgnHandle *mouseRgn)
+static pascal Boolean AEIdleProc(EventRecord *theEvent, REALLYLONG *sleepTime, RgnHandle *mouseRgn)
 {
     if ( PyOS_InterruptOccurred() )
         return 1;
@@ -129,7 +129,7 @@ static PyObject *AEDesc_AECountItems(AEDescObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
     OSErr _err;
-    long theCount;
+    REALLYLONG theCount;
 #ifndef AECountItems
     PyMac_PRECHECK(AECountItems);
 #endif
@@ -147,10 +147,10 @@ static PyObject *AEDesc_AEPutPtr(AEDescObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
     OSErr _err;
-    long index;
+    REALLYLONG index;
     DescType typeCode;
     char *dataPtr__in__;
-    long dataPtr__len__;
+    REALLYLONG dataPtr__len__;
     int dataPtr__in_len__;
 #ifndef AEPutPtr
     PyMac_PRECHECK(AEPutPtr);
@@ -175,7 +175,7 @@ static PyObject *AEDesc_AEPutDesc(AEDescObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
     OSErr _err;
-    long index;
+    REALLYLONG index;
     AEDesc theAEDesc;
 #ifndef AEPutDesc
     PyMac_PRECHECK(AEPutDesc);
@@ -197,12 +197,12 @@ static PyObject *AEDesc_AEGetNthPtr(AEDescObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
     OSErr _err;
-    long index;
+    REALLYLONG index;
     DescType desiredType;
     AEKeyword theAEKeyword;
     DescType typeCode;
     char *dataPtr__out__;
-    long dataPtr__len__;
+    REALLYLONG dataPtr__len__;
     int dataPtr__in_len__;
 #ifndef AEGetNthPtr
     PyMac_PRECHECK(AEGetNthPtr);
@@ -238,7 +238,7 @@ static PyObject *AEDesc_AEGetNthDesc(AEDescObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
     OSErr _err;
-    long index;
+    REALLYLONG index;
     DescType desiredType;
     AEKeyword theAEKeyword;
     AEDesc result;
@@ -265,7 +265,7 @@ static PyObject *AEDesc_AESizeOfNthItem(AEDescObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
     OSErr _err;
-    long index;
+    REALLYLONG index;
     DescType typeCode;
     Size dataSize;
 #ifndef AESizeOfNthItem
@@ -289,7 +289,7 @@ static PyObject *AEDesc_AEDeleteItem(AEDescObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
     OSErr _err;
-    long index;
+    REALLYLONG index;
 #ifndef AEDeleteItem
     PyMac_PRECHECK(AEDeleteItem);
 #endif
@@ -311,7 +311,7 @@ static PyObject *AEDesc_AEPutParamPtr(AEDescObject *_self, PyObject *_args)
     AEKeyword theAEKeyword;
     DescType typeCode;
     char *dataPtr__in__;
-    long dataPtr__len__;
+    REALLYLONG dataPtr__len__;
     int dataPtr__in_len__;
 #ifndef AEPutParamPtr
     PyMac_PRECHECK(AEPutParamPtr);
@@ -362,7 +362,7 @@ static PyObject *AEDesc_AEGetParamPtr(AEDescObject *_self, PyObject *_args)
     DescType desiredType;
     DescType typeCode;
     char *dataPtr__out__;
-    long dataPtr__len__;
+    REALLYLONG dataPtr__len__;
     int dataPtr__in_len__;
 #ifndef AEGetParamPtr
     PyMac_PRECHECK(AEGetParamPtr);
@@ -467,7 +467,7 @@ static PyObject *AEDesc_AEGetAttributePtr(AEDescObject *_self, PyObject *_args)
     DescType desiredType;
     DescType typeCode;
     char *dataPtr__out__;
-    long dataPtr__len__;
+    REALLYLONG dataPtr__len__;
     int dataPtr__in_len__;
 #ifndef AEGetAttributePtr
     PyMac_PRECHECK(AEGetAttributePtr);
@@ -552,7 +552,7 @@ static PyObject *AEDesc_AEPutAttributePtr(AEDescObject *_self, PyObject *_args)
     AEKeyword theAEKeyword;
     DescType typeCode;
     char *dataPtr__in__;
-    long dataPtr__len__;
+    REALLYLONG dataPtr__len__;
     int dataPtr__in_len__;
 #ifndef AEPutAttributePtr
     PyMac_PRECHECK(AEPutAttributePtr);
@@ -617,7 +617,7 @@ static PyObject *AEDesc_AESend(AEDescObject *_self, PyObject *_args)
     AppleEvent reply;
     AESendMode sendMode;
     AESendPriority sendPriority;
-    long timeOutInTicks;
+    REALLYLONG timeOutInTicks;
 #ifndef AESend
     PyMac_PRECHECK(AESend);
 #endif
@@ -769,19 +769,19 @@ static PyMethodDef AEDesc_methods[] = {
     {"AEDuplicateDesc", (PyCFunction)AEDesc_AEDuplicateDesc, 1,
      PyDoc_STR("() -> (AEDesc result)")},
     {"AECountItems", (PyCFunction)AEDesc_AECountItems, 1,
-     PyDoc_STR("() -> (long theCount)")},
+     PyDoc_STR("() -> (REALLYLONG theCount)")},
     {"AEPutPtr", (PyCFunction)AEDesc_AEPutPtr, 1,
-     PyDoc_STR("(long index, DescType typeCode, Buffer dataPtr) -> None")},
+     PyDoc_STR("(REALLYLONG index, DescType typeCode, Buffer dataPtr) -> None")},
     {"AEPutDesc", (PyCFunction)AEDesc_AEPutDesc, 1,
-     PyDoc_STR("(long index, AEDesc theAEDesc) -> None")},
+     PyDoc_STR("(REALLYLONG index, AEDesc theAEDesc) -> None")},
     {"AEGetNthPtr", (PyCFunction)AEDesc_AEGetNthPtr, 1,
-     PyDoc_STR("(long index, DescType desiredType, Buffer dataPtr) -> (AEKeyword theAEKeyword, DescType typeCode, Buffer dataPtr)")},
+     PyDoc_STR("(REALLYLONG index, DescType desiredType, Buffer dataPtr) -> (AEKeyword theAEKeyword, DescType typeCode, Buffer dataPtr)")},
     {"AEGetNthDesc", (PyCFunction)AEDesc_AEGetNthDesc, 1,
-     PyDoc_STR("(long index, DescType desiredType) -> (AEKeyword theAEKeyword, AEDesc result)")},
+     PyDoc_STR("(REALLYLONG index, DescType desiredType) -> (AEKeyword theAEKeyword, AEDesc result)")},
     {"AESizeOfNthItem", (PyCFunction)AEDesc_AESizeOfNthItem, 1,
-     PyDoc_STR("(long index) -> (DescType typeCode, Size dataSize)")},
+     PyDoc_STR("(REALLYLONG index) -> (DescType typeCode, Size dataSize)")},
     {"AEDeleteItem", (PyCFunction)AEDesc_AEDeleteItem, 1,
-     PyDoc_STR("(long index) -> None")},
+     PyDoc_STR("(REALLYLONG index) -> None")},
     {"AEPutParamPtr", (PyCFunction)AEDesc_AEPutParamPtr, 1,
      PyDoc_STR("(AEKeyword theAEKeyword, DescType typeCode, Buffer dataPtr) -> None")},
     {"AEPutParamDesc", (PyCFunction)AEDesc_AEPutParamDesc, 1,
@@ -807,7 +807,7 @@ static PyMethodDef AEDesc_methods[] = {
     {"AEGetDescDataSize", (PyCFunction)AEDesc_AEGetDescDataSize, 1,
      PyDoc_STR("() -> (Size _rv)")},
     {"AESend", (PyCFunction)AEDesc_AESend, 1,
-     PyDoc_STR("(AESendMode sendMode, AESendPriority sendPriority, long timeOutInTicks) -> (AppleEvent reply)")},
+     PyDoc_STR("(AESendMode sendMode, AESendPriority sendPriority, REALLYLONG timeOutInTicks) -> (AppleEvent reply)")},
     {"AEResetTimer", (PyCFunction)AEDesc_AEResetTimer, 1,
      PyDoc_STR("() -> None")},
     {"AESuspendTheCurrentEvent", (PyCFunction)AEDesc_AESuspendTheCurrentEvent, 1,
@@ -935,7 +935,7 @@ static PyObject *AE_AECoercePtr(PyObject *_self, PyObject *_args)
     OSErr _err;
     DescType typeCode;
     char *dataPtr__in__;
-    long dataPtr__len__;
+    REALLYLONG dataPtr__len__;
     int dataPtr__in_len__;
     DescType toType;
     AEDesc result;
@@ -964,7 +964,7 @@ static PyObject *AE_AECreateDesc(PyObject *_self, PyObject *_args)
     OSErr _err;
     DescType typeCode;
     char *dataPtr__in__;
-    long dataPtr__len__;
+    REALLYLONG dataPtr__len__;
     int dataPtr__in_len__;
     AEDesc result;
 #ifndef AECreateDesc
@@ -989,7 +989,7 @@ static PyObject *AE_AECreateList(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     OSErr _err;
     char *factoringPtr__in__;
-    long factoringPtr__len__;
+    REALLYLONG factoringPtr__len__;
     int factoringPtr__in_len__;
     Boolean isRecord;
     AEDescList resultList;
@@ -1048,7 +1048,7 @@ static PyObject *AE_AEReplaceDescData(PyObject *_self, PyObject *_args)
     OSErr _err;
     DescType typeCode;
     char *dataPtr__in__;
-    long dataPtr__len__;
+    REALLYLONG dataPtr__len__;
     int dataPtr__in_len__;
     AEDesc theAEDesc;
 #ifndef AEReplaceDescData
@@ -1125,7 +1125,7 @@ static PyObject *AE_AEInteractWithUser(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
     OSErr _err;
-    long timeOutInTicks;
+    REALLYLONG timeOutInTicks;
 #ifndef AEInteractWithUser
     PyMac_PRECHECK(AEInteractWithUser);
 #endif
@@ -1262,7 +1262,7 @@ static PyObject *AE_AEManagerInfo(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     OSErr _err;
     AEKeyword keyWord;
-    long result;
+    REALLYLONG result;
 #ifndef AEManagerInfo
     PyMac_PRECHECK(AEManagerInfo);
 #endif
@@ -1360,7 +1360,7 @@ static PyMethodDef AE_methods[] = {
     {"AESetInteractionAllowed", (PyCFunction)AE_AESetInteractionAllowed, 1,
      PyDoc_STR("(AEInteractAllowed level) -> None")},
     {"AEInteractWithUser", (PyCFunction)AE_AEInteractWithUser, 1,
-     PyDoc_STR("(long timeOutInTicks) -> None")},
+     PyDoc_STR("(REALLYLONG timeOutInTicks) -> None")},
     {"AEInstallEventHandler", (PyCFunction)AE_AEInstallEventHandler, 1,
      PyDoc_STR("(AEEventClass theAEEventClass, AEEventID theAEEventID, EventHandler handler) -> None")},
     {"AERemoveEventHandler", (PyCFunction)AE_AERemoveEventHandler, 1,
@@ -1372,7 +1372,7 @@ static PyMethodDef AE_methods[] = {
     {"AERemoveSpecialHandler", (PyCFunction)AE_AERemoveSpecialHandler, 1,
      PyDoc_STR("(AEKeyword functionClass) -> None")},
     {"AEManagerInfo", (PyCFunction)AE_AEManagerInfo, 1,
-     PyDoc_STR("(AEKeyword keyWord) -> (long result)")},
+     PyDoc_STR("(AEKeyword keyWord) -> (REALLYLONG result)")},
     {"AEObjectInit", (PyCFunction)AE_AEObjectInit, 1,
      PyDoc_STR("() -> None")},
     {"AEDisposeToken", (PyCFunction)AE_AEDisposeToken, 1,

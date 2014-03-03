@@ -5,7 +5,7 @@
 
   * Simple registry access written by Mark Hammond in win32api
     module circa 1995.
-  * Bill Tutt expanded the support significantly not long after.
+  * Bill Tutt expanded the support significantly not REALLYLONG after.
   * Numerous other people have submitted patches since then.
   * Ripped from win32api module 03-Feb-2000 by Mark Hammond, and
     basic Unicode support added.
@@ -234,7 +234,7 @@ PyDoc_STRVAR(QueryInfoKey_doc,
 "The result is a tuple of 3 items:"
 "An integer that identifies the number of sub keys this key has.\n"
 "An integer that identifies the number of values this key has.\n"
-"A long integer that identifies when the key was last modified (if available)\n"
+"A REALLYLONG integer that identifies when the key was last modified (if available)\n"
 " as 100's of nanoseconds since Jan 1, 1600.");
 
 PyDoc_STRVAR(QueryValue_doc,
@@ -375,7 +375,7 @@ PyDoc_STRVAR(PyHKEY_Detach_doc,
 "but the handle is not closed.  You would call this function when you\n"
 "need the underlying win32 handle to exist beyond the lifetime of the\n"
 "handle object.\n"
-"On 64 bit windows, the result of this function is a long integer");
+"On 64 bit windows, the result of this function is a REALLYLONG integer");
 
 
 /************************************************************************
@@ -462,7 +462,7 @@ PyHKEY_compareFunc(PyObject *ob1, PyObject *ob2)
          (pyhkey1 < pyhkey2 ? -1 : 1);
 }
 
-static long
+static REALLYLONG
 PyHKEY_hashFunc(PyObject *ob)
 {
     /* Just use the address.
@@ -684,14 +684,14 @@ PyWinObject_CloseHKEY(PyObject *obHandle)
     }
 #if SIZEOF_LONG >= SIZEOF_HKEY
     else if (PyInt_Check(obHandle)) {
-        long rc = RegCloseKey((HKEY)PyInt_AsLong(obHandle));
+        REALLYLONG rc = RegCloseKey((HKEY)PyInt_AsLong(obHandle));
         ok = (rc == ERROR_SUCCESS);
         if (!ok)
             PyErr_SetFromWindowsErrWithFunction(rc, "RegCloseKey");
     }
 #else
     else if (PyLong_Check(obHandle)) {
-        long rc = RegCloseKey((HKEY)PyLong_AsVoidPtr(obHandle));
+        REALLYLONG rc = RegCloseKey((HKEY)PyLong_AsVoidPtr(obHandle));
         ok = (rc == ERROR_SUCCESS);
         if (!ok)
             PyErr_SetFromWindowsErrWithFunction(rc, "RegCloseKey");
@@ -1012,7 +1012,7 @@ PyConnectRegistry(PyObject *self, PyObject *args)
     PyObject *obKey;
     char *szCompName = NULL;
     HKEY retKey;
-    long rc;
+    REALLYLONG rc;
     if (!PyArg_ParseTuple(args, "zO:ConnectRegistry", &szCompName, &obKey))
         return NULL;
     if (!PyHKEY_AsHKEY(obKey, &hKey, FALSE))
@@ -1033,7 +1033,7 @@ PyCreateKey(PyObject *self, PyObject *args)
     PyObject *obKey;
     char *subKey;
     HKEY retKey;
-    long rc;
+    REALLYLONG rc;
     if (!PyArg_ParseTuple(args, "Oz:CreateKey", &obKey, &subKey))
         return NULL;
     if (!PyHKEY_AsHKEY(obKey, &hKey, FALSE))
@@ -1053,7 +1053,7 @@ PyCreateKeyEx(PyObject *self, PyObject *args)
     HKEY retKey;
     int res = 0;
     REGSAM sam = KEY_WRITE;
-    long rc;
+    REALLYLONG rc;
     if (!PyArg_ParseTuple(args, "Oz|ii:CreateKeyEx", &obKey, &subKey,
                                               &res, &sam))
         return NULL;
@@ -1073,7 +1073,7 @@ PyDeleteKey(PyObject *self, PyObject *args)
     HKEY hKey;
     PyObject *obKey;
     char *subKey;
-    long rc;
+    REALLYLONG rc;
     if (!PyArg_ParseTuple(args, "Os:DeleteKey", &obKey, &subKey))
         return NULL;
     if (!PyHKEY_AsHKEY(obKey, &hKey, FALSE))
@@ -1094,7 +1094,7 @@ PyDeleteKeyEx(PyObject *self, PyObject *args)
     typedef LONG (WINAPI *RDKEFunc)(HKEY, const char*, REGSAM, int);
     RDKEFunc pfn = NULL;
     char *subKey;
-    long rc;
+    REALLYLONG rc;
     int res = 0;
     REGSAM sam = KEY_WOW64_64KEY;
 
@@ -1131,7 +1131,7 @@ PyDeleteValue(PyObject *self, PyObject *args)
     HKEY hKey;
     PyObject *obKey;
     char *subKey;
-    long rc;
+    REALLYLONG rc;
     if (!PyArg_ParseTuple(args, "Oz:DeleteValue", &obKey, &subKey))
         return NULL;
     if (!PyHKEY_AsHKEY(obKey, &hKey, FALSE))
@@ -1152,7 +1152,7 @@ PyEnumKey(PyObject *self, PyObject *args)
     HKEY hKey;
     PyObject *obKey;
     int index;
-    long rc;
+    REALLYLONG rc;
     PyObject *retStr;
 
     /* The Windows docs claim that the max key name length is 255
@@ -1185,7 +1185,7 @@ PyEnumValue(PyObject *self, PyObject *args)
     HKEY hKey;
     PyObject *obKey;
     int index;
-    long rc;
+    REALLYLONG rc;
     char *retValueBuf;
     char *retDataBuf;
     char *tmpBuf;
@@ -1302,7 +1302,7 @@ PyFlushKey(PyObject *self, PyObject *args)
 {
     HKEY hKey;
     PyObject *obKey;
-    long rc;
+    REALLYLONG rc;
     if (!PyArg_ParseTuple(args, "O:FlushKey", &obKey))
         return NULL;
     if (!PyHKEY_AsHKEY(obKey, &hKey, FALSE))
@@ -1323,7 +1323,7 @@ PyLoadKey(PyObject *self, PyObject *args)
     char *subKey;
     char *fileName;
 
-    long rc;
+    REALLYLONG rc;
     if (!PyArg_ParseTuple(args, "Oss:LoadKey", &obKey, &subKey, &fileName))
         return NULL;
     if (!PyHKEY_AsHKEY(obKey, &hKey, FALSE))
@@ -1346,7 +1346,7 @@ PyOpenKey(PyObject *self, PyObject *args)
     char *subKey;
     int res = 0;
     HKEY retKey;
-    long rc;
+    REALLYLONG rc;
     REGSAM sam = KEY_READ;
     if (!PyArg_ParseTuple(args, "Oz|ii:OpenKey", &obKey, &subKey,
                           &res, &sam))
@@ -1368,7 +1368,7 @@ PyQueryInfoKey(PyObject *self, PyObject *args)
 {
   HKEY hKey;
   PyObject *obKey;
-  long rc;
+  REALLYLONG rc;
   DWORD nSubKeys, nValues;
   FILETIME ft;
   LARGE_INTEGER li;
@@ -1398,7 +1398,7 @@ PyQueryValue(PyObject *self, PyObject *args)
     HKEY hKey;
     PyObject *obKey;
     char *subKey;
-    long rc;
+    REALLYLONG rc;
     PyObject *retStr;
     char *retBuf;
     DWORD bufSize = 0;
@@ -1461,7 +1461,7 @@ PyQueryValueEx(PyObject *self, PyObject *args)
     PyObject *obKey;
     char *valueName;
 
-    long rc;
+    REALLYLONG rc;
     char *retBuf, *tmp;
     DWORD bufSize = 0, retSize;
     DWORD typ;
@@ -1523,7 +1523,7 @@ PySaveKey(PyObject *self, PyObject *args)
     char *fileName;
     LPSECURITY_ATTRIBUTES pSA = NULL;
 
-    long rc;
+    REALLYLONG rc;
     if (!PyArg_ParseTuple(args, "Os:SaveKey", &obKey, &fileName))
         return NULL;
     if (!PyHKEY_AsHKEY(obKey, &hKey, FALSE))
@@ -1550,7 +1550,7 @@ PySetValue(PyObject *self, PyObject *args)
     char *str;
     DWORD typ;
     DWORD len;
-    long rc;
+    REALLYLONG rc;
     PyObject *obStrVal;
     PyObject *obSubKey;
     if (!PyArg_ParseTuple(args, "OOiO:SetValue",
@@ -1765,7 +1765,7 @@ static struct PyMethodDef winreg_methods[] = {
 };
 
 static void
-insint(PyObject * d, char * name, long value)
+insint(PyObject * d, char * name, REALLYLONG value)
 {
     PyObject *v = PyInt_FromLong(value);
     if (!v || PyDict_SetItemString(d, name, v))

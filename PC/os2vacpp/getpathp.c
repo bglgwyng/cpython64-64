@@ -189,7 +189,7 @@ getpythonregpath(HKEY keyBase, BOOL bWin32s)
         int index = 0;
         int off = 0;
         for(index=0;;index++) {
-            long reqdSize = 0;
+            REALLYLONG reqdSize = 0;
             DWORD rc = RegEnumKey(newKey,
                                   index, keyBuf, MAX_PATH+1);
             if (rc) break;
@@ -205,7 +205,7 @@ getpythonregpath(HKEY keyBase, BOOL bWin32s)
            Subkeys before main library */
         for(index=0;;index++) {
             int adjust;
-            long reqdSize = dataSize;
+            REALLYLONG reqdSize = dataSize;
             DWORD rc = RegEnumKey(newKey,
                                   index, keyBuf,MAX_PATH+1);
             if (rc) break;

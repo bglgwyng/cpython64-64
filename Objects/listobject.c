@@ -2810,7 +2810,7 @@ PyTypeObject PyList_Type = {
 
 typedef struct {
     PyObject_HEAD
-    long it_index;
+    REALLYLONG it_index;
     PyListObject *it_seq; /* Set to NULL when iterator is exhausted */
 } listiterobject;
 

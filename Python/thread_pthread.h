@@ -157,7 +157,7 @@ PyThread__init_thread(void)
  */
 
 
-long
+REALLYLONG
 PyThread_start_new_thread(void (*func)(void *), void *arg)
 {
     pthread_t th;
@@ -210,20 +210,20 @@ PyThread_start_new_thread(void (*func)(void *), void *arg)
     pthread_detach(th);
 
 #if SIZEOF_PTHREAD_T <= SIZEOF_LONG
-    return (long) th;
+    return (REALLYLONG) th;
 #else
-    return (long) *(long *) &th;
+    return (REALLYLONG) *(REALLYLONG *) &th;
 #endif
 }
 
 /* XXX This implementation is considered (to quote Tim Peters) "inherently
    hosed" because:
      - It does not guarantee the promise that a non-zero integer is returned.
-     - The cast to long is inherently unsafe.
+     - The cast to REALLYLONG is inherently unsafe.
      - It is not clear that the 'volatile' (for AIX?) and ugly casting in the
        latter return statement (for Alpha OSF/1) are any longer necessary.
 */
-long
+REALLYLONG
 PyThread_get_thread_ident(void)
 {
     volatile pthread_t threadid;
@@ -232,9 +232,9 @@ PyThread_get_thread_ident(void)
     /* Jump through some hoops for Alpha OSF/1 */
     threadid = pthread_self();
 #if SIZEOF_PTHREAD_T <= SIZEOF_LONG
-    return (long) threadid;
+    return (REALLYLONG) threadid;
 #else
-    return (long) *(long *) &threadid;
+    return (REALLYLONG) *(REALLYLONG *) &threadid;
 #endif
 }
 

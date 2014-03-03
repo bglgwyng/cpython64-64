@@ -121,7 +121,7 @@ unicodedata_decimal(PyObject *self, PyObject *args)
     PyUnicodeObject *v;
     PyObject *defobj = NULL;
     int have_old = 0;
-    long rc;
+    REALLYLONG rc;
     Py_UCS4 c;
 
     if (!PyArg_ParseTuple(args, "O!|O:decimal", &PyUnicode_Type, &v, &defobj))
@@ -171,7 +171,7 @@ unicodedata_digit(PyObject *self, PyObject *args)
 {
     PyUnicodeObject *v;
     PyObject *defobj = NULL;
-    long rc;
+    REALLYLONG rc;
     Py_UCS4 c;
 
     if (!PyArg_ParseTuple(args, "O!|O:digit", &PyUnicode_Type, &v, &defobj))
@@ -823,12 +823,12 @@ unicodedata_normalize(PyObject *self, PyObject *args)
 /* -------------------------------------------------------------------- */
 /* database code (cut and pasted from the unidb package) */
 
-static unsigned long
+static UREALLYLONG
 _gethash(const char *s, int len, int scale)
 {
     int i;
-    unsigned long h = 0;
-    unsigned long ix;
+    UREALLYLONG h = 0;
+    UREALLYLONG ix;
     for (i = 0; i < len; i++) {
         h = (h * scale) + (unsigned char) Py_TOUPPER(Py_CHARMASK(s[i]));
         ix = h & 0xff000000;

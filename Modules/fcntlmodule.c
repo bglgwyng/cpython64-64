@@ -34,7 +34,7 @@ fcntl_fcntl(PyObject *self, PyObject *args)
 {
     int fd;
     int code;
-    long arg;
+    REALLYLONG arg;
     int ret;
     char *str;
     Py_ssize_t len;
@@ -73,7 +73,7 @@ fcntl_fcntl(PyObject *self, PyObject *args)
         PyErr_SetFromErrno(PyExc_IOError);
         return NULL;
     }
-    return PyInt_FromLong((long)ret);
+    return PyInt_FromLong((REALLYLONG)ret);
 }
 
 PyDoc_STRVAR(fcntl_doc,
@@ -102,12 +102,12 @@ fcntl_ioctl(PyObject *self, PyObject *args)
        into either a large positive number (PyLong or PyInt on 64-bit
        platforms) or a negative number on others (32-bit PyInt)
        whereas the system expects it to be a 32bit bit field value
-       regardless of it being passed as an int or unsigned long on
+       regardless of it being passed as an int or unsigned REALLYLONG on
        various platforms.  See the termios.TIOCSWINSZ constant across
        platforms for an example of thise.
 
        If any of the 64bit platforms ever decide to use more than 32bits
-       in their unsigned long ioctl codes this will break and need
+       in their unsigned REALLYLONG ioctl codes this will break and need
        special casing based on the platform being built on.
      */
     unsigned int code;
@@ -207,7 +207,7 @@ fcntl_ioctl(PyObject *self, PyObject *args)
         PyErr_SetFromErrno(PyExc_IOError);
         return NULL;
     }
-    return PyInt_FromLong((long)ret);
+    return PyInt_FromLong((REALLYLONG)ret);
 #undef IOCTL_BUFSZ
 }
 
@@ -421,7 +421,7 @@ a file or socket object.");
 /* Module initialisation */
 
 static int
-ins(PyObject* d, char* symbol, long value)
+ins(PyObject* d, char* symbol, REALLYLONG value)
 {
     PyObject* v = PyInt_FromLong(value);
     if (!v || PyDict_SetItemString(d, symbol, v) < 0)
@@ -431,136 +431,136 @@ ins(PyObject* d, char* symbol, long value)
     return 0;
 }
 
-#define INS(x) if (ins(d, #x, (long)x)) return -1
+#define INS(x) if (ins(d, #x, (REALLYLONG)x)) return -1
 
 static int
 all_ins(PyObject* d)
 {
-    if (ins(d, "LOCK_SH", (long)LOCK_SH)) return -1;
-    if (ins(d, "LOCK_EX", (long)LOCK_EX)) return -1;
-    if (ins(d, "LOCK_NB", (long)LOCK_NB)) return -1;
-    if (ins(d, "LOCK_UN", (long)LOCK_UN)) return -1;
+    if (ins(d, "LOCK_SH", (REALLYLONG)LOCK_SH)) return -1;
+    if (ins(d, "LOCK_EX", (REALLYLONG)LOCK_EX)) return -1;
+    if (ins(d, "LOCK_NB", (REALLYLONG)LOCK_NB)) return -1;
+    if (ins(d, "LOCK_UN", (REALLYLONG)LOCK_UN)) return -1;
 /* GNU extensions, as of glibc 2.2.4 */
 #ifdef LOCK_MAND
-    if (ins(d, "LOCK_MAND", (long)LOCK_MAND)) return -1;
+    if (ins(d, "LOCK_MAND", (REALLYLONG)LOCK_MAND)) return -1;
 #endif
 #ifdef LOCK_READ
-    if (ins(d, "LOCK_READ", (long)LOCK_READ)) return -1;
+    if (ins(d, "LOCK_READ", (REALLYLONG)LOCK_READ)) return -1;
 #endif
 #ifdef LOCK_WRITE
-    if (ins(d, "LOCK_WRITE", (long)LOCK_WRITE)) return -1;
+    if (ins(d, "LOCK_WRITE", (REALLYLONG)LOCK_WRITE)) return -1;
 #endif
 #ifdef LOCK_RW
-    if (ins(d, "LOCK_RW", (long)LOCK_RW)) return -1;
+    if (ins(d, "LOCK_RW", (REALLYLONG)LOCK_RW)) return -1;
 #endif
 
 #ifdef F_DUPFD
-    if (ins(d, "F_DUPFD", (long)F_DUPFD)) return -1;
+    if (ins(d, "F_DUPFD", (REALLYLONG)F_DUPFD)) return -1;
 #endif
 #ifdef F_GETFD
-    if (ins(d, "F_GETFD", (long)F_GETFD)) return -1;
+    if (ins(d, "F_GETFD", (REALLYLONG)F_GETFD)) return -1;
 #endif
 #ifdef F_SETFD
-    if (ins(d, "F_SETFD", (long)F_SETFD)) return -1;
+    if (ins(d, "F_SETFD", (REALLYLONG)F_SETFD)) return -1;
 #endif
 #ifdef F_GETFL
-    if (ins(d, "F_GETFL", (long)F_GETFL)) return -1;
+    if (ins(d, "F_GETFL", (REALLYLONG)F_GETFL)) return -1;
 #endif
 #ifdef F_SETFL
-    if (ins(d, "F_SETFL", (long)F_SETFL)) return -1;
+    if (ins(d, "F_SETFL", (REALLYLONG)F_SETFL)) return -1;
 #endif
 #ifdef F_GETLK
-    if (ins(d, "F_GETLK", (long)F_GETLK)) return -1;
+    if (ins(d, "F_GETLK", (REALLYLONG)F_GETLK)) return -1;
 #endif
 #ifdef F_SETLK
-    if (ins(d, "F_SETLK", (long)F_SETLK)) return -1;
+    if (ins(d, "F_SETLK", (REALLYLONG)F_SETLK)) return -1;
 #endif
 #ifdef F_SETLKW
-    if (ins(d, "F_SETLKW", (long)F_SETLKW)) return -1;
+    if (ins(d, "F_SETLKW", (REALLYLONG)F_SETLKW)) return -1;
 #endif
 #ifdef F_GETOWN
-    if (ins(d, "F_GETOWN", (long)F_GETOWN)) return -1;
+    if (ins(d, "F_GETOWN", (REALLYLONG)F_GETOWN)) return -1;
 #endif
 #ifdef F_SETOWN
-    if (ins(d, "F_SETOWN", (long)F_SETOWN)) return -1;
+    if (ins(d, "F_SETOWN", (REALLYLONG)F_SETOWN)) return -1;
 #endif
 #ifdef F_GETSIG
-    if (ins(d, "F_GETSIG", (long)F_GETSIG)) return -1;
+    if (ins(d, "F_GETSIG", (REALLYLONG)F_GETSIG)) return -1;
 #endif
 #ifdef F_SETSIG
-    if (ins(d, "F_SETSIG", (long)F_SETSIG)) return -1;
+    if (ins(d, "F_SETSIG", (REALLYLONG)F_SETSIG)) return -1;
 #endif
 #ifdef F_RDLCK
-    if (ins(d, "F_RDLCK", (long)F_RDLCK)) return -1;
+    if (ins(d, "F_RDLCK", (REALLYLONG)F_RDLCK)) return -1;
 #endif
 #ifdef F_WRLCK
-    if (ins(d, "F_WRLCK", (long)F_WRLCK)) return -1;
+    if (ins(d, "F_WRLCK", (REALLYLONG)F_WRLCK)) return -1;
 #endif
 #ifdef F_UNLCK
-    if (ins(d, "F_UNLCK", (long)F_UNLCK)) return -1;
+    if (ins(d, "F_UNLCK", (REALLYLONG)F_UNLCK)) return -1;
 #endif
 /* LFS constants */
 #ifdef F_GETLK64
-    if (ins(d, "F_GETLK64", (long)F_GETLK64)) return -1;
+    if (ins(d, "F_GETLK64", (REALLYLONG)F_GETLK64)) return -1;
 #endif
 #ifdef F_SETLK64
-    if (ins(d, "F_SETLK64", (long)F_SETLK64)) return -1;
+    if (ins(d, "F_SETLK64", (REALLYLONG)F_SETLK64)) return -1;
 #endif
 #ifdef F_SETLKW64
-    if (ins(d, "F_SETLKW64", (long)F_SETLKW64)) return -1;
+    if (ins(d, "F_SETLKW64", (REALLYLONG)F_SETLKW64)) return -1;
 #endif
 /* GNU extensions, as of glibc 2.2.4. */
 #ifdef FASYNC
-    if (ins(d, "FASYNC", (long)FASYNC)) return -1;
+    if (ins(d, "FASYNC", (REALLYLONG)FASYNC)) return -1;
 #endif
 #ifdef F_SETLEASE
-    if (ins(d, "F_SETLEASE", (long)F_SETLEASE)) return -1;
+    if (ins(d, "F_SETLEASE", (REALLYLONG)F_SETLEASE)) return -1;
 #endif
 #ifdef F_GETLEASE
-    if (ins(d, "F_GETLEASE", (long)F_GETLEASE)) return -1;
+    if (ins(d, "F_GETLEASE", (REALLYLONG)F_GETLEASE)) return -1;
 #endif
 #ifdef F_NOTIFY
-    if (ins(d, "F_NOTIFY", (long)F_NOTIFY)) return -1;
+    if (ins(d, "F_NOTIFY", (REALLYLONG)F_NOTIFY)) return -1;
 #endif
 /* Old BSD flock(). */
 #ifdef F_EXLCK
-    if (ins(d, "F_EXLCK", (long)F_EXLCK)) return -1;
+    if (ins(d, "F_EXLCK", (REALLYLONG)F_EXLCK)) return -1;
 #endif
 #ifdef F_SHLCK
-    if (ins(d, "F_SHLCK", (long)F_SHLCK)) return -1;
+    if (ins(d, "F_SHLCK", (REALLYLONG)F_SHLCK)) return -1;
 #endif
 
 /* OS X (and maybe others) let you tell the storage device to flush to physical media */
 #ifdef F_FULLFSYNC
-    if (ins(d, "F_FULLFSYNC", (long)F_FULLFSYNC)) return -1;
+    if (ins(d, "F_FULLFSYNC", (REALLYLONG)F_FULLFSYNC)) return -1;
 #endif
 
 /* For F_{GET|SET}FL */
 #ifdef FD_CLOEXEC
-    if (ins(d, "FD_CLOEXEC", (long)FD_CLOEXEC)) return -1;
+    if (ins(d, "FD_CLOEXEC", (REALLYLONG)FD_CLOEXEC)) return -1;
 #endif
 
 /* For F_NOTIFY */
 #ifdef DN_ACCESS
-    if (ins(d, "DN_ACCESS", (long)DN_ACCESS)) return -1;
+    if (ins(d, "DN_ACCESS", (REALLYLONG)DN_ACCESS)) return -1;
 #endif
 #ifdef DN_MODIFY
-    if (ins(d, "DN_MODIFY", (long)DN_MODIFY)) return -1;
+    if (ins(d, "DN_MODIFY", (REALLYLONG)DN_MODIFY)) return -1;
 #endif
 #ifdef DN_CREATE
-    if (ins(d, "DN_CREATE", (long)DN_CREATE)) return -1;
+    if (ins(d, "DN_CREATE", (REALLYLONG)DN_CREATE)) return -1;
 #endif
 #ifdef DN_DELETE
-    if (ins(d, "DN_DELETE", (long)DN_DELETE)) return -1;
+    if (ins(d, "DN_DELETE", (REALLYLONG)DN_DELETE)) return -1;
 #endif
 #ifdef DN_RENAME
-    if (ins(d, "DN_RENAME", (long)DN_RENAME)) return -1;
+    if (ins(d, "DN_RENAME", (REALLYLONG)DN_RENAME)) return -1;
 #endif
 #ifdef DN_ATTRIB
-    if (ins(d, "DN_ATTRIB", (long)DN_ATTRIB)) return -1;
+    if (ins(d, "DN_ATTRIB", (REALLYLONG)DN_ATTRIB)) return -1;
 #endif
 #ifdef DN_MULTISHOT
-    if (ins(d, "DN_MULTISHOT", (long)DN_MULTISHOT)) return -1;
+    if (ins(d, "DN_MULTISHOT", (REALLYLONG)DN_MULTISHOT)) return -1;
 #endif
 
 #ifdef HAVE_STROPTS_H

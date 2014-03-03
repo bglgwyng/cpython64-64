@@ -345,11 +345,11 @@ structseq_contains(PyStructSequence *obj, PyObject *o)
     return result;
 }
 
-static long
+static REALLYLONG
 structseq_hash(PyObject *obj)
 {
     PyObject *tup;
-    long result;
+    REALLYLONG result;
     tup = make_tuple((PyStructSequence*) obj);
     if (!tup)
         return -1;
@@ -527,7 +527,7 @@ PyStructSequence_InitType(PyTypeObject *type, PyStructSequence_Desc *desc)
     dict = type->tp_dict;
 #define SET_DICT_FROM_INT(key, value)                           \
     do {                                                        \
-        PyObject *v = PyInt_FromLong((long) value);             \
+        PyObject *v = PyInt_FromLong((REALLYLONG) value);             \
         if (v != NULL) {                                        \
             PyDict_SetItemString(dict, key, v);                 \
             Py_DECREF(v);                                       \

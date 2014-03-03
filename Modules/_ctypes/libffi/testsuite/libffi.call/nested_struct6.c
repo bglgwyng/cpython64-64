@@ -20,7 +20,7 @@ typedef struct B {
 } B;
 
 typedef struct C {
-  long d;
+  REALLYLONG d;
   unsigned char e;
 } C;
 

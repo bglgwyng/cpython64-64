@@ -224,13 +224,13 @@ builtin_bin(PyObject *self, PyObject *v)
 PyDoc_STRVAR(bin_doc,
 "bin(number) -> string\n\
 \n\
-Return the binary representation of an integer or long integer.");
+Return the binary representation of an integer or REALLYLONG integer.");
 
 
 static PyObject *
 builtin_callable(PyObject *self, PyObject *v)
 {
-    return PyBool_FromLong((long)PyCallable_Check(v));
+    return PyBool_FromLong((REALLYLONG)PyCallable_Check(v));
 }
 
 PyDoc_STRVAR(callable_doc,
@@ -379,7 +379,7 @@ format_spec defaults to \"\"");
 static PyObject *
 builtin_chr(PyObject *self, PyObject *args)
 {
-    long x;
+    REALLYLONG x;
     char s[1];
 
     if (!PyArg_ParseTuple(args, "l:chr", &x))
@@ -428,7 +428,7 @@ builtin_cmp(PyObject *self, PyObject *args)
         return NULL;
     if (PyObject_Cmp(a, b, &c) < 0)
         return NULL;
-    return PyInt_FromLong((long)c);
+    return PyInt_FromLong((REALLYLONG)c);
 }
 
 PyDoc_STRVAR(cmp_doc,
@@ -1176,7 +1176,7 @@ Delete a named attribute on an object; delattr(x, 'y') is equivalent to\n\
 static PyObject *
 builtin_hash(PyObject *self, PyObject *v)
 {
-    long x;
+    REALLYLONG x;
 
     x = PyObject_Hash(v);
     if (x == -1)
@@ -1217,7 +1217,7 @@ builtin_hex(PyObject *self, PyObject *v)
 PyDoc_STRVAR(hex_doc,
 "hex(number) -> string\n\
 \n\
-Return the hexadecimal representation of an integer or long integer.");
+Return the hexadecimal representation of an integer or REALLYLONG integer.");
 
 
 static PyObject *builtin_raw_input(PyObject *, PyObject *);
@@ -1485,7 +1485,7 @@ builtin_oct(PyObject *self, PyObject *v)
 PyDoc_STRVAR(oct_doc,
 "oct(number) -> string\n\
 \n\
-Return the octal representation of an integer or long integer.");
+Return the octal representation of an integer or REALLYLONG integer.");
 
 
 static PyObject *
@@ -1504,19 +1504,19 @@ preferred way to open a file.  See file.__doc__ for further information.");
 static PyObject *
 builtin_ord(PyObject *self, PyObject* obj)
 {
-    long ord;
+    REALLYLONG ord;
     Py_ssize_t size;
 
     if (PyString_Check(obj)) {
         size = PyString_GET_SIZE(obj);
         if (size == 1) {
-            ord = (long)((unsigned char)*PyString_AS_STRING(obj));
+            ord = (REALLYLONG)((unsigned char)*PyString_AS_STRING(obj));
             return PyInt_FromLong(ord);
         }
     } else if (PyByteArray_Check(obj)) {
         size = PyByteArray_GET_SIZE(obj);
         if (size == 1) {
-            ord = (long)((unsigned char)*PyByteArray_AS_STRING(obj));
+            ord = (REALLYLONG)((unsigned char)*PyByteArray_AS_STRING(obj));
             return PyInt_FromLong(ord);
         }
 
@@ -1524,7 +1524,7 @@ builtin_ord(PyObject *self, PyObject* obj)
     } else if (PyUnicode_Check(obj)) {
         size = PyUnicode_GET_SIZE(obj);
         if (size == 1) {
-            ord = (long)*PyUnicode_AS_UNICODE(obj);
+            ord = (REALLYLONG)*PyUnicode_AS_UNICODE(obj);
             return PyInt_FromLong(ord);
         }
 #endif
@@ -1702,14 +1702,14 @@ end:  string appended after the last value, default a newline.");
  * Arguments MUST return 1 with either PyInt_Check() or
  * PyLong_Check().  Return -1 when there is an error.
  */
-static long
+static REALLYLONG
 get_len_of_range_longs(PyObject *lo, PyObject *hi, PyObject *step)
 {
     /* -------------------------------------------------------------
     Algorithm is equal to that of get_len_of_range(), but it operates
     on PyObjects (which are assumed to be PyLong or PyInt objects).
     ---------------------------------------------------------------*/
-    long n;
+    REALLYLONG n;
     PyObject *diff = NULL;
     PyObject *one = NULL;
     PyObject *tmp1 = NULL, *tmp2 = NULL, *tmp3 = NULL;
@@ -1806,7 +1806,7 @@ handle_range_longs(PyObject *self, PyObject *args)
 
     PyObject *curnum = NULL;
     PyObject *v = NULL;
-    long bign;
+    REALLYLONG bign;
     Py_ssize_t i, n;
     int cmp_result;
 
@@ -1876,7 +1876,7 @@ handle_range_longs(PyObject *self, PyObject *args)
     }
 
     n = (Py_ssize_t)bign;
-    if (bign < 0 || (long)n != bign) {
+    if (bign < 0 || (REALLYLONG)n != bign) {
         PyErr_SetString(PyExc_OverflowError,
                         "range() result has too many items");
         goto Fail;
@@ -1925,8 +1925,8 @@ handle_range_longs(PyObject *self, PyObject *args)
  * required.  Return a value < 0 if & only if the true value is too
  * large to fit in a signed long.
  */
-static long
-get_len_of_range(long lo, long hi, long step)
+static REALLYLONG
+get_len_of_range(REALLYLONG lo, REALLYLONG hi, REALLYLONG step)
 {
     /* -------------------------------------------------------------
     If lo >= hi, the range is empty.
@@ -1935,17 +1935,17 @@ get_len_of_range(long lo, long hi, long step)
     n <= (hi - lo - 1)/step + 1, so taking the floor of the RHS gives
     the proper value.  Since lo < hi in this case, hi-lo-1 >= 0, so
     the RHS is non-negative and so truncation is the same as the
-    floor.  Letting M be the largest positive long, the worst case
+    floor.  Letting M be the largest positive REALLYLONG, the worst case
     for the RHS numerator is hi=M, lo=-M-1, and then
-    hi-lo-1 = M-(-M-1)-1 = 2*M.  Therefore unsigned long has enough
+    hi-lo-1 = M-(-M-1)-1 = 2*M.  Therefore UREALLYLONG has enough
     precision to compute the RHS exactly.
     ---------------------------------------------------------------*/
-    long n = 0;
+    REALLYLONG n = 0;
     if (lo < hi) {
-        unsigned long uhi = (unsigned long)hi;
-        unsigned long ulo = (unsigned long)lo;
-        unsigned long diff = uhi - ulo - 1;
-        n = (long)(diff / (unsigned long)step + 1);
+        UREALLYLONG uhi = (UREALLYLONG)hi;
+        UREALLYLONG ulo = (UREALLYLONG)lo;
+        UREALLYLONG diff = uhi - ulo - 1;
+        n = (REALLYLONG)(diff / (UREALLYLONG)step + 1);
     }
     return n;
 }
@@ -1953,8 +1953,8 @@ get_len_of_range(long lo, long hi, long step)
 static PyObject *
 builtin_range(PyObject *self, PyObject *args)
 {
-    long ilow = 0, ihigh = 0, istep = 1;
-    long bign;
+    REALLYLONG ilow = 0, ihigh = 0, istep = 1;
+    REALLYLONG bign;
     Py_ssize_t i, n;
 
     PyObject *v;
@@ -1985,7 +1985,7 @@ builtin_range(PyObject *self, PyObject *args)
     else
         bign = get_len_of_range(ihigh, ilow, -istep);
     n = (Py_ssize_t)bign;
-    if (bign < 0 || (long)n != bign) {
+    if (bign < 0 || (REALLYLONG)n != bign) {
         PyErr_SetString(PyExc_OverflowError,
                         "range() result has too many items");
         return NULL;
@@ -2329,7 +2329,7 @@ builtin_sum(PyObject *self, PyObject *args)
        to the more general routine.
     */
     if (PyInt_CheckExact(result)) {
-        long i_result = PyInt_AS_LONG(result);
+        REALLYLONG i_result = PyInt_AS_LONG(result);
         Py_DECREF(result);
         result = NULL;
         while(result == NULL) {
@@ -2341,8 +2341,8 @@ builtin_sum(PyObject *self, PyObject *args)
                 return PyInt_FromLong(i_result);
             }
             if (PyInt_CheckExact(item)) {
-                long b = PyInt_AS_LONG(item);
-                long x = i_result + b;
+                REALLYLONG b = PyInt_AS_LONG(item);
+                REALLYLONG x = i_result + b;
                 if ((x^i_result) >= 0 || (x^b) >= 0) {
                     i_result = x;
                     Py_DECREF(item);

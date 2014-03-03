@@ -986,7 +986,7 @@ static int
 parse_syntax_error(PyObject *err, PyObject **message, const char **filename,
                    int *lineno, int *offset, const char **text)
 {
-    long hold;
+    REALLYLONG hold;
     PyObject *v;
 
     /* old style errors */
@@ -1378,8 +1378,8 @@ run_pyc_file(FILE *fp, const char *filename, PyObject *globals,
 {
     PyCodeObject *co;
     PyObject *v;
-    long magic;
-    long PyImport_GetMagicNumber(void);
+    REALLYLONG magic;
+    REALLYLONG PyImport_GetMagicNumber(void);
 
     magic = PyMarshal_ReadLongFromFile(fp);
     if (magic != PyImport_GetMagicNumber()) {

@@ -38,7 +38,7 @@ builtin_hex(PyObject *self, PyObject *v)
 PyDoc_STRVAR(hex_doc,
 "hex(number) -> string\n\
 \n\
-Return the hexadecimal representation of an integer or long integer.");
+Return the hexadecimal representation of an integer or REALLYLONG integer.");
 
 
 static PyObject *
@@ -50,7 +50,7 @@ builtin_oct(PyObject *self, PyObject *v)
 PyDoc_STRVAR(oct_doc,
 "oct(number) -> string\n\
 \n\
-Return the octal representation of an integer or long integer.");
+Return the octal representation of an integer or REALLYLONG integer.");
 
 
 static PyObject *

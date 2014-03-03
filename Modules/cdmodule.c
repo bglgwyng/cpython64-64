@@ -44,7 +44,7 @@ CD_bestreadsize(cdplayerobject *self, PyObject *args)
     if (!PyArg_ParseTuple(args, ":bestreadsize"))
         return NULL;
 
-    return PyInt_FromLong((long) CDbestreadsize(self->ob_cdplayer));
+    return PyInt_FromLong((REALLYLONG) CDbestreadsize(self->ob_cdplayer));
 }
 
 static PyObject *
@@ -137,7 +137,7 @@ CD_msftoblock(cdplayerobject *self, PyObject *args)
     if (!PyArg_ParseTuple(args, "iii:msftoblock", &min, &sec, &frame))
         return NULL;
 
-    return PyInt_FromLong((long) CDmsftoblock(self->ob_cdplayer,
+    return PyInt_FromLong((REALLYLONG) CDmsftoblock(self->ob_cdplayer,
                                             min, sec, frame));
 }
 
@@ -260,7 +260,7 @@ static PyObject *
 CD_seek(cdplayerobject *self, PyObject *args)
 {
     int min, sec, frame;
-    long PyTryBlock;
+    REALLYLONG PyTryBlock;
 
     if (!PyArg_ParseTuple(args, "iii:seek", &min, &sec, &frame))
         return NULL;
@@ -278,7 +278,7 @@ static PyObject *
 CD_seektrack(cdplayerobject *self, PyObject *args)
 {
     int track;
-    long PyTryBlock;
+    REALLYLONG PyTryBlock;
 
     if (!PyArg_ParseTuple(args, "i:seektrack", &track))
         return NULL;
@@ -295,13 +295,13 @@ CD_seektrack(cdplayerobject *self, PyObject *args)
 static PyObject *
 CD_seekblock(cdplayerobject *self, PyObject *args)
 {
-    unsigned long PyTryBlock;
+    unsigned REALLYLONG PyTryBlock;
 
     if (!PyArg_ParseTuple(args, "l:seekblock", &PyTryBlock))
         return NULL;
 
     PyTryBlock = CDseekblock(self->ob_cdplayer, PyTryBlock);
-    if (PyTryBlock == (unsigned long) -1) {
+    if (PyTryBlock == (unsigned REALLYLONG) -1) {
         PyErr_SetFromErrno(CdError);
         return NULL;
     }
@@ -465,7 +465,7 @@ CD_callback(void *arg, CDDATATYPES type, void *data)
         return;
     Py_INCREF(self->ob_cdcallbacks[type].ob_cdcallbackarg);
     PyTuple_SetItem(args, 0, self->ob_cdcallbacks[type].ob_cdcallbackarg);
-    PyTuple_SetItem(args, 1, PyInt_FromLong((long) type));
+    PyTuple_SetItem(args, 1, PyInt_FromLong((REALLYLONG) type));
     switch (type) {
     case cd_audio:
         v = PyString_FromStringAndSize(data, CDDA_DATASIZE);
@@ -507,7 +507,7 @@ CD_callback(void *arg, CDDATATYPES type, void *data)
 #undef ptr
         break;
     case cd_control:
-        v = PyInt_FromLong((long) *((unchar *) data));
+        v = PyInt_FromLong((REALLYLONG) *((unchar *) data));
         break;
     }
     PyTuple_SetItem(args, 2, v);
@@ -744,7 +744,7 @@ CD_msftoframe(PyObject *self, PyObject *args)
     if (!PyArg_ParseTuple(args, "iii:msftoframe", &min, &sec, &frame))
         return NULL;
 
-    return PyInt_FromLong((long) CDmsftoframe(min, sec, frame));
+    return PyInt_FromLong((REALLYLONG) CDmsftoframe(min, sec, frame));
 }
 
 static PyMethodDef CD_methods[] = {
@@ -772,29 +772,29 @@ initcd(void)
     PyDict_SetItemString(d, "error", CdError);
 
     /* Identifiers for the different types of callbacks from the parser */
-    PyDict_SetItemString(d, "audio", PyInt_FromLong((long) cd_audio));
-    PyDict_SetItemString(d, "pnum", PyInt_FromLong((long) cd_pnum));
-    PyDict_SetItemString(d, "index", PyInt_FromLong((long) cd_index));
-    PyDict_SetItemString(d, "ptime", PyInt_FromLong((long) cd_ptime));
-    PyDict_SetItemString(d, "atime", PyInt_FromLong((long) cd_atime));
-    PyDict_SetItemString(d, "catalog", PyInt_FromLong((long) cd_catalog));
-    PyDict_SetItemString(d, "ident", PyInt_FromLong((long) cd_ident));
-    PyDict_SetItemString(d, "control", PyInt_FromLong((long) cd_control));
+    PyDict_SetItemString(d, "audio", PyInt_FromLong((REALLYLONG) cd_audio));
+    PyDict_SetItemString(d, "pnum", PyInt_FromLong((REALLYLONG) cd_pnum));
+    PyDict_SetItemString(d, "index", PyInt_FromLong((REALLYLONG) cd_index));
+    PyDict_SetItemString(d, "ptime", PyInt_FromLong((REALLYLONG) cd_ptime));
+    PyDict_SetItemString(d, "atime", PyInt_FromLong((REALLYLONG) cd_atime));
+    PyDict_SetItemString(d, "catalog", PyInt_FromLong((REALLYLONG) cd_catalog));
+    PyDict_SetItemString(d, "ident", PyInt_FromLong((REALLYLONG) cd_ident));
+    PyDict_SetItemString(d, "control", PyInt_FromLong((REALLYLONG) cd_control));
 
     /* Block size information for digital audio data */
     PyDict_SetItemString(d, "DATASIZE",
-                       PyInt_FromLong((long) CDDA_DATASIZE));
+                       PyInt_FromLong((REALLYLONG) CDDA_DATASIZE));
     PyDict_SetItemString(d, "BLOCKSIZE",
-                       PyInt_FromLong((long) CDDA_BLOCKSIZE));
+                       PyInt_FromLong((REALLYLONG) CDDA_BLOCKSIZE));
 
     /* Possible states for the cd player */
-    PyDict_SetItemString(d, "ERROR", PyInt_FromLong((long) CD_ERROR));
-    PyDict_SetItemString(d, "NODISC", PyInt_FromLong((long) CD_NODISC));
-    PyDict_SetItemString(d, "READY", PyInt_FromLong((long) CD_READY));
-    PyDict_SetItemString(d, "PLAYING", PyInt_FromLong((long) CD_PLAYING));
-    PyDict_SetItemString(d, "PAUSED", PyInt_FromLong((long) CD_PAUSED));
-    PyDict_SetItemString(d, "STILL", PyInt_FromLong((long) CD_STILL));
+    PyDict_SetItemString(d, "ERROR", PyInt_FromLong((REALLYLONG) CD_ERROR));
+    PyDict_SetItemString(d, "NODISC", PyInt_FromLong((REALLYLONG) CD_NODISC));
+    PyDict_SetItemString(d, "READY", PyInt_FromLong((REALLYLONG) CD_READY));
+    PyDict_SetItemString(d, "PLAYING", PyInt_FromLong((REALLYLONG) CD_PLAYING));
+    PyDict_SetItemString(d, "PAUSED", PyInt_FromLong((REALLYLONG) CD_PAUSED));
+    PyDict_SetItemString(d, "STILL", PyInt_FromLong((REALLYLONG) CD_STILL));
 #ifdef CD_CDROM                 /* only newer versions of the library */
-    PyDict_SetItemString(d, "CDROM", PyInt_FromLong((long) CD_CDROM));
+    PyDict_SetItemString(d, "CDROM", PyInt_FromLong((REALLYLONG) CD_CDROM));
 #endif
 }

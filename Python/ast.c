@@ -80,7 +80,7 @@ static void
 ast_error_finish(const char *filename)
 {
     PyObject *type, *value, *tback, *errstr, *loc, *tmp;
-    long lineno;
+    REALLYLONG lineno;
 
     assert(PyErr_Occurred());
     if (!PyErr_ExceptionMatches(PyExc_SyntaxError))
@@ -3312,7 +3312,7 @@ static PyObject *
 parsenumber(struct compiling *c, const char *s)
 {
         const char *end;
-        long x;
+        REALLYLONG x;
         double dx;
 #ifndef WITHOUT_COMPLEX
         Py_complex complex;

@@ -24,7 +24,7 @@ int main (void)
   unsigned char uc;
   signed short ss;
   unsigned short us;
-  unsigned long ul;
+  unsigned REALLYLONG ul;
 
   args[0] = &ffi_type_schar;
   args[1] = &ffi_type_sshort;

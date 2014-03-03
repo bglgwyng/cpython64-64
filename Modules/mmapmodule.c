@@ -416,7 +416,7 @@ mmap_size_method(mmap_object *self,
                 return PyErr_SetFromWindowsErr(error);
         }
         if (!high && low < LONG_MAX)
-            return PyInt_FromLong((long)low);
+            return PyInt_FromLong((REALLYLONG)low);
         size = (((PY_LONG_LONG)high)<<32) + low;
         return PyLong_FromLongLong(size);
     } else {
@@ -569,7 +569,7 @@ mmap_flush_method(mmap_object *self, PyObject *args)
         return PyLong_FromLong(0);
 
 #ifdef MS_WINDOWS
-    return PyInt_FromLong((long) FlushViewOfFile(self->data+offset, size));
+    return PyInt_FromLong((REALLYLONG) FlushViewOfFile(self->data+offset, size));
 #elif defined(UNIX)
     /* XXX semantics of return value? */
     /* XXX flags for msync? */
@@ -629,7 +629,7 @@ mmap_seek_method(mmap_object *self, PyObject *args)
 static PyObject *
 mmap_move_method(mmap_object *self, PyObject *args)
 {
-    unsigned long dest, src, cnt;
+    UREALLYLONG dest, src, cnt;
     CHECK_VALID(NULL);
     if (!PyArg_ParseTuple(args, "kkk:move", &dest, &src, &cnt) ||
         !is_writeable(self)) {
@@ -1466,7 +1466,7 @@ new_mmap_object(PyTypeObject *type, PyObject *args, PyObject *kwdict)
 #endif /* MS_WINDOWS */
 
 static void
-setint(PyObject *d, const char *name, long value)
+setint(PyObject *d, const char *name, REALLYLONG value)
 {
     PyObject *o = PyInt_FromLong(value);
     if (o && PyDict_SetItemString(d, name, o) == 0) {
@@ -1521,9 +1521,9 @@ initmmap(void)
     setint(dict, "MAP_ANONYMOUS", MAP_ANONYMOUS);
 #endif
 
-    setint(dict, "PAGESIZE", (long)my_getpagesize());
+    setint(dict, "PAGESIZE", (REALLYLONG)my_getpagesize());
 
-    setint(dict, "ALLOCATIONGRANULARITY", (long)my_getallocationgranularity());
+    setint(dict, "ALLOCATIONGRANULARITY", (REALLYLONG)my_getallocationgranularity());
 
     setint(dict, "ACCESS_READ", ACCESS_READ);
     setint(dict, "ACCESS_WRITE", ACCESS_WRITE);

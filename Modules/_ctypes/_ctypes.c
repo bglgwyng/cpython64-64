@@ -1325,7 +1325,7 @@ PyCArrayType_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
     StgDictObject *itemdict;
     PyObject *proto;
     PyObject *typedict;
-    long length;
+    REALLYLONG length;
 
     Py_ssize_t itemsize, itemalign;
     char buf[32];
@@ -1647,7 +1647,7 @@ c_void_p_from_param(PyObject *type, PyObject *value)
         return Py_None;
     }
     /* Should probably allow buffer interface as well */
-/* int, long */
+/* int, REALLYLONG */
     if (PyInt_Check(value) || PyLong_Check(value)) {
         PyCArgObject *parg;
         struct fielddesc *fd = _ctypes_get_fielddesc("P");
@@ -2618,7 +2618,7 @@ static PyBufferProcs PyCData_as_buffer = {
 /*
  * CData objects are mutable, so they cannot be hashable!
  */
-static long
+static REALLYLONG
 PyCData_nohash(PyObject *self)
 {
     PyErr_SetString(PyExc_TypeError, "unhashable type");
@@ -4702,7 +4702,7 @@ PyCArrayType_from_ctype(PyObject *itemtype, Py_ssize_t length)
         ((PyTypeObject *)itemtype)->tp_name, length);
 #else
     sprintf(name, "%.200s_Array_%ld",
-        ((PyTypeObject *)itemtype)->tp_name, (long)length);
+        ((PyTypeObject *)itemtype)->tp_name, (REALLYLONG)length);
 #endif
 
     result = PyObject_CallFunction((PyObject *)&PyCArrayType_Type,

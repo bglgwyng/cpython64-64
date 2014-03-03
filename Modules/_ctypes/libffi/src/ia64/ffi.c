@@ -277,7 +277,7 @@ void
 ffi_call(ffi_cif *cif, void (*fn)(void), void *rvalue, void **avalue)
 {
   struct ia64_args *stack;
-  long i, avn, gpcount, fpcount;
+  REALLYLONG i, avn, gpcount, fpcount;
   ffi_type **p_arg;
 
   FFI_ASSERT (cif->abi == FFI_UNIX);
@@ -454,7 +454,7 @@ ffi_closure_unix_inner (ffi_closure *closure, struct ia64_args *stack,
   ffi_cif *cif;
   void **avalue;
   ffi_type **p_arg;
-  long i, avn, gpcount, fpcount;
+  REALLYLONG i, avn, gpcount, fpcount;
 
   cif = closure->cif;
   avn = cif->nargs;

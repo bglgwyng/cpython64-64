@@ -894,8 +894,8 @@ tracer_callback(ProfilerObject *self, PyFrameObject *frame, int what,
 static LARGE_INTEGER frequency = {0, 0};
 #endif
 
-static unsigned long timeofday_diff = 0;
-static unsigned long rusage_diff = 0;
+static UREALLYLONG timeofday_diff = 0;
+static UREALLYLONG rusage_diff = 0;
 
 static void
 calibrate(void)
@@ -913,7 +913,7 @@ calibrate(void)
 #ifdef MS_WINDOWS
         diff = tv2 - tv1;
         if (diff != 0) {
-            timeofday_diff = (unsigned long)diff;
+            timeofday_diff = (UREALLYLONG)diff;
             break;
         }
 #else

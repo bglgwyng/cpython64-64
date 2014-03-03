@@ -151,7 +151,7 @@ PyObject *CtlObj_New(ControlHandle itself)
     it = PyObject_NEW(ControlObject, &Control_Type);
     if (it == NULL) return NULL;
     it->ob_itself = itself;
-    SetControlReference(itself, (long)it);
+    SetControlReference(itself, (REALLYLONG)it);
     it->ob_callbackdict = NULL;
     return (PyObject *)it;
 }
@@ -170,7 +170,7 @@ int CtlObj_Convert(PyObject *v, ControlHandle *p_itself)
 static void CtlObj_dealloc(ControlObject *self)
 {
     Py_XDECREF(self->ob_callbackdict);
-    if (self->ob_itself)SetControlReference(self->ob_itself, (long)0); /* Make it forget about us */
+    if (self->ob_itself)SetControlReference(self->ob_itself, (REALLYLONG)0); /* Make it forget about us */
     self->ob_type->tp_free((PyObject *)self);
 }
 
@@ -3228,7 +3228,7 @@ static PyObject *CtlObj_DisposeControl(ControlObject *_self, PyObject *_args)
         if (!PyArg_ParseTuple(_args, ""))
             return NULL;
         if ( _self->ob_itself ) {
-            SetControlReference(_self->ob_itself, (long)0); /* Make it forget about us */
+            SetControlReference(_self->ob_itself, (REALLYLONG)0); /* Make it forget about us */
             DisposeControl(_self->ob_itself);
             _self->ob_itself = NULL;
         }
@@ -3823,17 +3823,17 @@ static PyMethodDef CtlObj_methods[] = {
 
 static int CtlObj_compare(ControlObject *self, ControlObject *other)
 {
-    unsigned long v, w;
+    unsigned REALLYLONG v, w;
 
     if (!CtlObj_Check((PyObject *)other))
     {
-        v=(unsigned long)self;
-        w=(unsigned long)other;
+        v=(unsigned REALLYLONG)self;
+        w=(unsigned REALLYLONG)other;
     }
     else
     {
-        v=(unsigned long)self->ob_itself;
-        w=(unsigned long)other->ob_itself;
+        v=(unsigned REALLYLONG)self->ob_itself;
+        w=(unsigned REALLYLONG)other->ob_itself;
     }
     if( v < w ) return -1;
     if( v > w ) return 1;
@@ -3842,9 +3842,9 @@ static int CtlObj_compare(ControlObject *self, ControlObject *other)
 
 #define CtlObj_repr NULL
 
-static long CtlObj_hash(ControlObject *self)
+static REALLYLONG CtlObj_hash(ControlObject *self)
 {
-    return (long)self->ob_itself;
+    return (REALLYLONG)self->ob_itself;
 }
 #define CtlObj_tp_init 0
 

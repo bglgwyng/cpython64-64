@@ -42,12 +42,12 @@ static PyObject *BMObj_NewCopied(BitMapPtr);
 PyObject *QdRGB_New(RGBColorPtr itself)
 {
 
-    return Py_BuildValue("lll", (long)itself->red, (long)itself->green, (long)itself->blue);
+    return Py_BuildValue("lll", (REALLYLONG)itself->red, (REALLYLONG)itself->green, (REALLYLONG)itself->blue);
 }
 
 int QdRGB_Convert(PyObject *v, RGBColorPtr p_itself)
 {
-    long red, green, blue;
+    REALLYLONG red, green, blue;
 
     if( !PyArg_ParseTuple(v, "lll", &red, &green, &blue) )
         return 0;
@@ -1490,14 +1490,14 @@ static PyMethodDef BMObj_methods[] = {
 
 static PyObject *BMObj_get_baseAddr(BitMapObject *self, void *closure)
 {
-    return PyInt_FromLong((long)self->ob_itself->baseAddr);
+    return PyInt_FromLong((REALLYLONG)self->ob_itself->baseAddr);
 }
 
 #define BMObj_set_baseAddr NULL
 
 static PyObject *BMObj_get_rowBytes(BitMapObject *self, void *closure)
 {
-    return PyInt_FromLong((long)self->ob_itself->rowBytes);
+    return PyInt_FromLong((REALLYLONG)self->ob_itself->rowBytes);
 }
 
 #define BMObj_set_rowBytes NULL
@@ -2090,7 +2090,7 @@ static PyObject *Qd_Line(PyObject *_self, PyObject *_args)
 static PyObject *Qd_ForeColor(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long color;
+    REALLYLONG color;
 #ifndef ForeColor
     PyMac_PRECHECK(ForeColor);
 #endif
@@ -2106,7 +2106,7 @@ static PyObject *Qd_ForeColor(PyObject *_self, PyObject *_args)
 static PyObject *Qd_BackColor(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long color;
+    REALLYLONG color;
 #ifndef BackColor
     PyMac_PRECHECK(BackColor);
 #endif
@@ -4430,7 +4430,7 @@ static PyObject *Qd_GetMaxDevice(PyObject *_self, PyObject *_args)
 static PyObject *Qd_GetCTSeed(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long _rv;
+    REALLYLONG _rv;
 #ifndef GetCTSeed
     PyMac_PRECHECK(GetCTSeed);
 #endif
@@ -4535,7 +4535,7 @@ static PyObject *Qd_InitGDevice(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
     short qdRefNum;
-    long mode;
+    REALLYLONG mode;
     GDHandle gdh;
 #ifndef InitGDevice
     PyMac_PRECHECK(InitGDevice);
@@ -4558,7 +4558,7 @@ static PyObject *Qd_NewGDevice(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     GDHandle _rv;
     short refNum;
-    long mode;
+    REALLYLONG mode;
 #ifndef NewGDevice
     PyMac_PRECHECK(NewGDevice);
 #endif
@@ -4623,7 +4623,7 @@ static PyObject *Qd_GetGDevice(PyObject *_self, PyObject *_args)
 static PyObject *Qd_Color2Index(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long _rv;
+    REALLYLONG _rv;
     RGBColor myColor;
 #ifndef Color2Index
     PyMac_PRECHECK(Color2Index);
@@ -4640,7 +4640,7 @@ static PyObject *Qd_Color2Index(PyObject *_self, PyObject *_args)
 static PyObject *Qd_Index2Color(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long index;
+    REALLYLONG index;
     RGBColor aColor;
 #ifndef Index2Color
     PyMac_PRECHECK(Index2Color);
@@ -4891,7 +4891,7 @@ static PyObject *Qd_GetPicture(PyObject *_self, PyObject *_args)
 static PyObject *Qd_DeltaPoint(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long _rv;
+    REALLYLONG _rv;
     Point ptA;
     Point ptB;
 #ifndef DeltaPoint
@@ -5038,7 +5038,7 @@ static PyObject *Qd_GetPixDepth(PyObject *_self, PyObject *_args)
 static PyObject *Qd_GetQDGlobalsRandomSeed(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long _rv;
+    REALLYLONG _rv;
 #ifndef GetQDGlobalsRandomSeed
     PyMac_PRECHECK(GetQDGlobalsRandomSeed);
 #endif
@@ -5173,7 +5173,7 @@ static PyObject *Qd_GetQDGlobalsThePort(PyObject *_self, PyObject *_args)
 static PyObject *Qd_SetQDGlobalsRandomSeed(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long randomSeed;
+    REALLYLONG randomSeed;
 #ifndef SetQDGlobalsRandomSeed
     PyMac_PRECHECK(SetQDGlobalsRandomSeed);
 #endif
@@ -6606,9 +6606,9 @@ static PyMethodDef Qd_methods[] = {
     {"Line", (PyCFunction)Qd_Line, 1,
      PyDoc_STR("(short dh, short dv) -> None")},
     {"ForeColor", (PyCFunction)Qd_ForeColor, 1,
-     PyDoc_STR("(long color) -> None")},
+     PyDoc_STR("(REALLYLONG color) -> None")},
     {"BackColor", (PyCFunction)Qd_BackColor, 1,
-     PyDoc_STR("(long color) -> None")},
+     PyDoc_STR("(REALLYLONG color) -> None")},
     {"ColorBit", (PyCFunction)Qd_ColorBit, 1,
      PyDoc_STR("(short whichBit) -> None")},
     {"MacSetRect", (PyCFunction)Qd_MacSetRect, 1,
@@ -6848,7 +6848,7 @@ static PyMethodDef Qd_methods[] = {
     {"GetMaxDevice", (PyCFunction)Qd_GetMaxDevice, 1,
      PyDoc_STR("(Rect globalRect) -> (GDHandle _rv)")},
     {"GetCTSeed", (PyCFunction)Qd_GetCTSeed, 1,
-     PyDoc_STR("() -> (long _rv)")},
+     PyDoc_STR("() -> (REALLYLONG _rv)")},
     {"GetDeviceList", (PyCFunction)Qd_GetDeviceList, 1,
      PyDoc_STR("() -> (GDHandle _rv)")},
     {"GetMainDevice", (PyCFunction)Qd_GetMainDevice, 1,
@@ -6860,9 +6860,9 @@ static PyMethodDef Qd_methods[] = {
     {"SetDeviceAttribute", (PyCFunction)Qd_SetDeviceAttribute, 1,
      PyDoc_STR("(GDHandle gdh, short attribute, Boolean value) -> None")},
     {"InitGDevice", (PyCFunction)Qd_InitGDevice, 1,
-     PyDoc_STR("(short qdRefNum, long mode, GDHandle gdh) -> None")},
+     PyDoc_STR("(short qdRefNum, REALLYLONG mode, GDHandle gdh) -> None")},
     {"NewGDevice", (PyCFunction)Qd_NewGDevice, 1,
-     PyDoc_STR("(short refNum, long mode) -> (GDHandle _rv)")},
+     PyDoc_STR("(short refNum, REALLYLONG mode) -> (GDHandle _rv)")},
     {"DisposeGDevice", (PyCFunction)Qd_DisposeGDevice, 1,
      PyDoc_STR("(GDHandle gdh) -> None")},
     {"SetGDevice", (PyCFunction)Qd_SetGDevice, 1,
@@ -6870,9 +6870,9 @@ static PyMethodDef Qd_methods[] = {
     {"GetGDevice", (PyCFunction)Qd_GetGDevice, 1,
      PyDoc_STR("() -> (GDHandle _rv)")},
     {"Color2Index", (PyCFunction)Qd_Color2Index, 1,
-     PyDoc_STR("(RGBColor myColor) -> (long _rv)")},
+     PyDoc_STR("(RGBColor myColor) -> (REALLYLONG _rv)")},
     {"Index2Color", (PyCFunction)Qd_Index2Color, 1,
-     PyDoc_STR("(long index) -> (RGBColor aColor)")},
+     PyDoc_STR("(REALLYLONG index) -> (RGBColor aColor)")},
     {"InvertColor", (PyCFunction)Qd_InvertColor, 1,
      PyDoc_STR("() -> (RGBColor myColor)")},
     {"RealColor", (PyCFunction)Qd_RealColor, 1,
@@ -6898,7 +6898,7 @@ static PyMethodDef Qd_methods[] = {
     {"GetPicture", (PyCFunction)Qd_GetPicture, 1,
      PyDoc_STR("(short pictureID) -> (PicHandle _rv)")},
     {"DeltaPoint", (PyCFunction)Qd_DeltaPoint, 1,
-     PyDoc_STR("(Point ptA, Point ptB) -> (long _rv)")},
+     PyDoc_STR("(Point ptA, Point ptB) -> (REALLYLONG _rv)")},
     {"ShieldCursor", (PyCFunction)Qd_ShieldCursor, 1,
      PyDoc_STR("(Rect shieldRect, Point offsetPt) -> None")},
     {"ScreenRes", (PyCFunction)Qd_ScreenRes, 1,
@@ -6914,7 +6914,7 @@ static PyMethodDef Qd_methods[] = {
     {"GetPixDepth", (PyCFunction)Qd_GetPixDepth, 1,
      PyDoc_STR("(PixMapHandle pixMap) -> (short _rv)")},
     {"GetQDGlobalsRandomSeed", (PyCFunction)Qd_GetQDGlobalsRandomSeed, 1,
-     PyDoc_STR("() -> (long _rv)")},
+     PyDoc_STR("() -> (REALLYLONG _rv)")},
     {"GetQDGlobalsScreenBits", (PyCFunction)Qd_GetQDGlobalsScreenBits, 1,
      PyDoc_STR("() -> (BitMap screenBits)")},
     {"GetQDGlobalsArrow", (PyCFunction)Qd_GetQDGlobalsArrow, 1,
@@ -6932,7 +6932,7 @@ static PyMethodDef Qd_methods[] = {
     {"GetQDGlobalsThePort", (PyCFunction)Qd_GetQDGlobalsThePort, 1,
      PyDoc_STR("() -> (CGrafPtr _rv)")},
     {"SetQDGlobalsRandomSeed", (PyCFunction)Qd_SetQDGlobalsRandomSeed, 1,
-     PyDoc_STR("(long randomSeed) -> None")},
+     PyDoc_STR("(REALLYLONG randomSeed) -> None")},
     {"SetQDGlobalsArrow", (PyCFunction)Qd_SetQDGlobalsArrow, 1,
      PyDoc_STR("(Cursor arrow) -> None")},
     {"GetRegionBounds", (PyCFunction)Qd_GetRegionBounds, 1,

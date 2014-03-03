@@ -37,11 +37,11 @@
 
 #ifndef LIBFFI_ASM
 #ifndef _WIN64
-typedef unsigned long          ffi_arg;
+typedef unsigned long long          ffi_arg;  /* UREALLYLONG */
 #else
 typedef unsigned __int64       ffi_arg;
 #endif
-typedef signed long            ffi_sarg;
+typedef signed long long            ffi_sarg;  /* SREALLYLONG */
 
 typedef enum ffi_abi {
   FFI_FIRST_ABI = 0,

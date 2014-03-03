@@ -310,17 +310,17 @@ do_mkvalue(const char **p_format, va_list *p_va, int flags)
         case 'B':
         case 'h':
         case 'i':
-            return PyInt_FromLong((long)va_arg(*p_va, int));
+            return PyInt_FromLong((REALLYLONG)va_arg(*p_va, int));
 
         case 'H':
-            return PyInt_FromLong((long)va_arg(*p_va, unsigned int));
+            return PyInt_FromLong((REALLYLONG)va_arg(*p_va, unsigned int));
 
         case 'I':
         {
             unsigned int n;
             n = va_arg(*p_va, unsigned int);
-            if (n > (unsigned long)PyInt_GetMax())
-                return PyLong_FromUnsignedLong((unsigned long)n);
+            if (n > (UREALLYLONG)PyInt_GetMax())
+                return PyLong_FromUnsignedLong((UREALLYLONG)n);
             else
                 return PyInt_FromLong(n);
         }
@@ -329,15 +329,15 @@ do_mkvalue(const char **p_format, va_list *p_va, int flags)
 #if SIZEOF_SIZE_T!=SIZEOF_LONG
             return PyInt_FromSsize_t(va_arg(*p_va, Py_ssize_t));
 #endif
-            /* Fall through from 'n' to 'l' if Py_ssize_t is long */
+            /* Fall through from 'n' to 'l' if Py_ssize_t is REALLYLONG */
         case 'l':
-            return PyInt_FromLong(va_arg(*p_va, long));
+            return PyInt_FromLong(va_arg(*p_va, REALLYLONG));
 
         case 'k':
         {
-            unsigned long n;
-            n = va_arg(*p_va, unsigned long);
-            if (n > (unsigned long)PyInt_GetMax())
+            UREALLYLONG n;
+            n = va_arg(*p_va, UREALLYLONG);
+            if (n > (UREALLYLONG)PyInt_GetMax())
                 return PyLong_FromUnsignedLong(n);
             else
                 return PyInt_FromLong(n);
@@ -620,7 +620,7 @@ PyModule_AddObject(PyObject *m, const char *name, PyObject *o)
 }
 
 int
-PyModule_AddIntConstant(PyObject *m, const char *name, long value)
+PyModule_AddIntConstant(PyObject *m, const char *name, REALLYLONG value)
 {
     PyObject *o = PyInt_FromLong(value);
     if (!o)

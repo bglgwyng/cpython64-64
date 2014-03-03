@@ -389,7 +389,7 @@ PyThreadState_GetDict(void)
    existing async exception.  This raises no exceptions. */
 
 int
-PyThreadState_SetAsyncExc(long id, PyObject *exc) {
+PyThreadState_SetAsyncExc(REALLYLONG id, PyObject *exc) {
     PyThreadState *tstate = PyThreadState_GET();
     PyInterpreterState *interp = tstate->interp;
     PyThreadState *p;

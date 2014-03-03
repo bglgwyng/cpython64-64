@@ -70,7 +70,7 @@
 
 /* Tru64 UNIX kludge.  */
 #if defined(__alpha__) && defined(__osf__)
-/* Tru64 UNIX V4.0 doesn't support %lld/%lld, but long is 64-bit.  */
+/* Tru64 UNIX V4.0 doesn't support %lld/%lld, but REALLYLONG is 64-bit.  */
 #undef PRIdLL
 #define PRIdLL "ld"
 #undef PRIuLL
@@ -98,14 +98,14 @@
 #define PRIu64 "llu"
 #endif
 /* This doesn't match <inttypes.h>, which always has "lld" here, but the
-   arguments are uint64_t, int64_t, which are unsigned long, long for
+   arguments are uint64_t, int64_t, which are unsigned REALLYLONG, REALLYLONG for
    64-bit in <sgidefs.h>.  */
 #if (_MIPS_SZLONG == 64)
 #define PRId64 "ld"
 #define PRIu64 "lu"
 #endif
 /* This doesn't match <inttypes.h>, which has "u" here, but the arguments
-   are uintptr_t, which is always unsigned long.  */
+   are uintptr_t, which is always unsigned REALLYLONG.  */
 #define PRIuPTR "lu"
 #endif
 

@@ -233,10 +233,10 @@ tb_displayline(PyObject *f, const char *filename, int lineno, const char *name)
 }
 
 static int
-tb_printinternal(PyTracebackObject *tb, PyObject *f, long limit)
+tb_printinternal(PyTracebackObject *tb, PyObject *f, REALLYLONG limit)
 {
     int err = 0;
-    long depth = 0;
+    REALLYLONG depth = 0;
     PyTracebackObject *tb1 = tb;
     while (tb1 != NULL) {
         depth++;
@@ -263,7 +263,7 @@ PyTraceBack_Print(PyObject *v, PyObject *f)
 {
     int err;
     PyObject *limitv;
-    long limit = 1000;
+    REALLYLONG limit = 1000;
     if (v == NULL)
         return 0;
     if (!PyTraceBack_Check(v)) {

@@ -4,16 +4,16 @@
 
 typedef struct {
     PyObject_HEAD
-    long        start;
-    long        step;
-    long        len;
+    REALLYLONG        start;
+    REALLYLONG        step;
+    REALLYLONG        len;
 } rangeobject;
 
 /* Return number of items in range (lo, hi, step).  step != 0
- * required.  The result always fits in an unsigned long.
+ * required.  The result always fits in an UREALLYLONG.
  */
-static unsigned long
-get_len_of_range(long lo, long hi, long step)
+static UREALLYLONG
+get_len_of_range(REALLYLONG lo, REALLYLONG hi, REALLYLONG step)
 {
     /* -------------------------------------------------------------
     If step > 0 and lo >= hi, or step < 0 and lo <= hi, the range is empty.
@@ -22,9 +22,9 @@ get_len_of_range(long lo, long hi, long step)
     n <= (hi - lo - 1)/step + 1, so taking the floor of the RHS gives
     the proper value.  Since lo < hi in this case, hi-lo-1 >= 0, so
     the RHS is non-negative and so truncation is the same as the
-    floor.  Letting M be the largest positive long, the worst case
+    floor.  Letting M be the largest positive REALLYLONG, the worst case
     for the RHS numerator is hi=M, lo=-M-1, and then
-    hi-lo-1 = M-(-M-1)-1 = 2*M.  Therefore unsigned long has enough
+    hi-lo-1 = M-(-M-1)-1 = 2*M.  Therefore UREALLYLONG has enough
     precision to compute the RHS exactly.  The analysis for step < 0
     is similar.
     ---------------------------------------------------------------*/
@@ -41,20 +41,20 @@ get_len_of_range(long lo, long hi, long step)
  * a (start, stop, step) triple.  Used in range_repr and range_reduce.
  * Computes start + len * step, clipped to the range [LONG_MIN, LONG_MAX].
  */
-static long
+static REALLYLONG
 get_stop_for_range(rangeobject *r)
 {
-    long last;
+    REALLYLONG last;
 
     if (r->len == 0)
         return r->start;
 
     /* The tricky bit is avoiding overflow.  We first compute the last entry in
        the xrange, start + (len - 1) * step, which is guaranteed to lie within
-       the range of a long, and then add step to it.  See the range_reverse
+       the range of a REALLYLONG, and then add step to it.  See the range_reverse
        comments for an explanation of the casts below.
     */
-    last = (long)(r->start + (unsigned long)(r->len - 1) * r->step);
+    last = (REALLYLONG)(r->start + (UREALLYLONG)(r->len - 1) * r->step);
     if (r->step > 0)
         return last > LONG_MAX - r->step ? LONG_MAX : last + r->step;
     else
@@ -65,8 +65,8 @@ static PyObject *
 range_new(PyTypeObject *type, PyObject *args, PyObject *kw)
 {
     rangeobject *obj;
-    long ilow = 0, ihigh = 0, istep = 1;
-    unsigned long n;
+    REALLYLONG ilow = 0, ihigh = 0, istep = 1;
+    UREALLYLONG n;
 
     if (!_PyArg_NoKeywords("xrange()", kw))
         return NULL;
@@ -88,7 +88,7 @@ range_new(PyTypeObject *type, PyObject *args, PyObject *kw)
         return NULL;
     }
     n = get_len_of_range(ilow, ihigh, istep);
-    if (n > (unsigned long)LONG_MAX || (long)n > PY_SSIZE_T_MAX) {
+    if (n > (UREALLYLONG)LONG_MAX || (REALLYLONG)n > PY_SSIZE_T_MAX) {
         PyErr_SetString(PyExc_OverflowError,
                         "xrange() result has too many items");
         return NULL;
@@ -98,7 +98,7 @@ range_new(PyTypeObject *type, PyObject *args, PyObject *kw)
     if (obj == NULL)
         return NULL;
     obj->start = ilow;
-    obj->len   = (long)n;
+    obj->len   = (REALLYLONG)n;
     obj->step  = istep;
     return (PyObject *) obj;
 }
@@ -119,9 +119,9 @@ range_item(rangeobject *r, Py_ssize_t i)
                         "xrange object index out of range");
         return NULL;
     }
-    /* do calculation entirely using unsigned longs, to avoid
+    /* do calculation entirely using UREALLYLONGs, to avoid
        undefined behaviour due to signed overflow. */
-    return PyInt_FromLong((long)(r->start + (unsigned long)i * r->step));
+    return PyInt_FromLong((REALLYLONG)(r->start + (UREALLYLONG)i * r->step));
 }
 
 static Py_ssize_t
@@ -228,10 +228,10 @@ PyTypeObject PyRange_Type = {
 
 typedef struct {
     PyObject_HEAD
-    long        index;
-    long        start;
-    long        step;
-    long        len;
+    REALLYLONG        index;
+    REALLYLONG        start;
+    REALLYLONG        step;
+    REALLYLONG        len;
 } rangeiterobject;
 
 static PyObject *
@@ -312,7 +312,7 @@ static PyObject *
 range_reverse(PyObject *seq)
 {
     rangeiterobject *it;
-    long start, step, len;
+    REALLYLONG start, step, len;
 
     if (!PyRange_Check(seq)) {
         PyErr_BadInternalCall();
@@ -330,7 +330,7 @@ range_reverse(PyObject *seq)
     it->len = len;
     /* the casts below guard against signed overflow by turning it
        into unsigned overflow instead.  The correctness of this
-       code still depends on conversion from unsigned long to long
+       code still depends on conversion from UREALLYLONG to long
        wrapping modulo ULONG_MAX+1, which isn't guaranteed (see
        C99 6.3.1.3p3) but seems to hold in practice for all
        platforms we're likely to meet.
@@ -340,8 +340,8 @@ range_reverse(PyObject *seq)
        the correct value modulo ULONG_MAX+1, and the range_item
        calculation is also done modulo ULONG_MAX+1.
     */
-    it->start = (long)(start + (unsigned long)(len-1) * step);
-    it->step = (long)(0UL-step);
+    it->start = (REALLYLONG)(start + (UREALLYLONG)(len-1) * step);
+    it->step = (REALLYLONG)(0UL-step);
 
     return (PyObject *)it;
 }

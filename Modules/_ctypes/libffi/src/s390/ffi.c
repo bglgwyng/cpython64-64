@@ -74,8 +74,8 @@ void
 #if __GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ > 2)
 __attribute__ ((visibility ("hidden")))
 #endif
-ffi_closure_helper_SYSV (ffi_closure *, unsigned long *, 
-			 unsigned long long *, unsigned long *);
+ffi_closure_helper_SYSV (ffi_closure *, unsigned REALLYLONG *, 
+			 unsigned REALLYLONG *, unsigned REALLYLONG *);
 
 /*====================== End of Prototypes ===========================*/
  
@@ -178,12 +178,12 @@ ffi_prep_args (unsigned char *stack, extended_cif *ecif)
      All areas are kept aligned to twice the word size.  */
 
   int gpr_off = ecif->cif->bytes;
-  int fpr_off = gpr_off + ROUND_SIZE (MAX_GPRARGS * sizeof (long));
+  int fpr_off = gpr_off + ROUND_SIZE (MAX_GPRARGS * sizeof (REALLYLONG));
 
-  unsigned long long *p_fpr = (unsigned long long *)(stack + fpr_off);
-  unsigned long *p_gpr = (unsigned long *)(stack + gpr_off);
+  unsigned REALLYLONG *p_fpr = (unsigned REALLYLONG *)(stack + fpr_off);
+  unsigned REALLYLONG *p_gpr = (unsigned REALLYLONG *)(stack + gpr_off);
   unsigned char *p_struct = (unsigned char *)p_gpr;
-  unsigned long *p_ov = (unsigned long *)stack;
+  unsigned REALLYLONG *p_ov = (unsigned REALLYLONG *)stack;
 
   int n_fpr = 0;
   int n_gpr = 0;
@@ -197,7 +197,7 @@ ffi_prep_args (unsigned char *stack, extended_cif *ecif)
      to the address of where we are returning this structure.  */
 
   if (ecif->cif->flags == FFI390_RET_STRUCT)
-    p_gpr[n_gpr++] = (unsigned long) ecif->rvalue;
+    p_gpr[n_gpr++] = (unsigned REALLYLONG) ecif->rvalue;
 
   /* Now for the arguments.  */
  
@@ -233,46 +233,46 @@ ffi_prep_args (unsigned char *stack, extended_cif *ecif)
 	{
 	  case FFI_TYPE_DOUBLE:
 	    if (n_fpr < MAX_FPRARGS)
-	      p_fpr[n_fpr++] = *(unsigned long long *) arg;
+	      p_fpr[n_fpr++] = *(unsigned REALLYLONG *) arg;
 	    else
 #ifdef __s390x__
-	      p_ov[n_ov++] = *(unsigned long *) arg;
+	      p_ov[n_ov++] = *(unsigned REALLYLONG *) arg;
 #else
-	      p_ov[n_ov++] = ((unsigned long *) arg)[0],
-	      p_ov[n_ov++] = ((unsigned long *) arg)[1];
+	      p_ov[n_ov++] = ((unsigned REALLYLONG *) arg)[0],
+	      p_ov[n_ov++] = ((unsigned REALLYLONG *) arg)[1];
 #endif
 	    break;
 	
 	  case FFI_TYPE_FLOAT:
 	    if (n_fpr < MAX_FPRARGS)
-	      p_fpr[n_fpr++] = (long long) *(unsigned int *) arg << 32;
+	      p_fpr[n_fpr++] = (REALLYLONG) *(unsigned int *) arg << 32;
 	    else
 	      p_ov[n_ov++] = *(unsigned int *) arg;
 	    break;
 
 	  case FFI_TYPE_POINTER:
 	    if (n_gpr < MAX_GPRARGS)
-	      p_gpr[n_gpr++] = (unsigned long)*(unsigned char **) arg;
+	      p_gpr[n_gpr++] = (unsigned REALLYLONG)*(unsigned char **) arg;
 	    else
-	      p_ov[n_ov++] = (unsigned long)*(unsigned char **) arg;
+	      p_ov[n_ov++] = (unsigned REALLYLONG)*(unsigned char **) arg;
 	    break;
  
 	  case FFI_TYPE_UINT64:
 	  case FFI_TYPE_SINT64:
 #ifdef __s390x__
 	    if (n_gpr < MAX_GPRARGS)
-	      p_gpr[n_gpr++] = *(unsigned long *) arg;
+	      p_gpr[n_gpr++] = *(unsigned REALLYLONG *) arg;
 	    else
-	      p_ov[n_ov++] = *(unsigned long *) arg;
+	      p_ov[n_ov++] = *(unsigned REALLYLONG *) arg;
 #else
 	    if (n_gpr == MAX_GPRARGS-1)
 	      n_gpr = MAX_GPRARGS;
 	    if (n_gpr < MAX_GPRARGS)
-	      p_gpr[n_gpr++] = ((unsigned long *) arg)[0],
-	      p_gpr[n_gpr++] = ((unsigned long *) arg)[1];
+	      p_gpr[n_gpr++] = ((unsigned REALLYLONG *) arg)[0],
+	      p_gpr[n_gpr++] = ((unsigned REALLYLONG *) arg)[1];
 	    else
-	      p_ov[n_ov++] = ((unsigned long *) arg)[0],
-	      p_ov[n_ov++] = ((unsigned long *) arg)[1];
+	      p_ov[n_ov++] = ((unsigned REALLYLONG *) arg)[0],
+	      p_ov[n_ov++] = ((unsigned REALLYLONG *) arg)[1];
 #endif
 	    break;
  
@@ -440,7 +440,7 @@ ffi_prep_cif_machdep(ffi_cif *cif)
 	    if (n_fpr < MAX_FPRARGS)
 	      n_fpr++;
 	    else
-	      n_ov += sizeof (double) / sizeof (long);
+	      n_ov += sizeof (double) / sizeof (REALLYLONG);
 	    break;
 	
 	  case FFI_TYPE_FLOAT:
@@ -482,7 +482,7 @@ ffi_prep_cif_machdep(ffi_cif *cif)
   /* Total stack space as required for overflow arguments
      and temporary structure copies.  */
 
-  cif->bytes = ROUND_SIZE (n_ov * sizeof (long)) + struct_size;
+  cif->bytes = ROUND_SIZE (n_ov * sizeof (REALLYLONG)) + struct_size;
  
   return FFI_OK;
 }
@@ -544,11 +544,11 @@ ffi_call(ffi_cif *cif,
  
 void
 ffi_closure_helper_SYSV (ffi_closure *closure,
-			 unsigned long *p_gpr,
-			 unsigned long long *p_fpr,
-			 unsigned long *p_ov)
+			 unsigned REALLYLONG *p_gpr,
+			 unsigned REALLYLONG *p_fpr,
+			 unsigned REALLYLONG *p_ov)
 {
-  unsigned long long ret_buffer;
+  unsigned REALLYLONG ret_buffer;
 
   void *rvalue = &ret_buffer;
   void **avalue;
@@ -614,14 +614,14 @@ ffi_closure_helper_SYSV (ffi_closure *closure,
 	      *p_arg = &p_fpr[n_fpr++];
 	    else
 	      *p_arg = &p_ov[n_ov], 
-	      n_ov += sizeof (double) / sizeof (long);
+	      n_ov += sizeof (double) / sizeof (REALLYLONG);
 	    break;
 	
 	  case FFI_TYPE_FLOAT:
 	    if (n_fpr < MAX_FPRARGS)
 	      *p_arg = &p_fpr[n_fpr++];
 	    else
-	      *p_arg = (char *)&p_ov[n_ov++] + sizeof (long) - 4;
+	      *p_arg = (char *)&p_ov[n_ov++] + sizeof (REALLYLONG) - 4;
 	    break;
  
 	  case FFI_TYPE_UINT64:
@@ -645,25 +645,25 @@ ffi_closure_helper_SYSV (ffi_closure *closure,
 	  case FFI_TYPE_UINT32:
 	  case FFI_TYPE_SINT32:
 	    if (n_gpr < MAX_GPRARGS)
-	      *p_arg = (char *)&p_gpr[n_gpr++] + sizeof (long) - 4;
+	      *p_arg = (char *)&p_gpr[n_gpr++] + sizeof (REALLYLONG) - 4;
 	    else
-	      *p_arg = (char *)&p_ov[n_ov++] + sizeof (long) - 4;
+	      *p_arg = (char *)&p_ov[n_ov++] + sizeof (REALLYLONG) - 4;
 	    break;
  
 	  case FFI_TYPE_UINT16:
 	  case FFI_TYPE_SINT16:
 	    if (n_gpr < MAX_GPRARGS)
-	      *p_arg = (char *)&p_gpr[n_gpr++] + sizeof (long) - 2;
+	      *p_arg = (char *)&p_gpr[n_gpr++] + sizeof (REALLYLONG) - 2;
 	    else
-	      *p_arg = (char *)&p_ov[n_ov++] + sizeof (long) - 2;
+	      *p_arg = (char *)&p_ov[n_ov++] + sizeof (REALLYLONG) - 2;
 	    break;
 
 	  case FFI_TYPE_UINT8:
 	  case FFI_TYPE_SINT8:
 	    if (n_gpr < MAX_GPRARGS)
-	      *p_arg = (char *)&p_gpr[n_gpr++] + sizeof (long) - 1;
+	      *p_arg = (char *)&p_gpr[n_gpr++] + sizeof (REALLYLONG) - 1;
 	    else
-	      *p_arg = (char *)&p_ov[n_ov++] + sizeof (long) - 1;
+	      *p_arg = (char *)&p_ov[n_ov++] + sizeof (REALLYLONG) - 1;
 	    break;
  
 	  default:
@@ -694,11 +694,11 @@ ffi_closure_helper_SYSV (ffi_closure *closure,
 
       /* Floating point values are returned in fpr 0.  */
       case FFI_TYPE_FLOAT:
-	p_fpr[0] = (long long) *(unsigned int *) rvalue << 32;
+	p_fpr[0] = (REALLYLONG) *(unsigned int *) rvalue << 32;
 	break;
 
       case FFI_TYPE_DOUBLE:
-	p_fpr[0] = *(unsigned long long *) rvalue;
+	p_fpr[0] = *(unsigned REALLYLONG *) rvalue;
 	break;
 
       /* Integer values are returned in gpr 2 (and gpr 3
@@ -706,10 +706,10 @@ ffi_closure_helper_SYSV (ffi_closure *closure,
       case FFI_TYPE_UINT64:
       case FFI_TYPE_SINT64:
 #ifdef __s390x__
-	p_gpr[0] = *(unsigned long *) rvalue;
+	p_gpr[0] = *(unsigned REALLYLONG *) rvalue;
 #else
-	p_gpr[0] = ((unsigned long *) rvalue)[0],
-	p_gpr[1] = ((unsigned long *) rvalue)[1];
+	p_gpr[0] = ((unsigned REALLYLONG *) rvalue)[0],
+	p_gpr[1] = ((unsigned REALLYLONG *) rvalue)[1];
 #endif
 	break;
 
@@ -717,14 +717,14 @@ ffi_closure_helper_SYSV (ffi_closure *closure,
       case FFI_TYPE_UINT32:
       case FFI_TYPE_UINT16:
       case FFI_TYPE_UINT8:
-	p_gpr[0] = *(unsigned long *) rvalue;
+	p_gpr[0] = *(unsigned REALLYLONG *) rvalue;
 	break;
 
       case FFI_TYPE_INT:
       case FFI_TYPE_SINT32:
       case FFI_TYPE_SINT16:
       case FFI_TYPE_SINT8:
-	p_gpr[0] = *(signed long *) rvalue;
+	p_gpr[0] = *(signed REALLYLONG *) rvalue;
 	break;
 
       default:
@@ -758,16 +758,16 @@ ffi_prep_closure_loc (ffi_closure *closure,
   *(short *)&closure->tramp [2] = 0x9801;   /* lm %r0,%r1,6(%r1) */
   *(short *)&closure->tramp [4] = 0x1006;
   *(short *)&closure->tramp [6] = 0x07f1;   /* br %r1 */
-  *(long  *)&closure->tramp [8] = (long)codeloc;
-  *(long  *)&closure->tramp[12] = (long)&ffi_closure_SYSV;
+  *(REALLYLONG  *)&closure->tramp [8] = (REALLYLONG)codeloc;
+  *(REALLYLONG  *)&closure->tramp[12] = (REALLYLONG)&ffi_closure_SYSV;
 #else
   *(short *)&closure->tramp [0] = 0x0d10;   /* basr %r1,0 */
   *(short *)&closure->tramp [2] = 0xeb01;   /* lmg %r0,%r1,14(%r1) */
   *(short *)&closure->tramp [4] = 0x100e;
   *(short *)&closure->tramp [6] = 0x0004;
   *(short *)&closure->tramp [8] = 0x07f1;   /* br %r1 */
-  *(long  *)&closure->tramp[16] = (long)codeloc;
-  *(long  *)&closure->tramp[24] = (long)&ffi_closure_SYSV;
+  *(REALLYLONG  *)&closure->tramp[16] = (REALLYLONG)codeloc;
+  *(REALLYLONG  *)&closure->tramp[24] = (REALLYLONG)&ffi_closure_SYSV;
 #endif 
  
   closure->cif = cif;

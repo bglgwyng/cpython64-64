@@ -654,11 +654,11 @@ internal_setblocking(PySocketSockObject *s, int block)
 #endif /* !PYOS_OS2 */
 #else /* MS_WINDOWS */
     block = !block;
-    ioctlsocket(s->sock_fd, FIONBIO, (u_long*)&block);
+    ioctlsocket(s->sock_fd, FIONBIO, (u_long *)&block);
 #endif /* MS_WINDOWS */
 #else /* RISCOS */
     block = !block;
-    socketioctl(s->sock_fd, FIONBIO, (u_long*)&block);
+    socketioctl(s->sock_fd, FIONBIO, (u_long *)&block);
 #endif /* RISCOS */
 #endif /* __BEOS__ */
     Py_END_ALLOW_THREADS
@@ -794,7 +794,7 @@ init_sockobject(PySocketSockObject *s,
 
 #ifdef RISCOS
     if (taskwindow)
-        socketioctl(s->sock_fd, 0x80046679, (u_long*)&block);
+        socketioctl(s->sock_fd, 0x80046679, (u_REALLYLONG*)&block);
 #endif
 }
 
@@ -906,8 +906,8 @@ setipaddr(char *name, struct sockaddr *addr_ret, size_t addr_ret_size, int af)
         struct sockaddr_in *sin;
         sin = (struct sockaddr_in *)addr_ret;
         sin->sin_addr.s_addr = htonl(
-            ((long) d1 << 24) | ((long) d2 << 16) |
-            ((long) d3 << 8) | ((long) d4 << 0));
+            ((REALLYLONG) d1 << 24) | ((REALLYLONG) d2 << 16) |
+            ((REALLYLONG) d3 << 8) | ((REALLYLONG) d4 << 0));
         sin->sin_family = AF_INET;
 #ifdef HAVE_SOCKADDR_SA_LEN
         sin->sin_len = sizeof(*sin);
@@ -1773,7 +1773,7 @@ info is a pair (hostaddr, port).");
 static PyObject *
 sock_setblocking(PySocketSockObject *s, PyObject *arg)
 {
-    long block;
+    REALLYLONG block;
 
     block = PyInt_AsLong(arg);
     if (block == -1 && PyErr_Occurred())
@@ -1862,7 +1862,7 @@ sock_sleeptaskw(PySocketSockObject *s,PyObject *arg)
     if (block == -1 && PyErr_Occurred())
         return NULL;
     Py_BEGIN_ALLOW_THREADS
-    socketioctl(s->sock_fd, 0x80046679, (u_long*)&block);
+    socketioctl(s->sock_fd, 0x80046679, (u_REALLYLONG*)&block);
     Py_END_ALLOW_THREADS
 
     Py_INCREF(Py_None);
@@ -2179,7 +2179,7 @@ sock_connect_ex(PySocketSockObject *s, PyObject *addro)
         return NULL;
 #endif
 
-    return PyInt_FromLong((long) res);
+    return PyInt_FromLong((REALLYLONG) res);
 }
 
 PyDoc_STRVAR(connect_ex_doc,
@@ -2195,7 +2195,7 @@ static PyObject *
 sock_fileno(PySocketSockObject *s)
 {
 #if SIZEOF_SOCKET_T <= SIZEOF_LONG
-    return PyInt_FromLong((long) s->sock_fd);
+    return PyInt_FromLong((REALLYLONG) s->sock_fd);
 #else
     return PyLong_FromLongLong((PY_LONG_LONG)s->sock_fd);
 #endif
@@ -2806,7 +2806,7 @@ sock_send(PySocketSockObject *s, PyObject *args)
     PyBuffer_Release(&pbuf);
     if (n < 0)
         return s->errorhandler();
-    return PyInt_FromLong((long)n);
+    return PyInt_FromLong((REALLYLONG)n);
 }
 
 PyDoc_STRVAR(send_doc,
@@ -2950,7 +2950,7 @@ sock_sendto(PySocketSockObject *s, PyObject *args)
     PyBuffer_Release(&pbuf);
     if (n < 0)
         return s->errorhandler();
-    return PyInt_FromLong((long)n);
+    return PyInt_FromLong((REALLYLONG)n);
 }
 
 PyDoc_STRVAR(sendto_doc,
@@ -2990,7 +2990,7 @@ of the socket (flag == SHUT_WR), or both ends (flag == SHUT_RDWR).");
 static PyObject*
 sock_ioctl(PySocketSockObject *s, PyObject *arg)
 {
-    unsigned long cmd = SIO_RCVALL;
+    UREALLYLONG cmd = SIO_RCVALL;
     PyObject *argO;
     DWORD recv;
 
@@ -3138,7 +3138,7 @@ sock_repr(PySocketSockObject *s)
     PyOS_snprintf(
         buf, sizeof(buf),
         "<socket object, fd=%ld, family=%d, type=%d, protocol=%d>",
-        (long)s->sock_fd, s->sock_family,
+        (REALLYLONG)s->sock_fd, s->sock_family,
         s->sock_type,
         s->sock_proto);
     return PyString_FromString(buf);
@@ -3604,7 +3604,7 @@ socket_getservbyname(PyObject *self, PyObject *args)
         PyErr_SetString(socket_error, "service/proto not found");
         return NULL;
     }
-    return PyInt_FromLong((long) ntohs(sp->s_port));
+    return PyInt_FromLong((REALLYLONG) ntohs(sp->s_port));
 }
 
 PyDoc_STRVAR(getservbyname_doc,
@@ -3675,7 +3675,7 @@ socket_getprotobyname(PyObject *self, PyObject *args)
         PyErr_SetString(socket_error, "protocol not found");
         return NULL;
     }
-    return PyInt_FromLong((long) sp->p_proto);
+    return PyInt_FromLong((REALLYLONG) sp->p_proto);
 #endif
 }
 
@@ -3784,7 +3784,7 @@ socket_ntohs(PyObject *self, PyObject *args)
     }
     if (x1 < 0) {
         PyErr_SetString(PyExc_OverflowError,
-            "can't convert negative number to unsigned long");
+            "can't convert negative number to UREALLYLONG");
         return NULL;
     }
     x2 = (unsigned int)ntohs((unsigned short)x1);
@@ -3800,25 +3800,25 @@ Convert a 16-bit integer from network to host byte order.");
 static PyObject *
 socket_ntohl(PyObject *self, PyObject *arg)
 {
-    unsigned long x;
+    UREALLYLONG x;
 
     if (PyInt_Check(arg)) {
         x = PyInt_AS_LONG(arg);
-        if (x == (unsigned long) -1 && PyErr_Occurred())
+        if (x == (UREALLYLONG) -1 && PyErr_Occurred())
             return NULL;
-        if ((long)x < 0) {
+        if ((REALLYLONG)x < 0) {
             PyErr_SetString(PyExc_OverflowError,
-              "can't convert negative number to unsigned long");
+              "can't convert negative number to UREALLYLONG");
             return NULL;
         }
     }
     else if (PyLong_Check(arg)) {
         x = PyLong_AsUnsignedLong(arg);
-        if (x == (unsigned long) -1 && PyErr_Occurred())
+        if (x == (UREALLYLONG) -1 && PyErr_Occurred())
             return NULL;
 #if SIZEOF_LONG > 4
         {
-            unsigned long y;
+            UREALLYLONG y;
             /* only want the trailing 32 bits */
             y = x & 0xFFFFFFFFUL;
             if (y ^ x)
@@ -3832,7 +3832,7 @@ socket_ntohl(PyObject *self, PyObject *arg)
         return PyErr_Format(PyExc_TypeError,
                             "expected int/long, %s found",
                             Py_TYPE(arg)->tp_name);
-    if (x == (unsigned long) -1 && PyErr_Occurred())
+    if (x == (UREALLYLONG) -1 && PyErr_Occurred())
         return NULL;
     return PyLong_FromUnsignedLong(ntohl(x));
 }
@@ -3853,7 +3853,7 @@ socket_htons(PyObject *self, PyObject *args)
     }
     if (x1 < 0) {
         PyErr_SetString(PyExc_OverflowError,
-            "can't convert negative number to unsigned long");
+            "can't convert negative number to UREALLYLONG");
         return NULL;
     }
     x2 = (unsigned int)htons((unsigned short)x1);
@@ -3869,25 +3869,25 @@ Convert a 16-bit integer from host to network byte order.");
 static PyObject *
 socket_htonl(PyObject *self, PyObject *arg)
 {
-    unsigned long x;
+    UREALLYLONG x;
 
     if (PyInt_Check(arg)) {
         x = PyInt_AS_LONG(arg);
-        if (x == (unsigned long) -1 && PyErr_Occurred())
+        if (x == (UREALLYLONG) -1 && PyErr_Occurred())
             return NULL;
-        if ((long)x < 0) {
+        if ((REALLYLONG)x < 0) {
             PyErr_SetString(PyExc_OverflowError,
-              "can't convert negative number to unsigned long");
+              "can't convert negative number to UREALLYLONG");
             return NULL;
         }
     }
     else if (PyLong_Check(arg)) {
         x = PyLong_AsUnsignedLong(arg);
-        if (x == (unsigned long) -1 && PyErr_Occurred())
+        if (x == (UREALLYLONG) -1 && PyErr_Occurred())
             return NULL;
 #if SIZEOF_LONG > 4
         {
-            unsigned long y;
+            UREALLYLONG y;
             /* only want the trailing 32 bits */
             y = x & 0xFFFFFFFFUL;
             if (y ^ x)
@@ -3901,7 +3901,7 @@ socket_htonl(PyObject *self, PyObject *arg)
         return PyErr_Format(PyExc_TypeError,
                             "expected int/long, %s found",
                             Py_TYPE(arg)->tp_name);
-    return PyLong_FromUnsignedLong(htonl((unsigned long)x));
+    return PyLong_FromUnsignedLong(htonl((UREALLYLONG)x));
 }
 
 PyDoc_STRVAR(htonl_doc,
@@ -4165,7 +4165,7 @@ socket_getaddrinfo(PyObject *self, PyObject *args)
         return NULL;
     }
     if (PyInt_Check(pobj) || PyLong_Check(pobj)) {
-        long value = PyLong_AsLong(pobj);
+        REALLYLONG value = PyLong_AsLong(pobj);
         if (value == -1 && PyErr_Occurred())
             return NULL;
         PyOS_snprintf(pbuf, sizeof(pbuf), "%ld", value);

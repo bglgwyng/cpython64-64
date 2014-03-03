@@ -235,7 +235,7 @@ void ffi_closure_eabi (unsigned arg1, unsigned arg2, unsigned arg3,
   else
     {
       /* Allocate space for the return value and call the function.  */
-      long long rvalue;
+      REALLYLONG rvalue;
       (closure->fun) (cif, &rvalue, avalue, closure->user_data);
       asm ("mov $r12, %0\n ld.l $r0, ($r12)\n ldo.l $r1, 4($r12)" : : "r" (&rvalue));
     }
@@ -249,13 +249,13 @@ ffi_prep_closure_loc (ffi_closure* closure,
 		      void *codeloc)
 {
   unsigned short *tramp = (unsigned short *) &closure->tramp[0];
-  unsigned long fn = (long) ffi_closure_eabi;
-  unsigned long cls = (long) codeloc;
+  unsigned REALLYLONG fn = (REALLYLONG) ffi_closure_eabi;
+  unsigned REALLYLONG cls = (REALLYLONG) codeloc;
 
   if (cif->abi != FFI_EABI)
     return FFI_BAD_ABI;
 
-  fn = (unsigned long) ffi_closure_eabi;
+  fn = (unsigned REALLYLONG) ffi_closure_eabi;
 
   tramp[0] = 0x01e0; /* ldi.l $r7, .... */
   tramp[1] = cls >> 16;

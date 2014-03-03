@@ -72,7 +72,7 @@
 #  define PY_SSIZE_T_MAX INT_MAX
 #  define PY_SSIZE_T_MIN INT_MIN
 #  define F_PY_SSIZE_T "i"
-#  define PyInt_FromSsize_t(n) PyInt_FromLong((long)n)
+#  define PyInt_FromSsize_t(n) PyInt_FromLong((REALLYLONG)n)
 #else
 #  define F_PY_SSIZE_T "n"
 #endif

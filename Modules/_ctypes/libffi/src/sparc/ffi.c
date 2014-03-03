@@ -48,7 +48,7 @@ void ffi_prep_args_v8(char *stack, extended_cif *ecif)
      however, it's faster just to do it all the time...
 
   if ( ecif->cif->rtype->type == FFI_TYPE_STRUCT ) */
-  *(int *) argp = (long)ecif->rvalue;
+  *(int *) argp = (REALLYLONG)ecif->rvalue;
 
   /* And 1 word for the  structure return value. */
   argp += sizeof(int);
@@ -77,7 +77,7 @@ void ffi_prep_args_v8(char *stack, extended_cif *ecif)
 #endif
 	      )
 	    {
-	      *(unsigned int *) argp = (unsigned long)(* p_argv);
+	      *(unsigned int *) argp = (unsigned REALLYLONG)(* p_argv);
 	      z = sizeof(int);
 	    }
 	  else
@@ -131,18 +131,18 @@ int ffi_prep_args_v9(char *stack, extended_cif *ecif)
   tmp = 0;
 
   /* Skip 16 words for the window save area */
-  argp = stack + 16*sizeof(long long);
+  argp = stack + 16*sizeof(REALLYLONG);
 
 #ifdef USING_PURIFY
   /* Purify will probably complain in our assembly routine, unless we
      zero out this memory. */
 
-  ((long long*)argp)[0] = 0;
-  ((long long*)argp)[1] = 0;
-  ((long long*)argp)[2] = 0;
-  ((long long*)argp)[3] = 0;
-  ((long long*)argp)[4] = 0;
-  ((long long*)argp)[5] = 0;
+  ((REALLYLONG*)argp)[0] = 0;
+  ((REALLYLONG*)argp)[1] = 0;
+  ((REALLYLONG*)argp)[2] = 0;
+  ((REALLYLONG*)argp)[3] = 0;
+  ((REALLYLONG*)argp)[4] = 0;
+  ((REALLYLONG*)argp)[5] = 0;
 #endif
 
   p_argv = ecif->avalue;
@@ -150,8 +150,8 @@ int ffi_prep_args_v9(char *stack, extended_cif *ecif)
   if (ecif->cif->rtype->type == FFI_TYPE_STRUCT &&
       ecif->cif->rtype->size > 32)
     {
-      *(unsigned long long *) argp = (unsigned long)ecif->rvalue;
-      argp += sizeof(long long);
+      *(unsigned REALLYLONG *) argp = (unsigned REALLYLONG)ecif->rvalue;
+      argp += sizeof(REALLYLONG);
       tmp = 1;
     }
 
@@ -167,8 +167,8 @@ int ffi_prep_args_v9(char *stack, extended_cif *ecif)
 	  if (z > 16)
 	    {
 	      /* For structures larger than 16 bytes we pass reference.  */
-	      *(unsigned long long *) argp = (unsigned long)* p_argv;
-	      argp += sizeof(long long);
+	      *(unsigned REALLYLONG *) argp = (unsigned REALLYLONG)* p_argv;
+	      argp += sizeof(REALLYLONG);
 	      tmp++;
 	      p_argv++;
 	      continue;
@@ -182,32 +182,32 @@ int ffi_prep_args_v9(char *stack, extended_cif *ecif)
 	  ret = 1; /* We should promote into FP regs as well as integer.  */
 	  break;
 	}
-      if (z < sizeof(long long))
+      if (z < sizeof(REALLYLONG))
 	{
 	  switch ((*p_arg)->type)
 	    {
 	    case FFI_TYPE_SINT8:
-	      *(signed long long *) argp = *(SINT8 *)(* p_argv);
+	      *(signed REALLYLONG *) argp = *(SINT8 *)(* p_argv);
 	      break;
 
 	    case FFI_TYPE_UINT8:
-	      *(unsigned long long *) argp = *(UINT8 *)(* p_argv);
+	      *(unsigned REALLYLONG *) argp = *(UINT8 *)(* p_argv);
 	      break;
 
 	    case FFI_TYPE_SINT16:
-	      *(signed long long *) argp = *(SINT16 *)(* p_argv);
+	      *(signed REALLYLONG *) argp = *(SINT16 *)(* p_argv);
 	      break;
 
 	    case FFI_TYPE_UINT16:
-	      *(unsigned long long *) argp = *(UINT16 *)(* p_argv);
+	      *(unsigned REALLYLONG *) argp = *(UINT16 *)(* p_argv);
 	      break;
 
 	    case FFI_TYPE_SINT32:
-	      *(signed long long *) argp = *(SINT32 *)(* p_argv);
+	      *(signed REALLYLONG *) argp = *(SINT32 *)(* p_argv);
 	      break;
 
 	    case FFI_TYPE_UINT32:
-	      *(unsigned long long *) argp = *(UINT32 *)(* p_argv);
+	      *(unsigned REALLYLONG *) argp = *(UINT32 *)(* p_argv);
 	      break;
 
 	    case FFI_TYPE_FLOAT:
@@ -221,13 +221,13 @@ int ffi_prep_args_v9(char *stack, extended_cif *ecif)
 	    default:
 	      FFI_ASSERT(0);
 	    }
-	  z = sizeof(long long);
+	  z = sizeof(REALLYLONG);
 	  tmp++;
 	}
-      else if (z == sizeof(long long))
+      else if (z == sizeof(REALLYLONG))
 	{
 	  memcpy(argp, *p_argv, z);
-	  z = sizeof(long long);
+	  z = sizeof(REALLYLONG);
 	  tmp++;
 	}
       else
@@ -235,10 +235,10 @@ int ffi_prep_args_v9(char *stack, extended_cif *ecif)
 	  if ((tmp & 1) && (*p_arg)->alignment > 8)
 	    {
 	      tmp++;
-	      argp += sizeof(long long);
+	      argp += sizeof(REALLYLONG);
 	    }
 	  memcpy(argp, *p_argv, z);
-	  z = 2 * sizeof(long long);
+	  z = 2 * sizeof(REALLYLONG);
 	  tmp += 2;
 	}
       p_argv++;
@@ -424,7 +424,7 @@ void ffi_call(ffi_cif *cif, void (*fn)(void), void *rvalue, void **avalue)
 	  ffi_closure_alloc(32, (void **)&call_struct);
 	  if (call_struct)
 	    {
-	      unsigned long f = (unsigned long)fn;
+	      unsigned REALLYLONG f = (unsigned REALLYLONG)fn;
 	      call_struct[0] = 0xae10001f;		 /* mov   %i7, %l7	 */
 	      call_struct[1] = 0xbe10000f;		 /* mov   %o7, %i7	 */
 	      call_struct[2] = 0x03000000 | f >> 10;     /* sethi %hi(fn), %g1	 */
@@ -493,23 +493,23 @@ ffi_prep_closure_loc (ffi_closure* closure,
 		      void *codeloc)
 {
   unsigned int *tramp = (unsigned int *) &closure->tramp[0];
-  unsigned long fn;
+  unsigned REALLYLONG fn;
 #ifdef SPARC64
   /* Trampoline address is equal to the closure address.  We take advantage
      of that to reduce the trampoline size by 8 bytes. */
   if (cif->abi != FFI_V9)
     return FFI_BAD_ABI;
-  fn = (unsigned long) ffi_closure_v9;
+  fn = (unsigned REALLYLONG) ffi_closure_v9;
   tramp[0] = 0x83414000;	/* rd	%pc, %g1	*/
   tramp[1] = 0xca586010;	/* ldx	[%g1+16], %g5	*/
   tramp[2] = 0x81c14000;	/* jmp	%g5		*/
   tramp[3] = 0x01000000;	/* nop			*/
-  *((unsigned long *) &tramp[4]) = fn;
+  *((unsigned REALLYLONG *) &tramp[4]) = fn;
 #else
-  unsigned long ctx = (unsigned long) codeloc;
+  unsigned REALLYLONG ctx = (unsigned REALLYLONG) codeloc;
   if (cif->abi != FFI_V8)
     return FFI_BAD_ABI;
-  fn = (unsigned long) ffi_closure_v8;
+  fn = (unsigned REALLYLONG) ffi_closure_v8;
   tramp[0] = 0x03000000 | fn >> 10;	/* sethi %hi(fn), %g1	*/
   tramp[1] = 0x05000000 | ctx >> 10;	/* sethi %hi(ctx), %g2	*/
   tramp[2] = 0x81c06000 | (fn & 0x3ff);	/* jmp   %g1+%lo(fn)	*/
@@ -538,7 +538,7 @@ ffi_prep_closure_loc (ffi_closure* closure,
 
 int
 ffi_closure_sparc_inner_v8(ffi_closure *closure,
-  void *rvalue, unsigned long *gpr, unsigned long *scratch)
+  void *rvalue, unsigned REALLYLONG *gpr, unsigned REALLYLONG *scratch)
 {
   ffi_cif *cif;
   ffi_type **arg_types;
@@ -603,7 +603,7 @@ ffi_closure_sparc_inner_v8(ffi_closure *closure,
 
 int
 ffi_closure_sparc_inner_v9(ffi_closure *closure,
-  void *rvalue, unsigned long *gpr, double *fpr)
+  void *rvalue, unsigned REALLYLONG *gpr, double *fpr)
 {
   ffi_cif *cif;
   ffi_type **arg_types;

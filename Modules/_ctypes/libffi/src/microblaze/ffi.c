@@ -279,10 +279,10 @@ ffi_status ffi_prep_closure_loc(
 		void (*fun)(ffi_cif*, void*, void**, void*),
 		void* user_data, void* codeloc)
 {
-	unsigned long* tramp = (unsigned long*)&(closure->tramp[0]);
-	unsigned long cls = (unsigned long)codeloc;
-	unsigned long fn = 0;
-	unsigned long fn_closure_call_sysv = (unsigned long)ffi_closure_call_SYSV;
+	unsigned REALLYLONG* tramp = (unsigned REALLYLONG*)&(closure->tramp[0]);
+	unsigned REALLYLONG cls = (unsigned REALLYLONG)codeloc;
+	unsigned REALLYLONG fn = 0;
+	unsigned REALLYLONG fn_closure_call_sysv = (unsigned REALLYLONG)ffi_closure_call_SYSV;
 
 	closure->cif = cif;
 	closure->fun = fun;
@@ -291,7 +291,7 @@ ffi_status ffi_prep_closure_loc(
 	switch (cif->abi)
 	{
 	case FFI_SYSV:
-		fn = (unsigned long)ffi_closure_SYSV;
+		fn = (unsigned REALLYLONG)ffi_closure_SYSV;
 
 		/* load r11 (temp) with fn */
 		/* imm fn(upper) */

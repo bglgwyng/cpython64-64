@@ -1,12 +1,12 @@
 /* Area:	ffi_call
-   Purpose:	Check if unsigned long as return type is handled correctly.
+   Purpose:	Check if unsigned REALLYLONG as return type is handled correctly.
    Limitations:	none.
    PR:		none.
    Originator:	<kaffeetisch at gmx dot de> 20060724  */
 
 /* { dg-do run } */
 #include "ffitest.h"
-static unsigned long return_ul(unsigned long ul1, unsigned long ul2)
+static unsigned REALLYLONG return_ul(unsigned REALLYLONG ul1, unsigned REALLYLONG ul2)
 {
   return ul1 + ul2;
 }
@@ -17,7 +17,7 @@ int main (void)
   ffi_type *args[MAX_ARGS];
   void *values[MAX_ARGS];
   ffi_arg res;
-  unsigned long ul1, ul2;
+  unsigned REALLYLONG ul1, ul2;
 
   args[0] = &ffi_type_ulong;
   args[1] = &ffi_type_ulong;
@@ -31,7 +31,7 @@ int main (void)
   ul2 = 1073741824L;
 
   ffi_call(&cif, FFI_FN(return_ul), &res, values);
-  printf("res: %lu, %lu\n", (unsigned long)res, ul1 + ul2);
+  printf("res: %lu, %lu\n", (unsigned REALLYLONG)res, ul1 + ul2);
   /* { dg-output "res: 2147483647, 2147483647" } */
 
   exit(0);

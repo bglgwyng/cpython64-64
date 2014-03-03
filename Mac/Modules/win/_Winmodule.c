@@ -64,7 +64,7 @@ PyObject *WinObj_New(WindowPtr itself)
     it->ob_freeit = NULL;
     if (GetWRefCon(itself) == 0)
     {
-        SetWRefCon(itself, (long)it);
+        SetWRefCon(itself, (REALLYLONG)it);
         it->ob_freeit = PyMac_AutoDisposeWindow;
     }
     return (PyObject *)it;
@@ -679,7 +679,7 @@ static PyObject *WinObj_HiliteWindow(WindowObject *_self, PyObject *_args)
 static PyObject *WinObj_SetWRefCon(WindowObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long data;
+    REALLYLONG data;
 #ifndef SetWRefCon
     PyMac_PRECHECK(SetWRefCon);
 #endif
@@ -696,7 +696,7 @@ static PyObject *WinObj_SetWRefCon(WindowObject *_self, PyObject *_args)
 static PyObject *WinObj_GetWRefCon(WindowObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long _rv;
+    REALLYLONG _rv;
 #ifndef GetWRefCon
     PyMac_PRECHECK(GetWRefCon);
 #endif
@@ -1431,7 +1431,7 @@ static PyObject *WinObj_SizeWindow(WindowObject *_self, PyObject *_args)
 static PyObject *WinObj_GrowWindow(WindowObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long _rv;
+    REALLYLONG _rv;
     Point startPt;
     Rect bBox;
 #ifndef GrowWindow
@@ -2386,9 +2386,9 @@ static PyMethodDef WinObj_methods[] = {
     {"HiliteWindow", (PyCFunction)WinObj_HiliteWindow, 1,
      PyDoc_STR("(Boolean fHilite) -> None")},
     {"SetWRefCon", (PyCFunction)WinObj_SetWRefCon, 1,
-     PyDoc_STR("(long data) -> None")},
+     PyDoc_STR("(REALLYLONG data) -> None")},
     {"GetWRefCon", (PyCFunction)WinObj_GetWRefCon, 1,
-     PyDoc_STR("() -> (long _rv)")},
+     PyDoc_STR("() -> (REALLYLONG _rv)")},
     {"SetWindowPic", (PyCFunction)WinObj_SetWindowPic, 1,
      PyDoc_STR("(PicHandle pic) -> None")},
     {"GetWindowPic", (PyCFunction)WinObj_GetWindowPic, 1,
@@ -2466,7 +2466,7 @@ static PyMethodDef WinObj_methods[] = {
     {"SizeWindow", (PyCFunction)WinObj_SizeWindow, 1,
      PyDoc_STR("(short w, short h, Boolean fUpdate) -> None")},
     {"GrowWindow", (PyCFunction)WinObj_GrowWindow, 1,
-     PyDoc_STR("(Point startPt, Rect bBox) -> (long _rv)")},
+     PyDoc_STR("(Point startPt, Rect bBox) -> (REALLYLONG _rv)")},
     {"DragWindow", (PyCFunction)WinObj_DragWindow, 1,
      PyDoc_STR("(Point startPt, Rect boundsRect) -> None")},
     {"ZoomWindow", (PyCFunction)WinObj_ZoomWindow, 1,
@@ -2684,7 +2684,7 @@ static PyObject *Win_NewWindow(PyObject *_self, PyObject *_args)
     short theProc;
     WindowPtr behind;
     Boolean goAwayFlag;
-    long refCon;
+    REALLYLONG refCon;
 #ifndef NewWindow
     PyMac_PRECHECK(NewWindow);
 #endif
@@ -2741,7 +2741,7 @@ static PyObject *Win_NewCWindow(PyObject *_self, PyObject *_args)
     short procID;
     WindowPtr behind;
     Boolean goAwayFlag;
-    long refCon;
+    REALLYLONG refCon;
 #ifndef NewCWindow
     PyMac_PRECHECK(NewCWindow);
 #endif
@@ -3066,7 +3066,7 @@ static PyObject *Win_EnableScreenUpdates(PyObject *_self, PyObject *_args)
 static PyObject *Win_PinRect(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long _rv;
+    REALLYLONG _rv;
     Rect theRect;
     Point thePt;
 #ifndef PinRect
@@ -3119,7 +3119,7 @@ static PyObject *Win_WhichWindow(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
 
-    long ptr;
+    REALLYLONG ptr;
 
     if ( !PyArg_ParseTuple(_args, "i", &ptr) )
         return NULL;
@@ -3154,11 +3154,11 @@ static PyMethodDef Win_methods[] = {
     {"GetNewCWindow", (PyCFunction)Win_GetNewCWindow, 1,
      PyDoc_STR("(short windowID, WindowPtr behind) -> (WindowPtr _rv)")},
     {"NewWindow", (PyCFunction)Win_NewWindow, 1,
-     PyDoc_STR("(Rect boundsRect, Str255 title, Boolean visible, short theProc, WindowPtr behind, Boolean goAwayFlag, long refCon) -> (WindowPtr _rv)")},
+     PyDoc_STR("(Rect boundsRect, Str255 title, Boolean visible, short theProc, WindowPtr behind, Boolean goAwayFlag, REALLYLONG refCon) -> (WindowPtr _rv)")},
     {"GetNewWindow", (PyCFunction)Win_GetNewWindow, 1,
      PyDoc_STR("(short windowID, WindowPtr behind) -> (WindowPtr _rv)")},
     {"NewCWindow", (PyCFunction)Win_NewCWindow, 1,
-     PyDoc_STR("(Rect boundsRect, Str255 title, Boolean visible, short procID, WindowPtr behind, Boolean goAwayFlag, long refCon) -> (WindowPtr _rv)")},
+     PyDoc_STR("(Rect boundsRect, Str255 title, Boolean visible, short procID, WindowPtr behind, Boolean goAwayFlag, REALLYLONG refCon) -> (WindowPtr _rv)")},
     {"CreateNewWindow", (PyCFunction)Win_CreateNewWindow, 1,
      PyDoc_STR("(WindowClass windowClass, WindowAttributes attributes, Rect contentBounds) -> (WindowPtr outWindow)")},
     {"CreateWindowFromResource", (PyCFunction)Win_CreateWindowFromResource, 1,
@@ -3192,7 +3192,7 @@ static PyMethodDef Win_methods[] = {
     {"EnableScreenUpdates", (PyCFunction)Win_EnableScreenUpdates, 1,
      PyDoc_STR("() -> None")},
     {"PinRect", (PyCFunction)Win_PinRect, 1,
-     PyDoc_STR("(Rect theRect, Point thePt) -> (long _rv)")},
+     PyDoc_STR("(Rect theRect, Point thePt) -> (REALLYLONG _rv)")},
     {"GetGrayRgn", (PyCFunction)Win_GetGrayRgn, 1,
      PyDoc_STR("() -> (RgnHandle _rv)")},
     {"GetWindowFromPort", (PyCFunction)Win_GetWindowFromPort, 1,

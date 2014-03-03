@@ -64,7 +64,7 @@ mkpwent(struct passwd *p)
     if (v == NULL)
         return NULL;
 
-#define SETI(i,val) PyStructSequence_SET_ITEM(v, i, PyInt_FromLong((long) val))
+#define SETI(i,val) PyStructSequence_SET_ITEM(v, i, PyInt_FromLong((REALLYLONG) val))
 #define SETS(i,val) sets(v, i, val)
 
     SETS(setIndex++, p->pw_name);
@@ -114,10 +114,10 @@ pwd_getpwuid(PyObject *self, PyObject *args)
     if ((p = getpwuid(uid)) == NULL) {
         if (uid < 0)
             PyErr_Format(PyExc_KeyError,
-                         "getpwuid(): uid not found: %ld", (long)uid);
+                         "getpwuid(): uid not found: %ld", (REALLYLONG)uid);
         else
             PyErr_Format(PyExc_KeyError,
-                         "getpwuid(): uid not found: %lu", (unsigned long)uid);
+                         "getpwuid(): uid not found: %lu", (unsigned REALLYLONG)uid);
         return NULL;
     }
     return mkpwent(p);

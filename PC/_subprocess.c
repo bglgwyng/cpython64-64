@@ -70,10 +70,10 @@ sp_handle_new(HANDLE handle)
 }
 
 #if defined(MS_WIN32) && !defined(MS_WIN64)
-#define HANDLE_TO_PYNUM(handle) PyInt_FromLong((long) handle)
+#define HANDLE_TO_PYNUM(handle) PyInt_FromLong((REALLYLONG) handle)
 #define PY_HANDLE_PARAM "l"
 #else
-#define HANDLE_TO_PYNUM(handle) PyLong_FromLongLong((long long) handle)
+#define HANDLE_TO_PYNUM(handle) PyLong_FromLongLong((REALLYLONG) handle)
 #define PY_HANDLE_PARAM "L"
 #endif
 
@@ -632,7 +632,7 @@ static PyMethodDef sp_functions[] = {
 static void
 defint(PyObject* d, const char* name, int value)
 {
-    PyObject* v = PyInt_FromLong((long) value);
+    PyObject* v = PyInt_FromLong((REALLYLONG) value);
     if (v) {
         PyDict_SetItemString(d, (char*) name, v);
         Py_DECREF(v);

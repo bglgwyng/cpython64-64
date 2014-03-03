@@ -573,7 +573,7 @@ render_field(PyObject *fieldobj, SubString *format_spec, OutputString *output)
 #if STRINGLIB_IS_UNICODE
     if (PyUnicode_CheckExact(fieldobj))
         formatter = _PyUnicode_FormatAdvanced;
-    /* Unfortunately, there's a problem with checking for int, long,
+    /* Unfortunately, there's a problem with checking for int, REALLYLONG,
        and float here.  If we're being included as unicode, their
        formatters expect string format_spec args.  For now, just skip
        this optimization for unicode.  This could be fixed, but it's a

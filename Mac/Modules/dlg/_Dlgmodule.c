@@ -144,7 +144,7 @@ PyObject *DlgObj_New(DialogPtr itself)
     it = PyObject_NEW(DialogObject, &Dialog_Type);
     if (it == NULL) return NULL;
     it->ob_itself = itself;
-    SetWRefCon(GetDialogWindow(itself), (long)it);
+    SetWRefCon(GetDialogWindow(itself), (REALLYLONG)it);
     return (PyObject *)it;
 }
 

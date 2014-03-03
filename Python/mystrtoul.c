@@ -14,10 +14,10 @@
 #endif
 
 /* Static overflow check values for bases 2 through 36.
- * smallmax[base] is the largest unsigned long i such that
- * i * base doesn't overflow unsigned long.
+ * smallmax[base] is the largest UREALLYLONG i such that
+ * i * base doesn't overflow UREALLYLONG.
  */
-static unsigned long smallmax[] = {
+static UREALLYLONG smallmax[] = {
     0, /* bases 0 and 1 are invalid */
     0,
     ULONG_MAX / 2,
@@ -59,7 +59,7 @@ static unsigned long smallmax[] = {
 
 /* maximum digits that can't ever overflow for bases 2 through 36,
  * calculated by [int(math.floor(math.log(2**32, i))) for i in range(2, 37)].
- * Note that this is pessimistic if sizeof(long) > 4.
+ * Note that this is pessimistic if sizeof(REALLYLONG) > 4.
  */
 #if SIZEOF_LONG == 4
 static int digitlimit[] = {
@@ -91,10 +91,10 @@ static int digitlimit[] = {
 **              Errors due to bad pointers will probably result in
 **              exceptions - we don't check for them.
 */
-unsigned long
+UREALLYLONG
 PyOS_strtoul(register char *str, char **ptr, int base)
 {
-    register unsigned long result = 0; /* return value of the function */
+    register UREALLYLONG result = 0; /* return value of the function */
     register int c;             /* current input character */
     register int ovlimit;       /* required digits to overflow */
 
@@ -207,7 +207,7 @@ PyOS_strtoul(register char *str, char **ptr, int base)
         if (ovlimit > 0) /* no overflow check required */
             result = result * base + c;
         else { /* requires overflow check */
-            register unsigned long temp_result;
+            register UREALLYLONG temp_result;
 
             if (ovlimit < 0) /* guaranteed overflow */
                 goto overflowed;
@@ -245,19 +245,19 @@ overflowed:
         *ptr = str;
     }
     errno = ERANGE;
-    return (unsigned long)-1;
+    return (UREALLYLONG)-1;
 }
 
 /* Checking for overflow in PyOS_strtol is a PITA; see comments
  * about PY_ABS_LONG_MIN in longobject.c.
  */
-#define PY_ABS_LONG_MIN         (0-(unsigned long)LONG_MIN)
+#define PY_ABS_LONG_MIN         (0-(UREALLYLONG)LONG_MIN)
 
-long
+REALLYLONG
 PyOS_strtol(char *str, char **ptr, int base)
 {
-    long result;
-    unsigned long uresult;
+    REALLYLONG result;
+    UREALLYLONG uresult;
     char sign;
 
     while (*str && isspace(Py_CHARMASK(*str)))
@@ -269,8 +269,8 @@ PyOS_strtol(char *str, char **ptr, int base)
 
     uresult = PyOS_strtoul(str, ptr, base);
 
-    if (uresult <= (unsigned long)LONG_MAX) {
-        result = (long)uresult;
+    if (uresult <= (UREALLYLONG)LONG_MAX) {
+        result = (REALLYLONG)uresult;
         if (sign == '-')
             result = -result;
     }

@@ -415,7 +415,7 @@ PyZlib_objcompress(compobject *self, PyObject *args)
     Py_ssize_t length = DEFAULTALLOC;
     PyObject *RetVal;
     Byte *input;
-    unsigned long start_total_out;
+    UREALLYLONG start_total_out;
 
     if (!PyArg_ParseTuple(args, "s#:compress", &input, &inplen))
         return NULL;
@@ -528,7 +528,7 @@ PyZlib_objdecompress(compobject *self, PyObject *args)
     Py_ssize_t old_length, length = DEFAULTALLOC;
     PyObject *RetVal;
     Byte *input;
-    unsigned long start_total_out;
+    UREALLYLONG start_total_out;
 
     if (!PyArg_ParseTuple(args, "s#|i:decompress", &input,
                           &inplen, &max_length))
@@ -626,7 +626,7 @@ PyZlib_flush(compobject *self, PyObject *args)
     int err, length = DEFAULTALLOC;
     PyObject *RetVal;
     int flushmode = Z_FINISH;
-    unsigned long start_total_out;
+    UREALLYLONG start_total_out;
 
     if (!PyArg_ParseTuple(args, "|i:flush", &flushmode))
         return NULL;
@@ -815,7 +815,7 @@ PyZlib_unflush(compobject *self, PyObject *args)
 {
     int err, length = DEFAULTALLOC;
     PyObject * retval = NULL;
-    unsigned long start_total_out;
+    UREALLYLONG start_total_out;
 
     if (!PyArg_ParseTuple(args, "|i:flush", &length))
         return NULL;
@@ -954,8 +954,8 @@ PyZlib_adler32(PyObject *self, PyObject *args)
     if (!PyArg_ParseTuple(args, "s#|I:adler32", &buf, &len, &adler32val))
         return NULL;
     /* In Python 2.x we return a signed integer regardless of native platform
-     * long size (the 32bit unsigned long is treated as 32-bit signed and sign
-     * extended into a 64-bit long inside the integer object).  3.0 does the
+     * REALLYLONG size (the 32bit UREALLYLONG is treated as 32-bit signed and sign
+     * extended into a 64-bit REALLYLONG inside the integer object).  3.0 does the
      * right thing and returns unsigned. http://bugs.python.org/issue1202 */
     signed_val = adler32(adler32val, buf, len);
     return PyInt_FromLong(signed_val);
@@ -977,8 +977,8 @@ PyZlib_crc32(PyObject *self, PyObject *args)
     if (!PyArg_ParseTuple(args, "s#|I:crc32", &buf, &len, &crc32val))
         return NULL;
     /* In Python 2.x we return a signed integer regardless of native platform
-     * long size (the 32bit unsigned long is treated as 32-bit signed and sign
-     * extended into a 64-bit long inside the integer object).  3.0 does the
+     * REALLYLONG size (the 32bit UREALLYLONG is treated as 32-bit signed and sign
+     * extended into a 64-bit REALLYLONG inside the integer object).  3.0 does the
      * right thing and returns unsigned. http://bugs.python.org/issue1202 */
     signed_val = crc32(crc32val, buf, len);
     return PyInt_FromLong(signed_val);

@@ -21,6 +21,15 @@
 extern "C" {
 #endif
 
+#ifndef REALLYLONG
+typedef long long REALLYLONG;
+#endif
+#ifndef UREALLYLONG
+typedef unsigned long long UREALLYLONG;
+#endif
+#ifndef SREALLYLONG
+typedef signed long long SREALLYLONG;
+#endif
 struct XML_ParserStruct;
 typedef struct XML_ParserStruct *XML_Parser;
 
@@ -913,7 +922,7 @@ XML_SetParamEntityParsing(XML_Parser parser,
 */
 XMLPARSEAPI(int)
 XML_SetHashSalt(XML_Parser parser,
-                unsigned long hash_salt);
+                UREALLYLONG hash_salt);
 
 #define XML_HAS_SET_HASH_SALT  /* Python Only: Defined for pyexpat.c. */
 
@@ -1026,7 +1035,7 @@ enum XML_FeatureEnum {
 typedef struct {
   enum XML_FeatureEnum  feature;
   const XML_LChar       *name;
-  long int              value;
+  REALLYLONG              value;
 } XML_Feature;
 
 XMLPARSEAPI(const XML_Feature *)

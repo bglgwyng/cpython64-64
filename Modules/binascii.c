@@ -897,8 +897,8 @@ binascii_crc32(PyObject *self, PyObject *args)
     if (!PyArg_ParseTuple(args, "s*|I:crc32", &pbuf, &crc32val))
     return NULL;
     /* In Python 2.x we return a signed integer regardless of native platform
-     * long size (the 32bit unsigned long is treated as 32-bit signed and sign
-     * extended into a 64-bit long inside the integer object).  3.0 does the
+     * REALLYLONG size (the 32bit UREALLYLONG is treated as 32-bit signed and sign
+     * extended into a 64-bit REALLYLONG inside the integer object).  3.0 does the
      * right thing and returns unsigned. http://bugs.python.org/issue1202 */
     buf = (Byte*)pbuf.buf;
     len = pbuf.len;

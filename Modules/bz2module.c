@@ -506,7 +506,7 @@ argument is negative or omitted, read until EOF is reached.\n\
 static PyObject *
 BZ2File_read(BZ2FileObject *self, PyObject *args)
 {
-    long bytesrequested = -1;
+    REALLYLONG bytesrequested = -1;
     size_t bytesread, buffersize, chunksize;
     int bzerror;
     PyObject *ret = NULL;
@@ -646,7 +646,7 @@ total number of bytes in the lines returned.\n\
 static PyObject *
 BZ2File_readlines(BZ2FileObject *self, PyObject *args)
 {
-    long sizehint = 0;
+    REALLYLONG sizehint = 0;
     PyObject *list = NULL;
     PyObject *line;
     char small_buffer[SMALLCHUNK];
@@ -1157,7 +1157,7 @@ cleanup:
 PyDoc_STRVAR(BZ2File_tell__doc__,
 "tell() -> int\n\
 \n\
-Return the current file position, an integer (may be a long integer).\n\
+Return the current file position, an integer (may be a REALLYLONG integer).\n\
 ");
 
 static PyObject *

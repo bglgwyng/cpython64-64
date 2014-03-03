@@ -66,7 +66,7 @@ int pysqlite_row_init(pysqlite_Row* self, PyObject* args, PyObject* kwargs)
 
 PyObject* pysqlite_row_subscript(pysqlite_Row* self, PyObject* idx)
 {
-    long _idx;
+    REALLYLONG _idx;
     char* key;
     int nitems, i;
     char* compare_key;
@@ -169,7 +169,7 @@ static PyObject* pysqlite_iter(pysqlite_Row* self)
     return PyObject_GetIter(self->data);
 }
 
-static long pysqlite_row_hash(pysqlite_Row *self)
+static REALLYLONG pysqlite_row_hash(pysqlite_Row *self)
 {
     return PyObject_Hash(self->description) ^ PyObject_Hash(self->data);
 }

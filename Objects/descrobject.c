@@ -956,7 +956,7 @@ wrapper_compare(wrapperobject *a, wrapperobject *b)
         return (a->descr < b->descr) ? -1 : 1;
 }
 
-static long
+static REALLYLONG
 wrapper_hash(wrapperobject *wp)
 {
     int x, y;

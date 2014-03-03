@@ -73,7 +73,7 @@ NULL if the rich comparison returns an error.
 */
 
 static setentry *
-set_lookkey(PySetObject *so, PyObject *key, register long hash)
+set_lookkey(PySetObject *so, PyObject *key, register REALLYLONG hash)
 {
     register Py_ssize_t i;
     register size_t perturb;
@@ -155,7 +155,7 @@ set_lookkey(PySetObject *so, PyObject *key, register long hash)
  * see if the comparison altered the table.
  */
 static setentry *
-set_lookkey_string(PySetObject *so, PyObject *key, register long hash)
+set_lookkey_string(PySetObject *so, PyObject *key, register REALLYLONG hash)
 {
     register Py_ssize_t i;
     register size_t perturb;
@@ -209,7 +209,7 @@ Used by the public insert routine.
 Eats a reference to key.
 */
 static int
-set_insert_key(register PySetObject *so, PyObject *key, long hash)
+set_insert_key(register PySetObject *so, PyObject *key, REALLYLONG hash)
 {
     register setentry *entry;
 
@@ -245,7 +245,7 @@ Note that no refcounts are changed by this routine; if needed, the caller
 is responsible for incref'ing `key`.
 */
 static void
-set_insert_clean(register PySetObject *so, PyObject *key, long hash)
+set_insert_clean(register PySetObject *so, PyObject *key, REALLYLONG hash)
 {
     register size_t i;
     register size_t perturb;
@@ -362,7 +362,7 @@ set_add_entry(register PySetObject *so, setentry *entry)
 {
     register Py_ssize_t n_used;
     PyObject *key = entry->key;
-    long hash = entry->hash;
+    REALLYLONG hash = entry->hash;
 
     assert(so->fill <= so->mask);  /* at least one empty slot */
     n_used = so->used;
@@ -379,7 +379,7 @@ set_add_entry(register PySetObject *so, setentry *entry)
 static int
 set_add_key(register PySetObject *so, PyObject *key)
 {
-    register long hash;
+    register REALLYLONG hash;
     register Py_ssize_t n_used;
 
     if (!PyString_CheckExact(key) ||
@@ -424,7 +424,7 @@ set_discard_entry(PySetObject *so, setentry *oldentry)
 static int
 set_discard_key(PySetObject *so, PyObject *key)
 {
-    register long hash;
+    register REALLYLONG hash;
     register setentry *entry;
     PyObject *old_key;
 
@@ -649,7 +649,7 @@ set_merge(PySetObject *so, PyObject *otherset)
 {
     PySetObject *other;
     PyObject *key;
-    long hash;
+    REALLYLONG hash;
     register Py_ssize_t i;
     register setentry *entry;
 
@@ -687,7 +687,7 @@ set_merge(PySetObject *so, PyObject *otherset)
 static int
 set_contains_key(PySetObject *so, PyObject *key)
 {
-    long hash;
+    REALLYLONG hash;
     setentry *entry;
 
     if (!PyString_CheckExact(key) ||
@@ -773,11 +773,11 @@ set_traverse(PySetObject *so, visitproc visit, void *arg)
     return 0;
 }
 
-static long
+static REALLYLONG
 frozenset_hash(PyObject *self)
 {
     PySetObject *so = (PySetObject *)self;
-    long h, hash = 1927868237L;
+    REALLYLONG h, hash = 1927868237L;
     setentry *entry;
     Py_ssize_t pos = 0;
 
@@ -938,7 +938,7 @@ set_update_internal(PySetObject *so, PyObject *other)
     if (PyDict_CheckExact(other)) {
         PyObject *value;
         Py_ssize_t pos = 0;
-        long hash;
+        REALLYLONG hash;
         Py_ssize_t dictsize = PyDict_Size(other);
 
         /* Do one big resize at the start, rather than
@@ -1114,9 +1114,9 @@ set_swap_bodies(PySetObject *a, PySetObject *b)
 {
     Py_ssize_t t;
     setentry *u;
-    setentry *(*f)(PySetObject *so, PyObject *key, long hash);
+    setentry *(*f)(PySetObject *so, PyObject *key, REALLYLONG hash);
     setentry tab[PySet_MINSIZE];
-    long h;
+    REALLYLONG h;
 
     t = a->fill;     a->fill   = b->fill;        b->fill  = t;
     t = a->used;     a->used   = b->used;        b->used  = t;
@@ -1285,7 +1285,7 @@ set_intersection(PySetObject *so, PyObject *other)
     while ((key = PyIter_Next(it)) != NULL) {
         int rv;
         setentry entry;
-        long hash = PyObject_Hash(key);
+        REALLYLONG hash = PyObject_Hash(key);
 
         if (hash == -1) {
             Py_DECREF(it);
@@ -1442,7 +1442,7 @@ set_isdisjoint(PySetObject *so, PyObject *other)
     while ((key = PyIter_Next(it)) != NULL) {
         int rv;
         setentry entry;
-        long hash = PyObject_Hash(key);
+        REALLYLONG hash = PyObject_Hash(key);
 
         if (hash == -1) {
             Py_DECREF(key);
@@ -1641,7 +1641,7 @@ set_symmetric_difference_update(PySetObject *so, PyObject *other)
     if (PyDict_CheckExact(other)) {
         PyObject *value;
         int rv;
-        long hash;
+        REALLYLONG hash;
         while (_PyDict_Next(other, &pos, &key, &value, &hash)) {
             setentry an_entry;
 
@@ -1879,7 +1879,7 @@ set_contains(PySetObject *so, PyObject *key)
 static PyObject *
 set_direct_contains(PySetObject *so, PyObject *key)
 {
-    long result;
+    REALLYLONG result;
 
     result = set_contains(so, key);
     if (result == -1)
@@ -2093,7 +2093,7 @@ static PyNumberMethods set_as_number = {
     (binaryfunc)set_or,                 /*nb_or*/
     0,                                  /*nb_coerce*/
     0,                                  /*nb_int*/
-    0,                                  /*nb_long*/
+    0,                                  /*nb_REALLYLONG*/
     0,                                  /*nb_float*/
     0,                                  /*nb_oct*/
     0,                                  /*nb_hex*/
@@ -2341,7 +2341,7 @@ _PySet_Next(PyObject *set, Py_ssize_t *pos, PyObject **key)
 }
 
 int
-_PySet_NextEntry(PyObject *set, Py_ssize_t *pos, PyObject **key, long *hash)
+_PySet_NextEntry(PyObject *set, Py_ssize_t *pos, PyObject **key, REALLYLONG *hash)
 {
     setentry *entry;
 

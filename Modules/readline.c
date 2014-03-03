@@ -593,7 +593,7 @@ return the current contents of history item at index.");
 static PyObject *
 get_current_history_length(PyObject *self, PyObject *noarg)
 {
-    return PyInt_FromLong((long)_py_get_history_length());
+    return PyInt_FromLong((REALLYLONG)_py_get_history_length());
 }
 
 PyDoc_STRVAR(doc_get_current_history_length,
@@ -862,8 +862,8 @@ flex_complete(char *text, int start, int end)
 #endif
     Py_XDECREF(begidx);
     Py_XDECREF(endidx);
-    begidx = PyInt_FromLong((long) start);
-    endidx = PyInt_FromLong((long) end);
+    begidx = PyInt_FromLong((REALLYLONG) start);
+    endidx = PyInt_FromLong((REALLYLONG) end);
     return completion_matches(text, *on_completion);
 }
 

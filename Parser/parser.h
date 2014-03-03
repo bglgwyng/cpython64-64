@@ -26,7 +26,7 @@ typedef struct {
 	grammar		*p_grammar;	/* Grammar to use */
 	node		*p_tree;	/* Top of parse tree */
 #ifdef PY_PARSER_REQUIRES_FUTURE_KEYWORD
-	unsigned long	p_flags;	/* see co_flags in Include/code.h */
+	UREALLYLONG	p_flags;	/* see co_flags in Include/code.h */
 #endif
 } parser_state;
 

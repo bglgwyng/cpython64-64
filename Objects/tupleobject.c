@@ -338,13 +338,13 @@ Done:
      1330111, 1412633, 1165069, 1247599, 1495177, 1577699
 */
 
-static long
+static REALLYLONG
 tuplehash(PyTupleObject *v)
 {
-    register long x, y;
+    register REALLYLONG x, y;
     register Py_ssize_t len = Py_SIZE(v);
     register PyObject **p;
-    long mult = 1000003L;
+    REALLYLONG mult = 1000003L;
     x = 0x345678L;
     p = v->ob_item;
     while (--len >= 0) {
@@ -353,7 +353,7 @@ tuplehash(PyTupleObject *v)
             return -1;
         x = (x ^ y) * mult;
         /* the cast might truncate len; that doesn't change hash stability */
-        mult += (long)(82520L + len + len);
+        mult += (REALLYLONG)(82520L + len + len);
     }
     x += 97531L;
     if (x == -1)
@@ -942,7 +942,7 @@ PyTuple_Fini(void)
 
 typedef struct {
     PyObject_HEAD
-    long it_index;
+    REALLYLONG it_index;
     PyTupleObject *it_seq; /* Set to NULL when iterator is exhausted */
 } tupleiterobject;
 

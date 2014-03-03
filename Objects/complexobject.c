@@ -151,10 +151,10 @@ c_pow(Py_complex a, Py_complex b)
 }
 
 static Py_complex
-c_powu(Py_complex x, long n)
+c_powu(Py_complex x, REALLYLONG n)
 {
     Py_complex r, p;
-    long mask = 1;
+    REALLYLONG mask = 1;
     r = c_1;
     p = x;
     while (mask > 0 && n >= mask) {
@@ -167,7 +167,7 @@ c_powu(Py_complex x, long n)
 }
 
 static Py_complex
-c_powi(Py_complex x, long n)
+c_powi(Py_complex x, REALLYLONG n)
 {
     Py_complex cn;
 
@@ -455,10 +455,10 @@ complex_str(PyComplexObject *v)
     return complex_format(v, PyFloat_STR_PRECISION, 'g');
 }
 
-static long
+static REALLYLONG
 complex_hash(PyComplexObject *v)
 {
-    long hashreal, hashimag, combined;
+    REALLYLONG hashreal, hashimag, combined;
     hashreal = _Py_HashDouble(v->cval.real);
     if (hashreal == -1)
         return -1;
@@ -651,7 +651,7 @@ complex_pow(PyObject *v, PyObject *w, PyObject *z)
 {
     Py_complex p;
     Py_complex exponent;
-    long int_exponent;
+    REALLYLONG int_exponent;
     Py_complex a, b;
     TO_COMPLEX(v, a);
     TO_COMPLEX(w, b);
@@ -662,7 +662,7 @@ complex_pow(PyObject *v, PyObject *w, PyObject *z)
     PyFPE_START_PROTECT("complex_pow", return 0)
     errno = 0;
     exponent = b;
-    int_exponent = (long)exponent.real;
+    int_exponent = (REALLYLONG)exponent.real;
     if (exponent.imag == 0. && exponent.real == int_exponent)
         p = c_powi(a,int_exponent);
     else
@@ -935,7 +935,7 @@ complex_is_finite(PyObject *self)
 {
     Py_complex c;
     c = ((PyComplexObject *)self)->cval;
-    return PyBool_FromLong((long)(Py_IS_FINITE(c.real) &&
+    return PyBool_FromLong((REALLYLONG)(Py_IS_FINITE(c.real) &&
                                   Py_IS_FINITE(c.imag)));
 }
 

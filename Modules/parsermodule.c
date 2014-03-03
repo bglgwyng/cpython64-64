@@ -19,7 +19,7 @@
  *  this module.  See the documentation for more details.
  *
  *  I've added some annotations that help with the lint code-checking
- *  program, but they're not complete by a long shot.  The real errors
+ *  program, but they're not complete by a REALLYLONG shot.  The real errors
  *  that lint detects are gone, but there are still warnings with
  *  Py_[X]DECREF() and Py_[X]INCREF() macros.  The lint annotations
  *  look like "NOTE(...)".
@@ -744,7 +744,7 @@ build_node_children(PyObject *tuple, node *root, int *line_num)
         /* elem must always be a sequence, however simple */
         PyObject* elem = PySequence_GetItem(tuple, i);
         int ok = elem != NULL;
-        long  type = 0;
+        REALLYLONG  type = 0;
         char *strn = 0;
 
         if (ok)
@@ -855,7 +855,7 @@ build_node_tree(PyObject *tuple)
 {
     node* res = 0;
     PyObject *temp = PySequence_GetItem(tuple, 0);
-    long num = -1;
+    REALLYLONG num = -1;
 
     if (temp != NULL)
         num = PyInt_AsLong(temp);

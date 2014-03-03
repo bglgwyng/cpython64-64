@@ -35,7 +35,7 @@ new_func(void *funcarg)
 }
 
 
-long
+REALLYLONG
 PyThread_start_new_thread(void (*func)(void *), void *arg)
 {
     thread_t tid;
@@ -56,7 +56,7 @@ PyThread_start_new_thread(void (*func)(void *), void *arg)
     return tid;
 }
 
-long
+REALLYLONG
 PyThread_get_thread_ident(void)
 {
     if (!initialized)

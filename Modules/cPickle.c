@@ -82,8 +82,8 @@ PyDoc_STRVAR(cPickle_module_documentation,
 #define TUPLE3   '\x87' /* build 3-tuple from three topmost stack items */
 #define NEWTRUE  '\x88' /* push True */
 #define NEWFALSE '\x89' /* push False */
-#define LONG1    '\x8a' /* push long from < 256 bytes */
-#define LONG4    '\x8b' /* push really big long */
+#define LONG1    '\x8a' /* push REALLYLONG from < 256 bytes */
+#define LONG4    '\x8b' /* push really big REALLYLONG */
 
 /* There aren't opcodes -- they're ways to pickle bools before protocol 2,
  * so that unpicklers written before bools were introduced unpickle them
@@ -1009,7 +1009,7 @@ save_bool(Picklerobject *self, PyObject *args)
 {
     static const char *buf[2] = {FALSE, TRUE};
     static char len[2] = {sizeof(FALSE)-1, sizeof(TRUE)-1};
-    long l = PyInt_AS_LONG((PyIntObject *)args);
+    REALLYLONG l = PyInt_AS_LONG((PyIntObject *)args);
 
     if (self->proto >= 2) {
         char opcode = l ? NEWTRUE : NEWFALSE;
@@ -1025,20 +1025,20 @@ static int
 save_int(Picklerobject *self, PyObject *args)
 {
     char c_str[32];
-    long l = PyInt_AS_LONG((PyIntObject *)args);
+    REALLYLONG l = PyInt_AS_LONG((PyIntObject *)args);
     Py_ssize_t len = 0;
 
     if (!self->bin
 #if SIZEOF_LONG > 4
-        || l >  0x7fffffffL
-        || l < -0x80000000L
+        || l >  0x7fffffffLL
+        || l < -0x80000000LL
 #endif
         ) {
-        /* Text-mode pickle, or long too big to fit in the 4-byte
+        /* Text-mode pickle, or REALLYLONG too big to fit in the 4-byte
          * signed BININT format:  store as a string.
          */
         c_str[0] = INT;
-        PyOS_snprintf(c_str + 1, sizeof(c_str) - 1, "%ld\n", l);
+        PyOS_snprintf(c_str + 1, sizeof(c_str) - 1, "%lld\n", l);
         if (self->write_func(self, c_str, strlen(c_str)) < 0)
             return -1;
     }
@@ -1110,7 +1110,7 @@ save_long(Picklerobject *self, PyObject *args)
          * the most-significant bit of the most-significant byte
          * acts like a sign bit, and it's usually got a sense
          * opposite of the one we need.  The exception is longs
-         * of the form -(2**(8*j-1)) for j > 0.  Such a long is
+         * of the form -(2**(8*j-1)) for j > 0.  Such a REALLYLONG is
          * its own 256's-complement, so has the right sign bit
          * even without the extra byte.  That's a pain to check
          * for in advance, though, so we always grab an extra
@@ -1129,7 +1129,7 @@ save_long(Picklerobject *self, PyObject *args)
                         pdata, nbytes,
                         1 /* little endian */, 1 /* signed */);
         if (i < 0) goto finally;
-        /* If the long is negative, this may be a byte more than
+        /* If the REALLYLONG is negative, this may be a byte more than
          * needed.  This is so iff the MSB is all redundant sign
          * bits.
          */
@@ -1503,7 +1503,7 @@ store_tuple_elements(Picklerobject *self, PyObject *t, int len)
  * used across protocols to minimize the space needed to pickle them.
  * Tuples are also the only builtin immutable type that can be recursive
  * (a tuple can be reached from itself), and that requires some subtle
- * magic so that it works in all cases.  IOW, this is a long routine.
+ * magic so that it works in all cases.  IOW, this is a REALLYLONG routine.
  */
 static int
 save_tuple(Picklerobject *self, PyObject *args)
@@ -2237,7 +2237,7 @@ save_global(Picklerobject *self, PyObject *args, PyObject *name)
          * so generate an EXT opcode.
          */
         PyObject *py_code;              /* extension code as Python object */
-        long code;                      /* extension code as C value */
+        REALLYLONG code;                      /* extension code as C value */
         char c_str[5];
         int n;
 
@@ -2849,7 +2849,7 @@ static PyObject *
 Pickle_getvalue(Picklerobject *self, PyObject *args)
 {
     Py_ssize_t l, i, rsize, ssize, clear=1, lm;
-    long ik;
+    REALLYLONG ik;
     PyObject *k, *r;
     char *s, *p, *have_get;
     Pdata *data;
@@ -3380,7 +3380,7 @@ load_int(Unpicklerobject *self)
     char *endptr, *s;
     Py_ssize_t len;
     int res = -1;
-    long l;
+    REALLYLONG l;
 
     if ((len = self->readline_func(self, &s)) < 0) return -1;
     if (len < 2) return bad_readline();
@@ -3391,7 +3391,7 @@ load_int(Unpicklerobject *self)
 
     if (errno || (*endptr != '\n') || (endptr[1] != '\0')) {
         /* Hm, maybe we've got something long.  Let's try reading
-           it as a Python long object. */
+           it as a Python REALLYLONG object. */
         errno = 0;
         py_int = PyLong_FromString(s, NULL, 0);
         if (py_int == NULL) {
@@ -3432,24 +3432,24 @@ load_bool(Unpicklerobject *self, PyObject *boolean)
  * int, but when x is 4 it's a signed one.  This is an historical source
  * of x-platform bugs.
  */
-static long
+static REALLYLONG
 calc_binint(char *s, int x)
 {
     unsigned char c;
     int i;
-    long l;
+    REALLYLONG l;
 
     for (i = 0, l = 0L; i < x; i++) {
         c = (unsigned char)s[i];
-        l |= (long)c << (i * 8);
+        l |= (REALLYLONG)c << (i * 8);
     }
 #if SIZEOF_LONG > 4
     /* Unlike BININT1 and BININT2, BININT (more accurately BININT4)
      * is signed, so on a box with longs bigger than 4 bytes we need
      * to extend a BININT's sign bit to the full width.
      */
-    if (x == 4 && l & (1L << 31))
-        l |= (~0L) << 32;
+    if (x == 4 && l & (1LL << 31))
+        l |= (~0LL) << 32;
 #endif
     return l;
 }
@@ -3459,7 +3459,7 @@ static int
 load_binintx(Unpicklerobject *self, char *s, int  x)
 {
     PyObject *py_int = 0;
-    long l;
+    REALLYLONG l;
 
     l = calc_binint(s, x);
 
@@ -4227,7 +4227,7 @@ load_binget(Unpicklerobject *self)
     if (self->read_func(self, &s, 1) < 0) return -1;
 
     key = (unsigned char)s[0];
-    if (!( py_key = PyInt_FromLong((long)key)))  return -1;
+    if (!( py_key = PyInt_FromLong((REALLYLONG)key)))  return -1;
 
     value = PyDict_GetItem(self->memo, py_key);
     if (! value) {
@@ -4256,15 +4256,15 @@ load_long_binget(Unpicklerobject *self)
     if (self->read_func(self, &s, 4) < 0) return -1;
 
     c = (unsigned char)s[0];
-    key = (long)c;
+    key = (REALLYLONG)c;
     c = (unsigned char)s[1];
-    key |= (long)c << 8;
+    key |= (REALLYLONG)c << 8;
     c = (unsigned char)s[2];
-    key |= (long)c << 16;
+    key |= (REALLYLONG)c << 16;
     c = (unsigned char)s[3];
-    key |= (long)c << 24;
+    key |= (REALLYLONG)c << 24;
 
-    if (!( py_key = PyInt_FromLong((long)key)))  return -1;
+    if (!( py_key = PyInt_FromLong((REALLYLONG)key)))  return -1;
 
     value = PyDict_GetItem(self->memo, py_key);
     if (! value) {
@@ -4287,7 +4287,7 @@ static int
 load_extension(Unpicklerobject *self, int nbytes)
 {
     char *codebytes;            /* the nbytes bytes after the opcode */
-    long code;                  /* calc_binint returns long */
+    REALLYLONG code;                  /* calc_binint returns REALLYLONG */
     PyObject *py_code;          /* code as a Python int */
     PyObject *obj;              /* the object to push */
     PyObject *pair;             /* (module_name, class_name) */
@@ -4380,7 +4380,7 @@ load_binput(Unpicklerobject *self)
 
     key = (unsigned char)s[0];
 
-    if (!( py_key = PyInt_FromLong((long)key)))  return -1;
+    if (!( py_key = PyInt_FromLong((REALLYLONG)key)))  return -1;
     value=self->stack->data[len-1];
     len=PyDict_SetItem(self->memo, py_key, value);
     Py_DECREF(py_key);
@@ -4401,13 +4401,13 @@ load_long_binput(Unpicklerobject *self)
     if (!( len=self->stack->length ))  return stackUnderflow();
 
     c = (unsigned char)s[0];
-    key = (long)c;
+    key = (REALLYLONG)c;
     c = (unsigned char)s[1];
-    key |= (long)c << 8;
+    key |= (REALLYLONG)c << 8;
     c = (unsigned char)s[2];
-    key |= (long)c << 16;
+    key |= (REALLYLONG)c << 16;
     c = (unsigned char)s[3];
-    key |= (long)c << 24;
+    key |= (REALLYLONG)c << 24;
 
     if (!( py_key = PyInt_FromLong(key)))  return -1;
     value=self->stack->data[len-1];

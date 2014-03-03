@@ -89,7 +89,7 @@ imgfile_read(PyObject *self, PyObject *args)
     PyObject *rv;
     int xsize, ysize, zsize;
     char *cdatap;
-    long *idatap;
+    REALLYLONG *idatap;
     static short rs[8192], gs[8192], bs[8192];
     int x, y;
     IMAGE *image;
@@ -136,7 +136,7 @@ imgfile_read(PyObject *self, PyObject *args)
         return NULL;
     }
     cdatap = PyString_AsString(rv);
-    idatap = (long *)cdatap;
+    idatap = (REALLYLONG *)cdatap;
 
     if (top_to_bottom) {
         yfirst = ysize-1;
@@ -171,7 +171,7 @@ imgfile_read(PyObject *self, PyObject *args)
 }
 
 static IMAGE *glob_image;
-static long *glob_datap;
+static REALLYLONG *glob_datap;
 static int glob_width, glob_z, glob_ysize;
 
 static void
@@ -196,7 +196,7 @@ xs_put_c(short *buf, int y)
 static void
 xs_put_0(short *buf, int y)
 {
-    long *datap = glob_datap + y*glob_width;
+    REALLYLONG *datap = glob_datap + y*glob_width;
     int width = glob_width;
 
     while ( width-- )
@@ -205,7 +205,7 @@ xs_put_0(short *buf, int y)
 static void
 xs_put_12(short *buf, int y)
 {
-    long *datap = glob_datap + y*glob_width;
+    REALLYLONG *datap = glob_datap + y*glob_width;
     int width = glob_width;
 
     while ( width-- )
@@ -214,7 +214,7 @@ xs_put_12(short *buf, int y)
 
 static void
 xscale(IMAGE *image, int xsize, int ysize, int zsize,
-       long *datap, int xnew, int ynew, int fmode, double blur)
+       REALLYLONG *datap, int xnew, int ynew, int fmode, double blur)
 {
     glob_image = image;
     glob_datap = datap;
@@ -245,7 +245,7 @@ imgfile_readscaled(PyObject *self, PyObject *args)
     PyObject *rv;
     int xsize, ysize, zsize;
     char *cdatap;
-    long *idatap;
+    REALLYLONG *idatap;
     static short rs[8192], gs[8192], bs[8192];
     int x, y;
     int xwtd, ywtd, xorig, yorig;
@@ -329,7 +329,7 @@ imgfile_readscaled(PyObject *self, PyObject *args)
     yfac = (float)ysize/(float)ywtd;
     PyFPE_END_PROTECT(yfac)
     cdatap = PyString_AsString(rv);
-    idatap = (long *)cdatap;
+    idatap = (REALLYLONG *)cdatap;
 
     if ( extended ) {
         xscale(image, xsize, ysize, zsize,
@@ -396,10 +396,10 @@ imgfile_write(PyObject *self, PyObject *args)
     char *fname;
     int xsize, ysize, zsize, len;
     char *cdatap;
-    long *idatap;
+    REALLYLONG *idatap;
     short rs[8192], gs[8192], bs[8192];
     short r, g, b;
-    long rgb;
+    REALLYLONG rgb;
     int x, y;
     int yfirst, ylast, ystep;
 
@@ -437,7 +437,7 @@ imgfile_write(PyObject *self, PyObject *args)
         return NULL;
     }
 
-    idatap = (long *)cdatap;
+    idatap = (REALLYLONG *)cdatap;
 
     if (top_to_bottom) {
         yfirst = ysize-1;

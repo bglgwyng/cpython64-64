@@ -103,7 +103,7 @@ static PyObject *DragObj_AddDragItemFlavor(DragObjObject *_self, PyObject *_args
     ItemReference theItemRef;
     FlavorType theType;
     char *dataPtr__in__;
-    long dataPtr__len__;
+    REALLYLONG dataPtr__len__;
     int dataPtr__in_len__;
     FlavorFlags theFlags;
 #ifndef AddDragItemFlavor
@@ -134,7 +134,7 @@ static PyObject *DragObj_SetDragItemFlavorData(DragObjObject *_self, PyObject *_
     ItemReference theItemRef;
     FlavorType theType;
     char *dataPtr__in__;
-    long dataPtr__len__;
+    REALLYLONG dataPtr__len__;
     int dataPtr__in_len__;
     UInt32 dataOffset;
 #ifndef SetDragItemFlavorData
@@ -369,7 +369,7 @@ static PyObject *DragObj_GetFlavorData(DragObjObject *_self, PyObject *_args)
     ItemReference theItemRef;
     FlavorType theType;
     char *dataPtr__out__;
-    long dataPtr__len__;
+    REALLYLONG dataPtr__len__;
     int dataPtr__in_len__;
     UInt32 dataOffset;
 #ifndef GetFlavorData

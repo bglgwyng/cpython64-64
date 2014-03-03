@@ -1317,7 +1317,7 @@ newxmlparseobject(char *encoding, char *namespace_separator, PyObject *intern)
      * has a backport of this feature where we also define XML_HAS_SET_HASH_SALT
      * to indicate that we can still use it. */
     XML_SetHashSalt(self->itself,
-                    (unsigned long)_Py_HashSecret.prefix);
+                    (UREALLYLONG)_Py_HashSecret.prefix);
 #endif
     self->intern = intern;
     Py_XINCREF(self->intern);
@@ -1423,45 +1423,45 @@ xmlparse_getattr(xmlparseobject *self, char *name)
     }
     if (name[0] == 'E') {
         if (strcmp(name, "ErrorCode") == 0)
-            return PyInt_FromLong((long)
+            return PyInt_FromLong((REALLYLONG)
                                   XML_GetErrorCode(self->itself));
         if (strcmp(name, "ErrorLineNumber") == 0)
-            return PyInt_FromLong((long)
+            return PyInt_FromLong((REALLYLONG)
                                   XML_GetErrorLineNumber(self->itself));
         if (strcmp(name, "ErrorColumnNumber") == 0)
-            return PyInt_FromLong((long)
+            return PyInt_FromLong((REALLYLONG)
                                   XML_GetErrorColumnNumber(self->itself));
         if (strcmp(name, "ErrorByteIndex") == 0)
-            return PyInt_FromLong((long)
+            return PyInt_FromLong((REALLYLONG)
                                   XML_GetErrorByteIndex(self->itself));
     }
     if (name[0] == 'C') {
         if (strcmp(name, "CurrentLineNumber") == 0)
-            return PyInt_FromLong((long)
+            return PyInt_FromLong((REALLYLONG)
                                   XML_GetCurrentLineNumber(self->itself));
         if (strcmp(name, "CurrentColumnNumber") == 0)
-            return PyInt_FromLong((long)
+            return PyInt_FromLong((REALLYLONG)
                                   XML_GetCurrentColumnNumber(self->itself));
         if (strcmp(name, "CurrentByteIndex") == 0)
-            return PyInt_FromLong((long)
+            return PyInt_FromLong((REALLYLONG)
                                   XML_GetCurrentByteIndex(self->itself));
     }
     if (name[0] == 'b') {
         if (strcmp(name, "buffer_size") == 0)
-            return PyInt_FromLong((long) self->buffer_size);
+            return PyInt_FromLong((REALLYLONG) self->buffer_size);
         if (strcmp(name, "buffer_text") == 0)
             return get_pybool(self->buffer != NULL);
         if (strcmp(name, "buffer_used") == 0)
-            return PyInt_FromLong((long) self->buffer_used);
+            return PyInt_FromLong((REALLYLONG) self->buffer_used);
     }
     if (strcmp(name, "namespace_prefixes") == 0)
         return get_pybool(self->ns_prefixes);
     if (strcmp(name, "ordered_attributes") == 0)
         return get_pybool(self->ordered_attributes);
     if (strcmp(name, "returns_unicode") == 0)
-        return get_pybool((long) self->returns_unicode);
+        return get_pybool((REALLYLONG) self->returns_unicode);
     if (strcmp(name, "specified_attributes") == 0)
-        return get_pybool((long) self->specified_attributes);
+        return get_pybool((REALLYLONG) self->specified_attributes);
     if (strcmp(name, "intern") == 0) {
         if (self->intern == NULL) {
             Py_INCREF(Py_None);
@@ -1618,7 +1618,7 @@ xmlparse_setattr(xmlparseobject *self, char *name, PyObject *v)
     }
 
     if (strcmp(name, "buffer_size") == 0) {
-      long new_buffer_size;
+      REALLYLONG new_buffer_size;
       if (!PyInt_Check(v)) {
         PyErr_SetString(PyExc_TypeError, "buffer_size must be an integer");
         return -1;
@@ -1789,7 +1789,7 @@ Returns string error for given number.");
 static PyObject *
 pyexpat_ErrorString(PyObject *self, PyObject *args)
 {
-    long code = 0;
+    REALLYLONG code = 0;
 
     if (!PyArg_ParseTuple(args, "l:ErrorString", &code))
         return NULL;

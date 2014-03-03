@@ -36,14 +36,14 @@ static PyObject *
 TextStyle_New(TextStylePtr itself)
 {
 
-    return Py_BuildValue("lllO&", (long)itself->tsFont, (long)itself->tsFace, (long)itself->tsSize, QdRGB_New,
+    return Py_BuildValue("lllO&", (REALLYLONG)itself->tsFont, (REALLYLONG)itself->tsFace, (REALLYLONG)itself->tsSize, QdRGB_New,
                             &itself->tsColor);
 }
 
 static int
 TextStyle_Convert(PyObject *v, TextStylePtr p_itself)
 {
-    long font, face, size;
+    REALLYLONG font, face, size;
 
     if( !PyArg_ParseTuple(v, "lllO&", &font, &face, &size, QdRGB_Convert, &p_itself->tsColor) )
         return 0;
@@ -100,7 +100,7 @@ static PyObject *TEObj_TESetText(TEObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
     char *text__in__;
-    long text__len__;
+    REALLYLONG text__len__;
     int text__in_len__;
 #ifndef TESetText
     PyMac_PRECHECK(TESetText);
@@ -148,8 +148,8 @@ static PyObject *TEObj_TEIdle(TEObject *_self, PyObject *_args)
 static PyObject *TEObj_TESetSelect(TEObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long selStart;
-    long selEnd;
+    REALLYLONG selStart;
+    REALLYLONG selEnd;
 #ifndef TESetSelect
     PyMac_PRECHECK(TESetSelect);
 #endif
@@ -270,7 +270,7 @@ static PyObject *TEObj_TEInsert(TEObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
     char *text__in__;
-    long text__len__;
+    REALLYLONG text__len__;
     int text__in_len__;
 #ifndef TEInsert
     PyMac_PRECHECK(TEInsert);
@@ -600,7 +600,7 @@ static PyObject *TEObj_TEStyleInsert(TEObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
     char *text__in__;
-    long text__len__;
+    REALLYLONG text__len__;
     int text__in_len__;
     StScrpHandle hST;
 #ifndef TEStyleInsert
@@ -622,9 +622,9 @@ static PyObject *TEObj_TEStyleInsert(TEObject *_self, PyObject *_args)
 static PyObject *TEObj_TEGetHeight(TEObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long _rv;
-    long endLine;
-    long startLine;
+    REALLYLONG _rv;
+    REALLYLONG endLine;
+    REALLYLONG startLine;
 #ifndef TEGetHeight
     PyMac_PRECHECK(TEGetHeight);
 #endif
@@ -666,8 +666,8 @@ static PyObject *TEObj_TEContinuousStyle(TEObject *_self, PyObject *_args)
 static PyObject *TEObj_TEUseStyleScrap(TEObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long rangeStart;
-    long rangeEnd;
+    REALLYLONG rangeStart;
+    REALLYLONG rangeEnd;
     StScrpHandle newStyles;
     Boolean fRedraw;
 #ifndef TEUseStyleScrap
@@ -692,9 +692,9 @@ static PyObject *TEObj_TEUseStyleScrap(TEObject *_self, PyObject *_args)
 static PyObject *TEObj_TENumStyles(TEObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long _rv;
-    long rangeStart;
-    long rangeEnd;
+    REALLYLONG _rv;
+    REALLYLONG rangeStart;
+    REALLYLONG rangeEnd;
 #ifndef TENumStyles
     PyMac_PRECHECK(TENumStyles);
 #endif
@@ -773,7 +773,7 @@ static PyMethodDef TEObj_methods[] = {
     {"TEIdle", (PyCFunction)TEObj_TEIdle, 1,
      PyDoc_STR("() -> None")},
     {"TESetSelect", (PyCFunction)TEObj_TESetSelect, 1,
-     PyDoc_STR("(long selStart, long selEnd) -> None")},
+     PyDoc_STR("(REALLYLONG selStart, REALLYLONG selEnd) -> None")},
     {"TEActivate", (PyCFunction)TEObj_TEActivate, 1,
      PyDoc_STR("() -> None")},
     {"TEDeactivate", (PyCFunction)TEObj_TEDeactivate, 1,
@@ -827,13 +827,13 @@ static PyMethodDef TEObj_methods[] = {
     {"TEStyleInsert", (PyCFunction)TEObj_TEStyleInsert, 1,
      PyDoc_STR("(Buffer text, StScrpHandle hST) -> None")},
     {"TEGetHeight", (PyCFunction)TEObj_TEGetHeight, 1,
-     PyDoc_STR("(long endLine, long startLine) -> (long _rv)")},
+     PyDoc_STR("(REALLYLONG endLine, REALLYLONG startLine) -> (REALLYLONG _rv)")},
     {"TEContinuousStyle", (PyCFunction)TEObj_TEContinuousStyle, 1,
      PyDoc_STR("(short mode, TextStyle aStyle) -> (Boolean _rv, short mode, TextStyle aStyle)")},
     {"TEUseStyleScrap", (PyCFunction)TEObj_TEUseStyleScrap, 1,
-     PyDoc_STR("(long rangeStart, long rangeEnd, StScrpHandle newStyles, Boolean fRedraw) -> None")},
+     PyDoc_STR("(REALLYLONG rangeStart, REALLYLONG rangeEnd, StScrpHandle newStyles, Boolean fRedraw) -> None")},
     {"TENumStyles", (PyCFunction)TEObj_TENumStyles, 1,
-     PyDoc_STR("(long rangeStart, long rangeEnd) -> (long _rv)")},
+     PyDoc_STR("(REALLYLONG rangeStart, REALLYLONG rangeEnd) -> (REALLYLONG _rv)")},
     {"TEFeatureFlag", (PyCFunction)TEObj_TEFeatureFlag, 1,
      PyDoc_STR("(short feature, short action) -> (short _rv)")},
     {"TEGetHiliteRgn", (PyCFunction)TEObj_TEGetHiliteRgn, 1,
@@ -1065,7 +1065,7 @@ static PyObject *TE_TEScrapHandle(PyObject *_self, PyObject *_args)
 static PyObject *TE_TEGetScrapLength(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long _rv;
+    REALLYLONG _rv;
 #ifndef TEGetScrapLength
     PyMac_PRECHECK(TEGetScrapLength);
 #endif
@@ -1101,7 +1101,7 @@ static PyObject *TE_TETextBox(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
     char *text__in__;
-    long text__len__;
+    REALLYLONG text__len__;
     int text__in_len__;
     Rect box;
     short just;
@@ -1145,7 +1145,7 @@ static PyObject *TE_TEStyleNew(PyObject *_self, PyObject *_args)
 static PyObject *TE_TESetScrapLength(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long length;
+    REALLYLONG length;
 #ifndef TESetScrapLength
     PyMac_PRECHECK(TESetScrapLength);
 #endif
@@ -1275,7 +1275,7 @@ static PyMethodDef TE_methods[] = {
     {"TEScrapHandle", (PyCFunction)TE_TEScrapHandle, 1,
      PyDoc_STR("() -> (Handle _rv)")},
     {"TEGetScrapLength", (PyCFunction)TE_TEGetScrapLength, 1,
-     PyDoc_STR("() -> (long _rv)")},
+     PyDoc_STR("() -> (REALLYLONG _rv)")},
     {"TENew", (PyCFunction)TE_TENew, 1,
      PyDoc_STR("(Rect destRect, Rect viewRect) -> (TEHandle _rv)")},
     {"TETextBox", (PyCFunction)TE_TETextBox, 1,
@@ -1283,7 +1283,7 @@ static PyMethodDef TE_methods[] = {
     {"TEStyleNew", (PyCFunction)TE_TEStyleNew, 1,
      PyDoc_STR("(Rect destRect, Rect viewRect) -> (TEHandle _rv)")},
     {"TESetScrapLength", (PyCFunction)TE_TESetScrapLength, 1,
-     PyDoc_STR("(long length) -> None")},
+     PyDoc_STR("(REALLYLONG length) -> None")},
     {"TEFromScrap", (PyCFunction)TE_TEFromScrap, 1,
      PyDoc_STR("() -> None")},
     {"TEToScrap", (PyCFunction)TE_TEToScrap, 1,

@@ -957,12 +957,12 @@ instance_str(PyInstanceObject *inst)
     return res;
 }
 
-static long
+static REALLYLONG
 instance_hash(PyInstanceObject *inst)
 {
     PyObject *func;
     PyObject *res;
-    long outcome;
+    REALLYLONG outcome;
     static PyObject *hashstr, *eqstr, *cmpstr;
 
     if (hashstr == NULL) {
@@ -1673,7 +1673,7 @@ half_cmp(PyObject *v, PyObject *w)
     PyObject *args;
     PyObject *cmp_func;
     PyObject *result;
-    long l;
+    REALLYLONG l;
 
     assert(PyInstance_Check(v));
 
@@ -1782,7 +1782,7 @@ static int
 instance_nonzero(PyInstanceObject *self)
 {
     PyObject *func, *res;
-    long outcome;
+    REALLYLONG outcome;
     static PyObject *nonzerostr;
 
     if (nonzerostr == NULL) {
@@ -2473,10 +2473,10 @@ instancemethod_repr(PyMethodObject *a)
     return result;
 }
 
-static long
+static REALLYLONG
 instancemethod_hash(PyMethodObject *a)
 {
-    long x, y;
+    REALLYLONG x, y;
     if (a->im_self == NULL)
         x = PyObject_Hash(Py_None);
     else

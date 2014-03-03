@@ -109,8 +109,8 @@ syslog_get_argv(void)
 static PyObject *
 syslog_openlog(PyObject * self, PyObject * args, PyObject *kwds)
 {
-    long logopt = 0;
-    long facility = LOG_USER;
+    REALLYLONG logopt = 0;
+    REALLYLONG facility = LOG_USER;
     PyObject *new_S_ident_o = NULL;
     static char *keywords[] = {"ident", "logoption", "facility", 0};
 
@@ -193,7 +193,7 @@ syslog_closelog(PyObject *self, PyObject *unused)
 static PyObject *
 syslog_setlogmask(PyObject *self, PyObject *args)
 {
-    long maskpri, omaskpri;
+    REALLYLONG maskpri, omaskpri;
 
     if (!PyArg_ParseTuple(args, "l;mask for priority", &maskpri))
         return NULL;
@@ -204,8 +204,8 @@ syslog_setlogmask(PyObject *self, PyObject *args)
 static PyObject *
 syslog_log_mask(PyObject *self, PyObject *args)
 {
-    long mask;
-    long pri;
+    REALLYLONG mask;
+    REALLYLONG pri;
     if (!PyArg_ParseTuple(args, "l:LOG_MASK", &pri))
         return NULL;
     mask = LOG_MASK(pri);
@@ -215,8 +215,8 @@ syslog_log_mask(PyObject *self, PyObject *args)
 static PyObject *
 syslog_log_upto(PyObject *self, PyObject *args)
 {
-    long mask;
-    long pri;
+    REALLYLONG mask;
+    REALLYLONG pri;
     if (!PyArg_ParseTuple(args, "l:LOG_UPTO", &pri))
         return NULL;
     mask = LOG_UPTO(pri);

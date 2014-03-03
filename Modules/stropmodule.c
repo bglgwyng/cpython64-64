@@ -322,13 +322,13 @@ strop_find(PyObject *self, PyObject *args)
         i = 0;
 
     if (n == 0 && i <= last)
-        return PyInt_FromLong((long)i);
+        return PyInt_FromLong((REALLYLONG)i);
 
     last -= n;
     for (; i <= last; ++i)
         if (s[i] == sub[0] &&
             (n == 1 || memcmp(&s[i+1], &sub[1], n-1) == 0))
-            return PyInt_FromLong((long)i);
+            return PyInt_FromLong((REALLYLONG)i);
 
     return PyInt_FromLong(-1L);
 }
@@ -366,12 +366,12 @@ strop_rfind(PyObject *self, PyObject *args)
         i = 0;
 
     if (n == 0 && i <= last)
-        return PyInt_FromLong((long)last);
+        return PyInt_FromLong((REALLYLONG)last);
 
     for (j = last-n; j >= i; --j)
         if (s[j] == sub[0] &&
             (n == 1 || memcmp(&s[j+1], &sub[1], n-1) == 0))
-            return PyInt_FromLong((long)j);
+            return PyInt_FromLong((REALLYLONG)j);
 
     return PyInt_FromLong(-1L);
 }
@@ -691,7 +691,7 @@ strop_count(PyObject *self, PyObject *args)
         i = 0;
     m = last + 1 - n;
     if (n == 0)
-        return PyInt_FromLong((long) (m-i));
+        return PyInt_FromLong((REALLYLONG) (m-i));
 
     r = 0;
     while (i < m) {
@@ -702,7 +702,7 @@ strop_count(PyObject *self, PyObject *args)
             i++;
         }
     }
-    return PyInt_FromLong((long) r);
+    return PyInt_FromLong((REALLYLONG) r);
 }
 
 
@@ -766,7 +766,7 @@ strop_atoi(PyObject *self, PyObject *args)
 {
     char *s, *end;
     int base = 10;
-    long x;
+    REALLYLONG x;
     char buffer[256]; /* For errors */
 
     WARN;
@@ -782,7 +782,7 @@ strop_atoi(PyObject *self, PyObject *args)
         s++;
     errno = 0;
     if (base == 0 && s[0] == '0')
-        x = (long) PyOS_strtoul(s, &end, base);
+        x = (REALLYLONG) PyOS_strtoul(s, &end, base);
     else
         x = PyOS_strtol(s, &end, base);
     if (end == s || !isalnum(Py_CHARMASK(end[-1])))
@@ -809,7 +809,7 @@ strop_atoi(PyObject *self, PyObject *args)
 PyDoc_STRVAR(atol__doc__,
 "atol(s [,base]) -> long\n"
 "\n"
-"Return the long integer represented by the string s in the\n"
+"Return the REALLYLONG integer represented by the string s in the\n"
 "given base, which defaults to 10.  The string s must consist\n"
 "of one or more digits, possibly preceded by a sign.  If base\n"
 "is 0, it is chosen from the leading characters of s, 0 for\n"
@@ -900,7 +900,7 @@ strop_atof(PyObject *self, PyObject *args)
 PyDoc_STRVAR(maketrans__doc__,
 "maketrans(frm, to) -> string\n"
 "\n"
-"Return a translation table (a string of 256 bytes long)\n"
+"Return a translation table (a string of 256 bytes REALLYLONG)\n"
 "suitable for use in string.translate.  The strings frm and to\n"
 "must be of the same length.");
 

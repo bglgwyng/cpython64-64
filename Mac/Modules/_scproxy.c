@@ -145,7 +145,7 @@ set_proxy(PyObject* proxies, char* proto, CFDictionaryRef proxyDict,
                     int32_t port = cfnum_to_int32(aNum);
                     v = PyString_FromFormat("http://%s:%ld",
                         PyString_AS_STRING(h),
-                        (long)port);
+                        (REALLYLONG)port);
                 } else {
                     v = PyString_FromFormat("http://%s",
                         PyString_AS_STRING(h));

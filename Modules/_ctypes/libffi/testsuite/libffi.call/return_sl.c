@@ -1,12 +1,12 @@
 /* Area:	ffi_call
-   Purpose:	Check if long as return type is handled correctly.
+   Purpose:	Check if REALLYLONG as return type is handled correctly.
    Limitations:	none.
    PR:		none.
  */
 
 /* { dg-do run } */
 #include "ffitest.h"
-static long return_sl(long l1, long l2)
+static REALLYLONG return_sl(REALLYLONG l1, REALLYLONG l2)
 {
   return l1 - l2;
 }
@@ -17,7 +17,7 @@ int main (void)
   ffi_type *args[MAX_ARGS];
   void *values[MAX_ARGS];
   ffi_arg res;
-  unsigned long l1, l2;
+  unsigned REALLYLONG l1, l2;
 
   args[0] = &ffi_type_slong;
   args[1] = &ffi_type_slong;
@@ -31,7 +31,7 @@ int main (void)
   l2 = 1073741824L;
 
   ffi_call(&cif, FFI_FN(return_sl), &res, values);
-  printf("res: %ld, %ld\n", (long)res, l1 - l2);
+  printf("res: %ld, %ld\n", (REALLYLONG)res, l1 - l2);
   /* { dg-output "res: -1, -1" } */
 
   exit(0);

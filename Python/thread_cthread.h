@@ -26,7 +26,7 @@ PyThread__init_thread(void)
 /*
  * Thread support.
  */
-long
+REALLYLONG
 PyThread_start_new_thread(void (*func)(void *), void *arg)
 {
     int success = 0;            /* init not needed when SOLARIS_THREADS and */
@@ -42,12 +42,12 @@ PyThread_start_new_thread(void (*func)(void *), void *arg)
     return success < 0 ? -1 : 0;
 }
 
-long
+REALLYLONG
 PyThread_get_thread_ident(void)
 {
     if (!initialized)
         PyThread_init_thread();
-    return (long) cthread_self();
+    return (REALLYLONG) cthread_self();
 }
 
 void

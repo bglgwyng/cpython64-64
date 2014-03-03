@@ -114,7 +114,7 @@ exists(char *filename)
 }
 
 /* Is module  (check for .pyc/.pyo too)
- * Assumes 'filename' MAXPATHLEN+1 bytes long -
+ * Assumes 'filename' MAXPATHLEN+1 bytes REALLYLONG -
  * may extend 'filename' by one character.
  */
 static int
@@ -178,7 +178,7 @@ gotlandmark(char *landmark)
     return ok;
 }
 
-/* assumes argv0_path is MAXPATHLEN+1 bytes long, already \0 term'd.
+/* assumes argv0_path is MAXPATHLEN+1 bytes REALLYLONG, already \0 term'd.
  * assumption provided by only caller, calculate_path()
  */
 static int

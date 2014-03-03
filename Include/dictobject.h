@@ -84,7 +84,7 @@ struct _dictobject {
      * setitem calls.
      */
     PyDictEntry *ma_table;
-    PyDictEntry *(*ma_lookup)(PyDictObject *mp, PyObject *key, long hash);
+    PyDictEntry *(*ma_lookup)(PyDictObject *mp, PyObject *key, REALLYLONG hash);
     PyDictEntry ma_smalltable[PyDict_MINSIZE];
 };
 
@@ -114,14 +114,14 @@ PyAPI_FUNC(void) PyDict_Clear(PyObject *mp);
 PyAPI_FUNC(int) PyDict_Next(
     PyObject *mp, Py_ssize_t *pos, PyObject **key, PyObject **value);
 PyAPI_FUNC(int) _PyDict_Next(
-    PyObject *mp, Py_ssize_t *pos, PyObject **key, PyObject **value, long *hash);
+    PyObject *mp, Py_ssize_t *pos, PyObject **key, PyObject **value, REALLYLONG *hash);
 PyAPI_FUNC(PyObject *) PyDict_Keys(PyObject *mp);
 PyAPI_FUNC(PyObject *) PyDict_Values(PyObject *mp);
 PyAPI_FUNC(PyObject *) PyDict_Items(PyObject *mp);
 PyAPI_FUNC(Py_ssize_t) PyDict_Size(PyObject *mp);
 PyAPI_FUNC(PyObject *) PyDict_Copy(PyObject *mp);
 PyAPI_FUNC(int) PyDict_Contains(PyObject *mp, PyObject *key);
-PyAPI_FUNC(int) _PyDict_Contains(PyObject *mp, PyObject *key, long hash);
+PyAPI_FUNC(int) _PyDict_Contains(PyObject *mp, PyObject *key, REALLYLONG hash);
 PyAPI_FUNC(PyObject *) _PyDict_NewPresized(Py_ssize_t minused);
 PyAPI_FUNC(void) _PyDict_MaybeUntrack(PyObject *mp);
 

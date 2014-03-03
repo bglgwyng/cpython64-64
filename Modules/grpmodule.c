@@ -101,10 +101,10 @@ grp_getgrgid(PyObject *self, PyObject *pyo_id)
     if ((p = getgrgid(gid)) == NULL) {
         if (gid < 0)
             PyErr_Format(PyExc_KeyError,
-                         "getgrgid(): gid not found: %ld", (long)gid);
+                         "getgrgid(): gid not found: %ld", (REALLYLONG)gid);
         else
             PyErr_Format(PyExc_KeyError,
-                         "getgrgid(): gid not found: %lu", (unsigned long)gid);
+                         "getgrgid(): gid not found: %lu", (unsigned REALLYLONG)gid);
         return NULL;
     }
     return mkgrent(p);

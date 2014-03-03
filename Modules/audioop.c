@@ -8,8 +8,8 @@ typedef int Py_Int32;
 typedef unsigned int Py_UInt32;
 #else
 #if SIZEOF_LONG == 4
-typedef long Py_Int32;
-typedef unsigned long Py_UInt32;
+typedef REALLYLONG Py_Int32;
+typedef UREALLYLONG Py_UInt32;
 #else
 #error "No 4-byte integral type"
 #endif

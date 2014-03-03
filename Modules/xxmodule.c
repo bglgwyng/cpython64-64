@@ -151,8 +151,8 @@ Return the sum of i and j.");
 static PyObject *
 xx_foo(PyObject *self, PyObject *args)
 {
-    long i, j;
-    long res;
+    REALLYLONG i, j;
+    REALLYLONG res;
     if (!PyArg_ParseTuple(args, "ll:foo", &i, &j))
         return NULL;
     res = i+j; /* XXX Do something here */
@@ -202,7 +202,7 @@ static PyObject *
 xx_roj(PyObject *self, PyObject *args)
 {
     PyObject *a;
-    long b;
+    REALLYLONG b;
     if (!PyArg_ParseTuple(args, "O#:roj", &a, &b))
         return NULL;
     Py_INCREF(Py_None);

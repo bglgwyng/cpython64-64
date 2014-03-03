@@ -642,7 +642,7 @@ static PyObject *MenuObj_InsertMenuItemTextWithCFString(MenuObject *_self, PyObj
 static PyObject *MenuObj_PopUpMenuSelect(MenuObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long _rv;
+    REALLYLONG _rv;
     short top;
     short left;
     short popUpItem;
@@ -2358,7 +2358,7 @@ static PyMethodDef MenuObj_methods[] = {
     {"InsertMenuItemTextWithCFString", (PyCFunction)MenuObj_InsertMenuItemTextWithCFString, 1,
      PyDoc_STR("(CFStringRef inString, MenuItemIndex inAfterItem, MenuItemAttributes inAttributes, MenuCommand inCommandID) -> None")},
     {"PopUpMenuSelect", (PyCFunction)MenuObj_PopUpMenuSelect, 1,
-     PyDoc_STR("(short top, short left, short popUpItem) -> (long _rv)")},
+     PyDoc_STR("(short top, short left, short popUpItem) -> (REALLYLONG _rv)")},
     {"InvalidateMenuEnabling", (PyCFunction)MenuObj_InvalidateMenuEnabling, 1,
      PyDoc_STR("() -> None")},
     {"IsMenuBarInvalid", (PyCFunction)MenuObj_IsMenuBarInvalid, 1,
@@ -2663,7 +2663,7 @@ static PyObject *Menu_CreateNewMenu(PyObject *_self, PyObject *_args)
 static PyObject *Menu_MenuKey(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long _rv;
+    REALLYLONG _rv;
     CharParameter ch;
 #ifndef MenuKey
     PyMac_PRECHECK(MenuKey);
@@ -2680,7 +2680,7 @@ static PyObject *Menu_MenuKey(PyObject *_self, PyObject *_args)
 static PyObject *Menu_MenuSelect(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long _rv;
+    REALLYLONG _rv;
     Point startPt;
 #ifndef MenuSelect
     PyMac_PRECHECK(MenuSelect);
@@ -2697,7 +2697,7 @@ static PyObject *Menu_MenuSelect(PyObject *_self, PyObject *_args)
 static PyObject *Menu_MenuChoice(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long _rv;
+    REALLYLONG _rv;
 #ifndef MenuChoice
     PyMac_PRECHECK(MenuChoice);
 #endif
@@ -3359,11 +3359,11 @@ static PyMethodDef Menu_methods[] = {
     {"CreateNewMenu", (PyCFunction)Menu_CreateNewMenu, 1,
      PyDoc_STR("(MenuID inMenuID, MenuAttributes inMenuAttributes) -> (MenuHandle outMenuRef)")},
     {"MenuKey", (PyCFunction)Menu_MenuKey, 1,
-     PyDoc_STR("(CharParameter ch) -> (long _rv)")},
+     PyDoc_STR("(CharParameter ch) -> (REALLYLONG _rv)")},
     {"MenuSelect", (PyCFunction)Menu_MenuSelect, 1,
-     PyDoc_STR("(Point startPt) -> (long _rv)")},
+     PyDoc_STR("(Point startPt) -> (REALLYLONG _rv)")},
     {"MenuChoice", (PyCFunction)Menu_MenuChoice, 1,
-     PyDoc_STR("() -> (long _rv)")},
+     PyDoc_STR("() -> (REALLYLONG _rv)")},
     {"MenuEvent", (PyCFunction)Menu_MenuEvent, 1,
      PyDoc_STR("(EventRecord inEvent) -> (UInt32 _rv)")},
     {"GetMBarHeight", (PyCFunction)Menu_GetMBarHeight, 1,

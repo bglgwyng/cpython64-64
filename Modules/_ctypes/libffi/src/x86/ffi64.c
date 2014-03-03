@@ -63,7 +63,7 @@ struct register_args
   union big_int_union sse[MAX_SSE_REGS]; 
 };
 
-extern void ffi_call_unix64 (void *args, unsigned long bytes, unsigned flags,
+extern void ffi_call_unix64 (void *args, unsigned REALLYLONG bytes, unsigned flags,
 			     void *raddr, void (*fnaddr)(void), unsigned ssecount);
 
 /* All reference to register classes here is identical to the code in
@@ -393,7 +393,7 @@ ffi_prep_cif_machdep (ffi_cif *cif)
 	  || gprcount + ngpr > MAX_GPR_REGS
 	  || ssecount + nsse > MAX_SSE_REGS)
 	{
-	  long align = cif->arg_types[i]->alignment;
+	  REALLYLONG align = cif->arg_types[i]->alignment;
 
 	  if (align < 8)
 	    align = 8;
@@ -446,7 +446,7 @@ ffi_call (ffi_cif *cif, void (*fn)(void), void *rvalue, void **avalue)
   /* If the return value is passed in memory, add the pointer as the
      first integer argument.  */
   if (ret_in_memory)
-    reg_args->gpr[gprcount++] = (unsigned long) rvalue;
+    reg_args->gpr[gprcount++] = (unsigned REALLYLONG) rvalue;
 
   avn = cif->nargs;
   arg_types = cif->arg_types;
@@ -461,7 +461,7 @@ ffi_call (ffi_cif *cif, void (*fn)(void), void *rvalue, void **avalue)
 	  || gprcount + ngpr > MAX_GPR_REGS
 	  || ssecount + nsse > MAX_SSE_REGS)
 	{
-	  long align = arg_types[i]->alignment;
+	  REALLYLONG align = arg_types[i]->alignment;
 
 	  /* Stack arguments are *always* at least 8 byte aligned.  */
 	  if (align < 8)
@@ -545,11 +545,11 @@ ffi_prep_closure_loc (ffi_closure* closure,
   tramp = (volatile unsigned short *) &closure->tramp[0];
 
   tramp[0] = 0xbb49;		/* mov <code>, %r11	*/
-  *((unsigned long long * volatile) &tramp[1])
-    = (unsigned long) ffi_closure_unix64;
+  *((unsigned REALLYLONG * volatile) &tramp[1])
+    = (unsigned REALLYLONG) ffi_closure_unix64;
   tramp[5] = 0xba49;		/* mov <data>, %r10	*/
-  *((unsigned long long * volatile) &tramp[6])
-    = (unsigned long) codeloc;
+  *((unsigned REALLYLONG * volatile) &tramp[6])
+    = (unsigned REALLYLONG) codeloc;
 
   /* Set the carry bit iff the function uses any sse registers.
      This is clc or stc, together with the first byte of the jmp.  */
@@ -571,7 +571,7 @@ ffi_closure_unix64_inner(ffi_closure *closure, void *rvalue,
   ffi_cif *cif;
   void **avalue;
   ffi_type **arg_types;
-  long i, avn;
+  REALLYLONG i, avn;
   int gprcount, ssecount, ngpr, nsse;
   int ret;
 
@@ -588,7 +588,7 @@ ffi_closure_unix64_inner(ffi_closure *closure, void *rvalue,
 	{
 	  /* The return value goes in memory.  Arrange for the closure
 	     return value to go directly back to the original caller.  */
-	  rvalue = (void *) (unsigned long) reg_args->gpr[gprcount++];
+	  rvalue = (void *) (unsigned REALLYLONG) reg_args->gpr[gprcount++];
 	  /* We don't have to do anything in asm for the return.  */
 	  ret = FFI_TYPE_VOID;
 	}
@@ -617,7 +617,7 @@ ffi_closure_unix64_inner(ffi_closure *closure, void *rvalue,
 	  || gprcount + ngpr > MAX_GPR_REGS
 	  || ssecount + nsse > MAX_SSE_REGS)
 	{
-	  long align = arg_types[i]->alignment;
+	  REALLYLONG align = arg_types[i]->alignment;
 
 	  /* Stack arguments are *always* at least 8 byte aligned.  */
 	  if (align < 8)

@@ -644,16 +644,16 @@ static PyTypeObject ZipImporter_Type = {
 
 /* implementation */
 
-/* Given a buffer, return the long that is represented by the first
+/* Given a buffer, return the REALLYLONG that is represented by the first
    4 bytes, encoded as little endian. This partially reimplements
    marshal.c:r_long() */
-static long
+static REALLYLONG
 get_long(unsigned char *buf) {
-    long x;
+    REALLYLONG x;
     x =  buf[0];
-    x |= (long)buf[1] <<  8;
-    x |= (long)buf[2] << 16;
-    x |= (long)buf[3] << 24;
+    x |= (REALLYLONG)buf[1] <<  8;
+    x |= (REALLYLONG)buf[2] << 16;
+    x |= (REALLYLONG)buf[3] << 24;
 #if SIZEOF_LONG > 4
     /* Sign extension for 64-bit machines */
     x |= -(x & 0x80000000L);
@@ -687,14 +687,14 @@ read_directory(char *archive)
 {
     PyObject *files = NULL;
     FILE *fp;
-    long compress, crc, data_size, file_size, file_offset, date, time;
-    long header_offset, name_size, header_size, header_position;
-    long i, l, count;
+    REALLYLONG compress, crc, data_size, file_size, file_offset, date, time;
+    REALLYLONG header_offset, name_size, header_size, header_position;
+    REALLYLONG i, l, count;
     size_t length;
     char path[MAXPATHLEN + 5];
     char name[MAXPATHLEN + 5];
     char *p, endof_central_dir[22];
-    long arc_offset; /* offset from beginning of file to start of zip-archive */
+    REALLYLONG arc_offset; /* offset from beginning of file to start of zip-archive */
 
     if (strlen(archive) > MAXPATHLEN) {
         PyErr_SetString(PyExc_OverflowError,
@@ -739,7 +739,7 @@ read_directory(char *archive)
     if (files == NULL)
         goto error;
 
-    length = (long)strlen(path);
+    length = (REALLYLONG)strlen(path);
     path[length] = SEP;
 
     /* Start of Central Directory */
@@ -851,10 +851,10 @@ get_data(char *archive, PyObject *toc_entry)
     FILE *fp;
     int err;
     Py_ssize_t bytes_read = 0;
-    long l;
+    REALLYLONG l;
     char *datapath;
-    long compress, data_size, file_size, file_offset;
-    long time, date, crc;
+    REALLYLONG compress, data_size, file_size, file_offset;
+    REALLYLONG time, date, crc;
 
     if (!PyArg_ParseTuple(toc_entry, "slllllll", &datapath, &compress,
                           &data_size, &file_size, &file_offset, &time,

@@ -24,7 +24,7 @@ static void PyThread__init_thread(void)
  */
 long PyThread_start_new_thread(void (*func)(void *), void *arg)
 {
-    long rv;
+    REALLYLONG rv;
     int success = -1;
 
     dprintf(("%ld: PyThread_start_new_thread called\n", PyThread_get_thread_ident()));

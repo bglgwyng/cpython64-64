@@ -123,7 +123,7 @@ void ffi_prep_args(char *stack, extended_cif *ecif)
 	        }
 	      else
 	        {
-		  /* Double or long long 64bit.  */
+		  /* Double or REALLYLONG 64bit.  */
 	          memcpy (argp, *p_argv, z);
 	        }
 	    }
@@ -205,7 +205,7 @@ void ffi_call(ffi_cif *cif, void (*fn)(void), void *rvalue, void **avalue)
 	  if (size < 4)
 	    {
 	      if (align == 1)
-	        *(unsigned long *)(ecif.rvalue) <<= (4 - size) * 8;
+	        *(unsigned REALLYLONG *)(ecif.rvalue) <<= (4 - size) * 8;
 	    }
 	  else if (4 < size && size < 8)
 	    {

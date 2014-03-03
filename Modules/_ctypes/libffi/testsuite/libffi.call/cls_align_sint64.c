@@ -10,7 +10,7 @@
 
 typedef struct cls_struct_align {
   unsigned char a;
-  signed long long b;
+  signed REALLYLONG b;
   unsigned char c;
 } cls_struct_align;
 

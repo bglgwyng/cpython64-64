@@ -32,7 +32,7 @@ PyThread__init_thread(void)
 /*
  * Thread support.
  */
-long
+REALLYLONG
 PyThread_start_new_thread(void (*func)(void *), void *arg)
 {
     int thread_id;
@@ -49,7 +49,7 @@ PyThread_start_new_thread(void (*func)(void *), void *arg)
     return thread_id;
 }
 
-long
+REALLYLONG
 PyThread_get_thread_ident(void)
 {
 #if !defined(PYCC_GCC)
@@ -98,7 +98,7 @@ PyThread_allocate_lock(void)
         PyThread_init_thread();
     dprintf(("%ld: PyThread_allocate_lock() -> %lx\n",
              PyThread_get_thread_ident(),
-             (long)sem));
+             (REALLYLONG)sem));
     if (_fmutex_create(sem, 0)) {
         free(sem);
         sem = NULL;

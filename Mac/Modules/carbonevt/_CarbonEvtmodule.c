@@ -184,7 +184,7 @@ static PyObject *EventRef_SetEventParameter(EventRefObject *_self, PyObject *_ar
     OSType inName;
     OSType inType;
     char *inDataPtr__in__;
-    long inDataPtr__len__;
+    REALLYLONG inDataPtr__len__;
     int inDataPtr__in_len__;
     if (!PyArg_ParseTuple(_args, "O&O&s#",
                           PyMac_GetOSType, &inName,

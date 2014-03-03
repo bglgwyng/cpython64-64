@@ -102,7 +102,7 @@ int
 PySlice_GetIndices(PySliceObject *r, Py_ssize_t length,
                    Py_ssize_t *start, Py_ssize_t *stop, Py_ssize_t *step)
 {
-    /* XXX support long ints */
+    /* XXX support REALLYLONG ints */
     if (r->step == Py_None) {
         *step = 1;
     } else {
@@ -313,7 +313,7 @@ slice_compare(PySliceObject *v, PySliceObject *w)
     return result;
 }
 
-static long
+static REALLYLONG
 slice_hash(PySliceObject *v)
 {
     PyErr_SetString(PyExc_TypeError, "unhashable type");

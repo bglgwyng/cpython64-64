@@ -114,7 +114,7 @@ static void ffi_prep_args(char *stack,
       if (a < sizeof(ffi_arg))
         a = sizeof(ffi_arg);
       
-      if ((a - 1) & (unsigned long) argp)
+      if ((a - 1) & (unsigned REALLYLONG) argp)
 	{
 	  argp = (char *) ALIGN(argp, a);
 	  FIX_ARGP;
@@ -190,8 +190,8 @@ static void ffi_prep_args(char *stack,
 	  memcpy(argp, *p_argv, z);
 #else
 	  {
-	    unsigned long end = (unsigned long) argp + z;
-	    unsigned long cap = (unsigned long) stack + bytes;
+	    unsigned REALLYLONG end = (unsigned REALLYLONG) argp + z;
+	    unsigned REALLYLONG cap = (unsigned REALLYLONG) stack + bytes;
 
 	    /* Check if the data will fit within the register space.
 	       Handle it if it doesn't.  */
@@ -200,12 +200,12 @@ static void ffi_prep_args(char *stack,
 	      memcpy(argp, *p_argv, z);
 	    else
 	      {
-		unsigned long portion = cap - (unsigned long)argp;
+		unsigned REALLYLONG portion = cap - (unsigned REALLYLONG)argp;
 
 		memcpy(argp, *p_argv, portion);
 		argp = stack;
                 z -= portion;
-		memcpy(argp, (void*)((unsigned long)(*p_argv) + portion),
+		memcpy(argp, (void*)((unsigned REALLYLONG)(*p_argv) + portion),
                        z);
 	      }
 	  }
@@ -697,31 +697,31 @@ ffi_prep_closure_loc (ffi_closure *closure,
 #else
   /* N64 has a somewhat larger trampoline.  */
   /* lui  $25,high(fn) */
-  tramp[0] = 0x3c190000 | ((unsigned long)fn >> 48);
+  tramp[0] = 0x3c190000 | ((unsigned REALLYLONG)fn >> 48);
   /* lui  $12,high(codeloc) */
-  tramp[1] = 0x3c0c0000 | ((unsigned long)codeloc >> 48);
+  tramp[1] = 0x3c0c0000 | ((unsigned REALLYLONG)codeloc >> 48);
   /* ori  $25,mid-high(fn)  */
-  tramp[2] = 0x37390000 | (((unsigned long)fn >> 32 ) & 0xffff);
+  tramp[2] = 0x37390000 | (((unsigned REALLYLONG)fn >> 32 ) & 0xffff);
   /* ori  $12,mid-high(codeloc)  */
-  tramp[3] = 0x358c0000 | (((unsigned long)codeloc >> 32) & 0xffff);
+  tramp[3] = 0x358c0000 | (((unsigned REALLYLONG)codeloc >> 32) & 0xffff);
   /* dsll $25,$25,16 */
   tramp[4] = 0x0019cc38;
   /* dsll $12,$12,16 */
   tramp[5] = 0x000c6438;
   /* ori  $25,mid-low(fn)  */
-  tramp[6] = 0x37390000 | (((unsigned long)fn >> 16 ) & 0xffff);
+  tramp[6] = 0x37390000 | (((unsigned REALLYLONG)fn >> 16 ) & 0xffff);
   /* ori  $12,mid-low(codeloc)  */
-  tramp[7] = 0x358c0000 | (((unsigned long)codeloc >> 16) & 0xffff);
+  tramp[7] = 0x358c0000 | (((unsigned REALLYLONG)codeloc >> 16) & 0xffff);
   /* dsll $25,$25,16 */
   tramp[8] = 0x0019cc38;
   /* dsll $12,$12,16 */
   tramp[9] = 0x000c6438;
   /* ori  $25,low(fn)  */
-  tramp[10] = 0x37390000 | ((unsigned long)fn  & 0xffff);
+  tramp[10] = 0x37390000 | ((unsigned REALLYLONG)fn  & 0xffff);
   /* jr   $25          */
   tramp[11] = 0x03200008;
   /* ori  $12,low(codeloc)  */
-  tramp[12] = 0x358c0000 | ((unsigned long)codeloc & 0xffff);
+  tramp[12] = 0x358c0000 | ((unsigned REALLYLONG)codeloc & 0xffff);
 
 #endif
 

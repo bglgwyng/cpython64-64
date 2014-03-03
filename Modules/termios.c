@@ -101,11 +101,11 @@ termios_tcgetattr(PyObject *self, PyObject *args)
        MIN and TIME slots are the same as the EOF and EOL slots.  So we
        only do this in noncanonical input mode.  */
     if ((mode.c_lflag & ICANON) == 0) {
-        v = PyInt_FromLong((long)mode.c_cc[VMIN]);
+        v = PyInt_FromLong((REALLYLONG)mode.c_cc[VMIN]);
         if (v == NULL)
             goto err;
         PyList_SetItem(cc, VMIN, v);
-        v = PyInt_FromLong((long)mode.c_cc[VTIME]);
+        v = PyInt_FromLong((REALLYLONG)mode.c_cc[VTIME]);
         if (v == NULL)
             goto err;
         PyList_SetItem(cc, VTIME, v);
@@ -114,12 +114,12 @@ termios_tcgetattr(PyObject *self, PyObject *args)
     if (!(v = PyList_New(7)))
         goto err;
 
-    PyList_SetItem(v, 0, PyInt_FromLong((long)mode.c_iflag));
-    PyList_SetItem(v, 1, PyInt_FromLong((long)mode.c_oflag));
-    PyList_SetItem(v, 2, PyInt_FromLong((long)mode.c_cflag));
-    PyList_SetItem(v, 3, PyInt_FromLong((long)mode.c_lflag));
-    PyList_SetItem(v, 4, PyInt_FromLong((long)ispeed));
-    PyList_SetItem(v, 5, PyInt_FromLong((long)ospeed));
+    PyList_SetItem(v, 0, PyInt_FromLong((REALLYLONG)mode.c_iflag));
+    PyList_SetItem(v, 1, PyInt_FromLong((REALLYLONG)mode.c_oflag));
+    PyList_SetItem(v, 2, PyInt_FromLong((REALLYLONG)mode.c_cflag));
+    PyList_SetItem(v, 3, PyInt_FromLong((REALLYLONG)mode.c_lflag));
+    PyList_SetItem(v, 4, PyInt_FromLong((REALLYLONG)ispeed));
+    PyList_SetItem(v, 5, PyInt_FromLong((REALLYLONG)ospeed));
     PyList_SetItem(v, 6, cc);
     if (PyErr_Occurred()){
         Py_DECREF(v);
@@ -321,7 +321,7 @@ static PyMethodDef termios_methods[] =
 
 static struct constant {
     char *name;
-    long value;
+    REALLYLONG value;
 } termios_constants[] = {
     /* cfgetospeed(), cfsetospeed() constants */
     {"B0", B0},
@@ -499,7 +499,7 @@ static struct constant {
     {"CIBAUD", CIBAUD},
 #endif
 #ifdef CRTSCTS
-    {"CRTSCTS", (long)CRTSCTS},
+    {"CRTSCTS", (REALLYLONG)CRTSCTS},
 #endif
 
     /* struct termios.c_cflag-related values (character size) */

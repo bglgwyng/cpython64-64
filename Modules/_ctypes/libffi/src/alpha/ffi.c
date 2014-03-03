@@ -40,7 +40,7 @@
 # define FFI_TYPE_LONGDOUBLE 4
 #endif
 
-extern void ffi_call_osf(void *, unsigned long, unsigned, void *, void (*)(void))
+extern void ffi_call_osf(void *, unsigned REALLYLONG, unsigned, void *, void (*)(void))
   FFI_HIDDEN;
 extern void ffi_closure_osf(void) FFI_HIDDEN;
 
@@ -79,8 +79,8 @@ ffi_prep_cif_machdep(ffi_cif *cif)
 void
 ffi_call(ffi_cif *cif, void (*fn)(void), void *rvalue, void **avalue)
 {
-  unsigned long *stack, *argp;
-  long i, avn;
+  unsigned REALLYLONG *stack, *argp;
+  REALLYLONG i, avn;
   ffi_type **arg_types;
   
   /* If the return value is a struct and we don't have a return
@@ -206,12 +206,12 @@ ffi_prep_closure_loc (ffi_closure* closure,
 
 
 long FFI_HIDDEN
-ffi_closure_osf_inner(ffi_closure *closure, void *rvalue, unsigned long *argp)
+ffi_closure_osf_inner(ffi_closure *closure, void *rvalue, unsigned REALLYLONG *argp)
 {
   ffi_cif *cif;
   void **avalue;
   ffi_type **arg_types;
-  long i, avn, argn;
+  REALLYLONG i, avn, argn;
 
   cif = closure->cif;
   avalue = alloca(cif->nargs * sizeof(void *));

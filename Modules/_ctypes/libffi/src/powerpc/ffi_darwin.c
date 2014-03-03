@@ -97,13 +97,13 @@ enum { ASM_NEEDS_REGISTERS = 4 }; /* r28-r31 */
 #if defined(POWERPC_DARWIN64)
 static void
 darwin64_pass_struct_by_value 
-  (ffi_type *, char *, unsigned, unsigned *, double **, unsigned long **);
+  (ffi_type *, char *, unsigned, unsigned *, double **, unsigned REALLYLONG **);
 #endif
 
-/* This depends on GPR_SIZE = sizeof (unsigned long) */
+/* This depends on GPR_SIZE = sizeof (unsigned REALLYLONG) */
 
 void
-ffi_prep_args (extended_cif *ecif, unsigned long *const stack)
+ffi_prep_args (extended_cif *ecif, unsigned REALLYLONG *const stack)
 {
   const unsigned bytes = ecif->cif->bytes;
   const unsigned flags = ecif->cif->flags;
@@ -113,7 +113,7 @@ ffi_prep_args (extended_cif *ecif, unsigned long *const stack)
 #endif
 
   /* 'stacktop' points at the previous backchain pointer.  */
-  unsigned long *const stacktop = stack + (bytes / sizeof(unsigned long));
+  unsigned REALLYLONG *const stacktop = stack + (bytes / sizeof(unsigned REALLYLONG));
 
   /* 'fpr_base' points at the space for fpr1, and grows upwards as
      we use FPR registers.  */
@@ -121,12 +121,12 @@ ffi_prep_args (extended_cif *ecif, unsigned long *const stack)
   int gp_count = 0, fparg_count = 0;
 
   /* 'next_arg' grows up as we put parameters in it.  */
-  unsigned long *next_arg = stack + LINKAGE_AREA_GPRS; /* 6 reserved positions.  */
+  unsigned REALLYLONG *next_arg = stack + LINKAGE_AREA_GPRS; /* 6 reserved positions.  */
 
   int i;
   double double_tmp;
   void **p_argv = ecif->avalue;
-  unsigned long gprvalue;
+  unsigned REALLYLONG gprvalue;
   ffi_type** ptr = ecif->cif->arg_types;
 #if !defined(POWERPC_DARWIN64) 
   char *dest_cpy;
@@ -143,7 +143,7 @@ ffi_prep_args (extended_cif *ecif, unsigned long *const stack)
      Return values are referenced by r3, so r4 is the first parameter.  */
 
   if (flags & FLAG_RETVAL_REFERENCE)
-    *next_arg++ = (unsigned long) (char *) ecif->rvalue;
+    *next_arg++ = (unsigned REALLYLONG) (char *) ecif->rvalue;
 
   /* Now for the arguments.  */
   for (i = nargs; i > 0; i--, ptr++, p_argv++)
@@ -228,16 +228,16 @@ ffi_prep_args (extended_cif *ecif, unsigned long *const stack)
 	case FFI_TYPE_UINT64:
 	case FFI_TYPE_SINT64:
 #ifdef POWERPC64
-	  gprvalue = *(long long *) *p_argv;
+	  gprvalue = *(REALLYLONG *) *p_argv;
 	  goto putgpr;
 #else
-	  *(long long *) next_arg = *(long long *) *p_argv;
+	  *(REALLYLONG *) next_arg = *(REALLYLONG *) *p_argv;
 	  next_arg += 2;
 	  gp_count += 2;
 #endif
 	  break;
 	case FFI_TYPE_POINTER:
-	  gprvalue = *(unsigned long *) *p_argv;
+	  gprvalue = *(unsigned REALLYLONG *) *p_argv;
 	  goto putgpr;
 	case FFI_TYPE_UINT8:
 	  gprvalue = *(unsigned char *) *p_argv;
@@ -255,7 +255,7 @@ ffi_prep_args (extended_cif *ecif, unsigned long *const stack)
 	case FFI_TYPE_STRUCT:
 	  size_al = (*ptr)->size;
 #if defined(POWERPC_DARWIN64)
-	  next_arg = (unsigned long *)ALIGN((char *)next_arg, (*ptr)->alignment);
+	  next_arg = (unsigned REALLYLONG *)ALIGN((char *)next_arg, (*ptr)->alignment);
 	  darwin64_pass_struct_by_value (*ptr, (char *) *p_argv, 
 					 (unsigned) size_al,
 					 (unsigned int *) &fparg_count,
@@ -381,7 +381,7 @@ darwin64_struct_size_exceeds_gprs_p (ffi_type *s, char *src, unsigned *nfpr)
 	  default:
 	    /* If we try and place any item, that is non-float, once we've
 	       exceeded the 8 GPR mark, then we can't fit the struct.  */
-	    if ((unsigned long)item_base >= 8*8) 
+	    if ((unsigned REALLYLONG)item_base >= 8*8) 
 	      return 1;
 	    break;    
 	}
@@ -475,9 +475,9 @@ darwin64_pass_struct_floats (ffi_type *s, char *src,
    Break out a struct into params and float registers.  */
 static void
 darwin64_pass_struct_by_value (ffi_type *s, char *src, unsigned size,
-			       unsigned *nfpr, double **fprs, unsigned long **arg)
+			       unsigned *nfpr, double **fprs, unsigned REALLYLONG **arg)
 {
-  unsigned long *next_arg = *arg;
+  unsigned REALLYLONG *next_arg = *arg;
   char *dest_cpy = (char *)next_arg;
 
   FFI_ASSERT (s->type == FFI_TYPE_STRUCT)
@@ -686,7 +686,7 @@ ffi_prep_cif_machdep (ffi_cif *cif)
   /* Space for the frame pointer, callee's LR, CR, etc, and for
      the asm's temp regs.  */
 
-  bytes = (LINKAGE_AREA_GPRS + ASM_NEEDS_REGISTERS) * sizeof(unsigned long);
+  bytes = (LINKAGE_AREA_GPRS + ASM_NEEDS_REGISTERS) * sizeof(unsigned REALLYLONG);
 
   /* Return value handling.  
     The rules m32 are as follows:
@@ -821,7 +821,7 @@ ffi_prep_cif_machdep (ffi_cif *cif)
 #if defined(POWERPC64)
 	  intarg_count++;
 #else
-	  /* 'long long' arguments are passed as two words, but
+	  /* 'REALLYLONG' arguments are passed as two words, but
 	     either both words must fit in registers or both go
 	     on the stack.  If they go on the stack, they must
 	     be 8-byte-aligned.  */
@@ -888,13 +888,13 @@ ffi_prep_cif_machdep (ffi_cif *cif)
   /* Stack space.  */
 #ifdef POWERPC64
   if ((intarg_count + fparg_count) > NUM_GPR_ARG_REGISTERS)
-    bytes += (intarg_count + fparg_count) * sizeof(long);
+    bytes += (intarg_count + fparg_count) * sizeof(REALLYLONG);
 #else
   if ((intarg_count + 2 * fparg_count) > NUM_GPR_ARG_REGISTERS)
-    bytes += (intarg_count + 2 * fparg_count) * sizeof(long);
+    bytes += (intarg_count + 2 * fparg_count) * sizeof(REALLYLONG);
 #endif
   else
-    bytes += NUM_GPR_ARG_REGISTERS * sizeof(long);
+    bytes += NUM_GPR_ARG_REGISTERS * sizeof(REALLYLONG);
 
   /* The stack space allocated needs to be a multiple of 16 bytes.  */
   bytes = ALIGN(bytes, 16) ;
@@ -905,10 +905,10 @@ ffi_prep_cif_machdep (ffi_cif *cif)
   return FFI_OK;
 }
 
-extern void ffi_call_AIX(extended_cif *, long, unsigned, unsigned *,
+extern void ffi_call_AIX(extended_cif *, REALLYLONG, unsigned, unsigned *,
 			 void (*fn)(void), void (*fn2)(void));
 
-extern void ffi_call_DARWIN(extended_cif *, long, unsigned, unsigned *,
+extern void ffi_call_DARWIN(extended_cif *, REALLYLONG, unsigned, unsigned *,
 			    void (*fn)(void), void (*fn2)(void), ffi_type*);
 
 void
@@ -933,11 +933,11 @@ ffi_call (ffi_cif *cif, void (*fn)(void), void *rvalue, void **avalue)
   switch (cif->abi)
     {
     case FFI_AIX:
-      ffi_call_AIX(&ecif, -(long)cif->bytes, cif->flags, ecif.rvalue, fn,
+      ffi_call_AIX(&ecif, -(REALLYLONG)cif->bytes, cif->flags, ecif.rvalue, fn,
 		   FFI_FN(ffi_prep_args));
       break;
     case FFI_DARWIN:
-      ffi_call_DARWIN(&ecif, -(long)cif->bytes, cif->flags, ecif.rvalue, fn,
+      ffi_call_DARWIN(&ecif, -(REALLYLONG)cif->bytes, cif->flags, ecif.rvalue, fn,
 		      FFI_FN(ffi_prep_args), cif->rtype);
       break;
     default:
@@ -1029,8 +1029,8 @@ ffi_prep_closure_loc (ffi_closure* closure,
 	tramp[10] = 0xe96b0008;  /*   lwz     r11,8(r11) static chain  */
 	tramp[11] = 0x4e800420;  /*   bctr  */
 
-	*((unsigned long *)&tramp[2]) = (unsigned long) ffi_closure_ASM; /* function  */
-	*((unsigned long *)&tramp[4]) = (unsigned long) codeloc; /* context  */
+	*((unsigned REALLYLONG *)&tramp[2]) = (unsigned REALLYLONG) ffi_closure_ASM; /* function  */
+	*((unsigned REALLYLONG *)&tramp[4]) = (unsigned REALLYLONG) codeloc; /* context  */
 #else
 	tramp[0] = 0x7c0802a6;  /*   mflr    r0  */
 	tramp[1] = 0x429f000d;  /*   bcl-    20,4*cr7+so,0x10  */
@@ -1040,8 +1040,8 @@ ffi_prep_closure_loc (ffi_closure* closure,
 	tramp[7] = 0x7d8903a6;  /*   mtctr   r12  */
 	tramp[8] = 0x816b0004;  /*   lwz     r11,4(r11) static chain  */
 	tramp[9] = 0x4e800420;  /*   bctr  */
-	tramp[2] = (unsigned long) ffi_closure_ASM; /* function  */
-	tramp[3] = (unsigned long) codeloc; /* context  */
+	tramp[2] = (unsigned REALLYLONG) ffi_closure_ASM; /* function  */
+	tramp[3] = (unsigned REALLYLONG) codeloc; /* context  */
 #endif
 	closure->cif = cif;
 	closure->fun = fun;
@@ -1106,7 +1106,7 @@ typedef union
 
 ffi_type *
 ffi_closure_helper_DARWIN (ffi_closure *, void *,
-			   unsigned long *, ffi_dblfl *);
+			   unsigned REALLYLONG *, ffi_dblfl *);
 
 /* Basically the trampoline invokes ffi_closure_ASM, and on
    entry, r11 holds the address of the closure.
@@ -1117,7 +1117,7 @@ ffi_closure_helper_DARWIN (ffi_closure *, void *,
 
 ffi_type *
 ffi_closure_helper_DARWIN (ffi_closure *closure, void *rvalue,
-			   unsigned long *pgr, ffi_dblfl *pfr)
+			   unsigned REALLYLONG *pgr, ffi_dblfl *pfr)
 {
   /* rvalue is the pointer to space for return value in closure assembly
      pgr is the pointer to where r3-r10 are stored in ffi_closure_ASM
@@ -1133,7 +1133,7 @@ ffi_closure_helper_DARWIN (ffi_closure *closure, void *rvalue,
 
   void **          avalue;
   ffi_type **      arg_types;
-  long             i, avn;
+  REALLYLONG             i, avn;
   ffi_cif *        cif;
   ffi_dblfl *      end_pfr = pfr + NUM_FPR_ARG_REGISTERS;
   unsigned         size_al;
@@ -1208,7 +1208,7 @@ ffi_closure_helper_DARWIN (ffi_closure *closure, void *rvalue,
 	case FFI_TYPE_STRUCT:
 	  size_al = arg_types[i]->size;
 #if defined(POWERPC_DARWIN64)
-	  pgr = (unsigned long *)ALIGN((char *)pgr, arg_types[i]->alignment);
+	  pgr = (unsigned REALLYLONG *)ALIGN((char *)pgr, arg_types[i]->alignment);
 	  if (size_al < 3 || size_al == 4)
 	    {
 	      avalue[i] = ((char *)pgr)+8-size_al;
@@ -1258,7 +1258,7 @@ ffi_closure_helper_DARWIN (ffi_closure *closure, void *rvalue,
 	  pgr++;
 	  break;
 #else
-	  /* Long long ints are passed in two gpr's.  */
+	  /* Long REALLYLONG ints are passed in two gpr's.  */
 	  avalue[i] = pgr;
 	  pgr += 2;
 	  break;
@@ -1313,7 +1313,7 @@ ffi_closure_helper_DARWIN (ffi_closure *closure, void *rvalue,
 	    {
 	      if (pfr < end_pfr)
 		{
-		  *pgr = *(unsigned long *) pfr;
+		  *pgr = *(unsigned REALLYLONG *) pfr;
 		  pfr++;
 		}
 	      avalue[i] = pgr;

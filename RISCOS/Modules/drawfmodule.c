@@ -161,7 +161,7 @@ static PyObject *DrawF_Path(PyDrawFObject *self,PyObject *arg)
   draw_line_style line_style;
   draw_dash_pattern *dash_pattern=0;
   os_box *box;
-  long *pe;
+  REALLYLONG *pe;
   if(!PyArg_ParseTuple(arg,"O!(iiii)|O!i",&PyList_Type,&pl,(int*)&fill,
      (int*)&outline,&width,(int*)&style,&PyTuple_Type,&dp,&start)) return NULL;
   if(dp)
@@ -185,7 +185,7 @@ static PyObject *DrawF_Path(PyDrawFObject *self,PyObject *arg)
   box=&dpath->bbox;
   dpath->fill=fill;dpath->outline=outline;
   dpath->width=width;dpath->style=style;
-  pe=(long*)&(dpath->path);
+  pe=(REALLYLONG*)&(dpath->path);
   if(dp)
   { dash_pattern=&(((drawfile_path_with_pattern*)dpath)->pattern);
     dash_pattern->start=start;
@@ -582,7 +582,7 @@ static int drawf_ass_item(PyDrawFObject *b,Py_ssize_t i,PyObject *v)
   { PyErr_SetString(PyExc_TypeError,"drawf item must be integer");
     return -1;
   }
-  ((long*)(b->drawf))[i]=PyInt_AsLong(v);
+  ((REALLYLONG*)(b->drawf))[i]=PyInt_AsLong(v);
   return 0;
 }
 */
@@ -604,8 +604,8 @@ static PySequenceMethods drawf_as_sequence=
 
 static PyObject *PyDrawF_GetAttr(PyDrawFObject *s,char *name)
 {
-  if (!strcmp(name, "size")) return PyInt_FromLong((long)s->size);
-  if (!strcmp(name, "start")) return PyInt_FromLong((long)s->drawf);
+  if (!strcmp(name, "size")) return PyInt_FromLong((REALLYLONG)s->size);
+  if (!strcmp(name, "start")) return PyInt_FromLong((REALLYLONG)s->drawf);
   if (!strcmp(name, "__members__"))
   { PyObject *list = PyList_New(2);
     if (list)

@@ -467,7 +467,7 @@ static PyObject *Qdoffs_SetPixelsState(PyObject *_self, PyObject *_args)
 static PyObject *Qdoffs_GetPixRowBytes(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long _rv;
+    REALLYLONG _rv;
     PixMapHandle pm;
 #ifndef GetPixRowBytes
     PyMac_PRECHECK(GetPixRowBytes);
@@ -543,7 +543,7 @@ static PyObject *Qdoffs_QDDone(PyObject *_self, PyObject *_args)
 static PyObject *Qdoffs_OffscreenVersion(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long _rv;
+    REALLYLONG _rv;
 #ifndef OffscreenVersion
     PyMac_PRECHECK(OffscreenVersion);
 #endif
@@ -664,7 +664,7 @@ static PyMethodDef Qdoffs_methods[] = {
     {"SetPixelsState", (PyCFunction)Qdoffs_SetPixelsState, 1,
      PyDoc_STR("(PixMapHandle pm, GWorldFlags state) -> None")},
     {"GetPixRowBytes", (PyCFunction)Qdoffs_GetPixRowBytes, 1,
-     PyDoc_STR("(PixMapHandle pm) -> (long _rv)")},
+     PyDoc_STR("(PixMapHandle pm) -> (REALLYLONG _rv)")},
     {"NewScreenBuffer", (PyCFunction)Qdoffs_NewScreenBuffer, 1,
      PyDoc_STR("(Rect globalRect, Boolean purgeable) -> (GDHandle gdh, PixMapHandle offscreenPixMap)")},
     {"DisposeScreenBuffer", (PyCFunction)Qdoffs_DisposeScreenBuffer, 1,
@@ -672,7 +672,7 @@ static PyMethodDef Qdoffs_methods[] = {
     {"QDDone", (PyCFunction)Qdoffs_QDDone, 1,
      PyDoc_STR("(GrafPtr port) -> (Boolean _rv)")},
     {"OffscreenVersion", (PyCFunction)Qdoffs_OffscreenVersion, 1,
-     PyDoc_STR("() -> (long _rv)")},
+     PyDoc_STR("() -> (REALLYLONG _rv)")},
     {"NewTempScreenBuffer", (PyCFunction)Qdoffs_NewTempScreenBuffer, 1,
      PyDoc_STR("(Rect globalRect, Boolean purgeable) -> (GDHandle gdh, PixMapHandle offscreenPixMap)")},
     {"PixMap32Bit", (PyCFunction)Qdoffs_PixMap32Bit, 1,

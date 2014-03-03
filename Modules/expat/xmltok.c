@@ -23,6 +23,16 @@
 #include "xmltok.h"
 #include "nametab.h"
 
+#ifndef REALLYLONG
+typedef long long REALLYLONG;
+#endif
+#ifndef UREALLYLONG
+typedef unsigned long long UREALLYLONG;
+#endif
+#ifndef SREALLYLONG
+typedef signed long long SREALLYLONG;
+#endif
+
 #ifdef XML_DTD
 #define IGNORE_SECTION_TOK_VTABLE , PREFIX(ignoreSectionTok)
 #else
@@ -357,7 +367,7 @@ utf8_toUtf16(const ENCODING *enc,
       break;
     case BT_LEAD4:
       {
-        unsigned long n;
+        UREALLYLONG n;
         if (to + 1 == toLim)
           goto after;
         n = ((from[0] & 0x7) << 18) | ((from[1] & 0x3f) << 12)

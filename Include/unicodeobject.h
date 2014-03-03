@@ -127,7 +127,7 @@ Copyright (c) Corporation for National Research Initiatives.
 #if SIZEOF_INT >= 4
 typedef unsigned int Py_UCS4;
 #elif SIZEOF_LONG >= 4
-typedef unsigned long Py_UCS4;
+typedef UREALLYLONG Py_UCS4;
 #endif
 
 /* Py_UNICODE is the native Unicode storage format (code unit) used by
@@ -416,7 +416,7 @@ typedef struct {
     PyObject_HEAD
     Py_ssize_t length;          /* Length of raw Unicode data in buffer */
     Py_UNICODE *str;            /* Raw Unicode buffer */
-    long hash;                  /* Hash value; -1 if not set */
+    REALLYLONG hash;                  /* Hash value; -1 if not set */
     PyObject *defenc;           /* (Default) Encoded version as Python
                                    string, or NULL; this is used for
                                    implementing the buffer protocol */

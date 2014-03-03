@@ -42,7 +42,7 @@ static PyTypeObject Alctype;
 
 
 static void
-ErrorHandler(long code, const char *fmt, ...)
+ErrorHandler(REALLYLONG code, const char *fmt, ...)
 {
     va_list args;
     char buf[128];
@@ -74,7 +74,7 @@ param2python(int resource, int param, ALvalue value, ALparamInfo *pinfo)
     case AL_INT32_ELEM:
     case AL_RESOURCE_ELEM:
     case AL_ENUM_ELEM:
-        return PyInt_FromLong((long) value.i);
+        return PyInt_FromLong((REALLYLONG) value.i);
     case AL_INT64_ELEM:
         return PyLong_FromLongLong(value.ll);
     case AL_FIXED_ELEM:
@@ -106,9 +106,9 @@ python2elem(PyObject *item, void *ptr, int elementType)
         break;
     case AL_INT64_ELEM:
         if (PyInt_Check(item))
-            *((long long *) ptr) = PyInt_AsLong(item);
+            *((REALLYLONG *) ptr) = PyInt_AsLong(item);
         else if (PyLong_Check(item))
-            *((long long *) ptr) = PyLong_AsLongLong(item);
+            *((REALLYLONG *) ptr) = PyLong_AsLongLong(item);
         else {
             PyErr_BadArgument();
             return -1;
@@ -116,9 +116,9 @@ python2elem(PyObject *item, void *ptr, int elementType)
         break;
     case AL_FIXED_ELEM:
         if (PyInt_Check(item))
-            *((long long *) ptr) = alDoubleToFixed((double) PyInt_AsLong(item));
+            *((REALLYLONG *) ptr) = alDoubleToFixed((double) PyInt_AsLong(item));
         else if (PyFloat_Check(item))
-            *((long long *) ptr) = alDoubleToFixed(PyFloat_AsDouble(item));
+            *((REALLYLONG *) ptr) = alDoubleToFixed(PyFloat_AsDouble(item));
         else {
             PyErr_BadArgument();
             return -1;
@@ -173,8 +173,8 @@ python2param(int resource, ALpv *param, PyObject *value, ALparamInfo *pinfo)
         case AL_INT64_ELEM:
         case AL_FIXED_ELEM:
             param->sizeIn = PySequence_Size(value);
-            param->value.ptr = PyMem_NEW(long long, param->sizeIn);
-            stepsize = sizeof(long long);
+            param->value.ptr = PyMem_NEW(REALLYLONG, param->sizeIn);
+            stepsize = sizeof(REALLYLONG);
             break;
         }
         for (i = 0; i < param->sizeIn; i++) {
@@ -268,7 +268,7 @@ GetConfig(alcobject *self, PyObject *args, int (*func)(ALconfig))
     if ((par = (*func)(self->config)) == -1)
         return NULL;
 
-    return PyInt_FromLong((long) par);
+    return PyInt_FromLong((REALLYLONG) par);
 }
 
 PyDoc_STRVAR(alc_SetWidth__doc__,
@@ -408,9 +408,9 @@ alc_GetQueueSize(alcobject *self, PyObject *args)
 #endif /* AL_NO_ELEM */
 
 static PyObject *
-setconfig(alcobject *self, PyObject *args, int (*func)(ALconfig, long))
+setconfig(alcobject *self, PyObject *args, int (*func)(ALconfig, REALLYLONG))
 {
-    long par;
+    REALLYLONG par;
 
     if (!PyArg_ParseTuple(args, "l:SetConfig", &par))
         return NULL;
@@ -423,9 +423,9 @@ setconfig(alcobject *self, PyObject *args, int (*func)(ALconfig, long))
 }
 
 static PyObject *
-getconfig(alcobject *self, PyObject *args, long (*func)(ALconfig))
+getconfig(alcobject *self, PyObject *args, REALLYLONG (*func)(ALconfig))
 {
-    long par;
+    REALLYLONG par;
 
     if (!PyArg_ParseTuple(args, ":GetConfig"))
         return NULL;
@@ -433,7 +433,7 @@ getconfig(alcobject *self, PyObject *args, long (*func)(ALconfig))
     if ((par = (*func)(self->config)) == -1)
         return NULL;
 
-    return PyInt_FromLong((long) par);
+    return PyInt_FromLong((REALLYLONG) par);
 }
 
 static PyObject *
@@ -654,7 +654,7 @@ alp_GetResource(alpobject *self, PyObject *args)
         return NULL;
     if ((resource = alGetResource(self->port)) == 0)
         return NULL;
-    return PyInt_FromLong((long) resource);
+    return PyInt_FromLong((REALLYLONG) resource);
 }
 
 
@@ -672,7 +672,7 @@ alp_GetFD(alpobject *self, PyObject *args)
     if ((fd = alGetFD(self->port)) < 0)
         return NULL;
 
-    return PyInt_FromLong((long) fd);
+    return PyInt_FromLong((REALLYLONG) fd);
 }
 
 
@@ -689,7 +689,7 @@ alp_GetFilled(alpobject *self, PyObject *args)
         return NULL;
     if ((filled = alGetFilled(self->port)) < 0)
         return NULL;
-    return PyInt_FromLong((long) filled);
+    return PyInt_FromLong((REALLYLONG) filled);
 }
 
 
@@ -706,7 +706,7 @@ alp_GetFillable(alpobject *self, PyObject *args)
         return NULL;
     if ((fillable = alGetFillable(self->port)) < 0)
         return NULL;
-    return PyInt_FromLong((long) fillable);
+    return PyInt_FromLong((REALLYLONG) fillable);
 }
 
 
@@ -795,7 +795,7 @@ alp_DiscardFrames(alpobject *self, PyObject *args)
     if (framecount < 0)
         return NULL;
 
-    return PyInt_FromLong((long) framecount);
+    return PyInt_FromLong((REALLYLONG) framecount);
 }
 
 
@@ -857,7 +857,7 @@ alp_GetFillPoint(alpobject *self, PyObject *args)
     if ((fillpoint = alGetFillPoint(self->port)) < 0)
         return NULL;
 
-    return PyInt_FromLong((long) fillpoint);
+    return PyInt_FromLong((REALLYLONG) fillpoint);
 }
 
 
@@ -876,7 +876,7 @@ alp_GetFrameNumber(alpobject *self, PyObject *args)
     if (alGetFrameNumber(self->port, &fnum) < 0)
         return NULL;
 
-    return PyLong_FromLongLong((long long) fnum);
+    return PyLong_FromLongLong((REALLYLONG) fnum);
 }
 
 
@@ -894,8 +894,8 @@ alp_GetFrameTime(alpobject *self, PyObject *args)
         return NULL;
     if (alGetFrameTime(self->port, &fnum, &time) < 0)
         return NULL;
-    v0 = PyLong_FromLongLong((long long) fnum);
-    v1 = PyLong_FromLongLong((long long) time);
+    v0 = PyLong_FromLongLong((REALLYLONG) fnum);
+    v1 = PyLong_FromLongLong((REALLYLONG) time);
     if (PyErr_Occurred()) {
         Py_XDECREF(v0);
         Py_XDECREF(v1);
@@ -1017,7 +1017,7 @@ alp_getfd(alpobject *self, PyObject *args)
 static PyObject *
 alp_getfilled(alpobject *self, PyObject *args)
 {
-    long count;
+    REALLYLONG count;
 
     if (!PyArg_ParseTuple(args, ":GetFilled"))
         return NULL;
@@ -1029,7 +1029,7 @@ alp_getfilled(alpobject *self, PyObject *args)
 static PyObject *
 alp_getfillable(alpobject *self, PyObject *args)
 {
-    long count;
+    REALLYLONG count;
 
     if (!PyArg_ParseTuple(args, ":GetFillable"))
         return NULL;
@@ -1041,7 +1041,7 @@ alp_getfillable(alpobject *self, PyObject *args)
 static PyObject *
 alp_readsamps(alpobject *self, PyObject *args)
 {
-    long count;
+    REALLYLONG count;
     PyObject *v;
     ALconfig c;
     int width;
@@ -1108,7 +1108,7 @@ alp_writesamps(alpobject *self, PyObject *args)
 #endif /* AL_405 */
     ALfreeconfig(c);
     Py_BEGIN_ALLOW_THREADS
-    ret = ALwritesamps (self->port, (void *) buf, (long) size / width);
+    ret = ALwritesamps (self->port, (void *) buf, (REALLYLONG) size / width);
     Py_END_ALLOW_THREADS
     if (ret == -1)
         return NULL;
@@ -1120,7 +1120,7 @@ alp_writesamps(alpobject *self, PyObject *args)
 static PyObject *
 alp_getfillpoint(alpobject *self, PyObject *args)
 {
-    long count;
+    REALLYLONG count;
 
     if (!PyArg_ParseTuple(args, ":GetFillPoint"))
         return NULL;
@@ -1132,7 +1132,7 @@ alp_getfillpoint(alpobject *self, PyObject *args)
 static PyObject *
 alp_setfillpoint(alpobject *self, PyObject *args)
 {
-    long count;
+    REALLYLONG count;
 
     if (!PyArg_ParseTuple(args, "l:SetFillPoint", &count))
         return NULL;
@@ -1173,14 +1173,14 @@ static PyObject *
 alp_getstatus(alpobject *self, PyObject *args)
 {
     PyObject *list, *v;
-    long *PVbuffer;
-    long length;
+    REALLYLONG *PVbuffer;
+    REALLYLONG length;
     int i;
 
     if (!PyArg_ParseTuple(args, "O!", &PyList_Type, &list))
         return NULL;
     length = PyList_Size(list);
-    PVbuffer = PyMem_NEW(long, length);
+    PVbuffer = PyMem_NEW(REALLYLONG, length);
     if (PVbuffer == NULL)
         return PyErr_NoMemory();
     for (i = 0; i < length; i++) {
@@ -1389,7 +1389,7 @@ al_Connect(PyObject *self, PyObject *args)
 
     if (id < 0)
         return NULL;
-    return PyInt_FromLong((long) id);
+    return PyInt_FromLong((REALLYLONG) id);
 }
 
 PyDoc_STRVAR(al_Disconnect__doc__,
@@ -1454,7 +1454,7 @@ al_GetParams(PyObject *self, PyObject *args)
                 break;
             case AL_INT64_ELEM:
             case AL_FIXED_ELEM:
-                pvs[i].value.ptr = PyMem_NEW(long long, pinfo[i].maxElems);
+                pvs[i].value.ptr = PyMem_NEW(REALLYLONG, pinfo[i].maxElems);
                 pvs[i].sizeIn = pinfo[i].maxElems;
                 break;
             case AL_CHAR_ELEM:
@@ -1513,13 +1513,13 @@ al_GetParams(PyObject *self, PyObject *args)
                 case AL_INT32_ELEM:
                 case AL_RESOURCE_ELEM:
                 case AL_ENUM_ELEM:
-                    PyList_SetItem(item, j, PyInt_FromLong((long) ((int *) pvs[i].value.ptr)[j]));
+                    PyList_SetItem(item, j, PyInt_FromLong((REALLYLONG) ((int *) pvs[i].value.ptr)[j]));
                     break;
                 case AL_INT64_ELEM:
-                    PyList_SetItem(item, j, PyLong_FromLongLong(((long long *) pvs[i].value.ptr)[j]));
+                    PyList_SetItem(item, j, PyLong_FromLongLong(((REALLYLONG *) pvs[i].value.ptr)[j]));
                     break;
                 case AL_FIXED_ELEM:
-                    PyList_SetItem(item, j, PyFloat_FromDouble(alFixedToDouble(((long long *) pvs[i].value.ptr)[j])));
+                    PyList_SetItem(item, j, PyFloat_FromDouble(alFixedToDouble(((REALLYLONG *) pvs[i].value.ptr)[j])));
                     break;
                 default:
                     PyErr_SetString(ErrorObject, "internal error");
@@ -1697,33 +1697,33 @@ al_GetParamInfo(PyObject *self, PyObject *args)
     v = PyDict_New();
     if (!v) return NULL;
 
-    item = PyInt_FromLong((long) pinfo.resource);
+    item = PyInt_FromLong((REALLYLONG) pinfo.resource);
     PyDict_SetItemString(v, "resource", item);
     Py_DECREF(item);
 
-    item = PyInt_FromLong((long) pinfo.param);
+    item = PyInt_FromLong((REALLYLONG) pinfo.param);
     PyDict_SetItemString(v, "param", item);
     Py_DECREF(item);
 
-    item = PyInt_FromLong((long) pinfo.valueType);
+    item = PyInt_FromLong((REALLYLONG) pinfo.valueType);
     PyDict_SetItemString(v, "valueType", item);
     Py_DECREF(item);
 
     if (pinfo.valueType != AL_NO_VAL && pinfo.valueType != AL_SCALAR_VAL) {
         /* multiple values */
-        item = PyInt_FromLong((long) pinfo.maxElems);
+        item = PyInt_FromLong((REALLYLONG) pinfo.maxElems);
         PyDict_SetItemString(v, "maxElems", item);
         Py_DECREF(item);
 
         if (pinfo.valueType == AL_MATRIX_VAL) {
             /* 2 dimensional */
-            item = PyInt_FromLong((long) pinfo.maxElems2);
+            item = PyInt_FromLong((REALLYLONG) pinfo.maxElems2);
             PyDict_SetItemString(v, "maxElems2", item);
             Py_DECREF(item);
         }
     }
 
-    item = PyInt_FromLong((long) pinfo.elementType);
+    item = PyInt_FromLong((REALLYLONG) pinfo.elementType);
     PyDict_SetItemString(v, "elementType", item);
     Py_DECREF(item);
 
@@ -1755,7 +1755,7 @@ al_GetParamInfo(PyObject *self, PyObject *args)
         PyDict_SetItemString(v, "maxDelta", item);
         Py_DECREF(item);
 
-        item = PyInt_FromLong((long) pinfo.specialVals);
+        item = PyInt_FromLong((REALLYLONG) pinfo.specialVals);
         PyDict_SetItemString(v, "specialVals", item);
         Py_DECREF(item);
     }
@@ -1776,7 +1776,7 @@ al_GetResourceByName(PyObject *self, PyObject *args)
         return NULL;
     if ((res = alGetResourceByName(start_res, name, type)) == 0)
         return NULL;
-    return PyInt_FromLong((long) res);
+    return PyInt_FromLong((REALLYLONG) res);
 }
 
 PyDoc_STRVAR(al_IsSubtype__doc__,
@@ -1789,7 +1789,7 @@ al_IsSubtype(PyObject *self, PyObject *args)
 
     if (!PyArg_ParseTuple(args, "ii:IsSubtype", &type, &subtype))
         return NULL;
-    return PyInt_FromLong((long) alIsSubtype(type, subtype));
+    return PyInt_FromLong((REALLYLONG) alIsSubtype(type, subtype));
 }
 
 PyDoc_STRVAR(al_SetErrorHandler__doc__, "");
@@ -1837,10 +1837,10 @@ al_newconfig(PyObject *self, PyObject *args)
 static PyObject *
 al_queryparams(PyObject *self, PyObject *args)
 {
-    long device;
-    long length;
-    long *PVbuffer;
-    long PVdummy[2];
+    REALLYLONG device;
+    REALLYLONG length;
+    REALLYLONG *PVbuffer;
+    REALLYLONG PVdummy[2];
     PyObject *v = NULL;
     int i;
 
@@ -1848,7 +1848,7 @@ al_queryparams(PyObject *self, PyObject *args)
         return NULL;
     if ((length = ALqueryparams(device, PVdummy, 2L)) == -1)
         return NULL;
-    if ((PVbuffer = PyMem_NEW(long, length)) == NULL)
+    if ((PVbuffer = PyMem_NEW(REALLYLONG, length)) == NULL)
         return PyErr_NoMemory();
     if (ALqueryparams(device, PVbuffer, length) >= 0 &&
         (v = PyList_New((int)length)) != NULL) {
@@ -1860,18 +1860,18 @@ al_queryparams(PyObject *self, PyObject *args)
 }
 
 static PyObject *
-doParams(PyObject *args, int (*func)(long, long *, long), int modified)
+doParams(PyObject *args, int (*func)(REALLYLONG, REALLYLONG *, REALLYLONG), int modified)
 {
-    long device;
+    REALLYLONG device;
     PyObject *list, *v;
-    long *PVbuffer;
-    long length;
+    REALLYLONG *PVbuffer;
+    REALLYLONG length;
     int i;
 
     if (!PyArg_ParseTuple(args, "lO!", &device, &PyList_Type, &list))
         return NULL;
     length = PyList_Size(list);
-    PVbuffer = PyMem_NEW(long, length);
+    PVbuffer = PyMem_NEW(REALLYLONG, length);
     if (PVbuffer == NULL)
         return PyErr_NoMemory();
     for (i = 0; i < length; i++) {
@@ -1915,7 +1915,7 @@ al_setparams(PyObject *self, PyObject *args)
 static PyObject *
 al_getname(PyObject *self, PyObject *args)
 {
-    long device, descriptor;
+    REALLYLONG device, descriptor;
     char *name;
 
     if (!PyArg_ParseTuple(args, "ll:getname", &device, &descriptor))
@@ -1928,7 +1928,7 @@ al_getname(PyObject *self, PyObject *args)
 static PyObject *
 al_getdefault(PyObject *self, PyObject *args)
 {
-    long device, descriptor, value;
+    REALLYLONG device, descriptor, value;
 
     if (!PyArg_ParseTuple(args, "ll:getdefault", &device, &descriptor))
         return NULL;
@@ -1940,7 +1940,7 @@ al_getdefault(PyObject *self, PyObject *args)
 static PyObject *
 al_getminmax(PyObject *self, PyObject *args)
 {
-    long device, descriptor, min, max;
+    REALLYLONG device, descriptor, min, max;
 
     if (!PyArg_ParseTuple(args, "ll:getminmax", &device, &descriptor))
         return NULL;
@@ -2014,1207 +2014,1207 @@ inital(void)
 
     /* XXXX Add constants here */
 #ifdef AL_4CHANNEL
-    x =  PyInt_FromLong((long) AL_4CHANNEL);
+    x =  PyInt_FromLong((REALLYLONG) AL_4CHANNEL);
     if (x == NULL || PyDict_SetItemString(d, "FOURCHANNEL", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_ADAT_IF_TYPE
-    x =  PyInt_FromLong((long) AL_ADAT_IF_TYPE);
+    x =  PyInt_FromLong((REALLYLONG) AL_ADAT_IF_TYPE);
     if (x == NULL || PyDict_SetItemString(d, "ADAT_IF_TYPE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_ADAT_MCLK_TYPE
-    x =  PyInt_FromLong((long) AL_ADAT_MCLK_TYPE);
+    x =  PyInt_FromLong((REALLYLONG) AL_ADAT_MCLK_TYPE);
     if (x == NULL || PyDict_SetItemString(d, "ADAT_MCLK_TYPE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_AES_IF_TYPE
-    x =  PyInt_FromLong((long) AL_AES_IF_TYPE);
+    x =  PyInt_FromLong((REALLYLONG) AL_AES_IF_TYPE);
     if (x == NULL || PyDict_SetItemString(d, "AES_IF_TYPE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_AES_MCLK_TYPE
-    x =  PyInt_FromLong((long) AL_AES_MCLK_TYPE);
+    x =  PyInt_FromLong((REALLYLONG) AL_AES_MCLK_TYPE);
     if (x == NULL || PyDict_SetItemString(d, "AES_MCLK_TYPE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_ANALOG_IF_TYPE
-    x =  PyInt_FromLong((long) AL_ANALOG_IF_TYPE);
+    x =  PyInt_FromLong((REALLYLONG) AL_ANALOG_IF_TYPE);
     if (x == NULL || PyDict_SetItemString(d, "ANALOG_IF_TYPE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_ASSOCIATE
-    x =  PyInt_FromLong((long) AL_ASSOCIATE);
+    x =  PyInt_FromLong((REALLYLONG) AL_ASSOCIATE);
     if (x == NULL || PyDict_SetItemString(d, "ASSOCIATE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_BAD_BUFFER_NULL
-    x =  PyInt_FromLong((long) AL_BAD_BUFFER_NULL);
+    x =  PyInt_FromLong((REALLYLONG) AL_BAD_BUFFER_NULL);
     if (x == NULL || PyDict_SetItemString(d, "BAD_BUFFER_NULL", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_BAD_BUFFERLENGTH
-    x =  PyInt_FromLong((long) AL_BAD_BUFFERLENGTH);
+    x =  PyInt_FromLong((REALLYLONG) AL_BAD_BUFFERLENGTH);
     if (x == NULL || PyDict_SetItemString(d, "BAD_BUFFERLENGTH", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_BAD_BUFFERLENGTH_NEG
-    x =  PyInt_FromLong((long) AL_BAD_BUFFERLENGTH_NEG);
+    x =  PyInt_FromLong((REALLYLONG) AL_BAD_BUFFERLENGTH_NEG);
     if (x == NULL || PyDict_SetItemString(d, "BAD_BUFFERLENGTH_NEG", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_BAD_BUFFERLENGTH_ODD
-    x =  PyInt_FromLong((long) AL_BAD_BUFFERLENGTH_ODD);
+    x =  PyInt_FromLong((REALLYLONG) AL_BAD_BUFFERLENGTH_ODD);
     if (x == NULL || PyDict_SetItemString(d, "BAD_BUFFERLENGTH_ODD", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_BAD_CHANNELS
-    x =  PyInt_FromLong((long) AL_BAD_CHANNELS);
+    x =  PyInt_FromLong((REALLYLONG) AL_BAD_CHANNELS);
     if (x == NULL || PyDict_SetItemString(d, "BAD_CHANNELS", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_BAD_CONFIG
-    x =  PyInt_FromLong((long) AL_BAD_CONFIG);
+    x =  PyInt_FromLong((REALLYLONG) AL_BAD_CONFIG);
     if (x == NULL || PyDict_SetItemString(d, "BAD_CONFIG", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_BAD_COUNT_NEG
-    x =  PyInt_FromLong((long) AL_BAD_COUNT_NEG);
+    x =  PyInt_FromLong((REALLYLONG) AL_BAD_COUNT_NEG);
     if (x == NULL || PyDict_SetItemString(d, "BAD_COUNT_NEG", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_BAD_DEVICE
-    x =  PyInt_FromLong((long) AL_BAD_DEVICE);
+    x =  PyInt_FromLong((REALLYLONG) AL_BAD_DEVICE);
     if (x == NULL || PyDict_SetItemString(d, "BAD_DEVICE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_BAD_DEVICE_ACCESS
-    x =  PyInt_FromLong((long) AL_BAD_DEVICE_ACCESS);
+    x =  PyInt_FromLong((REALLYLONG) AL_BAD_DEVICE_ACCESS);
     if (x == NULL || PyDict_SetItemString(d, "BAD_DEVICE_ACCESS", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_BAD_DIRECTION
-    x =  PyInt_FromLong((long) AL_BAD_DIRECTION);
+    x =  PyInt_FromLong((REALLYLONG) AL_BAD_DIRECTION);
     if (x == NULL || PyDict_SetItemString(d, "BAD_DIRECTION", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_BAD_FILLPOINT
-    x =  PyInt_FromLong((long) AL_BAD_FILLPOINT);
+    x =  PyInt_FromLong((REALLYLONG) AL_BAD_FILLPOINT);
     if (x == NULL || PyDict_SetItemString(d, "BAD_FILLPOINT", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_BAD_FLOATMAX
-    x =  PyInt_FromLong((long) AL_BAD_FLOATMAX);
+    x =  PyInt_FromLong((REALLYLONG) AL_BAD_FLOATMAX);
     if (x == NULL || PyDict_SetItemString(d, "BAD_FLOATMAX", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_BAD_ILLEGAL_STATE
-    x =  PyInt_FromLong((long) AL_BAD_ILLEGAL_STATE);
+    x =  PyInt_FromLong((REALLYLONG) AL_BAD_ILLEGAL_STATE);
     if (x == NULL || PyDict_SetItemString(d, "BAD_ILLEGAL_STATE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_BAD_NO_PORTS
-    x =  PyInt_FromLong((long) AL_BAD_NO_PORTS);
+    x =  PyInt_FromLong((REALLYLONG) AL_BAD_NO_PORTS);
     if (x == NULL || PyDict_SetItemString(d, "BAD_NO_PORTS", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_BAD_NOT_FOUND
-    x =  PyInt_FromLong((long) AL_BAD_NOT_FOUND);
+    x =  PyInt_FromLong((REALLYLONG) AL_BAD_NOT_FOUND);
     if (x == NULL || PyDict_SetItemString(d, "BAD_NOT_FOUND", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_BAD_NOT_IMPLEMENTED
-    x =  PyInt_FromLong((long) AL_BAD_NOT_IMPLEMENTED);
+    x =  PyInt_FromLong((REALLYLONG) AL_BAD_NOT_IMPLEMENTED);
     if (x == NULL || PyDict_SetItemString(d, "BAD_NOT_IMPLEMENTED", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_BAD_OUT_OF_MEM
-    x =  PyInt_FromLong((long) AL_BAD_OUT_OF_MEM);
+    x =  PyInt_FromLong((REALLYLONG) AL_BAD_OUT_OF_MEM);
     if (x == NULL || PyDict_SetItemString(d, "BAD_OUT_OF_MEM", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_BAD_PARAM
-    x =  PyInt_FromLong((long) AL_BAD_PARAM);
+    x =  PyInt_FromLong((REALLYLONG) AL_BAD_PARAM);
     if (x == NULL || PyDict_SetItemString(d, "BAD_PARAM", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_BAD_PERMISSIONS
-    x =  PyInt_FromLong((long) AL_BAD_PERMISSIONS);
+    x =  PyInt_FromLong((REALLYLONG) AL_BAD_PERMISSIONS);
     if (x == NULL || PyDict_SetItemString(d, "BAD_PERMISSIONS", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_BAD_PORT
-    x =  PyInt_FromLong((long) AL_BAD_PORT);
+    x =  PyInt_FromLong((REALLYLONG) AL_BAD_PORT);
     if (x == NULL || PyDict_SetItemString(d, "BAD_PORT", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_BAD_PORTSTYLE
-    x =  PyInt_FromLong((long) AL_BAD_PORTSTYLE);
+    x =  PyInt_FromLong((REALLYLONG) AL_BAD_PORTSTYLE);
     if (x == NULL || PyDict_SetItemString(d, "BAD_PORTSTYLE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_BAD_PVBUFFER
-    x =  PyInt_FromLong((long) AL_BAD_PVBUFFER);
+    x =  PyInt_FromLong((REALLYLONG) AL_BAD_PVBUFFER);
     if (x == NULL || PyDict_SetItemString(d, "BAD_PVBUFFER", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_BAD_QSIZE
-    x =  PyInt_FromLong((long) AL_BAD_QSIZE);
+    x =  PyInt_FromLong((REALLYLONG) AL_BAD_QSIZE);
     if (x == NULL || PyDict_SetItemString(d, "BAD_QSIZE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_BAD_RATE
-    x =  PyInt_FromLong((long) AL_BAD_RATE);
+    x =  PyInt_FromLong((REALLYLONG) AL_BAD_RATE);
     if (x == NULL || PyDict_SetItemString(d, "BAD_RATE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_BAD_RESOURCE
-    x =  PyInt_FromLong((long) AL_BAD_RESOURCE);
+    x =  PyInt_FromLong((REALLYLONG) AL_BAD_RESOURCE);
     if (x == NULL || PyDict_SetItemString(d, "BAD_RESOURCE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_BAD_SAMPFMT
-    x =  PyInt_FromLong((long) AL_BAD_SAMPFMT);
+    x =  PyInt_FromLong((REALLYLONG) AL_BAD_SAMPFMT);
     if (x == NULL || PyDict_SetItemString(d, "BAD_SAMPFMT", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_BAD_TRANSFER_SIZE
-    x =  PyInt_FromLong((long) AL_BAD_TRANSFER_SIZE);
+    x =  PyInt_FromLong((REALLYLONG) AL_BAD_TRANSFER_SIZE);
     if (x == NULL || PyDict_SetItemString(d, "BAD_TRANSFER_SIZE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_BAD_WIDTH
-    x =  PyInt_FromLong((long) AL_BAD_WIDTH);
+    x =  PyInt_FromLong((REALLYLONG) AL_BAD_WIDTH);
     if (x == NULL || PyDict_SetItemString(d, "BAD_WIDTH", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_CHANNEL_MODE
-    x =  PyInt_FromLong((long) AL_CHANNEL_MODE);
+    x =  PyInt_FromLong((REALLYLONG) AL_CHANNEL_MODE);
     if (x == NULL || PyDict_SetItemString(d, "CHANNEL_MODE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_CHANNELS
-    x =  PyInt_FromLong((long) AL_CHANNELS);
+    x =  PyInt_FromLong((REALLYLONG) AL_CHANNELS);
     if (x == NULL || PyDict_SetItemString(d, "CHANNELS", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_CHAR_ELEM
-    x =  PyInt_FromLong((long) AL_CHAR_ELEM);
+    x =  PyInt_FromLong((REALLYLONG) AL_CHAR_ELEM);
     if (x == NULL || PyDict_SetItemString(d, "CHAR_ELEM", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_CLOCK_GEN
-    x =  PyInt_FromLong((long) AL_CLOCK_GEN);
+    x =  PyInt_FromLong((REALLYLONG) AL_CLOCK_GEN);
     if (x == NULL || PyDict_SetItemString(d, "CLOCK_GEN", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_CLOCKGEN_TYPE
-    x =  PyInt_FromLong((long) AL_CLOCKGEN_TYPE);
+    x =  PyInt_FromLong((REALLYLONG) AL_CLOCKGEN_TYPE);
     if (x == NULL || PyDict_SetItemString(d, "CLOCKGEN_TYPE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_CONNECT
-    x =  PyInt_FromLong((long) AL_CONNECT);
+    x =  PyInt_FromLong((REALLYLONG) AL_CONNECT);
     if (x == NULL || PyDict_SetItemString(d, "CONNECT", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_CONNECTION_TYPE
-    x =  PyInt_FromLong((long) AL_CONNECTION_TYPE);
+    x =  PyInt_FromLong((REALLYLONG) AL_CONNECTION_TYPE);
     if (x == NULL || PyDict_SetItemString(d, "CONNECTION_TYPE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_CONNECTIONS
-    x =  PyInt_FromLong((long) AL_CONNECTIONS);
+    x =  PyInt_FromLong((REALLYLONG) AL_CONNECTIONS);
     if (x == NULL || PyDict_SetItemString(d, "CONNECTIONS", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_CRYSTAL_MCLK_TYPE
-    x =  PyInt_FromLong((long) AL_CRYSTAL_MCLK_TYPE);
+    x =  PyInt_FromLong((REALLYLONG) AL_CRYSTAL_MCLK_TYPE);
     if (x == NULL || PyDict_SetItemString(d, "CRYSTAL_MCLK_TYPE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_DEFAULT_DEVICE
-    x =  PyInt_FromLong((long) AL_DEFAULT_DEVICE);
+    x =  PyInt_FromLong((REALLYLONG) AL_DEFAULT_DEVICE);
     if (x == NULL || PyDict_SetItemString(d, "DEFAULT_DEVICE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_DEFAULT_INPUT
-    x =  PyInt_FromLong((long) AL_DEFAULT_INPUT);
+    x =  PyInt_FromLong((REALLYLONG) AL_DEFAULT_INPUT);
     if (x == NULL || PyDict_SetItemString(d, "DEFAULT_INPUT", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_DEFAULT_OUTPUT
-    x =  PyInt_FromLong((long) AL_DEFAULT_OUTPUT);
+    x =  PyInt_FromLong((REALLYLONG) AL_DEFAULT_OUTPUT);
     if (x == NULL || PyDict_SetItemString(d, "DEFAULT_OUTPUT", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_DEST
-    x =  PyInt_FromLong((long) AL_DEST);
+    x =  PyInt_FromLong((REALLYLONG) AL_DEST);
     if (x == NULL || PyDict_SetItemString(d, "DEST", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_DEVICE_TYPE
-    x =  PyInt_FromLong((long) AL_DEVICE_TYPE);
+    x =  PyInt_FromLong((REALLYLONG) AL_DEVICE_TYPE);
     if (x == NULL || PyDict_SetItemString(d, "DEVICE_TYPE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_DEVICES
-    x =  PyInt_FromLong((long) AL_DEVICES);
+    x =  PyInt_FromLong((REALLYLONG) AL_DEVICES);
     if (x == NULL || PyDict_SetItemString(d, "DEVICES", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_DIGITAL_IF_TYPE
-    x =  PyInt_FromLong((long) AL_DIGITAL_IF_TYPE);
+    x =  PyInt_FromLong((REALLYLONG) AL_DIGITAL_IF_TYPE);
     if (x == NULL || PyDict_SetItemString(d, "DIGITAL_IF_TYPE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_DIGITAL_INPUT_RATE
-    x =  PyInt_FromLong((long) AL_DIGITAL_INPUT_RATE);
+    x =  PyInt_FromLong((REALLYLONG) AL_DIGITAL_INPUT_RATE);
     if (x == NULL || PyDict_SetItemString(d, "DIGITAL_INPUT_RATE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_DISCONNECT
-    x =  PyInt_FromLong((long) AL_DISCONNECT);
+    x =  PyInt_FromLong((REALLYLONG) AL_DISCONNECT);
     if (x == NULL || PyDict_SetItemString(d, "DISCONNECT", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_ENUM_ELEM
-    x =  PyInt_FromLong((long) AL_ENUM_ELEM);
+    x =  PyInt_FromLong((REALLYLONG) AL_ENUM_ELEM);
     if (x == NULL || PyDict_SetItemString(d, "ENUM_ELEM", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_ENUM_VALUE
-    x =  PyInt_FromLong((long) AL_ENUM_VALUE);
+    x =  PyInt_FromLong((REALLYLONG) AL_ENUM_VALUE);
     if (x == NULL || PyDict_SetItemString(d, "ENUM_VALUE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_ERROR_INPUT_OVERFLOW
-    x =  PyInt_FromLong((long) AL_ERROR_INPUT_OVERFLOW);
+    x =  PyInt_FromLong((REALLYLONG) AL_ERROR_INPUT_OVERFLOW);
     if (x == NULL || PyDict_SetItemString(d, "ERROR_INPUT_OVERFLOW", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_ERROR_LENGTH
-    x =  PyInt_FromLong((long) AL_ERROR_LENGTH);
+    x =  PyInt_FromLong((REALLYLONG) AL_ERROR_LENGTH);
     if (x == NULL || PyDict_SetItemString(d, "ERROR_LENGTH", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_ERROR_LOCATION_LSP
-    x =  PyInt_FromLong((long) AL_ERROR_LOCATION_LSP);
+    x =  PyInt_FromLong((REALLYLONG) AL_ERROR_LOCATION_LSP);
     if (x == NULL || PyDict_SetItemString(d, "ERROR_LOCATION_LSP", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_ERROR_LOCATION_MSP
-    x =  PyInt_FromLong((long) AL_ERROR_LOCATION_MSP);
+    x =  PyInt_FromLong((REALLYLONG) AL_ERROR_LOCATION_MSP);
     if (x == NULL || PyDict_SetItemString(d, "ERROR_LOCATION_MSP", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_ERROR_NUMBER
-    x =  PyInt_FromLong((long) AL_ERROR_NUMBER);
+    x =  PyInt_FromLong((REALLYLONG) AL_ERROR_NUMBER);
     if (x == NULL || PyDict_SetItemString(d, "ERROR_NUMBER", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_ERROR_OUTPUT_UNDERFLOW
-    x =  PyInt_FromLong((long) AL_ERROR_OUTPUT_UNDERFLOW);
+    x =  PyInt_FromLong((REALLYLONG) AL_ERROR_OUTPUT_UNDERFLOW);
     if (x == NULL || PyDict_SetItemString(d, "ERROR_OUTPUT_UNDERFLOW", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_ERROR_TYPE
-    x =  PyInt_FromLong((long) AL_ERROR_TYPE);
+    x =  PyInt_FromLong((REALLYLONG) AL_ERROR_TYPE);
     if (x == NULL || PyDict_SetItemString(d, "ERROR_TYPE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_FIXED_ELEM
-    x =  PyInt_FromLong((long) AL_FIXED_ELEM);
+    x =  PyInt_FromLong((REALLYLONG) AL_FIXED_ELEM);
     if (x == NULL || PyDict_SetItemString(d, "FIXED_ELEM", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_FIXED_MCLK_TYPE
-    x =  PyInt_FromLong((long) AL_FIXED_MCLK_TYPE);
+    x =  PyInt_FromLong((REALLYLONG) AL_FIXED_MCLK_TYPE);
     if (x == NULL || PyDict_SetItemString(d, "FIXED_MCLK_TYPE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_GAIN
-    x =  PyInt_FromLong((long) AL_GAIN);
+    x =  PyInt_FromLong((REALLYLONG) AL_GAIN);
     if (x == NULL || PyDict_SetItemString(d, "GAIN", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_GAIN_REF
-    x =  PyInt_FromLong((long) AL_GAIN_REF);
+    x =  PyInt_FromLong((REALLYLONG) AL_GAIN_REF);
     if (x == NULL || PyDict_SetItemString(d, "GAIN_REF", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_HRB_TYPE
-    x =  PyInt_FromLong((long) AL_HRB_TYPE);
+    x =  PyInt_FromLong((REALLYLONG) AL_HRB_TYPE);
     if (x == NULL || PyDict_SetItemString(d, "HRB_TYPE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_INPUT_COUNT
-    x =  PyInt_FromLong((long) AL_INPUT_COUNT);
+    x =  PyInt_FromLong((REALLYLONG) AL_INPUT_COUNT);
     if (x == NULL || PyDict_SetItemString(d, "INPUT_COUNT", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_INPUT_DEVICE_TYPE
-    x =  PyInt_FromLong((long) AL_INPUT_DEVICE_TYPE);
+    x =  PyInt_FromLong((REALLYLONG) AL_INPUT_DEVICE_TYPE);
     if (x == NULL || PyDict_SetItemString(d, "INPUT_DEVICE_TYPE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_INPUT_DIGITAL
-    x =  PyInt_FromLong((long) AL_INPUT_DIGITAL);
+    x =  PyInt_FromLong((REALLYLONG) AL_INPUT_DIGITAL);
     if (x == NULL || PyDict_SetItemString(d, "INPUT_DIGITAL", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_INPUT_HRB_TYPE
-    x =  PyInt_FromLong((long) AL_INPUT_HRB_TYPE);
+    x =  PyInt_FromLong((REALLYLONG) AL_INPUT_HRB_TYPE);
     if (x == NULL || PyDict_SetItemString(d, "INPUT_HRB_TYPE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_INPUT_LINE
-    x =  PyInt_FromLong((long) AL_INPUT_LINE);
+    x =  PyInt_FromLong((REALLYLONG) AL_INPUT_LINE);
     if (x == NULL || PyDict_SetItemString(d, "INPUT_LINE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_INPUT_MIC
-    x =  PyInt_FromLong((long) AL_INPUT_MIC);
+    x =  PyInt_FromLong((REALLYLONG) AL_INPUT_MIC);
     if (x == NULL || PyDict_SetItemString(d, "INPUT_MIC", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_INPUT_PORT_TYPE
-    x =  PyInt_FromLong((long) AL_INPUT_PORT_TYPE);
+    x =  PyInt_FromLong((REALLYLONG) AL_INPUT_PORT_TYPE);
     if (x == NULL || PyDict_SetItemString(d, "INPUT_PORT_TYPE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_INPUT_RATE
-    x =  PyInt_FromLong((long) AL_INPUT_RATE);
+    x =  PyInt_FromLong((REALLYLONG) AL_INPUT_RATE);
     if (x == NULL || PyDict_SetItemString(d, "INPUT_RATE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_INPUT_SOURCE
-    x =  PyInt_FromLong((long) AL_INPUT_SOURCE);
+    x =  PyInt_FromLong((REALLYLONG) AL_INPUT_SOURCE);
     if (x == NULL || PyDict_SetItemString(d, "INPUT_SOURCE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_INT32_ELEM
-    x =  PyInt_FromLong((long) AL_INT32_ELEM);
+    x =  PyInt_FromLong((REALLYLONG) AL_INT32_ELEM);
     if (x == NULL || PyDict_SetItemString(d, "INT32_ELEM", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_INT64_ELEM
-    x =  PyInt_FromLong((long) AL_INT64_ELEM);
+    x =  PyInt_FromLong((REALLYLONG) AL_INT64_ELEM);
     if (x == NULL || PyDict_SetItemString(d, "INT64_ELEM", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_INTERFACE
-    x =  PyInt_FromLong((long) AL_INTERFACE);
+    x =  PyInt_FromLong((REALLYLONG) AL_INTERFACE);
     if (x == NULL || PyDict_SetItemString(d, "INTERFACE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_INTERFACE_TYPE
-    x =  PyInt_FromLong((long) AL_INTERFACE_TYPE);
+    x =  PyInt_FromLong((REALLYLONG) AL_INTERFACE_TYPE);
     if (x == NULL || PyDict_SetItemString(d, "INTERFACE_TYPE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_INVALID_PARAM
-    x =  PyInt_FromLong((long) AL_INVALID_PARAM);
+    x =  PyInt_FromLong((REALLYLONG) AL_INVALID_PARAM);
     if (x == NULL || PyDict_SetItemString(d, "INVALID_PARAM", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_INVALID_VALUE
-    x =  PyInt_FromLong((long) AL_INVALID_VALUE);
+    x =  PyInt_FromLong((REALLYLONG) AL_INVALID_VALUE);
     if (x == NULL || PyDict_SetItemString(d, "INVALID_VALUE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_JITTER
-    x =  PyInt_FromLong((long) AL_JITTER);
+    x =  PyInt_FromLong((REALLYLONG) AL_JITTER);
     if (x == NULL || PyDict_SetItemString(d, "JITTER", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_LABEL
-    x =  PyInt_FromLong((long) AL_LABEL);
+    x =  PyInt_FromLong((REALLYLONG) AL_LABEL);
     if (x == NULL || PyDict_SetItemString(d, "LABEL", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_LEFT_INPUT_ATTEN
-    x =  PyInt_FromLong((long) AL_LEFT_INPUT_ATTEN);
+    x =  PyInt_FromLong((REALLYLONG) AL_LEFT_INPUT_ATTEN);
     if (x == NULL || PyDict_SetItemString(d, "LEFT_INPUT_ATTEN", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_LEFT_MONITOR_ATTEN
-    x =  PyInt_FromLong((long) AL_LEFT_MONITOR_ATTEN);
+    x =  PyInt_FromLong((REALLYLONG) AL_LEFT_MONITOR_ATTEN);
     if (x == NULL || PyDict_SetItemString(d, "LEFT_MONITOR_ATTEN", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_LEFT_SPEAKER_GAIN
-    x =  PyInt_FromLong((long) AL_LEFT_SPEAKER_GAIN);
+    x =  PyInt_FromLong((REALLYLONG) AL_LEFT_SPEAKER_GAIN);
     if (x == NULL || PyDict_SetItemString(d, "LEFT_SPEAKER_GAIN", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_LEFT1_INPUT_ATTEN
-    x =  PyInt_FromLong((long) AL_LEFT1_INPUT_ATTEN);
+    x =  PyInt_FromLong((REALLYLONG) AL_LEFT1_INPUT_ATTEN);
     if (x == NULL || PyDict_SetItemString(d, "LEFT1_INPUT_ATTEN", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_LEFT2_INPUT_ATTEN
-    x =  PyInt_FromLong((long) AL_LEFT2_INPUT_ATTEN);
+    x =  PyInt_FromLong((REALLYLONG) AL_LEFT2_INPUT_ATTEN);
     if (x == NULL || PyDict_SetItemString(d, "LEFT2_INPUT_ATTEN", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_LINE_IF_TYPE
-    x =  PyInt_FromLong((long) AL_LINE_IF_TYPE);
+    x =  PyInt_FromLong((REALLYLONG) AL_LINE_IF_TYPE);
     if (x == NULL || PyDict_SetItemString(d, "LINE_IF_TYPE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_LOCKED
-    x =  PyInt_FromLong((long) AL_LOCKED);
+    x =  PyInt_FromLong((REALLYLONG) AL_LOCKED);
     if (x == NULL || PyDict_SetItemString(d, "LOCKED", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_MASTER_CLOCK
-    x =  PyInt_FromLong((long) AL_MASTER_CLOCK);
+    x =  PyInt_FromLong((REALLYLONG) AL_MASTER_CLOCK);
     if (x == NULL || PyDict_SetItemString(d, "MASTER_CLOCK", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_MATRIX_VAL
-    x =  PyInt_FromLong((long) AL_MATRIX_VAL);
+    x =  PyInt_FromLong((REALLYLONG) AL_MATRIX_VAL);
     if (x == NULL || PyDict_SetItemString(d, "MATRIX_VAL", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_MAX_ERROR
-    x =  PyInt_FromLong((long) AL_MAX_ERROR);
+    x =  PyInt_FromLong((REALLYLONG) AL_MAX_ERROR);
     if (x == NULL || PyDict_SetItemString(d, "MAX_ERROR", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_MAX_EVENT_PARAM
-    x =  PyInt_FromLong((long) AL_MAX_EVENT_PARAM);
+    x =  PyInt_FromLong((REALLYLONG) AL_MAX_EVENT_PARAM);
     if (x == NULL || PyDict_SetItemString(d, "MAX_EVENT_PARAM", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_MAX_PBUFSIZE
-    x =  PyInt_FromLong((long) AL_MAX_PBUFSIZE);
+    x =  PyInt_FromLong((REALLYLONG) AL_MAX_PBUFSIZE);
     if (x == NULL || PyDict_SetItemString(d, "MAX_PBUFSIZE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_MAX_PORTS
-    x =  PyInt_FromLong((long) AL_MAX_PORTS);
+    x =  PyInt_FromLong((REALLYLONG) AL_MAX_PORTS);
     if (x == NULL || PyDict_SetItemString(d, "MAX_PORTS", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_MAX_RESOURCE_ID
-    x =  PyInt_FromLong((long) AL_MAX_RESOURCE_ID);
+    x =  PyInt_FromLong((REALLYLONG) AL_MAX_RESOURCE_ID);
     if (x == NULL || PyDict_SetItemString(d, "MAX_RESOURCE_ID", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_MAX_SETSIZE
-    x =  PyInt_FromLong((long) AL_MAX_SETSIZE);
+    x =  PyInt_FromLong((REALLYLONG) AL_MAX_SETSIZE);
     if (x == NULL || PyDict_SetItemString(d, "MAX_SETSIZE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_MAX_STRLEN
-    x =  PyInt_FromLong((long) AL_MAX_STRLEN);
+    x =  PyInt_FromLong((REALLYLONG) AL_MAX_STRLEN);
     if (x == NULL || PyDict_SetItemString(d, "MAX_STRLEN", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_MCLK_TYPE
-    x =  PyInt_FromLong((long) AL_MCLK_TYPE);
+    x =  PyInt_FromLong((REALLYLONG) AL_MCLK_TYPE);
     if (x == NULL || PyDict_SetItemString(d, "MCLK_TYPE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_MIC_IF_TYPE
-    x =  PyInt_FromLong((long) AL_MIC_IF_TYPE);
+    x =  PyInt_FromLong((REALLYLONG) AL_MIC_IF_TYPE);
     if (x == NULL || PyDict_SetItemString(d, "MIC_IF_TYPE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_MONITOR_CTL
-    x =  PyInt_FromLong((long) AL_MONITOR_CTL);
+    x =  PyInt_FromLong((REALLYLONG) AL_MONITOR_CTL);
     if (x == NULL || PyDict_SetItemString(d, "MONITOR_CTL", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_MONITOR_OFF
-    x =  PyInt_FromLong((long) AL_MONITOR_OFF);
+    x =  PyInt_FromLong((REALLYLONG) AL_MONITOR_OFF);
     if (x == NULL || PyDict_SetItemString(d, "MONITOR_OFF", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_MONITOR_ON
-    x =  PyInt_FromLong((long) AL_MONITOR_ON);
+    x =  PyInt_FromLong((REALLYLONG) AL_MONITOR_ON);
     if (x == NULL || PyDict_SetItemString(d, "MONITOR_ON", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_MONO
-    x =  PyInt_FromLong((long) AL_MONO);
+    x =  PyInt_FromLong((REALLYLONG) AL_MONO);
     if (x == NULL || PyDict_SetItemString(d, "MONO", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_MUTE
-    x =  PyInt_FromLong((long) AL_MUTE);
+    x =  PyInt_FromLong((REALLYLONG) AL_MUTE);
     if (x == NULL || PyDict_SetItemString(d, "MUTE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_NAME
-    x =  PyInt_FromLong((long) AL_NAME);
+    x =  PyInt_FromLong((REALLYLONG) AL_NAME);
     if (x == NULL || PyDict_SetItemString(d, "NAME", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_NEG_INFINITY
-    x =  PyInt_FromLong((long) AL_NEG_INFINITY);
+    x =  PyInt_FromLong((REALLYLONG) AL_NEG_INFINITY);
     if (x == NULL || PyDict_SetItemString(d, "NEG_INFINITY", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_NEG_INFINITY_BIT
-    x =  PyInt_FromLong((long) AL_NEG_INFINITY_BIT);
+    x =  PyInt_FromLong((REALLYLONG) AL_NEG_INFINITY_BIT);
     if (x == NULL || PyDict_SetItemString(d, "NEG_INFINITY_BIT", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_NO_CHANGE
-    x =  PyInt_FromLong((long) AL_NO_CHANGE);
+    x =  PyInt_FromLong((REALLYLONG) AL_NO_CHANGE);
     if (x == NULL || PyDict_SetItemString(d, "NO_CHANGE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_NO_CHANGE_BIT
-    x =  PyInt_FromLong((long) AL_NO_CHANGE_BIT);
+    x =  PyInt_FromLong((REALLYLONG) AL_NO_CHANGE_BIT);
     if (x == NULL || PyDict_SetItemString(d, "NO_CHANGE_BIT", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_NO_ELEM
-    x =  PyInt_FromLong((long) AL_NO_ELEM);
+    x =  PyInt_FromLong((REALLYLONG) AL_NO_ELEM);
     if (x == NULL || PyDict_SetItemString(d, "NO_ELEM", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_NO_ERRORS
-    x =  PyInt_FromLong((long) AL_NO_ERRORS);
+    x =  PyInt_FromLong((REALLYLONG) AL_NO_ERRORS);
     if (x == NULL || PyDict_SetItemString(d, "NO_ERRORS", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_NO_OP
-    x =  PyInt_FromLong((long) AL_NO_OP);
+    x =  PyInt_FromLong((REALLYLONG) AL_NO_OP);
     if (x == NULL || PyDict_SetItemString(d, "NO_OP", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_NO_VAL
-    x =  PyInt_FromLong((long) AL_NO_VAL);
+    x =  PyInt_FromLong((REALLYLONG) AL_NO_VAL);
     if (x == NULL || PyDict_SetItemString(d, "NO_VAL", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_NULL_INTERFACE
-    x =  PyInt_FromLong((long) AL_NULL_INTERFACE);
+    x =  PyInt_FromLong((REALLYLONG) AL_NULL_INTERFACE);
     if (x == NULL || PyDict_SetItemString(d, "NULL_INTERFACE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_NULL_RESOURCE
-    x =  PyInt_FromLong((long) AL_NULL_RESOURCE);
+    x =  PyInt_FromLong((REALLYLONG) AL_NULL_RESOURCE);
     if (x == NULL || PyDict_SetItemString(d, "NULL_RESOURCE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_OPTICAL_IF_TYPE
-    x =  PyInt_FromLong((long) AL_OPTICAL_IF_TYPE);
+    x =  PyInt_FromLong((REALLYLONG) AL_OPTICAL_IF_TYPE);
     if (x == NULL || PyDict_SetItemString(d, "OPTICAL_IF_TYPE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_OUTPUT_COUNT
-    x =  PyInt_FromLong((long) AL_OUTPUT_COUNT);
+    x =  PyInt_FromLong((REALLYLONG) AL_OUTPUT_COUNT);
     if (x == NULL || PyDict_SetItemString(d, "OUTPUT_COUNT", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_OUTPUT_DEVICE_TYPE
-    x =  PyInt_FromLong((long) AL_OUTPUT_DEVICE_TYPE);
+    x =  PyInt_FromLong((REALLYLONG) AL_OUTPUT_DEVICE_TYPE);
     if (x == NULL || PyDict_SetItemString(d, "OUTPUT_DEVICE_TYPE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_OUTPUT_HRB_TYPE
-    x =  PyInt_FromLong((long) AL_OUTPUT_HRB_TYPE);
+    x =  PyInt_FromLong((REALLYLONG) AL_OUTPUT_HRB_TYPE);
     if (x == NULL || PyDict_SetItemString(d, "OUTPUT_HRB_TYPE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_OUTPUT_PORT_TYPE
-    x =  PyInt_FromLong((long) AL_OUTPUT_PORT_TYPE);
+    x =  PyInt_FromLong((REALLYLONG) AL_OUTPUT_PORT_TYPE);
     if (x == NULL || PyDict_SetItemString(d, "OUTPUT_PORT_TYPE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_OUTPUT_RATE
-    x =  PyInt_FromLong((long) AL_OUTPUT_RATE);
+    x =  PyInt_FromLong((REALLYLONG) AL_OUTPUT_RATE);
     if (x == NULL || PyDict_SetItemString(d, "OUTPUT_RATE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_PARAM_BIT
-    x =  PyInt_FromLong((long) AL_PARAM_BIT);
+    x =  PyInt_FromLong((REALLYLONG) AL_PARAM_BIT);
     if (x == NULL || PyDict_SetItemString(d, "PARAM_BIT", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_PARAMS
-    x =  PyInt_FromLong((long) AL_PARAMS);
+    x =  PyInt_FromLong((REALLYLONG) AL_PARAMS);
     if (x == NULL || PyDict_SetItemString(d, "PARAMS", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_PORT_COUNT
-    x =  PyInt_FromLong((long) AL_PORT_COUNT);
+    x =  PyInt_FromLong((REALLYLONG) AL_PORT_COUNT);
     if (x == NULL || PyDict_SetItemString(d, "PORT_COUNT", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_PORT_TYPE
-    x =  PyInt_FromLong((long) AL_PORT_TYPE);
+    x =  PyInt_FromLong((REALLYLONG) AL_PORT_TYPE);
     if (x == NULL || PyDict_SetItemString(d, "PORT_TYPE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_PORTS
-    x =  PyInt_FromLong((long) AL_PORTS);
+    x =  PyInt_FromLong((REALLYLONG) AL_PORTS);
     if (x == NULL || PyDict_SetItemString(d, "PORTS", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_PORTSTYLE_DIRECT
-    x =  PyInt_FromLong((long) AL_PORTSTYLE_DIRECT);
+    x =  PyInt_FromLong((REALLYLONG) AL_PORTSTYLE_DIRECT);
     if (x == NULL || PyDict_SetItemString(d, "PORTSTYLE_DIRECT", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_PORTSTYLE_SERIAL
-    x =  PyInt_FromLong((long) AL_PORTSTYLE_SERIAL);
+    x =  PyInt_FromLong((REALLYLONG) AL_PORTSTYLE_SERIAL);
     if (x == NULL || PyDict_SetItemString(d, "PORTSTYLE_SERIAL", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_PRINT_ERRORS
-    x =  PyInt_FromLong((long) AL_PRINT_ERRORS);
+    x =  PyInt_FromLong((REALLYLONG) AL_PRINT_ERRORS);
     if (x == NULL || PyDict_SetItemString(d, "PRINT_ERRORS", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_PTR_ELEM
-    x =  PyInt_FromLong((long) AL_PTR_ELEM);
+    x =  PyInt_FromLong((REALLYLONG) AL_PTR_ELEM);
     if (x == NULL || PyDict_SetItemString(d, "PTR_ELEM", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_RANGE_VALUE
-    x =  PyInt_FromLong((long) AL_RANGE_VALUE);
+    x =  PyInt_FromLong((REALLYLONG) AL_RANGE_VALUE);
     if (x == NULL || PyDict_SetItemString(d, "RANGE_VALUE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_RATE
-    x =  PyInt_FromLong((long) AL_RATE);
+    x =  PyInt_FromLong((REALLYLONG) AL_RATE);
     if (x == NULL || PyDict_SetItemString(d, "RATE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_RATE_11025
-    x =  PyInt_FromLong((long) AL_RATE_11025);
+    x =  PyInt_FromLong((REALLYLONG) AL_RATE_11025);
     if (x == NULL || PyDict_SetItemString(d, "RATE_11025", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_RATE_16000
-    x =  PyInt_FromLong((long) AL_RATE_16000);
+    x =  PyInt_FromLong((REALLYLONG) AL_RATE_16000);
     if (x == NULL || PyDict_SetItemString(d, "RATE_16000", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_RATE_22050
-    x =  PyInt_FromLong((long) AL_RATE_22050);
+    x =  PyInt_FromLong((REALLYLONG) AL_RATE_22050);
     if (x == NULL || PyDict_SetItemString(d, "RATE_22050", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_RATE_32000
-    x =  PyInt_FromLong((long) AL_RATE_32000);
+    x =  PyInt_FromLong((REALLYLONG) AL_RATE_32000);
     if (x == NULL || PyDict_SetItemString(d, "RATE_32000", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_RATE_44100
-    x =  PyInt_FromLong((long) AL_RATE_44100);
+    x =  PyInt_FromLong((REALLYLONG) AL_RATE_44100);
     if (x == NULL || PyDict_SetItemString(d, "RATE_44100", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_RATE_48000
-    x =  PyInt_FromLong((long) AL_RATE_48000);
+    x =  PyInt_FromLong((REALLYLONG) AL_RATE_48000);
     if (x == NULL || PyDict_SetItemString(d, "RATE_48000", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_RATE_8000
-    x =  PyInt_FromLong((long) AL_RATE_8000);
+    x =  PyInt_FromLong((REALLYLONG) AL_RATE_8000);
     if (x == NULL || PyDict_SetItemString(d, "RATE_8000", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_RATE_AES_1
-    x =  PyInt_FromLong((long) AL_RATE_AES_1);
+    x =  PyInt_FromLong((REALLYLONG) AL_RATE_AES_1);
     if (x == NULL || PyDict_SetItemString(d, "RATE_AES_1", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_RATE_AES_1s
-    x =  PyInt_FromLong((long) AL_RATE_AES_1s);
+    x =  PyInt_FromLong((REALLYLONG) AL_RATE_AES_1s);
     if (x == NULL || PyDict_SetItemString(d, "RATE_AES_1s", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_RATE_AES_2
-    x =  PyInt_FromLong((long) AL_RATE_AES_2);
+    x =  PyInt_FromLong((REALLYLONG) AL_RATE_AES_2);
     if (x == NULL || PyDict_SetItemString(d, "RATE_AES_2", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_RATE_AES_3
-    x =  PyInt_FromLong((long) AL_RATE_AES_3);
+    x =  PyInt_FromLong((REALLYLONG) AL_RATE_AES_3);
     if (x == NULL || PyDict_SetItemString(d, "RATE_AES_3", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_RATE_AES_4
-    x =  PyInt_FromLong((long) AL_RATE_AES_4);
+    x =  PyInt_FromLong((REALLYLONG) AL_RATE_AES_4);
     if (x == NULL || PyDict_SetItemString(d, "RATE_AES_4", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_RATE_AES_6
-    x =  PyInt_FromLong((long) AL_RATE_AES_6);
+    x =  PyInt_FromLong((REALLYLONG) AL_RATE_AES_6);
     if (x == NULL || PyDict_SetItemString(d, "RATE_AES_6", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_RATE_FRACTION_D
-    x =  PyInt_FromLong((long) AL_RATE_FRACTION_D);
+    x =  PyInt_FromLong((REALLYLONG) AL_RATE_FRACTION_D);
     if (x == NULL || PyDict_SetItemString(d, "RATE_FRACTION_D", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_RATE_FRACTION_N
-    x =  PyInt_FromLong((long) AL_RATE_FRACTION_N);
+    x =  PyInt_FromLong((REALLYLONG) AL_RATE_FRACTION_N);
     if (x == NULL || PyDict_SetItemString(d, "RATE_FRACTION_N", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_RATE_INPUTRATE
-    x =  PyInt_FromLong((long) AL_RATE_INPUTRATE);
+    x =  PyInt_FromLong((REALLYLONG) AL_RATE_INPUTRATE);
     if (x == NULL || PyDict_SetItemString(d, "RATE_INPUTRATE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_RATE_NO_DIGITAL_INPUT
-    x =  PyInt_FromLong((long) AL_RATE_NO_DIGITAL_INPUT);
+    x =  PyInt_FromLong((REALLYLONG) AL_RATE_NO_DIGITAL_INPUT);
     if (x == NULL || PyDict_SetItemString(d, "RATE_NO_DIGITAL_INPUT", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_RATE_UNACQUIRED
-    x =  PyInt_FromLong((long) AL_RATE_UNACQUIRED);
+    x =  PyInt_FromLong((REALLYLONG) AL_RATE_UNACQUIRED);
     if (x == NULL || PyDict_SetItemString(d, "RATE_UNACQUIRED", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_RATE_UNDEFINED
-    x =  PyInt_FromLong((long) AL_RATE_UNDEFINED);
+    x =  PyInt_FromLong((REALLYLONG) AL_RATE_UNDEFINED);
     if (x == NULL || PyDict_SetItemString(d, "RATE_UNDEFINED", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_REF_0DBV
-    x =  PyInt_FromLong((long) AL_REF_0DBV);
+    x =  PyInt_FromLong((REALLYLONG) AL_REF_0DBV);
     if (x == NULL || PyDict_SetItemString(d, "REF_0DBV", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_REF_NONE
-    x =  PyInt_FromLong((long) AL_REF_NONE);
+    x =  PyInt_FromLong((REALLYLONG) AL_REF_NONE);
     if (x == NULL || PyDict_SetItemString(d, "REF_NONE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_RESERVED1_TYPE
-    x =  PyInt_FromLong((long) AL_RESERVED1_TYPE);
+    x =  PyInt_FromLong((REALLYLONG) AL_RESERVED1_TYPE);
     if (x == NULL || PyDict_SetItemString(d, "RESERVED1_TYPE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_RESERVED2_TYPE
-    x =  PyInt_FromLong((long) AL_RESERVED2_TYPE);
+    x =  PyInt_FromLong((REALLYLONG) AL_RESERVED2_TYPE);
     if (x == NULL || PyDict_SetItemString(d, "RESERVED2_TYPE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_RESERVED3_TYPE
-    x =  PyInt_FromLong((long) AL_RESERVED3_TYPE);
+    x =  PyInt_FromLong((REALLYLONG) AL_RESERVED3_TYPE);
     if (x == NULL || PyDict_SetItemString(d, "RESERVED3_TYPE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_RESERVED4_TYPE
-    x =  PyInt_FromLong((long) AL_RESERVED4_TYPE);
+    x =  PyInt_FromLong((REALLYLONG) AL_RESERVED4_TYPE);
     if (x == NULL || PyDict_SetItemString(d, "RESERVED4_TYPE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_RESOURCE
-    x =  PyInt_FromLong((long) AL_RESOURCE);
+    x =  PyInt_FromLong((REALLYLONG) AL_RESOURCE);
     if (x == NULL || PyDict_SetItemString(d, "RESOURCE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_RESOURCE_ELEM
-    x =  PyInt_FromLong((long) AL_RESOURCE_ELEM);
+    x =  PyInt_FromLong((REALLYLONG) AL_RESOURCE_ELEM);
     if (x == NULL || PyDict_SetItemString(d, "RESOURCE_ELEM", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_RESOURCE_TYPE
-    x =  PyInt_FromLong((long) AL_RESOURCE_TYPE);
+    x =  PyInt_FromLong((REALLYLONG) AL_RESOURCE_TYPE);
     if (x == NULL || PyDict_SetItemString(d, "RESOURCE_TYPE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_RIGHT_INPUT_ATTEN
-    x =  PyInt_FromLong((long) AL_RIGHT_INPUT_ATTEN);
+    x =  PyInt_FromLong((REALLYLONG) AL_RIGHT_INPUT_ATTEN);
     if (x == NULL || PyDict_SetItemString(d, "RIGHT_INPUT_ATTEN", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_RIGHT_MONITOR_ATTEN
-    x =  PyInt_FromLong((long) AL_RIGHT_MONITOR_ATTEN);
+    x =  PyInt_FromLong((REALLYLONG) AL_RIGHT_MONITOR_ATTEN);
     if (x == NULL || PyDict_SetItemString(d, "RIGHT_MONITOR_ATTEN", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_RIGHT_SPEAKER_GAIN
-    x =  PyInt_FromLong((long) AL_RIGHT_SPEAKER_GAIN);
+    x =  PyInt_FromLong((REALLYLONG) AL_RIGHT_SPEAKER_GAIN);
     if (x == NULL || PyDict_SetItemString(d, "RIGHT_SPEAKER_GAIN", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_RIGHT1_INPUT_ATTEN
-    x =  PyInt_FromLong((long) AL_RIGHT1_INPUT_ATTEN);
+    x =  PyInt_FromLong((REALLYLONG) AL_RIGHT1_INPUT_ATTEN);
     if (x == NULL || PyDict_SetItemString(d, "RIGHT1_INPUT_ATTEN", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_RIGHT2_INPUT_ATTEN
-    x =  PyInt_FromLong((long) AL_RIGHT2_INPUT_ATTEN);
+    x =  PyInt_FromLong((REALLYLONG) AL_RIGHT2_INPUT_ATTEN);
     if (x == NULL || PyDict_SetItemString(d, "RIGHT2_INPUT_ATTEN", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_SAMPFMT_DOUBLE
-    x =  PyInt_FromLong((long) AL_SAMPFMT_DOUBLE);
+    x =  PyInt_FromLong((REALLYLONG) AL_SAMPFMT_DOUBLE);
     if (x == NULL || PyDict_SetItemString(d, "SAMPFMT_DOUBLE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_SAMPFMT_FLOAT
-    x =  PyInt_FromLong((long) AL_SAMPFMT_FLOAT);
+    x =  PyInt_FromLong((REALLYLONG) AL_SAMPFMT_FLOAT);
     if (x == NULL || PyDict_SetItemString(d, "SAMPFMT_FLOAT", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_SAMPFMT_TWOSCOMP
-    x =  PyInt_FromLong((long) AL_SAMPFMT_TWOSCOMP);
+    x =  PyInt_FromLong((REALLYLONG) AL_SAMPFMT_TWOSCOMP);
     if (x == NULL || PyDict_SetItemString(d, "SAMPFMT_TWOSCOMP", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_SAMPLE_16
-    x =  PyInt_FromLong((long) AL_SAMPLE_16);
+    x =  PyInt_FromLong((REALLYLONG) AL_SAMPLE_16);
     if (x == NULL || PyDict_SetItemString(d, "SAMPLE_16", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_SAMPLE_24
-    x =  PyInt_FromLong((long) AL_SAMPLE_24);
+    x =  PyInt_FromLong((REALLYLONG) AL_SAMPLE_24);
     if (x == NULL || PyDict_SetItemString(d, "SAMPLE_24", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_SAMPLE_8
-    x =  PyInt_FromLong((long) AL_SAMPLE_8);
+    x =  PyInt_FromLong((REALLYLONG) AL_SAMPLE_8);
     if (x == NULL || PyDict_SetItemString(d, "SAMPLE_8", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_SCALAR_VAL
-    x =  PyInt_FromLong((long) AL_SCALAR_VAL);
+    x =  PyInt_FromLong((REALLYLONG) AL_SCALAR_VAL);
     if (x == NULL || PyDict_SetItemString(d, "SCALAR_VAL", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_SET_VAL
-    x =  PyInt_FromLong((long) AL_SET_VAL);
+    x =  PyInt_FromLong((REALLYLONG) AL_SET_VAL);
     if (x == NULL || PyDict_SetItemString(d, "SET_VAL", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_SHORT_NAME
-    x =  PyInt_FromLong((long) AL_SHORT_NAME);
+    x =  PyInt_FromLong((REALLYLONG) AL_SHORT_NAME);
     if (x == NULL || PyDict_SetItemString(d, "SHORT_NAME", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_SMPTE272M_IF_TYPE
-    x =  PyInt_FromLong((long) AL_SMPTE272M_IF_TYPE);
+    x =  PyInt_FromLong((REALLYLONG) AL_SMPTE272M_IF_TYPE);
     if (x == NULL || PyDict_SetItemString(d, "SMPTE272M_IF_TYPE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_SOURCE
-    x =  PyInt_FromLong((long) AL_SOURCE);
+    x =  PyInt_FromLong((REALLYLONG) AL_SOURCE);
     if (x == NULL || PyDict_SetItemString(d, "SOURCE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_SPEAKER_IF_TYPE
-    x =  PyInt_FromLong((long) AL_SPEAKER_IF_TYPE);
+    x =  PyInt_FromLong((REALLYLONG) AL_SPEAKER_IF_TYPE);
     if (x == NULL || PyDict_SetItemString(d, "SPEAKER_IF_TYPE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_SPEAKER_MUTE_CTL
-    x =  PyInt_FromLong((long) AL_SPEAKER_MUTE_CTL);
+    x =  PyInt_FromLong((REALLYLONG) AL_SPEAKER_MUTE_CTL);
     if (x == NULL || PyDict_SetItemString(d, "SPEAKER_MUTE_CTL", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_SPEAKER_MUTE_OFF
-    x =  PyInt_FromLong((long) AL_SPEAKER_MUTE_OFF);
+    x =  PyInt_FromLong((REALLYLONG) AL_SPEAKER_MUTE_OFF);
     if (x == NULL || PyDict_SetItemString(d, "SPEAKER_MUTE_OFF", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_SPEAKER_MUTE_ON
-    x =  PyInt_FromLong((long) AL_SPEAKER_MUTE_ON);
+    x =  PyInt_FromLong((REALLYLONG) AL_SPEAKER_MUTE_ON);
     if (x == NULL || PyDict_SetItemString(d, "SPEAKER_MUTE_ON", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_SPEAKER_PLUS_LINE_IF_TYPE
-    x =  PyInt_FromLong((long) AL_SPEAKER_PLUS_LINE_IF_TYPE);
+    x =  PyInt_FromLong((REALLYLONG) AL_SPEAKER_PLUS_LINE_IF_TYPE);
     if (x == NULL || PyDict_SetItemString(d, "SPEAKER_PLUS_LINE_IF_TYPE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_STEREO
-    x =  PyInt_FromLong((long) AL_STEREO);
+    x =  PyInt_FromLong((REALLYLONG) AL_STEREO);
     if (x == NULL || PyDict_SetItemString(d, "STEREO", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_STRING_VAL
-    x =  PyInt_FromLong((long) AL_STRING_VAL);
+    x =  PyInt_FromLong((REALLYLONG) AL_STRING_VAL);
     if (x == NULL || PyDict_SetItemString(d, "STRING_VAL", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_SUBSYSTEM
-    x =  PyInt_FromLong((long) AL_SUBSYSTEM);
+    x =  PyInt_FromLong((REALLYLONG) AL_SUBSYSTEM);
     if (x == NULL || PyDict_SetItemString(d, "SUBSYSTEM", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_SUBSYSTEM_TYPE
-    x =  PyInt_FromLong((long) AL_SUBSYSTEM_TYPE);
+    x =  PyInt_FromLong((REALLYLONG) AL_SUBSYSTEM_TYPE);
     if (x == NULL || PyDict_SetItemString(d, "SUBSYSTEM_TYPE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_SYNC_INPUT_TO_AES
-    x =  PyInt_FromLong((long) AL_SYNC_INPUT_TO_AES);
+    x =  PyInt_FromLong((REALLYLONG) AL_SYNC_INPUT_TO_AES);
     if (x == NULL || PyDict_SetItemString(d, "SYNC_INPUT_TO_AES", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_SYNC_OUTPUT_TO_AES
-    x =  PyInt_FromLong((long) AL_SYNC_OUTPUT_TO_AES);
+    x =  PyInt_FromLong((REALLYLONG) AL_SYNC_OUTPUT_TO_AES);
     if (x == NULL || PyDict_SetItemString(d, "SYNC_OUTPUT_TO_AES", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_SYSTEM
-    x =  PyInt_FromLong((long) AL_SYSTEM);
+    x =  PyInt_FromLong((REALLYLONG) AL_SYSTEM);
     if (x == NULL || PyDict_SetItemString(d, "SYSTEM", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_SYSTEM_TYPE
-    x =  PyInt_FromLong((long) AL_SYSTEM_TYPE);
+    x =  PyInt_FromLong((REALLYLONG) AL_SYSTEM_TYPE);
     if (x == NULL || PyDict_SetItemString(d, "SYSTEM_TYPE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_TEST_IF_TYPE
-    x =  PyInt_FromLong((long) AL_TEST_IF_TYPE);
+    x =  PyInt_FromLong((REALLYLONG) AL_TEST_IF_TYPE);
     if (x == NULL || PyDict_SetItemString(d, "TEST_IF_TYPE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_TYPE
-    x =  PyInt_FromLong((long) AL_TYPE);
+    x =  PyInt_FromLong((REALLYLONG) AL_TYPE);
     if (x == NULL || PyDict_SetItemString(d, "TYPE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_TYPE_BIT
-    x =  PyInt_FromLong((long) AL_TYPE_BIT);
+    x =  PyInt_FromLong((REALLYLONG) AL_TYPE_BIT);
     if (x == NULL || PyDict_SetItemString(d, "TYPE_BIT", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_UNUSED_COUNT
-    x =  PyInt_FromLong((long) AL_UNUSED_COUNT);
+    x =  PyInt_FromLong((REALLYLONG) AL_UNUSED_COUNT);
     if (x == NULL || PyDict_SetItemString(d, "UNUSED_COUNT", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_UNUSED_PORTS
-    x =  PyInt_FromLong((long) AL_UNUSED_PORTS);
+    x =  PyInt_FromLong((REALLYLONG) AL_UNUSED_PORTS);
     if (x == NULL || PyDict_SetItemString(d, "UNUSED_PORTS", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_VARIABLE_MCLK_TYPE
-    x =  PyInt_FromLong((long) AL_VARIABLE_MCLK_TYPE);
+    x =  PyInt_FromLong((REALLYLONG) AL_VARIABLE_MCLK_TYPE);
     if (x == NULL || PyDict_SetItemString(d, "VARIABLE_MCLK_TYPE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_VECTOR_VAL
-    x =  PyInt_FromLong((long) AL_VECTOR_VAL);
+    x =  PyInt_FromLong((REALLYLONG) AL_VECTOR_VAL);
     if (x == NULL || PyDict_SetItemString(d, "VECTOR_VAL", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_VIDEO_MCLK_TYPE
-    x =  PyInt_FromLong((long) AL_VIDEO_MCLK_TYPE);
+    x =  PyInt_FromLong((REALLYLONG) AL_VIDEO_MCLK_TYPE);
     if (x == NULL || PyDict_SetItemString(d, "VIDEO_MCLK_TYPE", x) < 0)
         goto error;
     Py_DECREF(x);
 #endif
 #ifdef AL_WORDSIZE
-    x =  PyInt_FromLong((long) AL_WORDSIZE);
+    x =  PyInt_FromLong((REALLYLONG) AL_WORDSIZE);
     if (x == NULL || PyDict_SetItemString(d, "WORDSIZE", x) < 0)
         goto error;
     Py_DECREF(x);

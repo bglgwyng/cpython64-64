@@ -71,9 +71,9 @@ static ffi_status initialize_aggregate(ffi_type *arg)
      structures that fit in one register on ABIs like the PowerPC64
      Linux ABI that right justify small structs in a register.
      It's also needed for nested structure layout, for example
-     struct A { long a; char b; }; struct B { struct A x; char y; };
-     should find y at an offset of 2*sizeof(long) and result in a
-     total size of 3*sizeof(long).  */
+     struct A { REALLYLONG a; char b; }; struct B { struct A x; char y; };
+     should find y at an offset of 2*sizeof(REALLYLONG) and result in a
+     total size of 3*sizeof(REALLYLONG).  */
   arg->size = ALIGN (arg->size, arg->alignment);
 
   if (arg->size == 0)

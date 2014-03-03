@@ -312,7 +312,7 @@ extern int lstat(const char *, struct stat *);
 #define WAIT_STATUS_INT(s) (s)
 #endif /* UNION_WAIT */
 
-/* Issue #1983: pid_t can be longer than a C long on some systems */
+/* Issue #1983: pid_t can be longer than a C REALLYLONG on some systems */
 #if !defined(SIZEOF_PID_T) || SIZEOF_PID_T == SIZEOF_INT
 #define PARSE_PID "i"
 #define PyLong_FromPid PyInt_FromLong
@@ -326,7 +326,7 @@ extern int lstat(const char *, struct stat *);
 #define PyLong_FromPid PyLong_FromLongLong
 #define PyLong_AsPid PyInt_AsLongLong
 #else
-#error "sizeof(pid_t) is neither sizeof(int), sizeof(long) or sizeof(long long)"
+#error "sizeof(pid_t) is neither sizeof(int), sizeof(REALLYLONG) or sizeof(REALLYLONG)"
 #endif /* SIZEOF_PID_T */
 
 /* Don't use the "_r" form if we don't need it (also, won't have a
@@ -372,7 +372,7 @@ int
 _Py_Uid_Converter(PyObject *obj, void *p)
 {
     int overflow;
-    long result;
+    REALLYLONG result;
     if (PyFloat_Check(obj)) {
         PyErr_SetString(PyExc_TypeError,
                         "integer argument expected, got float");
@@ -389,7 +389,7 @@ _Py_Uid_Converter(PyObject *obj, void *p)
     }
     else {
         /* unsigned uid_t */
-        unsigned long uresult;
+        UREALLYLONG uresult;
         if (overflow > 0) {
             uresult = PyLong_AsUnsignedLong(obj);
             if (PyErr_Occurred()) {
@@ -402,8 +402,8 @@ _Py_Uid_Converter(PyObject *obj, void *p)
                 goto OverflowDown;
             uresult = result;
         }
-        if (sizeof(uid_t) < sizeof(long) &&
-            (unsigned long)(uid_t)uresult != uresult)
+        if (sizeof(uid_t) < sizeof(REALLYLONG) &&
+            (UREALLYLONG)(uid_t)uresult != uresult)
             goto OverflowUp;
         *(uid_t *)p = (uid_t)uresult;
     }
@@ -424,7 +424,7 @@ int
 _Py_Gid_Converter(PyObject *obj, void *p)
 {
     int overflow;
-    long result;
+    REALLYLONG result;
     if (PyFloat_Check(obj)) {
         PyErr_SetString(PyExc_TypeError,
                         "integer argument expected, got float");
@@ -441,7 +441,7 @@ _Py_Gid_Converter(PyObject *obj, void *p)
     }
     else {
         /* unsigned gid_t */
-        unsigned long uresult;
+        UREALLYLONG uresult;
         if (overflow > 0) {
             uresult = PyLong_AsUnsignedLong(obj);
             if (PyErr_Occurred()) {
@@ -454,8 +454,8 @@ _Py_Gid_Converter(PyObject *obj, void *p)
                 goto OverflowDown;
             uresult = result;
         }
-        if (sizeof(gid_t) < sizeof(long) &&
-            (unsigned long)(gid_t)uresult != uresult)
+        if (sizeof(gid_t) < sizeof(REALLYLONG) &&
+            (UREALLYLONG)(gid_t)uresult != uresult)
             goto OverflowUp;
         *(gid_t *)p = (gid_t)uresult;
     }
@@ -1389,13 +1389,13 @@ stat_float_times(PyObject* self, PyObject *args)
 }
 
 static void
-fill_time(PyObject *v, int index, time_t sec, unsigned long nsec)
+fill_time(PyObject *v, int index, time_t sec, UREALLYLONG nsec)
 {
     PyObject *fval,*ival;
 #if SIZEOF_TIME_T > SIZEOF_LONG
     ival = PyLong_FromLongLong((PY_LONG_LONG)sec);
 #else
-    ival = PyInt_FromLong((long)sec);
+    ival = PyInt_FromLong((REALLYLONG)sec);
 #endif
     if (!ival)
         return;
@@ -1414,25 +1414,25 @@ fill_time(PyObject *v, int index, time_t sec, unsigned long nsec)
 static PyObject*
 _pystat_fromstructstat(STRUCT_STAT *st)
 {
-    unsigned long ansec, mnsec, cnsec;
+    UREALLYLONG ansec, mnsec, cnsec;
     PyObject *v = PyStructSequence_New(&StatResultType);
     if (v == NULL)
         return NULL;
 
-    PyStructSequence_SET_ITEM(v, 0, PyInt_FromLong((long)st->st_mode));
+    PyStructSequence_SET_ITEM(v, 0, PyInt_FromLong((REALLYLONG)st->st_mode));
 #ifdef HAVE_LARGEFILE_SUPPORT
     PyStructSequence_SET_ITEM(v, 1,
                               PyLong_FromLongLong((PY_LONG_LONG)st->st_ino));
 #else
-    PyStructSequence_SET_ITEM(v, 1, PyInt_FromLong((long)st->st_ino));
+    PyStructSequence_SET_ITEM(v, 1, PyInt_FromLong((REALLYLONG)st->st_ino));
 #endif
 #if defined(HAVE_LONG_LONG) && !defined(MS_WINDOWS)
     PyStructSequence_SET_ITEM(v, 2,
                               PyLong_FromLongLong((PY_LONG_LONG)st->st_dev));
 #else
-    PyStructSequence_SET_ITEM(v, 2, PyInt_FromLong((long)st->st_dev));
+    PyStructSequence_SET_ITEM(v, 2, PyInt_FromLong((REALLYLONG)st->st_dev));
 #endif
-    PyStructSequence_SET_ITEM(v, 3, PyInt_FromLong((long)st->st_nlink));
+    PyStructSequence_SET_ITEM(v, 3, PyInt_FromLong((REALLYLONG)st->st_nlink));
 #if defined(MS_WINDOWS)
     PyStructSequence_SET_ITEM(v, 4, PyInt_FromLong(0));
     PyStructSequence_SET_ITEM(v, 5, PyInt_FromLong(0));
@@ -1468,25 +1468,25 @@ _pystat_fromstructstat(STRUCT_STAT *st)
 
 #ifdef HAVE_STRUCT_STAT_ST_BLKSIZE
     PyStructSequence_SET_ITEM(v, ST_BLKSIZE_IDX,
-                              PyInt_FromLong((long)st->st_blksize));
+                              PyInt_FromLong((REALLYLONG)st->st_blksize));
 #endif
 #ifdef HAVE_STRUCT_STAT_ST_BLOCKS
     PyStructSequence_SET_ITEM(v, ST_BLOCKS_IDX,
-                              PyInt_FromLong((long)st->st_blocks));
+                              PyInt_FromLong((REALLYLONG)st->st_blocks));
 #endif
 #ifdef HAVE_STRUCT_STAT_ST_RDEV
     PyStructSequence_SET_ITEM(v, ST_RDEV_IDX,
-                              PyInt_FromLong((long)st->st_rdev));
+                              PyInt_FromLong((REALLYLONG)st->st_rdev));
 #endif
 #ifdef HAVE_STRUCT_STAT_ST_GEN
     PyStructSequence_SET_ITEM(v, ST_GEN_IDX,
-                              PyInt_FromLong((long)st->st_gen));
+                              PyInt_FromLong((REALLYLONG)st->st_gen));
 #endif
 #ifdef HAVE_STRUCT_STAT_ST_BIRTHTIME
     {
       PyObject *val;
-      unsigned long bsec,bnsec;
-      bsec = (long)st->st_birthtime;
+      UREALLYLONG bsec,bnsec;
+      bsec = (REALLYLONG)st->st_birthtime;
 #ifdef HAVE_STAT_TV_NSEC2
       bnsec = st->st_birthtimespec.tv_nsec;
 #else
@@ -1495,7 +1495,7 @@ _pystat_fromstructstat(STRUCT_STAT *st)
       if (_stat_float_times) {
         val = PyFloat_FromDouble(bsec + 1e-9*bnsec);
       } else {
-        val = PyInt_FromLong((long)bsec);
+        val = PyInt_FromLong((REALLYLONG)bsec);
       }
       PyStructSequence_SET_ITEM(v, ST_BIRTHTIME_IDX,
                                 val);
@@ -1503,7 +1503,7 @@ _pystat_fromstructstat(STRUCT_STAT *st)
 #endif
 #ifdef HAVE_STRUCT_STAT_ST_FLAGS
     PyStructSequence_SET_ITEM(v, ST_FLAGS_IDX,
-                              PyInt_FromLong((long)st->st_flags));
+                              PyInt_FromLong((REALLYLONG)st->st_flags));
 #endif
 
     if (PyErr_Occurred()) {
@@ -1922,7 +1922,7 @@ static PyObject *
 posix_chflags(PyObject *self, PyObject *args)
 {
     char *path;
-    unsigned long flags;
+    UREALLYLONG flags;
     int res;
     if (!PyArg_ParseTuple(args, "etk:chflags",
                           Py_FileSystemDefaultEncoding, &path, &flags))
@@ -1948,7 +1948,7 @@ static PyObject *
 posix_lchflags(PyObject *self, PyObject *args)
 {
     char *path;
-    unsigned long flags;
+    UREALLYLONG flags;
     int res;
     if (!PyArg_ParseTuple(args, "etk:lchflags",
                           Py_FileSystemDefaultEncoding, &path, &flags))
@@ -2706,7 +2706,7 @@ posix_nice(PyObject *self, PyObject *args)
     if (value == -1 && errno != 0)
         /* either nice() or getpriority() returned an error */
         return posix_error();
-    return PyInt_FromLong((long) value);
+    return PyInt_FromLong((REALLYLONG) value);
 }
 #endif /* HAVE_NICE */
 
@@ -2795,7 +2795,7 @@ static PyObject *
 posix_system(PyObject *self, PyObject *args)
 {
     char *command;
-    long sts;
+    REALLYLONG sts;
     if (!PyArg_ParseTuple(args, "s:system", &command))
         return NULL;
     Py_BEGIN_ALLOW_THREADS
@@ -2819,7 +2819,7 @@ posix_umask(PyObject *self, PyObject *args)
     i = (int)umask(i);
     if (i < 0)
         return posix_error();
-    return PyInt_FromLong((long)i);
+    return PyInt_FromLong((REALLYLONG)i);
 }
 
 
@@ -2868,7 +2868,7 @@ posix_uname(PyObject *self, PyObject *noargs)
 #endif /* HAVE_UNAME */
 
 static int
-extract_time(PyObject *t, time_t* sec, long* usec)
+extract_time(PyObject *t, time_t* sec, REALLYLONG* usec)
 {
     time_t intval;
     if (PyFloat_Check(t)) {
@@ -2885,7 +2885,7 @@ extract_time(PyObject *t, time_t* sec, long* usec)
         if (intval == -1 && PyErr_Occurred())
             return -1;
         *sec = intval;
-        *usec = (long)((tval - intval) * 1e6); /* can't exceed 1000000 */
+        *usec = (REALLYLONG)((tval - intval) * 1e6); /* can't exceed 1000000 */
         if (*usec < 0)
             /* If rounding gave us a negative number,
                truncate.  */
@@ -2920,7 +2920,7 @@ posix_utime(PyObject *self, PyObject *args)
     char *apath = NULL;
     HANDLE hFile;
     time_t atimesec, mtimesec;
-    long ausec, musec;
+    REALLYLONG ausec, musec;
     FILETIME atime, mtime;
     PyObject *result = NULL;
 
@@ -2996,7 +2996,7 @@ done:
 
     char *path = NULL;
     time_t atime, mtime;
-    long ausec, musec;
+    REALLYLONG ausec, musec;
     int res;
     PyObject* arg;
 
@@ -3396,7 +3396,7 @@ posix_spawnv(PyObject *self, PyObject *args)
         return posix_error();
     else
 #if SIZEOF_LONG == SIZEOF_VOID_P
-        return Py_BuildValue("l", (long) spawnval);
+        return Py_BuildValue("l", (REALLYLONG) spawnval);
 #else
         return Py_BuildValue("L", (PY_LONG_LONG) spawnval);
 #endif
@@ -3538,7 +3538,7 @@ posix_spawnve(PyObject *self, PyObject *args)
         (void) posix_error();
     else
 #if SIZEOF_LONG == SIZEOF_VOID_P
-        res = Py_BuildValue("l", (long) spawnval);
+        res = Py_BuildValue("l", (REALLYLONG) spawnval);
 #else
         res = Py_BuildValue("L", (PY_LONG_LONG) spawnval);
 #endif
@@ -3632,7 +3632,7 @@ posix_spawnvp(PyObject *self, PyObject *args)
     if (spawnval == -1)
         return posix_error();
     else
-        return Py_BuildValue("l", (long) spawnval);
+        return Py_BuildValue("l", (REALLYLONG) spawnval);
 }
 
 
@@ -3765,7 +3765,7 @@ posix_spawnvpe(PyObject *self, PyObject *args)
     if (spawnval == -1)
         (void) posix_error();
     else
-        res = Py_BuildValue("l", (long) spawnval);
+        res = Py_BuildValue("l", (REALLYLONG) spawnval);
 
   fail_2:
     while (--envc >= 0)
@@ -4948,7 +4948,7 @@ _PyPopen(char *cmdstring, int mode, int n, int bufsize)
 
         procObj = PyList_New(2);
         pidObj = PyLong_FromPid(pipe_pid);
-        intObj = PyInt_FromLong((long) file_count);
+        intObj = PyInt_FromLong((REALLYLONG) file_count);
 
         if (procObj && pidObj && intObj)
         {
@@ -5081,7 +5081,7 @@ static int _PyPclose(FILE *file)
                 /* Still other files referencing process */
                 file_count--;
                 PyList_SetItem(procObj,1,
-                               PyInt_FromLong((long) file_count));
+                               PyInt_FromLong((REALLYLONG) file_count));
             }
             else
             {
@@ -5484,7 +5484,7 @@ _PyPopen(char *cmdstring, int mode, int n)
     BOOL fSuccess;
     int fd1, fd2, fd3;
     FILE *f1, *f2, *f3;
-    long file_count;
+    REALLYLONG file_count;
     PyObject *f;
 
     saAttr.nLength = sizeof(SECURITY_ATTRIBUTES);
@@ -5805,7 +5805,7 @@ static int _PyPclose(FILE *file)
     DWORD exit_code;
     HANDLE hProcess;
     PyObject *procObj, *hProcessObj, *intObj, *fileObj;
-    long file_count;
+    REALLYLONG file_count;
 #ifdef WITH_THREAD
     PyGILState_STATE state;
 #endif
@@ -6358,7 +6358,7 @@ posix_symlink(PyObject *self, PyObject *args)
 
 #ifdef HAVE_TIMES
 #if defined(PYCC_VACPP) && defined(PYOS_OS2)
-static long
+static REALLYLONG
 system_uptime(void)
 {
     ULONG     value = 0;
@@ -6383,7 +6383,7 @@ posix_times(PyObject *self, PyObject *noargs)
 }
 #else /* not OS2 */
 #define NEED_TICKS_PER_SECOND
-static long ticks_per_second = -1;
+static REALLYLONG ticks_per_second = -1;
 static PyObject *
 posix_times(PyObject *self, PyObject *noargs)
 {
@@ -6452,7 +6452,7 @@ posix_getsid(PyObject *self, PyObject *args)
     sid = getsid(pid);
     if (sid < 0)
         return posix_error();
-    return PyInt_FromLong((long)sid);
+    return PyInt_FromLong((REALLYLONG)sid);
 }
 #endif /* HAVE_GETSID */
 
@@ -6555,7 +6555,7 @@ posix_open(PyObject *self, PyObject *args)
         Py_END_ALLOW_THREADS
         if (fd < 0)
             return posix_error();
-        return PyInt_FromLong((long)fd);
+        return PyInt_FromLong((REALLYLONG)fd);
     }
     /* Drop the argument parsing error as narrow strings
        are also valid. */
@@ -6573,7 +6573,7 @@ posix_open(PyObject *self, PyObject *args)
     if (fd < 0)
         return posix_error_with_allocated_filename(file);
     PyMem_Free(file);
-    return PyInt_FromLong((long)fd);
+    return PyInt_FromLong((REALLYLONG)fd);
 }
 
 
@@ -6635,7 +6635,7 @@ posix_dup(PyObject *self, PyObject *args)
     Py_END_ALLOW_THREADS
     if (fd < 0)
         return posix_error();
-    return PyInt_FromLong((long)fd);
+    return PyInt_FromLong((REALLYLONG)fd);
 }
 
 
@@ -7004,7 +7004,7 @@ posix_major(PyObject *self, PyObject *args)
     int device;
     if (!PyArg_ParseTuple(args, "i:major", &device))
         return NULL;
-    return PyInt_FromLong((long)major(device));
+    return PyInt_FromLong((REALLYLONG)major(device));
 }
 
 PyDoc_STRVAR(posix_minor__doc__,
@@ -7017,7 +7017,7 @@ posix_minor(PyObject *self, PyObject *args)
     int device;
     if (!PyArg_ParseTuple(args, "i:minor", &device))
         return NULL;
-    return PyInt_FromLong((long)minor(device));
+    return PyInt_FromLong((REALLYLONG)minor(device));
 }
 
 PyDoc_STRVAR(posix_makedev__doc__,
@@ -7030,7 +7030,7 @@ posix_makedev(PyObject *self, PyObject *args)
     int major, minor;
     if (!PyArg_ParseTuple(args, "ii:makedev", &major, &minor))
         return NULL;
-    return PyInt_FromLong((long)makedev(major, minor));
+    return PyInt_FromLong((REALLYLONG)makedev(major, minor));
 }
 #endif /* device macros */
 
@@ -7379,19 +7379,19 @@ _pystatvfs_fromstructstatvfs(struct statvfs st) {
         return NULL;
 
 #if !defined(HAVE_LARGEFILE_SUPPORT)
-    PyStructSequence_SET_ITEM(v, 0, PyInt_FromLong((long) st.f_bsize));
-    PyStructSequence_SET_ITEM(v, 1, PyInt_FromLong((long) st.f_frsize));
-    PyStructSequence_SET_ITEM(v, 2, PyInt_FromLong((long) st.f_blocks));
-    PyStructSequence_SET_ITEM(v, 3, PyInt_FromLong((long) st.f_bfree));
-    PyStructSequence_SET_ITEM(v, 4, PyInt_FromLong((long) st.f_bavail));
-    PyStructSequence_SET_ITEM(v, 5, PyInt_FromLong((long) st.f_files));
-    PyStructSequence_SET_ITEM(v, 6, PyInt_FromLong((long) st.f_ffree));
-    PyStructSequence_SET_ITEM(v, 7, PyInt_FromLong((long) st.f_favail));
-    PyStructSequence_SET_ITEM(v, 8, PyInt_FromLong((long) st.f_flag));
-    PyStructSequence_SET_ITEM(v, 9, PyInt_FromLong((long) st.f_namemax));
+    PyStructSequence_SET_ITEM(v, 0, PyInt_FromLong((REALLYLONG) st.f_bsize));
+    PyStructSequence_SET_ITEM(v, 1, PyInt_FromLong((REALLYLONG) st.f_frsize));
+    PyStructSequence_SET_ITEM(v, 2, PyInt_FromLong((REALLYLONG) st.f_blocks));
+    PyStructSequence_SET_ITEM(v, 3, PyInt_FromLong((REALLYLONG) st.f_bfree));
+    PyStructSequence_SET_ITEM(v, 4, PyInt_FromLong((REALLYLONG) st.f_bavail));
+    PyStructSequence_SET_ITEM(v, 5, PyInt_FromLong((REALLYLONG) st.f_files));
+    PyStructSequence_SET_ITEM(v, 6, PyInt_FromLong((REALLYLONG) st.f_ffree));
+    PyStructSequence_SET_ITEM(v, 7, PyInt_FromLong((REALLYLONG) st.f_favail));
+    PyStructSequence_SET_ITEM(v, 8, PyInt_FromLong((REALLYLONG) st.f_flag));
+    PyStructSequence_SET_ITEM(v, 9, PyInt_FromLong((REALLYLONG) st.f_namemax));
 #else
-    PyStructSequence_SET_ITEM(v, 0, PyInt_FromLong((long) st.f_bsize));
-    PyStructSequence_SET_ITEM(v, 1, PyInt_FromLong((long) st.f_frsize));
+    PyStructSequence_SET_ITEM(v, 0, PyInt_FromLong((REALLYLONG) st.f_bsize));
+    PyStructSequence_SET_ITEM(v, 1, PyInt_FromLong((REALLYLONG) st.f_frsize));
     PyStructSequence_SET_ITEM(v, 2,
                               PyLong_FromLongLong((PY_LONG_LONG) st.f_blocks));
     PyStructSequence_SET_ITEM(v, 3,
@@ -7404,8 +7404,8 @@ _pystatvfs_fromstructstatvfs(struct statvfs st) {
                               PyLong_FromLongLong((PY_LONG_LONG) st.f_ffree));
     PyStructSequence_SET_ITEM(v, 7,
                               PyLong_FromLongLong((PY_LONG_LONG) st.f_favail));
-    PyStructSequence_SET_ITEM(v, 8, PyInt_FromLong((long) st.f_flag));
-    PyStructSequence_SET_ITEM(v, 9, PyInt_FromLong((long) st.f_namemax));
+    PyStructSequence_SET_ITEM(v, 8, PyInt_FromLong((REALLYLONG) st.f_flag));
+    PyStructSequence_SET_ITEM(v, 9, PyInt_FromLong((REALLYLONG) st.f_namemax));
 #endif
 
     return v;
@@ -7576,7 +7576,7 @@ posix_tmpnam(PyObject *self, PyObject *noargs)
  */
 struct constdef {
     char *name;
-    long value;
+    REALLYLONG value;
 };
 
 static int
@@ -7693,7 +7693,7 @@ posix_fpathconf(PyObject *self, PyObject *args)
 
     if (PyArg_ParseTuple(args, "iO&:fpathconf", &fd,
                          conv_path_confname, &name)) {
-        long limit;
+        REALLYLONG limit;
 
         errno = 0;
         limit = fpathconf(fd, name);
@@ -7722,7 +7722,7 @@ posix_pathconf(PyObject *self, PyObject *args)
 
     if (PyArg_ParseTuple(args, "sO&:pathconf", &path,
                          conv_path_confname, &name)) {
-    long limit;
+    REALLYLONG limit;
 
     errno = 0;
     limit = pathconf(path, name);
@@ -9082,7 +9082,7 @@ static PyMethodDef posix_methods[] = {
 
 
 static int
-ins(PyObject *module, char *symbol, long value)
+ins(PyObject *module, char *symbol, REALLYLONG value)
 {
     return PyModule_AddIntConstant(module, symbol, value);
 }
@@ -9144,214 +9144,214 @@ static int
 all_ins(PyObject *d)
 {
 #ifdef F_OK
-    if (ins(d, "F_OK", (long)F_OK)) return -1;
+    if (ins(d, "F_OK", (REALLYLONG)F_OK)) return -1;
 #endif
 #ifdef R_OK
-    if (ins(d, "R_OK", (long)R_OK)) return -1;
+    if (ins(d, "R_OK", (REALLYLONG)R_OK)) return -1;
 #endif
 #ifdef W_OK
-    if (ins(d, "W_OK", (long)W_OK)) return -1;
+    if (ins(d, "W_OK", (REALLYLONG)W_OK)) return -1;
 #endif
 #ifdef X_OK
-    if (ins(d, "X_OK", (long)X_OK)) return -1;
+    if (ins(d, "X_OK", (REALLYLONG)X_OK)) return -1;
 #endif
 #ifdef NGROUPS_MAX
-    if (ins(d, "NGROUPS_MAX", (long)NGROUPS_MAX)) return -1;
+    if (ins(d, "NGROUPS_MAX", (REALLYLONG)NGROUPS_MAX)) return -1;
 #endif
 #ifdef TMP_MAX
-    if (ins(d, "TMP_MAX", (long)TMP_MAX)) return -1;
+    if (ins(d, "TMP_MAX", (REALLYLONG)TMP_MAX)) return -1;
 #endif
 #ifdef WCONTINUED
-    if (ins(d, "WCONTINUED", (long)WCONTINUED)) return -1;
+    if (ins(d, "WCONTINUED", (REALLYLONG)WCONTINUED)) return -1;
 #endif
 #ifdef WNOHANG
-    if (ins(d, "WNOHANG", (long)WNOHANG)) return -1;
+    if (ins(d, "WNOHANG", (REALLYLONG)WNOHANG)) return -1;
 #endif
 #ifdef WUNTRACED
-    if (ins(d, "WUNTRACED", (long)WUNTRACED)) return -1;
+    if (ins(d, "WUNTRACED", (REALLYLONG)WUNTRACED)) return -1;
 #endif
 #ifdef O_RDONLY
-    if (ins(d, "O_RDONLY", (long)O_RDONLY)) return -1;
+    if (ins(d, "O_RDONLY", (REALLYLONG)O_RDONLY)) return -1;
 #endif
 #ifdef O_WRONLY
-    if (ins(d, "O_WRONLY", (long)O_WRONLY)) return -1;
+    if (ins(d, "O_WRONLY", (REALLYLONG)O_WRONLY)) return -1;
 #endif
 #ifdef O_RDWR
-    if (ins(d, "O_RDWR", (long)O_RDWR)) return -1;
+    if (ins(d, "O_RDWR", (REALLYLONG)O_RDWR)) return -1;
 #endif
 #ifdef O_NDELAY
-    if (ins(d, "O_NDELAY", (long)O_NDELAY)) return -1;
+    if (ins(d, "O_NDELAY", (REALLYLONG)O_NDELAY)) return -1;
 #endif
 #ifdef O_NONBLOCK
-    if (ins(d, "O_NONBLOCK", (long)O_NONBLOCK)) return -1;
+    if (ins(d, "O_NONBLOCK", (REALLYLONG)O_NONBLOCK)) return -1;
 #endif
 #ifdef O_APPEND
-    if (ins(d, "O_APPEND", (long)O_APPEND)) return -1;
+    if (ins(d, "O_APPEND", (REALLYLONG)O_APPEND)) return -1;
 #endif
 #ifdef O_DSYNC
-    if (ins(d, "O_DSYNC", (long)O_DSYNC)) return -1;
+    if (ins(d, "O_DSYNC", (REALLYLONG)O_DSYNC)) return -1;
 #endif
 #ifdef O_RSYNC
-    if (ins(d, "O_RSYNC", (long)O_RSYNC)) return -1;
+    if (ins(d, "O_RSYNC", (REALLYLONG)O_RSYNC)) return -1;
 #endif
 #ifdef O_SYNC
-    if (ins(d, "O_SYNC", (long)O_SYNC)) return -1;
+    if (ins(d, "O_SYNC", (REALLYLONG)O_SYNC)) return -1;
 #endif
 #ifdef O_NOCTTY
-    if (ins(d, "O_NOCTTY", (long)O_NOCTTY)) return -1;
+    if (ins(d, "O_NOCTTY", (REALLYLONG)O_NOCTTY)) return -1;
 #endif
 #ifdef O_CREAT
-    if (ins(d, "O_CREAT", (long)O_CREAT)) return -1;
+    if (ins(d, "O_CREAT", (REALLYLONG)O_CREAT)) return -1;
 #endif
 #ifdef O_EXCL
-    if (ins(d, "O_EXCL", (long)O_EXCL)) return -1;
+    if (ins(d, "O_EXCL", (REALLYLONG)O_EXCL)) return -1;
 #endif
 #ifdef O_TRUNC
-    if (ins(d, "O_TRUNC", (long)O_TRUNC)) return -1;
+    if (ins(d, "O_TRUNC", (REALLYLONG)O_TRUNC)) return -1;
 #endif
 #ifdef O_BINARY
-    if (ins(d, "O_BINARY", (long)O_BINARY)) return -1;
+    if (ins(d, "O_BINARY", (REALLYLONG)O_BINARY)) return -1;
 #endif
 #ifdef O_TEXT
-    if (ins(d, "O_TEXT", (long)O_TEXT)) return -1;
+    if (ins(d, "O_TEXT", (REALLYLONG)O_TEXT)) return -1;
 #endif
 #ifdef O_LARGEFILE
-    if (ins(d, "O_LARGEFILE", (long)O_LARGEFILE)) return -1;
+    if (ins(d, "O_LARGEFILE", (REALLYLONG)O_LARGEFILE)) return -1;
 #endif
 #ifdef O_SHLOCK
-    if (ins(d, "O_SHLOCK", (long)O_SHLOCK)) return -1;
+    if (ins(d, "O_SHLOCK", (REALLYLONG)O_SHLOCK)) return -1;
 #endif
 #ifdef O_EXLOCK
-    if (ins(d, "O_EXLOCK", (long)O_EXLOCK)) return -1;
+    if (ins(d, "O_EXLOCK", (REALLYLONG)O_EXLOCK)) return -1;
 #endif
 
 /* MS Windows */
 #ifdef O_NOINHERIT
     /* Don't inherit in child processes. */
-    if (ins(d, "O_NOINHERIT", (long)O_NOINHERIT)) return -1;
+    if (ins(d, "O_NOINHERIT", (REALLYLONG)O_NOINHERIT)) return -1;
 #endif
 #ifdef _O_SHORT_LIVED
     /* Optimize for short life (keep in memory). */
     /* MS forgot to define this one with a non-underscore form too. */
-    if (ins(d, "O_SHORT_LIVED", (long)_O_SHORT_LIVED)) return -1;
+    if (ins(d, "O_SHORT_LIVED", (REALLYLONG)_O_SHORT_LIVED)) return -1;
 #endif
 #ifdef O_TEMPORARY
     /* Automatically delete when last handle is closed. */
-    if (ins(d, "O_TEMPORARY", (long)O_TEMPORARY)) return -1;
+    if (ins(d, "O_TEMPORARY", (REALLYLONG)O_TEMPORARY)) return -1;
 #endif
 #ifdef O_RANDOM
     /* Optimize for random access. */
-    if (ins(d, "O_RANDOM", (long)O_RANDOM)) return -1;
+    if (ins(d, "O_RANDOM", (REALLYLONG)O_RANDOM)) return -1;
 #endif
 #ifdef O_SEQUENTIAL
     /* Optimize for sequential access. */
-    if (ins(d, "O_SEQUENTIAL", (long)O_SEQUENTIAL)) return -1;
+    if (ins(d, "O_SEQUENTIAL", (REALLYLONG)O_SEQUENTIAL)) return -1;
 #endif
 
 /* GNU extensions. */
 #ifdef O_ASYNC
     /* Send a SIGIO signal whenever input or output
        becomes available on file descriptor */
-    if (ins(d, "O_ASYNC", (long)O_ASYNC)) return -1;
+    if (ins(d, "O_ASYNC", (REALLYLONG)O_ASYNC)) return -1;
 #endif
 #ifdef O_DIRECT
     /* Direct disk access. */
-    if (ins(d, "O_DIRECT", (long)O_DIRECT)) return -1;
+    if (ins(d, "O_DIRECT", (REALLYLONG)O_DIRECT)) return -1;
 #endif
 #ifdef O_DIRECTORY
     /* Must be a directory.      */
-    if (ins(d, "O_DIRECTORY", (long)O_DIRECTORY)) return -1;
+    if (ins(d, "O_DIRECTORY", (REALLYLONG)O_DIRECTORY)) return -1;
 #endif
 #ifdef O_NOFOLLOW
     /* Do not follow links.      */
-    if (ins(d, "O_NOFOLLOW", (long)O_NOFOLLOW)) return -1;
+    if (ins(d, "O_NOFOLLOW", (REALLYLONG)O_NOFOLLOW)) return -1;
 #endif
 #ifdef O_NOATIME
     /* Do not update the access time. */
-    if (ins(d, "O_NOATIME", (long)O_NOATIME)) return -1;
+    if (ins(d, "O_NOATIME", (REALLYLONG)O_NOATIME)) return -1;
 #endif
 
     /* These come from sysexits.h */
 #ifdef EX_OK
-    if (ins(d, "EX_OK", (long)EX_OK)) return -1;
+    if (ins(d, "EX_OK", (REALLYLONG)EX_OK)) return -1;
 #endif /* EX_OK */
 #ifdef EX_USAGE
-    if (ins(d, "EX_USAGE", (long)EX_USAGE)) return -1;
+    if (ins(d, "EX_USAGE", (REALLYLONG)EX_USAGE)) return -1;
 #endif /* EX_USAGE */
 #ifdef EX_DATAERR
-    if (ins(d, "EX_DATAERR", (long)EX_DATAERR)) return -1;
+    if (ins(d, "EX_DATAERR", (REALLYLONG)EX_DATAERR)) return -1;
 #endif /* EX_DATAERR */
 #ifdef EX_NOINPUT
-    if (ins(d, "EX_NOINPUT", (long)EX_NOINPUT)) return -1;
+    if (ins(d, "EX_NOINPUT", (REALLYLONG)EX_NOINPUT)) return -1;
 #endif /* EX_NOINPUT */
 #ifdef EX_NOUSER
-    if (ins(d, "EX_NOUSER", (long)EX_NOUSER)) return -1;
+    if (ins(d, "EX_NOUSER", (REALLYLONG)EX_NOUSER)) return -1;
 #endif /* EX_NOUSER */
 #ifdef EX_NOHOST
-    if (ins(d, "EX_NOHOST", (long)EX_NOHOST)) return -1;
+    if (ins(d, "EX_NOHOST", (REALLYLONG)EX_NOHOST)) return -1;
 #endif /* EX_NOHOST */
 #ifdef EX_UNAVAILABLE
-    if (ins(d, "EX_UNAVAILABLE", (long)EX_UNAVAILABLE)) return -1;
+    if (ins(d, "EX_UNAVAILABLE", (REALLYLONG)EX_UNAVAILABLE)) return -1;
 #endif /* EX_UNAVAILABLE */
 #ifdef EX_SOFTWARE
-    if (ins(d, "EX_SOFTWARE", (long)EX_SOFTWARE)) return -1;
+    if (ins(d, "EX_SOFTWARE", (REALLYLONG)EX_SOFTWARE)) return -1;
 #endif /* EX_SOFTWARE */
 #ifdef EX_OSERR
-    if (ins(d, "EX_OSERR", (long)EX_OSERR)) return -1;
+    if (ins(d, "EX_OSERR", (REALLYLONG)EX_OSERR)) return -1;
 #endif /* EX_OSERR */
 #ifdef EX_OSFILE
-    if (ins(d, "EX_OSFILE", (long)EX_OSFILE)) return -1;
+    if (ins(d, "EX_OSFILE", (REALLYLONG)EX_OSFILE)) return -1;
 #endif /* EX_OSFILE */
 #ifdef EX_CANTCREAT
-    if (ins(d, "EX_CANTCREAT", (long)EX_CANTCREAT)) return -1;
+    if (ins(d, "EX_CANTCREAT", (REALLYLONG)EX_CANTCREAT)) return -1;
 #endif /* EX_CANTCREAT */
 #ifdef EX_IOERR
-    if (ins(d, "EX_IOERR", (long)EX_IOERR)) return -1;
+    if (ins(d, "EX_IOERR", (REALLYLONG)EX_IOERR)) return -1;
 #endif /* EX_IOERR */
 #ifdef EX_TEMPFAIL
-    if (ins(d, "EX_TEMPFAIL", (long)EX_TEMPFAIL)) return -1;
+    if (ins(d, "EX_TEMPFAIL", (REALLYLONG)EX_TEMPFAIL)) return -1;
 #endif /* EX_TEMPFAIL */
 #ifdef EX_PROTOCOL
-    if (ins(d, "EX_PROTOCOL", (long)EX_PROTOCOL)) return -1;
+    if (ins(d, "EX_PROTOCOL", (REALLYLONG)EX_PROTOCOL)) return -1;
 #endif /* EX_PROTOCOL */
 #ifdef EX_NOPERM
-    if (ins(d, "EX_NOPERM", (long)EX_NOPERM)) return -1;
+    if (ins(d, "EX_NOPERM", (REALLYLONG)EX_NOPERM)) return -1;
 #endif /* EX_NOPERM */
 #ifdef EX_CONFIG
-    if (ins(d, "EX_CONFIG", (long)EX_CONFIG)) return -1;
+    if (ins(d, "EX_CONFIG", (REALLYLONG)EX_CONFIG)) return -1;
 #endif /* EX_CONFIG */
 #ifdef EX_NOTFOUND
-    if (ins(d, "EX_NOTFOUND", (long)EX_NOTFOUND)) return -1;
+    if (ins(d, "EX_NOTFOUND", (REALLYLONG)EX_NOTFOUND)) return -1;
 #endif /* EX_NOTFOUND */
 
 #ifdef HAVE_SPAWNV
 #if defined(PYOS_OS2) && defined(PYCC_GCC)
-    if (ins(d, "P_WAIT", (long)P_WAIT)) return -1;
-    if (ins(d, "P_NOWAIT", (long)P_NOWAIT)) return -1;
-    if (ins(d, "P_OVERLAY", (long)P_OVERLAY)) return -1;
-    if (ins(d, "P_DEBUG", (long)P_DEBUG)) return -1;
-    if (ins(d, "P_SESSION", (long)P_SESSION)) return -1;
-    if (ins(d, "P_DETACH", (long)P_DETACH)) return -1;
-    if (ins(d, "P_PM", (long)P_PM)) return -1;
-    if (ins(d, "P_DEFAULT", (long)P_DEFAULT)) return -1;
-    if (ins(d, "P_MINIMIZE", (long)P_MINIMIZE)) return -1;
-    if (ins(d, "P_MAXIMIZE", (long)P_MAXIMIZE)) return -1;
-    if (ins(d, "P_FULLSCREEN", (long)P_FULLSCREEN)) return -1;
-    if (ins(d, "P_WINDOWED", (long)P_WINDOWED)) return -1;
-    if (ins(d, "P_FOREGROUND", (long)P_FOREGROUND)) return -1;
-    if (ins(d, "P_BACKGROUND", (long)P_BACKGROUND)) return -1;
-    if (ins(d, "P_NOCLOSE", (long)P_NOCLOSE)) return -1;
-    if (ins(d, "P_NOSESSION", (long)P_NOSESSION)) return -1;
-    if (ins(d, "P_QUOTE", (long)P_QUOTE)) return -1;
-    if (ins(d, "P_TILDE", (long)P_TILDE)) return -1;
-    if (ins(d, "P_UNRELATED", (long)P_UNRELATED)) return -1;
-    if (ins(d, "P_DEBUGDESC", (long)P_DEBUGDESC)) return -1;
+    if (ins(d, "P_WAIT", (REALLYLONG)P_WAIT)) return -1;
+    if (ins(d, "P_NOWAIT", (REALLYLONG)P_NOWAIT)) return -1;
+    if (ins(d, "P_OVERLAY", (REALLYLONG)P_OVERLAY)) return -1;
+    if (ins(d, "P_DEBUG", (REALLYLONG)P_DEBUG)) return -1;
+    if (ins(d, "P_SESSION", (REALLYLONG)P_SESSION)) return -1;
+    if (ins(d, "P_DETACH", (REALLYLONG)P_DETACH)) return -1;
+    if (ins(d, "P_PM", (REALLYLONG)P_PM)) return -1;
+    if (ins(d, "P_DEFAULT", (REALLYLONG)P_DEFAULT)) return -1;
+    if (ins(d, "P_MINIMIZE", (REALLYLONG)P_MINIMIZE)) return -1;
+    if (ins(d, "P_MAXIMIZE", (REALLYLONG)P_MAXIMIZE)) return -1;
+    if (ins(d, "P_FULLSCREEN", (REALLYLONG)P_FULLSCREEN)) return -1;
+    if (ins(d, "P_WINDOWED", (REALLYLONG)P_WINDOWED)) return -1;
+    if (ins(d, "P_FOREGROUND", (REALLYLONG)P_FOREGROUND)) return -1;
+    if (ins(d, "P_BACKGROUND", (REALLYLONG)P_BACKGROUND)) return -1;
+    if (ins(d, "P_NOCLOSE", (REALLYLONG)P_NOCLOSE)) return -1;
+    if (ins(d, "P_NOSESSION", (REALLYLONG)P_NOSESSION)) return -1;
+    if (ins(d, "P_QUOTE", (REALLYLONG)P_QUOTE)) return -1;
+    if (ins(d, "P_TILDE", (REALLYLONG)P_TILDE)) return -1;
+    if (ins(d, "P_UNRELATED", (REALLYLONG)P_UNRELATED)) return -1;
+    if (ins(d, "P_DEBUGDESC", (REALLYLONG)P_DEBUGDESC)) return -1;
 #else
-    if (ins(d, "P_WAIT", (long)_P_WAIT)) return -1;
-    if (ins(d, "P_NOWAIT", (long)_P_NOWAIT)) return -1;
-    if (ins(d, "P_OVERLAY", (long)_OLD_P_OVERLAY)) return -1;
-    if (ins(d, "P_NOWAITO", (long)_P_NOWAITO)) return -1;
-    if (ins(d, "P_DETACH", (long)_P_DETACH)) return -1;
+    if (ins(d, "P_WAIT", (REALLYLONG)_P_WAIT)) return -1;
+    if (ins(d, "P_NOWAIT", (REALLYLONG)_P_NOWAIT)) return -1;
+    if (ins(d, "P_OVERLAY", (REALLYLONG)_OLD_P_OVERLAY)) return -1;
+    if (ins(d, "P_NOWAITO", (REALLYLONG)_P_NOWAITO)) return -1;
+    if (ins(d, "P_DETACH", (REALLYLONG)_P_DETACH)) return -1;
 #endif
 #endif
 

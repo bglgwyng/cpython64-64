@@ -13,7 +13,7 @@ enum { RECURSIVE_MUTEX, SEMAPHORE };
 typedef struct {
     PyObject_HEAD
     SEM_HANDLE handle;
-    long last_tid;
+    REALLYLONG last_tid;
     int count;
     int maxvalue;
     int kind;
@@ -38,9 +38,9 @@ typedef struct {
 #define SEM_UNLINK(name) 0
 
 static int
-_GetSemaphoreValue(HANDLE handle, long *value)
+_GetSemaphoreValue(HANDLE handle, REALLYLONG *value)
 {
-    long previous;
+    REALLYLONG previous;
 
     switch (WaitForSingleObject(handle, 0)) {
     case WAIT_OBJECT_0:
@@ -215,7 +215,7 @@ int
 sem_timedwait_save(sem_t *sem, struct timespec *deadline, PyThreadState *_save)
 {
     int res;
-    unsigned long delay, difference;
+    UREALLYLONG delay, difference;
     struct timeval now, tvdeadline, tvdelay;
 
     errno = 0;
@@ -279,7 +279,7 @@ semlock_acquire(SemLockObject *self, PyObject *args, PyObject *kwds)
     PyObject *timeout_obj = Py_None;
     struct timespec deadline = {0};
     struct timeval now;
-    long sec, nsec;
+    REALLYLONG sec, nsec;
 
     static char *kwlist[] = {"block", "timeout", NULL};
 
@@ -303,8 +303,8 @@ semlock_acquire(SemLockObject *self, PyObject *args, PyObject *kwds)
             PyErr_SetFromErrno(PyExc_OSError);
             return NULL;
         }
-        sec = (long) timeout;
-        nsec = (long) (1e9 * (timeout - sec) + 0.5);
+        sec = (REALLYLONG) timeout;
+        nsec = (REALLYLONG) (1e9 * (timeout - sec) + 0.5);
         deadline.tv_sec = now.tv_sec + sec;
         deadline.tv_nsec = now.tv_usec * 1000 + nsec;
         deadline.tv_sec += (deadline.tv_nsec / 1000000000);
@@ -440,7 +440,7 @@ semlock_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
         return NULL;
     }
 
-    PyOS_snprintf(buffer, sizeof(buffer), "/mp%ld-%d", (long)getpid(), counter++);
+    PyOS_snprintf(buffer, sizeof(buffer), "/mp%ld-%d", (REALLYLONG)getpid(), counter++);
 
     SEM_CLEAR_ERROR();
     handle = SEM_CREATE(buffer, value, maxvalue);
@@ -488,7 +488,7 @@ semlock_dealloc(SemLockObject* self)
 static PyObject *
 semlock_count(SemLockObject *self)
 {
-    return PyInt_FromLong((long)self->count);
+    return PyInt_FromLong((REALLYLONG)self->count);
 }
 
 static PyObject *
@@ -512,7 +512,7 @@ semlock_getvalue(SemLockObject *self)
        the number of waiting threads */
     if (sval < 0)
         sval = 0;
-    return PyInt_FromLong((long)sval);
+    return PyInt_FromLong((REALLYLONG)sval);
 #endif
 }
 
@@ -533,7 +533,7 @@ semlock_iszero(SemLockObject *self)
     int sval;
     if (SEM_GETVALUE(self->handle, &sval) < 0)
         return mp_SetError(NULL, MP_STANDARD_ERROR);
-    return PyBool_FromLong((long)sval == 0);
+    return PyBool_FromLong((REALLYLONG)sval == 0);
 #endif
 }
 

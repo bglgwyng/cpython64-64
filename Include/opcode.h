@@ -144,7 +144,7 @@ extern "C" {
 
 #define SETUP_WITH 143
 
-/* Support for opargs more than 16 bits long */
+/* Support for opargs more than 16 bits REALLYLONG */
 #define EXTENDED_ARG  145
 
 #define SET_ADD         146

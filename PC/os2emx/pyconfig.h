@@ -84,7 +84,7 @@
 #define HAVE_NDBM_H 1
 
 /* need this for spawnv code in posixmodule (cloned from WIN32 def'n) */
-typedef long intptr_t;
+typedef REALLYLONG intptr_t;
 
 /* we don't have tm_zone but do have the external array tzname */
 #define HAVE_TZNAME 1
@@ -98,7 +98,7 @@ typedef long intptr_t;
 /* Define if you can safely include both <sys/time.h> and <time.h>. */
 #define TIME_WITH_SYS_TIME 1
 
-/* Define this if you have the type long long. */
+/* Define this if you have the type REALLYLONG. */
 #define HAVE_LONG_LONG 1
 
 /* Define if your compiler supports function prototypes. */
@@ -135,7 +135,7 @@ typedef long intptr_t;
 /* The number of bytes in a long. */
 #define SIZEOF_LONG 4
 
-/* The number of bytes in a long long. */
+/* The number of bytes in a REALLYLONG. */
 #define SIZEOF_LONG_LONG 8
 
 /* The number of bytes in a void *. */

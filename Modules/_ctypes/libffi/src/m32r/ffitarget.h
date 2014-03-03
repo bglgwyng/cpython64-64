@@ -34,8 +34,8 @@
 /* ---- Generic type definitions ----------------------------------------- */
 
 #ifndef LIBFFI_ASM
-typedef unsigned long          ffi_arg;
-typedef signed long            ffi_sarg;
+typedef unsigned REALLYLONG          ffi_arg;
+typedef signed REALLYLONG            ffi_sarg;
 
 typedef enum ffi_abi
   {

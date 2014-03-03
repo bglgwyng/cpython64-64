@@ -24,7 +24,7 @@ PyOSA_GetAppTerminology(PyObject* self, PyObject* args)
     SInt16 defaultTerminology = 0;
     Boolean didLaunch = 0;
     OSAError err;
-    long modeFlags = 0;
+    REALLYLONG modeFlags = 0;
 
     if (!PyArg_ParseTuple(args, "O&|i", PyMac_GetFSSpec, &fss, &modeFlags))
              return NULL;

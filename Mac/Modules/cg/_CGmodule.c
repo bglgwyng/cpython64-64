@@ -942,7 +942,7 @@ static PyObject *CGContextRefObj_CGContextShowText(CGContextRefObject *_self, Py
 {
     PyObject *_res = NULL;
     char *cstring__in__;
-    long cstring__len__;
+    REALLYLONG cstring__len__;
     int cstring__in_len__;
     if (!PyArg_ParseTuple(_args, "s#",
                           &cstring__in__, &cstring__in_len__))
@@ -961,7 +961,7 @@ static PyObject *CGContextRefObj_CGContextShowTextAtPoint(CGContextRefObject *_s
     float x;
     float y;
     char *cstring__in__;
-    long cstring__len__;
+    REALLYLONG cstring__len__;
     int cstring__in_len__;
     if (!PyArg_ParseTuple(_args, "ffs#",
                           &x,

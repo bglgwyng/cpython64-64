@@ -13,10 +13,10 @@ closure_test_fn0(ffi_cif* cif __UNUSED__, void* resp, void** args,
 		 void* userdata)
 {
   *(ffi_arg*)resp =
-    (int)*(unsigned long long *)args[0] +
-    (int)(*(unsigned long long *)args[1]) +
-    (int)(*(unsigned long long *)args[2]) +
-    (int)*(unsigned long long *)args[3] +
+    (int)*(unsigned REALLYLONG *)args[0] +
+    (int)(*(unsigned REALLYLONG *)args[1]) +
+    (int)(*(unsigned REALLYLONG *)args[2]) +
+    (int)*(unsigned REALLYLONG *)args[3] +
     (int)(*(int *)args[4]) + (int)(*(double *)args[5]) +
     (int)*(double *)args[6] + (int)(*(float *)args[7]) +
     (int)(*(double *)args[8]) + (int)*(double *)args[9] +
@@ -26,10 +26,10 @@ closure_test_fn0(ffi_cif* cif __UNUSED__, void* resp, void** args,
     (intptr_t)userdata;
 
   printf("%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d: %d\n",
-	 (int)*(unsigned long long  *)args[0],
-	 (int)(*(unsigned long long  *)args[1]),
-	 (int)(*(unsigned long long  *)args[2]),
-	 (int)*(unsigned long long  *)args[3],
+	 (int)*(unsigned REALLYLONG  *)args[0],
+	 (int)(*(unsigned REALLYLONG  *)args[1]),
+	 (int)(*(unsigned REALLYLONG  *)args[2]),
+	 (int)*(unsigned REALLYLONG  *)args[3],
 	 (int)(*(int *)args[4]), (int)(*(double *)args[5]),
 	 (int)*(double *)args[6], (int)(*(float *)args[7]),
 	 (int)(*(double *)args[8]), (int)*(double *)args[9],
@@ -40,10 +40,10 @@ closure_test_fn0(ffi_cif* cif __UNUSED__, void* resp, void** args,
 
 }
 
-typedef int (*closure_test_type0)(unsigned long long,
-				  unsigned long long,
-				  unsigned long long,
-				  unsigned long long,
+typedef int (*closure_test_type0)(unsigned REALLYLONG,
+				  unsigned REALLYLONG,
+				  unsigned REALLYLONG,
+				  unsigned REALLYLONG,
 				  int, double, double, float, double, double,
 				  int, float, int, int, double, double);
 

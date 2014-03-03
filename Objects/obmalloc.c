@@ -238,7 +238,7 @@ static int running_on_valgrind = -1;
 #define uint    unsigned int    /* assuming >= 16 bits */
 
 #undef  ulong
-#define ulong   unsigned long   /* assuming >= 32 bits */
+#define ulong   UREALLYLONG   /* assuming >= 32 bits */
 
 #undef uptr
 #define uptr    Py_uintptr_t
@@ -380,7 +380,7 @@ one-block list holding the second such block.  This is consistent with that
 pymalloc strives at all levels (arena, pool, and block) never to touch a piece
 of memory until it's actually needed.
 
-So long as a pool is in the used state, we're certain there *is* a block
+So REALLYLONG as a pool is in the used state, we're certain there *is* a block
 available for allocating, and pool->freeblock is not NULL.  If pool->freeblock
 points to the end of the free list before we've carved the entire pool into
 blocks, that means we simply haven't yet gotten to one of the higher-address

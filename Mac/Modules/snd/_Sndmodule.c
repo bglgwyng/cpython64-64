@@ -50,7 +50,7 @@ typedef struct SndChannelObject {
     SndChannelPtr ob_itself;
     /* Members used to implement callbacks: */
     PyObject *ob_callback;
-    long ob_A5;
+    REALLYLONG ob_A5;
     SndCommand ob_cmd;
 } SndChannelObject;
 
@@ -266,7 +266,7 @@ typedef struct SPBObject {
     PyObject *ob_completion;
     PyObject *ob_interrupt;
     PyObject *ob_thiscallback;
-    long ob_A5;
+    REALLYLONG ob_A5;
     SPB ob_spb;
 } SPBObject;
 
@@ -280,7 +280,7 @@ static PyObject *SPBObj_New(void)
     it->ob_thiscallback = NULL;
     it->ob_A5 = SetCurrentA5();
     memset((char *)&it->ob_spb, 0, sizeof(it->ob_spb));
-    it->ob_spb.userLong = (long)it;
+    it->ob_spb.userLong = (REALLYLONG)it;
     return (PyObject *)it;
 }
 static int SPBObj_Convert(PyObject *v, SPBPtr *p_itself)
@@ -447,7 +447,7 @@ static PyObject *Snd_SndNewChannel(PyObject *_self, PyObject *_args)
     OSErr _err;
     SndChannelPtr chan = 0;
     short synth;
-    long init;
+    REALLYLONG init;
     PyObject* userRoutine;
     if (!PyArg_ParseTuple(_args, "hlO",
                           &synth,
@@ -469,7 +469,7 @@ static PyObject *Snd_SndNewChannel(PyObject *_self, PyObject *_args)
     if (_res != NULL && userRoutine != Py_None)
     {
         SndChannelObject *p = (SndChannelObject *)_res;
-        p->ob_itself->userInfo = (long)p;
+        p->ob_itself->userInfo = (REALLYLONG)p;
         Py_INCREF(userRoutine);
         p->ob_callback = userRoutine;
     }
@@ -537,7 +537,7 @@ static PyObject *Snd_GetSysBeepVolume(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
     OSErr _err;
-    long level;
+    REALLYLONG level;
     if (!PyArg_ParseTuple(_args, ""))
         return NULL;
     _err = GetSysBeepVolume(&level);
@@ -551,7 +551,7 @@ static PyObject *Snd_SetSysBeepVolume(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
     OSErr _err;
-    long level;
+    REALLYLONG level;
     if (!PyArg_ParseTuple(_args, "l",
                           &level))
         return NULL;
@@ -566,7 +566,7 @@ static PyObject *Snd_GetDefaultOutputVolume(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
     OSErr _err;
-    long level;
+    REALLYLONG level;
     if (!PyArg_ParseTuple(_args, ""))
         return NULL;
     _err = GetDefaultOutputVolume(&level);
@@ -580,7 +580,7 @@ static PyObject *Snd_SetDefaultOutputVolume(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
     OSErr _err;
-    long level;
+    REALLYLONG level;
     if (!PyArg_ParseTuple(_args, "l",
                           &level))
         return NULL;
@@ -596,7 +596,7 @@ static PyObject *Snd_GetSoundHeaderOffset(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     OSErr _err;
     SndListHandle sndHandle;
-    long offset;
+    REALLYLONG offset;
     if (!PyArg_ParseTuple(_args, "O&",
                           ResObj_Convert, &sndHandle))
         return NULL;
@@ -783,7 +783,7 @@ static PyObject *Snd_SPBOpenDevice(PyObject *_self, PyObject *_args)
     OSErr _err;
     Str255 deviceName;
     short permission;
-    long inRefNum;
+    REALLYLONG inRefNum;
     if (!PyArg_ParseTuple(_args, "O&h",
                           PyMac_GetStr255, deviceName,
                           &permission))
@@ -801,7 +801,7 @@ static PyObject *Snd_SPBCloseDevice(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
     OSErr _err;
-    long inRefNum;
+    REALLYLONG inRefNum;
     if (!PyArg_ParseTuple(_args, "l",
                           &inRefNum))
         return NULL;
@@ -834,7 +834,7 @@ static PyObject *Snd_SPBPauseRecording(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
     OSErr _err;
-    long inRefNum;
+    REALLYLONG inRefNum;
     if (!PyArg_ParseTuple(_args, "l",
                           &inRefNum))
         return NULL;
@@ -849,7 +849,7 @@ static PyObject *Snd_SPBResumeRecording(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
     OSErr _err;
-    long inRefNum;
+    REALLYLONG inRefNum;
     if (!PyArg_ParseTuple(_args, "l",
                           &inRefNum))
         return NULL;
@@ -864,7 +864,7 @@ static PyObject *Snd_SPBStopRecording(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
     OSErr _err;
-    long inRefNum;
+    REALLYLONG inRefNum;
     if (!PyArg_ParseTuple(_args, "l",
                           &inRefNum))
         return NULL;
@@ -879,13 +879,13 @@ static PyObject *Snd_SPBGetRecordingStatus(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
     OSErr _err;
-    long inRefNum;
+    REALLYLONG inRefNum;
     short recordingStatus;
     short meterLevel;
-    unsigned long totalSamplesToRecord;
-    unsigned long numberOfSamplesRecorded;
-    unsigned long totalMsecsToRecord;
-    unsigned long numberOfMsecsRecorded;
+    unsigned REALLYLONG totalSamplesToRecord;
+    unsigned REALLYLONG numberOfSamplesRecorded;
+    unsigned REALLYLONG totalMsecsToRecord;
+    unsigned REALLYLONG numberOfMsecsRecorded;
     if (!PyArg_ParseTuple(_args, "l",
                           &inRefNum))
         return NULL;
@@ -911,7 +911,7 @@ static PyObject *Snd_SPBGetDeviceInfo(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
     OSErr _err;
-    long inRefNum;
+    REALLYLONG inRefNum;
     OSType infoType;
     void * infoData;
     if (!PyArg_ParseTuple(_args, "lO&w",
@@ -932,7 +932,7 @@ static PyObject *Snd_SPBSetDeviceInfo(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
     OSErr _err;
-    long inRefNum;
+    REALLYLONG inRefNum;
     OSType infoType;
     void * infoData;
     if (!PyArg_ParseTuple(_args, "lO&w",
@@ -953,8 +953,8 @@ static PyObject *Snd_SPBMillisecondsToBytes(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
     OSErr _err;
-    long inRefNum;
-    long milliseconds;
+    REALLYLONG inRefNum;
+    REALLYLONG milliseconds;
     if (!PyArg_ParseTuple(_args, "l",
                           &inRefNum))
         return NULL;
@@ -970,8 +970,8 @@ static PyObject *Snd_SPBBytesToMilliseconds(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
     OSErr _err;
-    long inRefNum;
-    long byteCount;
+    REALLYLONG inRefNum;
+    REALLYLONG byteCount;
     if (!PyArg_ParseTuple(_args, "l",
                           &inRefNum))
         return NULL;
@@ -991,7 +991,7 @@ static PyMethodDef Snd_methods[] = {
     {"SysBeep", (PyCFunction)Snd_SysBeep, 1,
      PyDoc_STR("(short duration) -> None")},
     {"SndNewChannel", (PyCFunction)Snd_SndNewChannel, 1,
-     PyDoc_STR("(short synth, long init, PyObject* userRoutine) -> (SndChannelPtr chan)")},
+     PyDoc_STR("(short synth, REALLYLONG init, PyObject* userRoutine) -> (SndChannelPtr chan)")},
     {"SndSoundManagerVersion", (PyCFunction)Snd_SndSoundManagerVersion, 1,
      PyDoc_STR("() -> (NumVersion _rv)")},
     {"SndManagerStatus", (PyCFunction)Snd_SndManagerStatus, 1,
@@ -1001,15 +1001,15 @@ static PyMethodDef Snd_methods[] = {
     {"SndSetSysBeepState", (PyCFunction)Snd_SndSetSysBeepState, 1,
      PyDoc_STR("(short sysBeepState) -> None")},
     {"GetSysBeepVolume", (PyCFunction)Snd_GetSysBeepVolume, 1,
-     PyDoc_STR("() -> (long level)")},
+     PyDoc_STR("() -> (REALLYLONG level)")},
     {"SetSysBeepVolume", (PyCFunction)Snd_SetSysBeepVolume, 1,
-     PyDoc_STR("(long level) -> None")},
+     PyDoc_STR("(REALLYLONG level) -> None")},
     {"GetDefaultOutputVolume", (PyCFunction)Snd_GetDefaultOutputVolume, 1,
-     PyDoc_STR("() -> (long level)")},
+     PyDoc_STR("() -> (REALLYLONG level)")},
     {"SetDefaultOutputVolume", (PyCFunction)Snd_SetDefaultOutputVolume, 1,
-     PyDoc_STR("(long level) -> None")},
+     PyDoc_STR("(REALLYLONG level) -> None")},
     {"GetSoundHeaderOffset", (PyCFunction)Snd_GetSoundHeaderOffset, 1,
-     PyDoc_STR("(SndListHandle sndHandle) -> (long offset)")},
+     PyDoc_STR("(SndListHandle sndHandle) -> (REALLYLONG offset)")},
     {"GetCompressionInfo", (PyCFunction)Snd_GetCompressionInfo, 1,
      PyDoc_STR("(short compressionID, OSType format, short numChannels, short sampleSize) -> (CompressionInfo cp)")},
     {"SetSoundPreference", (PyCFunction)Snd_SetSoundPreference, 1,
@@ -1029,27 +1029,27 @@ static PyMethodDef Snd_methods[] = {
     {"SPBGetIndexedDevice", (PyCFunction)Snd_SPBGetIndexedDevice, 1,
      PyDoc_STR("(short count) -> (Str255 deviceName, Handle deviceIconHandle)")},
     {"SPBOpenDevice", (PyCFunction)Snd_SPBOpenDevice, 1,
-     PyDoc_STR("(Str255 deviceName, short permission) -> (long inRefNum)")},
+     PyDoc_STR("(Str255 deviceName, short permission) -> (REALLYLONG inRefNum)")},
     {"SPBCloseDevice", (PyCFunction)Snd_SPBCloseDevice, 1,
-     PyDoc_STR("(long inRefNum) -> None")},
+     PyDoc_STR("(REALLYLONG inRefNum) -> None")},
     {"SPBRecord", (PyCFunction)Snd_SPBRecord, 1,
      PyDoc_STR("(SPBPtr inParamPtr, Boolean asynchFlag) -> None")},
     {"SPBPauseRecording", (PyCFunction)Snd_SPBPauseRecording, 1,
-     PyDoc_STR("(long inRefNum) -> None")},
+     PyDoc_STR("(REALLYLONG inRefNum) -> None")},
     {"SPBResumeRecording", (PyCFunction)Snd_SPBResumeRecording, 1,
-     PyDoc_STR("(long inRefNum) -> None")},
+     PyDoc_STR("(REALLYLONG inRefNum) -> None")},
     {"SPBStopRecording", (PyCFunction)Snd_SPBStopRecording, 1,
-     PyDoc_STR("(long inRefNum) -> None")},
+     PyDoc_STR("(REALLYLONG inRefNum) -> None")},
     {"SPBGetRecordingStatus", (PyCFunction)Snd_SPBGetRecordingStatus, 1,
-     PyDoc_STR("(long inRefNum) -> (short recordingStatus, short meterLevel, unsigned long totalSamplesToRecord, unsigned long numberOfSamplesRecorded, unsigned long totalMsecsToRecord, unsigned long numberOfMsecsRecorded)")},
+     PyDoc_STR("(REALLYLONG inRefNum) -> (short recordingStatus, short meterLevel, unsigned REALLYLONG totalSamplesToRecord, unsigned REALLYLONG numberOfSamplesRecorded, unsigned REALLYLONG totalMsecsToRecord, unsigned REALLYLONG numberOfMsecsRecorded)")},
     {"SPBGetDeviceInfo", (PyCFunction)Snd_SPBGetDeviceInfo, 1,
-     PyDoc_STR("(long inRefNum, OSType infoType, void * infoData) -> None")},
+     PyDoc_STR("(REALLYLONG inRefNum, OSType infoType, void * infoData) -> None")},
     {"SPBSetDeviceInfo", (PyCFunction)Snd_SPBSetDeviceInfo, 1,
-     PyDoc_STR("(long inRefNum, OSType infoType, void * infoData) -> None")},
+     PyDoc_STR("(REALLYLONG inRefNum, OSType infoType, void * infoData) -> None")},
     {"SPBMillisecondsToBytes", (PyCFunction)Snd_SPBMillisecondsToBytes, 1,
-     PyDoc_STR("(long inRefNum) -> (long milliseconds)")},
+     PyDoc_STR("(REALLYLONG inRefNum) -> (REALLYLONG milliseconds)")},
     {"SPBBytesToMilliseconds", (PyCFunction)Snd_SPBBytesToMilliseconds, 1,
-     PyDoc_STR("(long inRefNum) -> (long byteCount)")},
+     PyDoc_STR("(REALLYLONG inRefNum) -> (REALLYLONG byteCount)")},
 #endif /* __LP64__ */
     {NULL, NULL, 0}
 };
@@ -1080,7 +1080,7 @@ SndCh_UserRoutine(SndChannelPtr chan, SndCommand *cmd)
 {
     SndChannelObject *p = (SndChannelObject *)(chan->userInfo);
     if (p->ob_callback != NULL) {
-        long A5 = SetA5(p->ob_A5);
+        REALLYLONG A5 = SetA5(p->ob_A5);
         p->ob_cmd = *cmd;
         Py_AddPendingCall(SndCh_CallCallBack, (void *)p);
         SetA5(A5);
@@ -1112,7 +1112,7 @@ SPB_completion(SPBPtr my_spb)
     SPBObject *p = (SPBObject *)(my_spb->userLong);
 
     if (p && p->ob_completion) {
-        long A5 = SetA5(p->ob_A5);
+        REALLYLONG A5 = SetA5(p->ob_A5);
         p->ob_thiscallback = p->ob_completion;  /* Hope we cannot get two at the same time */
         Py_AddPendingCall(SPB_CallCallBack, (void *)p);
         SetA5(A5);

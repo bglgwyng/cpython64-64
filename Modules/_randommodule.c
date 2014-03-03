@@ -78,7 +78,7 @@
 
 typedef struct {
     PyObject_HEAD
-    unsigned long state[N];
+    UREALLYLONG state[N];
     int index;
 } RandomObject;
 
@@ -91,13 +91,13 @@ static PyTypeObject Random_Type;
 
 
 /* generates a random number on [0,0xffffffff]-interval */
-static unsigned long
+static UREALLYLONG
 genrand_int32(RandomObject *self)
 {
-    unsigned long y;
-    static unsigned long mag01[2]={0x0UL, MATRIX_A};
+    UREALLYLONG y;
+    static UREALLYLONG mag01[2]={0x0UL, MATRIX_A};
     /* mag01[x] = x * MATRIX_A  for x=0,1 */
-    unsigned long *mt;
+    UREALLYLONG *mt;
 
     mt = self->state;
     if (self->index >= N) { /* generate N words at one time */
@@ -137,16 +137,16 @@ genrand_int32(RandomObject *self)
 static PyObject *
 random_random(RandomObject *self)
 {
-    unsigned long a=genrand_int32(self)>>5, b=genrand_int32(self)>>6;
+    UREALLYLONG a=genrand_int32(self)>>5, b=genrand_int32(self)>>6;
     return PyFloat_FromDouble((a*67108864.0+b)*(1.0/9007199254740992.0));
 }
 
 /* initializes mt[N] with a seed */
 static void
-init_genrand(RandomObject *self, unsigned long s)
+init_genrand(RandomObject *self, UREALLYLONG s)
 {
     int mti;
-    unsigned long *mt;
+    UREALLYLONG *mt;
 
     mt = self->state;
     mt[0]= s & 0xffffffffUL;
@@ -168,10 +168,10 @@ init_genrand(RandomObject *self, unsigned long s)
 /* init_key is the array for initializing keys */
 /* key_length is its length */
 static PyObject *
-init_by_array(RandomObject *self, unsigned long init_key[], unsigned long key_length)
+init_by_array(RandomObject *self, UREALLYLONG init_key[], UREALLYLONG key_length)
 {
     unsigned int i, j, k;       /* was signed in the original code. RDH 12/16/2002 */
-    unsigned long *mt;
+    UREALLYLONG *mt;
 
     mt = self->state;
     init_genrand(self, 19650218UL);
@@ -210,9 +210,9 @@ random_seed(RandomObject *self, PyObject *args)
     PyObject *masklower = NULL;
     PyObject *thirtytwo = NULL;
     PyObject *n = NULL;
-    unsigned long *key = NULL;
-    unsigned long keymax;               /* # of allocated slots in key */
-    unsigned long keyused;              /* # of used slots in key */
+    UREALLYLONG *key = NULL;
+    UREALLYLONG keymax;               /* # of allocated slots in key */
+    UREALLYLONG keyused;              /* # of used slots in key */
     int err;
 
     PyObject *arg = NULL;
@@ -224,20 +224,20 @@ random_seed(RandomObject *self, PyObject *args)
         time_t now;
 
         time(&now);
-        init_genrand(self, (unsigned long)now);
+        init_genrand(self, (UREALLYLONG)now);
         Py_INCREF(Py_None);
         return Py_None;
     }
-    /* If the arg is an int or long, use its absolute value; else use
+    /* If the arg is an int or REALLYLONG, use its absolute value; else use
      * the absolute value of its hash code.
      */
     if (PyInt_Check(arg) || PyLong_Check(arg))
         n = PyNumber_Absolute(arg);
     else {
-        long hash = PyObject_Hash(arg);
+        REALLYLONG hash = PyObject_Hash(arg);
         if (hash == -1)
             goto Done;
-        n = PyLong_FromUnsignedLong((unsigned long)hash);
+        n = PyLong_FromUnsignedLong((UREALLYLONG)hash);
     }
     if (n == NULL)
         goto Done;
@@ -247,12 +247,12 @@ random_seed(RandomObject *self, PyObject *args)
      * keyused are filled.  Alas, the repeated shifting makes this a
      * quadratic-time algorithm; we'd really like to use
      * _PyLong_AsByteArray here, but then we'd have to break into the
-     * long representation to figure out how big an array was needed
+     * REALLYLONG representation to figure out how big an array was needed
      * in advance.
      */
     keymax = 8;         /* arbitrary; grows later if needed */
     keyused = 0;
-    key = (unsigned long *)PyMem_Malloc(keymax * sizeof(*key));
+    key = (UREALLYLONG *)PyMem_Malloc(keymax * sizeof(*key));
     if (key == NULL)
         goto Done;
 
@@ -265,7 +265,7 @@ random_seed(RandomObject *self, PyObject *args)
     while ((err=PyObject_IsTrue(n))) {
         PyObject *newn;
         PyObject *pychunk;
-        unsigned long chunk;
+        UREALLYLONG chunk;
 
         if (err == -1)
             goto Done;
@@ -274,7 +274,7 @@ random_seed(RandomObject *self, PyObject *args)
             goto Done;
         chunk = PyLong_AsUnsignedLong(pychunk);
         Py_DECREF(pychunk);
-        if (chunk == (unsigned long)-1 && PyErr_Occurred())
+        if (chunk == (UREALLYLONG)-1 && PyErr_Occurred())
             goto Done;
         newn = PyNumber_Rshift(n, thirtytwo);
         if (newn == NULL)
@@ -282,12 +282,12 @@ random_seed(RandomObject *self, PyObject *args)
         Py_DECREF(n);
         n = newn;
         if (keyused >= keymax) {
-            unsigned long bigger = keymax << 1;
+            UREALLYLONG bigger = keymax << 1;
             if ((bigger >> 1) != keymax) {
                 PyErr_NoMemory();
                 goto Done;
             }
-            key = (unsigned long *)PyMem_Realloc(key,
+            key = (UREALLYLONG *)PyMem_Realloc(key,
                                     bigger * sizeof(*key));
             if (key == NULL)
                 goto Done;
@@ -324,7 +324,7 @@ random_getstate(RandomObject *self)
             goto Fail;
         PyTuple_SET_ITEM(state, i, element);
     }
-    element = PyLong_FromLong((long)(self->index));
+    element = PyLong_FromLong((REALLYLONG)(self->index));
     if (element == NULL)
         goto Fail;
     PyTuple_SET_ITEM(state, i, element);
@@ -339,8 +339,8 @@ static PyObject *
 random_setstate(RandomObject *self, PyObject *state)
 {
     int i;
-    unsigned long element;
-    long index;
+    UREALLYLONG element;
+    REALLYLONG index;
 
     if (!PyTuple_Check(state)) {
         PyErr_SetString(PyExc_TypeError,
@@ -355,7 +355,7 @@ random_setstate(RandomObject *self, PyObject *state)
 
     for (i=0; i<N ; i++) {
         element = PyLong_AsUnsignedLong(PyTuple_GET_ITEM(state, i));
-        if (element == (unsigned long)-1 && PyErr_Occurred())
+        if (element == (UREALLYLONG)-1 && PyErr_Occurred())
             return NULL;
         self->state[i] = element & 0xffffffffUL; /* Make sure we get sane state */
     }
@@ -397,10 +397,10 @@ the underlying state.
 static PyObject *
 random_jumpahead(RandomObject *self, PyObject *n)
 {
-    long i, j;
+    REALLYLONG i, j;
     PyObject *iobj;
     PyObject *remobj;
-    unsigned long *mt, tmp, nonzero;
+    UREALLYLONG *mt, tmp, nonzero;
 
     if (!PyInt_Check(n) && !PyLong_Check(n)) {
         PyErr_Format(PyExc_TypeError, "jumpahead requires an "
@@ -454,7 +454,7 @@ static PyObject *
 random_getrandbits(RandomObject *self, PyObject *args)
 {
     int k, i, bytes;
-    unsigned long r;
+    UREALLYLONG r;
     unsigned char *bytearray;
     PyObject *result;
 
@@ -525,7 +525,7 @@ static PyMethodDef random_methods[] = {
         PyDoc_STR("jumpahead(int) -> None.  Create new state from "
                   "existing state and integer.")},
     {"getrandbits",     (PyCFunction)random_getrandbits,  METH_VARARGS,
-        PyDoc_STR("getrandbits(k) -> x.  Generates a long int with "
+        PyDoc_STR("getrandbits(k) -> x.  Generates a REALLYLONG int with "
                   "k random bits.")},
     {NULL,              NULL}           /* sentinel */
 };

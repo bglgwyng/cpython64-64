@@ -35,8 +35,8 @@
 /* ---- Generic type definitions ----------------------------------------- */
 
 #ifndef LIBFFI_ASM
-typedef unsigned long          ffi_arg;
-typedef signed long            ffi_sarg;
+typedef unsigned REALLYLONG          ffi_arg;
+typedef signed REALLYLONG            ffi_sarg;
 
 typedef enum ffi_abi {
   FFI_FIRST_ABI = 0,
@@ -45,7 +45,7 @@ typedef enum ffi_abi {
   FFI_DEFAULT_ABI = FFI_SYSV
 } ffi_abi;
 
-#define FFI_EXTRA_CIF_FIELDS long long flags2
+#define FFI_EXTRA_CIF_FIELDS REALLYLONG flags2
 #endif
 
 /* ---- Definitions for closures ----------------------------------------- */

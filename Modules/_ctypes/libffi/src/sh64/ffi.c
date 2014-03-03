@@ -242,7 +242,7 @@ ffi_status ffi_prep_cif_machdep(ffi_cif *cif)
 /*@-exportheader@*/
 extern void ffi_call_SYSV(void (*)(char *, extended_cif *), 
 			  /*@out@*/ extended_cif *, 
-			  unsigned, unsigned, long long,
+			  unsigned, unsigned, REALLYLONG,
 			  /*@out@*/ unsigned *, 
 			  void (*fn)(void));
 /*@=declundef@*/

@@ -22,7 +22,7 @@
 #undef Py_BUILD_CORE
 
 /* We require that C int be at least 32 bits, and use int virtually
- * everywhere.  In just a few cases we use a temp long, where a Python
+ * everywhere.  In just a few cases we use a temp REALLYLONG, where a Python
  * API returns a C long.  In such cases, we have to ensure that the
  * final result fits in a C int (this can be an issue on 64-bit boxes).
  */
@@ -41,7 +41,7 @@
  */
 #define MAX_DELTA_DAYS 999999999
 
-/* Rename the long macros in datetime.h to more reasonable short names. */
+/* Rename the REALLYLONG macros in datetime.h to more reasonable short names. */
 #define GET_YEAR                PyDateTime_GET_YEAR
 #define GET_MONTH               PyDateTime_GET_MONTH
 #define GET_DAY                 PyDateTime_GET_DAY
@@ -144,14 +144,14 @@ divmod(int x, int y, int *r)
 /* Round a double to the nearest long.  |x| must be small enough to fit
  * in a C long; this is not checked.
  */
-static long
+static REALLYLONG
 round_to_long(double x)
 {
     if (x >= 0.0)
         x = floor(x + 0.5);
     else
         x = ceil(x - 0.5);
-    return (long)x;
+    return (REALLYLONG)x;
 }
 
 /* ---------------------------------------------------------------------------
@@ -1192,7 +1192,7 @@ wrap_strftime(PyObject *object, const char *format, size_t format_len,
      * an option in the Python implementation of this module.
      */
     {
-        long year;
+        REALLYLONG year;
         PyObject *pyyear = PySequence_GetItem(timetuple, 0);
         if (pyyear == NULL) return NULL;
         assert(PyInt_Check(pyyear));
@@ -1478,9 +1478,9 @@ static PyObject *us_per_us = NULL;      /* 1 */
 static PyObject *us_per_ms = NULL;      /* 1000 */
 static PyObject *us_per_second = NULL;  /* 1000000 */
 static PyObject *us_per_minute = NULL;  /* 1e6 * 60 as Python int */
-static PyObject *us_per_hour = NULL;    /* 1e6 * 3600 as Python long */
-static PyObject *us_per_day = NULL;     /* 1e6 * 3600 * 24 as Python long */
-static PyObject *us_per_week = NULL;    /* 1e6*3600*24*7 as Python long */
+static PyObject *us_per_hour = NULL;    /* 1e6 * 3600 as Python REALLYLONG */
+static PyObject *us_per_day = NULL;     /* 1e6 * 3600 * 24 as Python REALLYLONG */
+static PyObject *us_per_week = NULL;    /* 1e6*3600*24*7 as Python REALLYLONG */
 static PyObject *seconds_per_day = NULL; /* 3600*24 as Python int */
 
 /* ---------------------------------------------------------------------------
@@ -1545,7 +1545,7 @@ Done:
     return result;
 }
 
-/* Convert a number of us (as a Python int or long) to a timedelta.
+/* Convert a number of us (as a Python int or REALLYLONG) to a timedelta.
  */
 static PyObject *
 microseconds_to_delta_ex(PyObject *pyus, PyTypeObject *type)
@@ -1553,7 +1553,7 @@ microseconds_to_delta_ex(PyObject *pyus, PyTypeObject *type)
     int us;
     int s;
     int d;
-    long temp;
+    REALLYLONG temp;
 
     PyObject *tuple = NULL;
     PyObject *num = NULL;
@@ -1613,7 +1613,7 @@ microseconds_to_delta_ex(PyObject *pyus, PyTypeObject *type)
     if (temp == -1 && PyErr_Occurred())
         goto Done;
     d = (int)temp;
-    if ((long)d != temp) {
+    if ((REALLYLONG)d != temp) {
         PyErr_SetString(PyExc_OverflowError, "normalized days too "
                         "large to fit in a C int");
         goto Done;
@@ -1781,7 +1781,7 @@ delta_richcompare(PyDateTime_Delta *self, PyObject *other, int op)
 
 static PyObject *delta_getstate(PyDateTime_Delta *self);
 
-static long
+static REALLYLONG
 delta_hash(PyDateTime_Delta *self)
 {
     if (self->hashcode == -1) {
@@ -1870,7 +1870,7 @@ accum(const char* tag, PyObject *sofar, PyObject *num, PyObject *factor,
          * fractional part, num = intpart + fracpart.
          * Then num * factor ==
          *      intpart * factor + fracpart * factor
-         * and the LHS can be computed exactly in long arithmetic.
+         * and the LHS can be computed exactly in REALLYLONG arithmetic.
          * The RHS is again broken into an int part and frac part.
          * and the frac part is added into *leftover.
          */
@@ -2175,7 +2175,7 @@ static PyNumberMethods delta_as_number = {
     0,                                          /*nb_or*/
     0,                                          /*nb_coerce*/
     0,                                          /*nb_int*/
-    0,                                          /*nb_long*/
+    0,                                          /*nb_REALLYLONG*/
     0,                                          /*nb_float*/
     0,                                          /*nb_oct*/
     0,                                          /*nb_hex*/
@@ -2660,7 +2660,7 @@ date_replace(PyDateTime_Date *self, PyObject *args, PyObject *kw)
 
 static PyObject *date_getstate(PyDateTime_Date *self);
 
-static long
+static REALLYLONG
 date_hash(PyDateTime_Date *self)
 {
     if (self->hashcode == -1) {
@@ -3392,7 +3392,7 @@ time_richcompare(PyDateTime_Time *self, PyObject *other, int op)
     return NULL;
 }
 
-static long
+static REALLYLONG
 time_hash(PyDateTime_Time *self)
 {
     if (self->hashcode == -1) {
@@ -3945,7 +3945,7 @@ datetime_strptime(PyObject *cls, PyObject *args)
     obj = PyObject_CallMethod(module, "_strptime", "ss", string, format);
     if (obj != NULL) {
         int i, good_timetuple = 1;
-        long int ia[7];
+        REALLYLONG ia[7];
         if (PySequence_Check(obj) && PySequence_Size(obj) == 2) {
             st = PySequence_GetItem(obj, 0);
             frac = PySequence_GetItem(obj, 1);
@@ -4337,7 +4337,7 @@ datetime_richcompare(PyDateTime_DateTime *self, PyObject *other, int op)
     return NULL;
 }
 
-static long
+static REALLYLONG
 datetime_hash(PyDateTime_DateTime *self)
 {
     if (self->hashcode == -1) {

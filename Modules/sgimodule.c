@@ -10,7 +10,7 @@
 static PyObject *
 sgi_nap(PyObject *self, PyObject *args)
 {
-    long ticks;
+    REALLYLONG ticks;
     if (!PyArg_ParseTuple(args, "l:nap", &ticks))
         return NULL;
     Py_BEGIN_ALLOW_THREADS

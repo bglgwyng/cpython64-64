@@ -1,5 +1,5 @@
 /* Area:	closure_call
-   Purpose:	Check multiple long long values passing.
+   Purpose:	Check multiple REALLYLONG values passing.
 		Also, exceed the limit of gpr and fpr registers on PowerPC
 		Darwin.
    Limitations:	none.
@@ -15,47 +15,47 @@ closure_test_fn0(ffi_cif* cif __UNUSED__, void* resp, void** args,
 		 void* userdata)
 {
   *(ffi_arg*)resp =
-    (int)*(unsigned long long *)args[0] + (int)*(unsigned long long *)args[1] +
-    (int)*(unsigned long long *)args[2] + (int)*(unsigned long long *)args[3] +
-    (int)*(unsigned long long *)args[4] + (int)*(unsigned long long *)args[5] +
-    (int)*(unsigned long long *)args[6] + (int)*(unsigned long long *)args[7] +
-    (int)*(unsigned long long *)args[8] + (int)*(unsigned long long *)args[9] +
-    (int)*(unsigned long long *)args[10] +
-    (int)*(unsigned long long *)args[11] +
-    (int)*(unsigned long long *)args[12] +
-    (int)*(unsigned long long *)args[13] +
-    (int)*(unsigned long long *)args[14] +
+    (int)*(unsigned REALLYLONG *)args[0] + (int)*(unsigned REALLYLONG *)args[1] +
+    (int)*(unsigned REALLYLONG *)args[2] + (int)*(unsigned REALLYLONG *)args[3] +
+    (int)*(unsigned REALLYLONG *)args[4] + (int)*(unsigned REALLYLONG *)args[5] +
+    (int)*(unsigned REALLYLONG *)args[6] + (int)*(unsigned REALLYLONG *)args[7] +
+    (int)*(unsigned REALLYLONG *)args[8] + (int)*(unsigned REALLYLONG *)args[9] +
+    (int)*(unsigned REALLYLONG *)args[10] +
+    (int)*(unsigned REALLYLONG *)args[11] +
+    (int)*(unsigned REALLYLONG *)args[12] +
+    (int)*(unsigned REALLYLONG *)args[13] +
+    (int)*(unsigned REALLYLONG *)args[14] +
     *(int *)args[15] + (intptr_t)userdata;
 
   printf("%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d: %d\n",
-	 (int)*(unsigned long long *)args[0],
-	 (int)*(unsigned long long *)args[1],
-	 (int)*(unsigned long long *)args[2],
-	 (int)*(unsigned long long *)args[3],
-	 (int)*(unsigned long long *)args[4],
-	 (int)*(unsigned long long *)args[5],
-	 (int)*(unsigned long long *)args[6],
-	 (int)*(unsigned long long *)args[7],
-	 (int)*(unsigned long long *)args[8],
-	 (int)*(unsigned long long *)args[9],
-	 (int)*(unsigned long long *)args[10],
-	 (int)*(unsigned long long *)args[11],
-	 (int)*(unsigned long long *)args[12],
-	 (int)*(unsigned long long *)args[13],
-	 (int)*(unsigned long long *)args[14],
+	 (int)*(unsigned REALLYLONG *)args[0],
+	 (int)*(unsigned REALLYLONG *)args[1],
+	 (int)*(unsigned REALLYLONG *)args[2],
+	 (int)*(unsigned REALLYLONG *)args[3],
+	 (int)*(unsigned REALLYLONG *)args[4],
+	 (int)*(unsigned REALLYLONG *)args[5],
+	 (int)*(unsigned REALLYLONG *)args[6],
+	 (int)*(unsigned REALLYLONG *)args[7],
+	 (int)*(unsigned REALLYLONG *)args[8],
+	 (int)*(unsigned REALLYLONG *)args[9],
+	 (int)*(unsigned REALLYLONG *)args[10],
+	 (int)*(unsigned REALLYLONG *)args[11],
+	 (int)*(unsigned REALLYLONG *)args[12],
+	 (int)*(unsigned REALLYLONG *)args[13],
+	 (int)*(unsigned REALLYLONG *)args[14],
 	 *(int *)args[15],
 	 (int)(intptr_t)userdata, (int)*(ffi_arg *)resp);
 
 }
 
-typedef int (*closure_test_type0)(unsigned long long, unsigned long long,
-				  unsigned long long, unsigned long long,
-				  unsigned long long, unsigned long long,
-				  unsigned long long, unsigned long long,
-				  unsigned long long, unsigned long long,
-				  unsigned long long, unsigned long long,
-				  unsigned long long, unsigned long long,
-				  unsigned long long, int);
+typedef int (*closure_test_type0)(unsigned REALLYLONG, unsigned REALLYLONG,
+				  unsigned REALLYLONG, unsigned REALLYLONG,
+				  unsigned REALLYLONG, unsigned REALLYLONG,
+				  unsigned REALLYLONG, unsigned REALLYLONG,
+				  unsigned REALLYLONG, unsigned REALLYLONG,
+				  unsigned REALLYLONG, unsigned REALLYLONG,
+				  unsigned REALLYLONG, unsigned REALLYLONG,
+				  unsigned REALLYLONG, int);
 
 int main (void)
 {

@@ -1,4 +1,4 @@
-/* implements the string, long, and float formatters.  that is,
+/* implements the string, REALLYLONG, and float formatters.  that is,
    string.__format__, etc. */
 
 #include <locale.h>
@@ -727,7 +727,7 @@ done:
 
 
 /************************************************************************/
-/*********** long formatting ********************************************/
+/*********** REALLYLONG formatting ********************************************/
 /************************************************************************/
 
 #if defined FORMAT_LONG || defined FORMAT_INT
@@ -751,7 +751,7 @@ format_int_or_long_internal(PyObject *value, const InternalFormatSpec *format,
     Py_ssize_t n_total;
     STRINGLIB_CHAR *prefix = NULL;
     NumberFieldWidths spec;
-    long x;
+    REALLYLONG x;
 
     /* Locale settings, either from the actual locale or
        from a hard-code pseudo-locale */
@@ -1365,7 +1365,7 @@ format_int_or_long(PyObject* obj,
     case 'x':
     case 'X':
     case 'n':
-        /* no type conversion needed, already an int (or long).  do
+        /* no type conversion needed, already an int (or REALLYLONG).  do
            the formatting */
             result = format_int_or_long_internal(obj, &format, tostring);
         break;
@@ -1407,7 +1407,7 @@ static PyObject*
 long_format(PyObject* value, int base)
 {
     /* Convert to base, don't add trailing 'L', and use the new octal
-       format. We already know this is a long object */
+       format. We already know this is a REALLYLONG object */
     assert(PyLong_Check(value));
     /* convert to base, don't add 'L', and use the new octal format */
     return _PyLong_Format(value, base, 0, 1);

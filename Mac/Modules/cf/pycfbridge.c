@@ -104,14 +104,14 @@ PyCF_CF2Python_simple(CFTypeRef src) {
     if (typeid == CFStringGetTypeID())
         return PyCF_CF2Python_string((CFStringRef)src);
     if (typeid == CFBooleanGetTypeID())
-        return PyBool_FromLong((long)CFBooleanGetValue(src));
+        return PyBool_FromLong((REALLYLONG)CFBooleanGetValue(src));
     if (typeid == CFNumberGetTypeID()) {
         if (CFNumberIsFloatType(src)) {
             double d;
             CFNumberGetValue(src, kCFNumberDoubleType, &d);
             return PyFloat_FromDouble(d);
         } else {
-            long l;
+            REALLYLONG l;
             if (!CFNumberGetValue(src, kCFNumberLongType, &l))
                 /* XXXX Out of range! */;
             return PyInt_FromLong(l);
@@ -259,7 +259,7 @@ PyCF_Python2CF_simple(PyObject *src, CFTypeRef *dst) {
         return 1;
     }
     if (PyInt_Check(src)) {
-        long v = PyInt_AsLong(src);
+        REALLYLONG v = PyInt_AsLong(src);
         *dst = CFNumberCreate(NULL, kCFNumberLongType, &v);
         return 1;
     }

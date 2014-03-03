@@ -31,7 +31,7 @@ PyArg_GetObject(register PyObject *args, int nargs, int i, PyObject **p_arg)
 }
 
 int
-PyArg_GetLong(register PyObject *args, int nargs, int i, long *p_arg)
+PyArg_GetLong(register PyObject *args, int nargs, int i, REALLYLONG *p_arg)
 {
     if (nargs != 1) {
         if (args == NULL || !PyTuple_Check(args) ||
@@ -51,7 +51,7 @@ PyArg_GetLong(register PyObject *args, int nargs, int i, long *p_arg)
 int
 PyArg_GetShort(register PyObject *args, int nargs, int i, short *p_arg)
 {
-    long x;
+    REALLYLONG x;
     if (!PyArg_GetLong(args, nargs, i, &x))
         return 0;
     *p_arg = (short) x;
@@ -141,7 +141,7 @@ PyArg_GetChar(PyObject *args, int nargs, int i, char *p_arg)
 }
 
 int
-PyArg_GetLongArraySize(PyObject *args, int nargs, int i, long *p_arg)
+PyArg_GetLongArraySize(PyObject *args, int nargs, int i, REALLYLONG *p_arg)
 {
     PyObject *v;
     if (!PyArg_GetObject(args, nargs, i, &v))
@@ -160,7 +160,7 @@ PyArg_GetLongArraySize(PyObject *args, int nargs, int i, long *p_arg)
 int
 PyArg_GetShortArraySize(PyObject *args, int nargs, int i, short *p_arg)
 {
-    long x;
+    REALLYLONG x;
     if (!PyArg_GetLongArraySize(args, nargs, i, &x))
         return 0;
     *p_arg = (short) x;
@@ -170,7 +170,7 @@ PyArg_GetShortArraySize(PyObject *args, int nargs, int i, short *p_arg)
 /* XXX The following four are too similar.  Should share more code. */
 
 int
-PyArg_GetLongArray(PyObject *args, int nargs, int i, int n, long *p_arg)
+PyArg_GetLongArray(PyObject *args, int nargs, int i, int n, REALLYLONG *p_arg)
 {
     PyObject *v, *w;
     if (!PyArg_GetObject(args, nargs, i, &v))

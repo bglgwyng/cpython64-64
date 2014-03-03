@@ -15,7 +15,7 @@
 
 static PyObject *ThreadError;
 static PyObject *str_dict;
-static long nb_threads = 0;
+static REALLYLONG nb_threads = 0;
 
 /* Lock objects */
 
@@ -52,7 +52,7 @@ lock_PyThread_acquire_lock(lockobject *self, PyObject *args)
     i = PyThread_acquire_lock(self->lock_lock, i);
     Py_END_ALLOW_THREADS
 
-    return PyBool_FromLong((long)i);
+    return PyBool_FromLong((REALLYLONG)i);
 }
 
 PyDoc_STRVAR(acquire_doc,
@@ -649,7 +649,7 @@ thread_PyThread_start_new_thread(PyObject *self, PyObject *fargs)
 {
     PyObject *func, *args, *keyw = NULL;
     struct bootstate *boot;
-    long ident;
+    REALLYLONG ident;
 
     if (!PyArg_UnpackTuple(fargs, "start_new_thread", 2, 3,
                            &func, &args, &keyw))
@@ -755,7 +755,7 @@ Create a new lock object.  See help(LockType) for information about locks.");
 static PyObject *
 thread_get_ident(PyObject *self)
 {
-    long ident;
+    REALLYLONG ident;
     ident = PyThread_get_thread_ident();
     if (ident == -1) {
         PyErr_SetString(ThreadError, "no current thread ident");

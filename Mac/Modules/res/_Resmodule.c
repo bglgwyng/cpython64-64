@@ -263,7 +263,7 @@ static PyObject *ResObj_AddResource(ResourceObject *_self, PyObject *_args)
 static PyObject *ResObj_GetResourceSizeOnDisk(ResourceObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long _rv;
+    REALLYLONG _rv;
 #ifndef GetResourceSizeOnDisk
     PyMac_PRECHECK(GetResourceSizeOnDisk);
 #endif
@@ -282,7 +282,7 @@ static PyObject *ResObj_GetResourceSizeOnDisk(ResourceObject *_self, PyObject *_
 static PyObject *ResObj_GetMaxResourceSize(ResourceObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long _rv;
+    REALLYLONG _rv;
 #ifndef GetMaxResourceSize
     PyMac_PRECHECK(GetMaxResourceSize);
 #endif
@@ -376,7 +376,7 @@ static PyObject *ResObj_WriteResource(ResourceObject *_self, PyObject *_args)
 static PyObject *ResObj_SetResourceSize(ResourceObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long newSize;
+    REALLYLONG newSize;
 #ifndef SetResourceSize
     PyMac_PRECHECK(SetResourceSize);
 #endif
@@ -487,9 +487,9 @@ static PyMethodDef ResObj_methods[] = {
     {"AddResource", (PyCFunction)ResObj_AddResource, 1,
      PyDoc_STR("(ResType theType, short theID, Str255 name) -> None")},
     {"GetResourceSizeOnDisk", (PyCFunction)ResObj_GetResourceSizeOnDisk, 1,
-     PyDoc_STR("() -> (long _rv)")},
+     PyDoc_STR("() -> (REALLYLONG _rv)")},
     {"GetMaxResourceSize", (PyCFunction)ResObj_GetMaxResourceSize, 1,
-     PyDoc_STR("() -> (long _rv)")},
+     PyDoc_STR("() -> (REALLYLONG _rv)")},
     {"SetResAttrs", (PyCFunction)ResObj_SetResAttrs, 1,
      PyDoc_STR("(short attrs) -> None")},
     {"ChangedResource", (PyCFunction)ResObj_ChangedResource, 1,
@@ -499,7 +499,7 @@ static PyMethodDef ResObj_methods[] = {
     {"WriteResource", (PyCFunction)ResObj_WriteResource, 1,
      PyDoc_STR("() -> None")},
     {"SetResourceSize", (PyCFunction)ResObj_SetResourceSize, 1,
-     PyDoc_STR("(long newSize) -> None")},
+     PyDoc_STR("(REALLYLONG newSize) -> None")},
     {"GetNextFOND", (PyCFunction)ResObj_GetNextFOND, 1,
      PyDoc_STR("() -> (Handle _rv)")},
 #ifndef __LP64__
@@ -536,7 +536,7 @@ static int ResObj_set_data(ResourceObject *self, PyObject *v, void *closure)
 {
 
                     char *data;
-                    long size;
+                    REALLYLONG size;
 
                     if ( v == NULL )
                             return -1;
@@ -1188,7 +1188,7 @@ static PyObject *Res_HOpenResFile(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     short _rv;
     short vRefNum;
-    long dirID;
+    REALLYLONG dirID;
     Str255 fileName;
     SignedByte permission;
 #ifndef HOpenResFile
@@ -1217,7 +1217,7 @@ static PyObject *Res_HCreateResFile(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
     short vRefNum;
-    long dirID;
+    REALLYLONG dirID;
     Str255 fileName;
 #ifndef HCreateResFile
     PyMac_PRECHECK(HCreateResFile);
@@ -1652,9 +1652,9 @@ static PyMethodDef Res_methods[] = {
     {"OpenRFPerm", (PyCFunction)Res_OpenRFPerm, 1,
      PyDoc_STR("(Str255 fileName, short vRefNum, SignedByte permission) -> (short _rv)")},
     {"HOpenResFile", (PyCFunction)Res_HOpenResFile, 1,
-     PyDoc_STR("(short vRefNum, long dirID, Str255 fileName, SignedByte permission) -> (short _rv)")},
+     PyDoc_STR("(short vRefNum, REALLYLONG dirID, Str255 fileName, SignedByte permission) -> (short _rv)")},
     {"HCreateResFile", (PyCFunction)Res_HCreateResFile, 1,
-     PyDoc_STR("(short vRefNum, long dirID, Str255 fileName) -> None")},
+     PyDoc_STR("(short vRefNum, REALLYLONG dirID, Str255 fileName) -> None")},
     {"FSpOpenResFile", (PyCFunction)Res_FSpOpenResFile, 1,
      PyDoc_STR("(FSSpec spec, SignedByte permission) -> (short _rv)")},
     {"FSpCreateResFile", (PyCFunction)Res_FSpCreateResFile, 1,

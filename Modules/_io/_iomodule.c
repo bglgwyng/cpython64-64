@@ -301,7 +301,7 @@ io_open(PyObject *self, PyObject *args, PyObject *kwds)
 
     char rawmode[5], *m;
     int line_buffering;
-    long isatty;
+    REALLYLONG isatty;
 
     PyObject *raw, *modeobj = NULL, *buffer = NULL, *wrapper = NULL;
 
@@ -543,7 +543,7 @@ PyNumber_AsOff_t(PyObject *item, PyObject *err)
         return -1;
 
     if (PyInt_Check(value)) {
-        /* We assume a long always fits in a Py_off_t... */
+        /* We assume a REALLYLONG always fits in a Py_off_t... */
         result = (Py_off_t) PyInt_AS_LONG(value);
         goto finish;
     }

@@ -54,11 +54,11 @@ static int
 PyMac_GetUFixed(PyObject *v, Fixed *f)
 {
     double d;
-    unsigned long uns;
+    unsigned REALLYLONG uns;
 
     if( !PyArg_Parse(v, "d", &d))
         return 0;
-    uns = (unsigned long)(d * 0x10000);
+    uns = (unsigned REALLYLONG)(d * 0x10000);
     *f = (Fixed)uns;
     return 1;
 }
@@ -68,9 +68,9 @@ static PyObject *
 PyMac_BuildUFixed(Fixed f)
 {
     double d;
-    unsigned long funs;
+    unsigned REALLYLONG funs;
 
-    funs = (unsigned long)f;
+    funs = (unsigned REALLYLONG)f;
 
     d = funs;
     d = d / 0x10000;
@@ -89,7 +89,7 @@ sndih_getChannelAvailable(self, args)
     PyObject *self;     /* Not used */
     PyObject *args;
 {
-    long inRefNum;
+    REALLYLONG inRefNum;
     short nchannel;
     OSErr err;
 
@@ -110,7 +110,7 @@ sndih_getNumberChannels(self, args)
     PyObject *self;     /* Not used */
     PyObject *args;
 {
-    long inRefNum;
+    REALLYLONG inRefNum;
     short nchannel;
     OSErr err;
 
@@ -131,7 +131,7 @@ sndih_setNumberChannels(self, args)
     PyObject *self;     /* Not used */
     PyObject *args;
 {
-    long inRefNum;
+    REALLYLONG inRefNum;
     short nchannel;
     OSErr err;
 
@@ -153,7 +153,7 @@ sndih_getContinuous(self, args)
     PyObject *self;     /* Not used */
     PyObject *args;
 {
-    long inRefNum;
+    REALLYLONG inRefNum;
     short onoff;
     OSErr err;
 
@@ -174,7 +174,7 @@ sndih_setContinuous(self, args)
     PyObject *self;     /* Not used */
     PyObject *args;
 {
-    long inRefNum;
+    REALLYLONG inRefNum;
     short onoff;
     OSErr err;
 
@@ -196,7 +196,7 @@ sndih_getInputSourceNames(self, args)
     PyObject *self;     /* Not used */
     PyObject *args;
 {
-    long inRefNum;
+    REALLYLONG inRefNum;
     Handle names;
     OSErr err;
 
@@ -217,7 +217,7 @@ sndih_getInputSource(self, args)
     PyObject *self;     /* Not used */
     PyObject *args;
 {
-    long inRefNum;
+    REALLYLONG inRefNum;
     short source;
     OSErr err;
 
@@ -238,7 +238,7 @@ sndih_setInputSource(self, args)
     PyObject *self;     /* Not used */
     PyObject *args;
 {
-    long inRefNum;
+    REALLYLONG inRefNum;
     short source;
     OSErr err;
 
@@ -260,7 +260,7 @@ sndih_getPlayThruOnOff(self, args)
     PyObject *self;     /* Not used */
     PyObject *args;
 {
-    long inRefNum;
+    REALLYLONG inRefNum;
     short onoff;
     OSErr err;
 
@@ -281,7 +281,7 @@ sndih_setPlayThruOnOff(self, args)
     PyObject *self;     /* Not used */
     PyObject *args;
 {
-    long inRefNum;
+    REALLYLONG inRefNum;
     short onoff;
     OSErr err;
 
@@ -303,7 +303,7 @@ sndih_getSampleRate(self, args)
     PyObject *self;     /* Not used */
     PyObject *args;
 {
-    long inRefNum;
+    REALLYLONG inRefNum;
     Fixed sample_rate;
     OSErr err;
 
@@ -324,7 +324,7 @@ sndih_setSampleRate(self, args)
     PyObject *self;     /* Not used */
     PyObject *args;
 {
-    long inRefNum;
+    REALLYLONG inRefNum;
     Fixed sample_rate;
     OSErr err;
 
@@ -346,7 +346,7 @@ sndih_getSampleSize(self, args)
     PyObject *self;     /* Not used */
     PyObject *args;
 {
-    long inRefNum;
+    REALLYLONG inRefNum;
     short bits;
     OSErr err;
 
@@ -367,7 +367,7 @@ sndih_setSampleSize(self, args)
     PyObject *self;     /* Not used */
     PyObject *args;
 {
-    long inRefNum;
+    REALLYLONG inRefNum;
     short size;
     OSErr err;
 
@@ -389,7 +389,7 @@ sndih_getSampleSizeAvailable(self, args)
     PyObject *self;     /* Not used */
     PyObject *args;
 {
-    long inRefNum;
+    REALLYLONG inRefNum;
     struct SampleSizeAvailable_arg arg;
     OSErr err;
     PyObject *rsizes;
@@ -409,7 +409,7 @@ sndih_getSampleSizeAvailable(self, args)
     if( (rsizes = PyTuple_New(arg.numsizes)) == NULL)
         return NULL;
     for( i=0; i<arg.numsizes; i++ )
-        PyTuple_SetItem(rsizes, i, PyInt_FromLong((long)fsizes[i]));
+        PyTuple_SetItem(rsizes, i, PyInt_FromLong((REALLYLONG)fsizes[i]));
     return rsizes;
 }
 
@@ -422,7 +422,7 @@ sndih_getSampleRateAvailable(self, args)
     PyObject *self;     /* Not used */
     PyObject *args;
 {
-    long inRefNum;
+    REALLYLONG inRefNum;
     struct SampleRateAvailable_arg arg;
     OSErr err;
     PyObject *rrates, *obj;

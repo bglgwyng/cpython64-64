@@ -1083,7 +1083,7 @@ PyDoc_STR(
 Static objects:\n\
 \n\
 float_info -- a dict with information about the float inplementation.\n\
-long_info -- a struct sequence with information about the long implementation.\n\
+long_info -- a struct sequence with information about the REALLYLONG implementation.\n\
 maxint -- the largest supported integer (the smallest is -maxint-1)\n\
 maxsize -- the largest supported length of containers.\n\
 maxunicode -- the largest supported character\n\
@@ -1444,7 +1444,7 @@ _PySys_Init(void)
     {
         /* Assumes that longs are at least 2 bytes long.
            Should be safe! */
-        unsigned long number = 1;
+        UREALLYLONG number = 1;
         char *value;
 
         s = (char *) &number;

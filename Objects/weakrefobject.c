@@ -138,7 +138,7 @@ weakref_call(PyWeakReference *self, PyObject *args, PyObject *kw)
 }
 
 
-static long
+static REALLYLONG
 weakref_hash(PyWeakReference *self)
 {
     if (self->hash != -1)
@@ -640,7 +640,7 @@ static PyNumberMethods proxy_as_number = {
     proxy_or,               /*nb_or*/
     0,                      /*nb_coerce*/
     proxy_int,              /*nb_int*/
-    proxy_long,             /*nb_long*/
+    proxy_long,             /*nb_REALLYLONG*/
     proxy_float,            /*nb_float*/
     0,                      /*nb_oct*/
     0,                      /*nb_hex*/

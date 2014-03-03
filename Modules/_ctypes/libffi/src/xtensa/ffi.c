@@ -97,7 +97,7 @@ ffi_status ffi_prep_cif_machdep(ffi_cif *cif)
 void ffi_prep_args(extended_cif *ecif, unsigned char* stack)
 {
   unsigned int i;
-  unsigned long *addr;
+  unsigned REALLYLONG *addr;
   ffi_type **ptr;
 
   union {
@@ -108,21 +108,21 @@ void ffi_prep_args(extended_cif *ecif, unsigned char* stack)
     signed short **ss;
     unsigned short **us;
     unsigned int **i;
-    long long **ll;
+    REALLYLONG **ll;
     float **f;
     double **d;
   } p_argv;
 
   /* Verify that everything is aligned up properly */
-  FFI_ASSERT (((unsigned long) stack & 0x7) == 0);
+  FFI_ASSERT (((unsigned REALLYLONG) stack & 0x7) == 0);
 
   p_argv.v = ecif->avalue;
-  addr = (unsigned long*)stack;
+  addr = (unsigned REALLYLONG*)stack;
 
   /* structures with a size greater than 16 bytes are passed in memory */
   if (ecif->cif->rtype->type == FFI_TYPE_STRUCT && ecif->cif->rtype->size > 16)
   {
-    *addr++ = (unsigned long)ecif->rvalue;
+    *addr++ = (unsigned REALLYLONG)ecif->rvalue;
   }
 
   for (i = ecif->cif->nargs, ptr = ecif->cif->arg_types;
@@ -153,27 +153,27 @@ void ffi_prep_args(extended_cif *ecif, unsigned char* stack)
       case FFI_TYPE_DOUBLE:
       case FFI_TYPE_UINT64:
       case FFI_TYPE_SINT64:
-        if (((unsigned long)addr & 4) != 0)
+        if (((unsigned REALLYLONG)addr & 4) != 0)
           addr++;
-        *(unsigned long long*)addr = **p_argv.ll;
-	addr += sizeof(unsigned long long) / sizeof (addr);
+        *(unsigned REALLYLONG*)addr = **p_argv.ll;
+	addr += sizeof(unsigned REALLYLONG) / sizeof (addr);
         break;
 
       case FFI_TYPE_STRUCT:
       {
-        unsigned long offs;
-        unsigned long size;
+        unsigned REALLYLONG offs;
+        unsigned REALLYLONG size;
 
-        if (((unsigned long)addr & 4) != 0 && (*ptr)->alignment > 4)
+        if (((unsigned REALLYLONG)addr & 4) != 0 && (*ptr)->alignment > 4)
           addr++;
 
-        offs = (unsigned long) addr - (unsigned long) stack;
+        offs = (unsigned REALLYLONG) addr - (unsigned REALLYLONG) stack;
         size = (*ptr)->size;
 
         /* Entire structure must fit the argument registers or referenced */
         if (offs < FFI_REGISTER_NARGS * 4
             && offs + size > FFI_REGISTER_NARGS * 4)
-          addr = (unsigned long*) (stack + FFI_REGISTER_NARGS * 4);
+          addr = (unsigned REALLYLONG*) (stack + FFI_REGISTER_NARGS * 4);
 
         memcpy((char*) addr, *p_argv.c, size);
         addr += (size + 3) / 4;
@@ -190,7 +190,7 @@ void ffi_prep_args(extended_cif *ecif, unsigned char* stack)
 void ffi_call(ffi_cif* cif, void(*fn)(void), void *rvalue, void **avalue)
 {
   extended_cif ecif;
-  unsigned long rsize = cif->rtype->size;
+  unsigned REALLYLONG rsize = cif->rtype->size;
   int flags = cif->flags;
   void *alloc = NULL;
 

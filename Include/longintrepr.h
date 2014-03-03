@@ -7,7 +7,7 @@ extern "C" {
 
 /* This is published for the benefit of "friend" marshal.c only. */
 
-/* Parameters of the long integer representation.  There are two different
+/* Parameters of the REALLYLONG integer representation.  There are two different
    sets of parameters: one set for 30-bit digits, stored in an unsigned 32-bit
    integer type, and one set for 15-bit digits with each digit stored in an
    unsigned short.  The value of PYLONG_BITS_IN_DIGIT, defined either at
@@ -25,10 +25,10 @@ extern "C" {
    - PyLong_{As,From}ByteArray require that PyLong_SHIFT be at least 8
 
    - long_hash() requires that PyLong_SHIFT is *strictly* less than the number
-     of bits in an unsigned long, as do the PyLong <-> long (or unsigned long)
+     of bits in an UREALLYLONG, as do the PyLong <-> REALLYLONG (or UREALLYLONG)
      conversion functions
 
-   - the long <-> size_t/Py_ssize_t conversion functions expect that
+   - the REALLYLONG <-> size_t/Py_ssize_t conversion functions expect that
      PyLong_SHIFT is strictly less than the number of bits in a size_t
 
    - the marshal code currently expects that PyLong_SHIFT is a multiple of 15
@@ -40,7 +40,7 @@ extern "C" {
 #if PYLONG_BITS_IN_DIGIT == 30
 #if !(defined HAVE_UINT64_T && defined HAVE_UINT32_T &&          \
       defined HAVE_INT64_T && defined HAVE_INT32_T)
-#error "30-bit long digits requested, but the necessary types are not available on this platform"
+#error "30-bit REALLYLONG digits requested, but the necessary types are not available on this platform"
 #endif
 typedef PY_UINT32_T digit;
 typedef PY_INT32_T sdigit; /* signed variant of digit */
@@ -52,8 +52,8 @@ typedef PY_INT64_T stwodigits; /* signed variant of twodigits */
 #elif PYLONG_BITS_IN_DIGIT == 15
 typedef unsigned short digit;
 typedef short sdigit; /* signed variant of digit */
-typedef unsigned long twodigits;
-typedef long stwodigits; /* signed variant of twodigits */
+typedef UREALLYLONG twodigits;
+typedef REALLYLONG stwodigits; /* signed variant of twodigits */
 #define PyLong_SHIFT	15
 #define _PyLong_DECIMAL_SHIFT	4 /* max(e such that 10**e fits in a digit) */
 #define _PyLong_DECIMAL_BASE	((digit)10000) /* 10 ** DECIMAL_SHIFT */

@@ -25,7 +25,7 @@
 
 #else
 
-typedef unsigned long long uint64;
+typedef UREALLYLONG uint64;
 
 /* PowerPC support.
    "__ppc__" appears to be the preprocessor definition to detect on OS X, whereas
@@ -38,7 +38,7 @@ typedef unsigned long long uint64;
 static void
 ppc_getcounter(uint64 *v)
 {
-    register unsigned long tbu, tb, tbu2;
+    register UREALLYLONG tbu, tb, tbu2;
 
   loop:
     asm volatile ("mftbu %0" : "=r" (tbu) );
@@ -48,8 +48,8 @@ ppc_getcounter(uint64 *v)
 
     /* The slightly peculiar way of writing the next lines is
        compiled better by GCC than any other way I tried. */
-    ((long*)(v))[0] = tbu;
-    ((long*)(v))[1] = tb;
+    ((REALLYLONG*)(v))[0] = tbu;
+    ((REALLYLONG*)(v))[1] = tb;
 }
 
 #elif defined(__i386__)
@@ -162,10 +162,10 @@ static PyObject * special_lookup(PyObject *, char *, PyObject **);
 /* Dynamic execution profile */
 #ifdef DYNAMIC_EXECUTION_PROFILE
 #ifdef DXPAIRS
-static long dxpairs[257][256];
+static REALLYLONG dxpairs[257][256];
 #define dxp dxpairs[256]
 #else
-static long dxp[256];
+static REALLYLONG dxp[256];
 #endif
 #endif
 
@@ -235,7 +235,7 @@ PyEval_GetCallStats(PyObject *self)
 
 static PyThread_type_lock interpreter_lock = 0; /* This is the GIL */
 static PyThread_type_lock pending_lock = 0; /* for pending calls */
-static long main_thread = 0;
+static REALLYLONG main_thread = 0;
 
 int
 PyEval_ThreadsInitialized(void)
@@ -738,8 +738,8 @@ PyEval_EvalFrameEx(PyFrameObject *f, int throwflag)
    loop0 -- the top of the mainloop
    loop1 -- place where control returns again to top of mainloop
             (may be skipped)
-   intr1 -- beginning of long interruption
-   intr2 -- end of long interruption
+   intr1 -- beginning of REALLYLONG interruption
+   intr2 -- end of REALLYLONG interruption
 
    Many opcodes call out to helper C functions.  In some cases, the
    time in those functions should be counted towards the time for the
@@ -1319,12 +1319,12 @@ PyEval_EvalFrameEx(PyFrameObject *f, int throwflag)
             v = TOP();
             if (PyInt_CheckExact(v) && PyInt_CheckExact(w)) {
                 /* INLINE: int + int */
-                register long a, b, i;
+                register REALLYLONG a, b, i;
                 a = PyInt_AS_LONG(v);
                 b = PyInt_AS_LONG(w);
                 /* cast to avoid undefined behaviour
                    on overflow */
-                i = (long)((unsigned long)a + b);
+                i = (REALLYLONG)((UREALLYLONG)a + b);
                 if ((i^a) < 0 && (i^b) < 0)
                     goto slow_add;
                 x = PyInt_FromLong(i);
@@ -1351,12 +1351,12 @@ PyEval_EvalFrameEx(PyFrameObject *f, int throwflag)
             v = TOP();
             if (PyInt_CheckExact(v) && PyInt_CheckExact(w)) {
                 /* INLINE: int - int */
-                register long a, b, i;
+                register REALLYLONG a, b, i;
                 a = PyInt_AS_LONG(v);
                 b = PyInt_AS_LONG(w);
                 /* cast to avoid undefined behaviour
                    on overflow */
-                i = (long)((unsigned long)a - b);
+                i = (REALLYLONG)((UREALLYLONG)a - b);
                 if ((i^a) < 0 && (i^~b) < 0)
                     goto slow_sub;
                 x = PyInt_FromLong(i);
@@ -1535,7 +1535,7 @@ PyEval_EvalFrameEx(PyFrameObject *f, int throwflag)
             v = TOP();
             if (PyInt_CheckExact(v) && PyInt_CheckExact(w)) {
                 /* INLINE: int + int */
-                register long a, b, i;
+                register REALLYLONG a, b, i;
                 a = PyInt_AS_LONG(v);
                 b = PyInt_AS_LONG(w);
                 i = a + b;
@@ -1565,7 +1565,7 @@ PyEval_EvalFrameEx(PyFrameObject *f, int throwflag)
             v = TOP();
             if (PyInt_CheckExact(v) && PyInt_CheckExact(w)) {
                 /* INLINE: int - int */
-                register long a, b, i;
+                register REALLYLONG a, b, i;
                 a = PyInt_AS_LONG(v);
                 b = PyInt_AS_LONG(w);
                 i = a - b;
@@ -2074,7 +2074,7 @@ PyEval_EvalFrameEx(PyFrameObject *f, int throwflag)
                 /* Inline the PyDict_GetItem() calls.
                    WARNING: this is an extreme speed hack.
                    Do not try this at home. */
-                long hash = ((PyStringObject *)w)->ob_shash;
+                REALLYLONG hash = ((PyStringObject *)w)->ob_shash;
                 if (hash != -1) {
                     PyDictObject *d;
                     PyDictEntry *e;
@@ -2264,7 +2264,7 @@ PyEval_EvalFrameEx(PyFrameObject *f, int throwflag)
             v = TOP();
             if (PyInt_CheckExact(w) && PyInt_CheckExact(v)) {
                 /* INLINE: cmp(int, int) */
-                register long a, b;
+                register REALLYLONG a, b;
                 register int res;
                 a = PyInt_AS_LONG(v);
                 b = PyInt_AS_LONG(w);
@@ -2932,7 +2932,7 @@ fast_block_end:
                 else {
                     if (why & (WHY_RETURN | WHY_CONTINUE))
                         PUSH(retval);
-                    v = PyInt_FromLong((long)why);
+                    v = PyInt_FromLong((REALLYLONG)why);
                     PUSH(v);
                 }
                 why = WHY_NOT;
@@ -4861,7 +4861,7 @@ string_concatenate(PyObject *v, PyObject *w,
 #ifdef DYNAMIC_EXECUTION_PROFILE
 
 static PyObject *
-getarray(long a[256])
+getarray(REALLYLONG a[256])
 {
     int i;
     PyObject *l = PyList_New(256);

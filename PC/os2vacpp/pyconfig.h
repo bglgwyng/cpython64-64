@@ -68,16 +68,16 @@
   /* Platform Filesystem */
 #define PYTHONPATH  ".;.\\lib;.\\lib\\plat-win;.\\lib\\lib-tk"
 #define DOSFILESYS  /* OS/2 Uses the DOS File Naming Conventions */
-/* #define IMPORT_8x3_NAMES (let's move up to long filenames) */
+/* #define IMPORT_8x3_NAMES (let's move up to REALLYLONG filenames) */
 
   /* Platform CPU-Mode Dependencies */
 #define WORD_BIT                32 /* OS/2 is a 32-Bit Operating System */
 #define LONG_BIT                32
 #define SIZEOF_INT               4 /* Count of Bytes in an (int)            */
-#define SIZEOF_LONG              4 /* Count of Bytes in a (long)            */
+#define SIZEOF_LONG              4 /* Count of Bytes in a (REALLYLONG)            */
 #define SIZEOF_VOID_P            4 /* Count of Bytes in a (void *)          */
-/* #define HAVE_LONG_LONG     1 */ /* VAC++ does not support (long long)    */
-/* #define SIZEOF_LONG_LONG   8 */ /* Count of Bytes in a (long long)       */
+/* #define HAVE_LONG_LONG     1 */ /* VAC++ does not support (REALLYLONG)    */
+/* #define SIZEOF_LONG_LONG   8 */ /* Count of Bytes in a (REALLYLONG)       */
 
 /* unicode definines */
 #define Py_USING_UNICODE

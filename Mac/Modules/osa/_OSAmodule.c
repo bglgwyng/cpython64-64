@@ -81,7 +81,7 @@ static PyObject *OSAObj_OSALoad(OSAComponentInstanceObject *_self, PyObject *_ar
     PyObject *_res = NULL;
     OSAError _err;
     AEDesc scriptData;
-    long modeFlags;
+    REALLYLONG modeFlags;
     OSAID resultingScriptID;
 #ifndef OSALoad
     PyMac_PRECHECK(OSALoad);
@@ -106,7 +106,7 @@ static PyObject *OSAObj_OSAStore(OSAComponentInstanceObject *_self, PyObject *_a
     OSAError _err;
     OSAID scriptID;
     DescType desiredType;
-    long modeFlags;
+    REALLYLONG modeFlags;
     AEDesc resultingScriptData;
 #ifndef OSAStore
     PyMac_PRECHECK(OSAStore);
@@ -133,7 +133,7 @@ static PyObject *OSAObj_OSAExecute(OSAComponentInstanceObject *_self, PyObject *
     OSAError _err;
     OSAID compiledScriptID;
     OSAID contextID;
-    long modeFlags;
+    REALLYLONG modeFlags;
     OSAID resultingScriptValueID;
 #ifndef OSAExecute
     PyMac_PRECHECK(OSAExecute);
@@ -160,7 +160,7 @@ static PyObject *OSAObj_OSADisplay(OSAComponentInstanceObject *_self, PyObject *
     OSAError _err;
     OSAID scriptValueID;
     DescType desiredType;
-    long modeFlags;
+    REALLYLONG modeFlags;
     AEDesc resultingText;
 #ifndef OSADisplay
     PyMac_PRECHECK(OSADisplay);
@@ -230,7 +230,7 @@ static PyObject *OSAObj_OSASetScriptInfo(OSAComponentInstanceObject *_self, PyOb
     OSAError _err;
     OSAID scriptID;
     OSType selector;
-    long value;
+    REALLYLONG value;
 #ifndef OSASetScriptInfo
     PyMac_PRECHECK(OSASetScriptInfo);
 #endif
@@ -255,7 +255,7 @@ static PyObject *OSAObj_OSAGetScriptInfo(OSAComponentInstanceObject *_self, PyOb
     OSAError _err;
     OSAID scriptID;
     OSType selector;
-    long result;
+    REALLYLONG result;
 #ifndef OSAGetScriptInfo
     PyMac_PRECHECK(OSAGetScriptInfo);
 #endif
@@ -296,7 +296,7 @@ static PyObject *OSAObj_OSACompile(OSAComponentInstanceObject *_self, PyObject *
     PyObject *_res = NULL;
     OSAError _err;
     AEDesc sourceData;
-    long modeFlags;
+    REALLYLONG modeFlags;
     OSAID previousAndResultingScriptID;
 #ifndef OSACompile
     PyMac_PRECHECK(OSACompile);
@@ -365,7 +365,7 @@ static PyObject *OSAObj_OSACoerceFromDesc(OSAComponentInstanceObject *_self, PyO
     PyObject *_res = NULL;
     OSAError _err;
     AEDesc scriptData;
-    long modeFlags;
+    REALLYLONG modeFlags;
     OSAID resultingScriptID;
 #ifndef OSACoerceFromDesc
     PyMac_PRECHECK(OSACoerceFromDesc);
@@ -390,7 +390,7 @@ static PyObject *OSAObj_OSACoerceToDesc(OSAComponentInstanceObject *_self, PyObj
     OSAError _err;
     OSAID scriptID;
     DescType desiredType;
-    long modeFlags;
+    REALLYLONG modeFlags;
     AEDesc result;
 #ifndef OSACoerceToDesc
     PyMac_PRECHECK(OSACoerceToDesc);
@@ -473,7 +473,7 @@ static PyObject *OSAObj_OSALoadExecute(OSAComponentInstanceObject *_self, PyObje
     OSAError _err;
     AEDesc scriptData;
     OSAID contextID;
-    long modeFlags;
+    REALLYLONG modeFlags;
     OSAID resultingScriptValueID;
 #ifndef OSALoadExecute
     PyMac_PRECHECK(OSALoadExecute);
@@ -500,7 +500,7 @@ static PyObject *OSAObj_OSACompileExecute(OSAComponentInstanceObject *_self, PyO
     OSAError _err;
     AEDesc sourceData;
     OSAID contextID;
-    long modeFlags;
+    REALLYLONG modeFlags;
     OSAID resultingScriptValueID;
 #ifndef OSACompileExecute
     PyMac_PRECHECK(OSACompileExecute);
@@ -528,7 +528,7 @@ static PyObject *OSAObj_OSADoScript(OSAComponentInstanceObject *_self, PyObject 
     AEDesc sourceData;
     OSAID contextID;
     DescType desiredType;
-    long modeFlags;
+    REALLYLONG modeFlags;
     AEDesc resultingText;
 #ifndef OSADoScript
     PyMac_PRECHECK(OSADoScript);
@@ -654,7 +654,7 @@ static PyObject *OSAObj_OSAExecuteEvent(OSAComponentInstanceObject *_self, PyObj
     OSAError _err;
     AppleEvent theAppleEvent;
     OSAID contextID;
-    long modeFlags;
+    REALLYLONG modeFlags;
     OSAID resultingScriptValueID;
 #ifndef OSAExecuteEvent
     PyMac_PRECHECK(OSAExecuteEvent);
@@ -681,7 +681,7 @@ static PyObject *OSAObj_OSADoEvent(OSAComponentInstanceObject *_self, PyObject *
     OSAError _err;
     AppleEvent theAppleEvent;
     OSAID contextID;
-    long modeFlags;
+    REALLYLONG modeFlags;
     AppleEvent reply;
 #ifndef OSADoEvent
     PyMac_PRECHECK(OSADoEvent);
@@ -728,33 +728,33 @@ static PyObject *OSAObj_OSAMakeContext(OSAComponentInstanceObject *_self, PyObje
 
 static PyMethodDef OSAObj_methods[] = {
     {"OSALoad", (PyCFunction)OSAObj_OSALoad, 1,
-     PyDoc_STR("(AEDesc scriptData, long modeFlags) -> (OSAID resultingScriptID)")},
+     PyDoc_STR("(AEDesc scriptData, REALLYLONG modeFlags) -> (OSAID resultingScriptID)")},
     {"OSAStore", (PyCFunction)OSAObj_OSAStore, 1,
-     PyDoc_STR("(OSAID scriptID, DescType desiredType, long modeFlags) -> (AEDesc resultingScriptData)")},
+     PyDoc_STR("(OSAID scriptID, DescType desiredType, REALLYLONG modeFlags) -> (AEDesc resultingScriptData)")},
     {"OSAExecute", (PyCFunction)OSAObj_OSAExecute, 1,
-     PyDoc_STR("(OSAID compiledScriptID, OSAID contextID, long modeFlags) -> (OSAID resultingScriptValueID)")},
+     PyDoc_STR("(OSAID compiledScriptID, OSAID contextID, REALLYLONG modeFlags) -> (OSAID resultingScriptValueID)")},
     {"OSADisplay", (PyCFunction)OSAObj_OSADisplay, 1,
-     PyDoc_STR("(OSAID scriptValueID, DescType desiredType, long modeFlags) -> (AEDesc resultingText)")},
+     PyDoc_STR("(OSAID scriptValueID, DescType desiredType, REALLYLONG modeFlags) -> (AEDesc resultingText)")},
     {"OSAScriptError", (PyCFunction)OSAObj_OSAScriptError, 1,
      PyDoc_STR("(OSType selector, DescType desiredType) -> (AEDesc resultingErrorDescription)")},
     {"OSADispose", (PyCFunction)OSAObj_OSADispose, 1,
      PyDoc_STR("(OSAID scriptID) -> None")},
     {"OSASetScriptInfo", (PyCFunction)OSAObj_OSASetScriptInfo, 1,
-     PyDoc_STR("(OSAID scriptID, OSType selector, long value) -> None")},
+     PyDoc_STR("(OSAID scriptID, OSType selector, REALLYLONG value) -> None")},
     {"OSAGetScriptInfo", (PyCFunction)OSAObj_OSAGetScriptInfo, 1,
-     PyDoc_STR("(OSAID scriptID, OSType selector) -> (long result)")},
+     PyDoc_STR("(OSAID scriptID, OSType selector) -> (REALLYLONG result)")},
     {"OSAScriptingComponentName", (PyCFunction)OSAObj_OSAScriptingComponentName, 1,
      PyDoc_STR("() -> (AEDesc resultingScriptingComponentName)")},
     {"OSACompile", (PyCFunction)OSAObj_OSACompile, 1,
-     PyDoc_STR("(AEDesc sourceData, long modeFlags) -> (OSAID previousAndResultingScriptID)")},
+     PyDoc_STR("(AEDesc sourceData, REALLYLONG modeFlags) -> (OSAID previousAndResultingScriptID)")},
     {"OSACopyID", (PyCFunction)OSAObj_OSACopyID, 1,
      PyDoc_STR("(OSAID fromID) -> (OSAID toID)")},
     {"OSAGetSource", (PyCFunction)OSAObj_OSAGetSource, 1,
      PyDoc_STR("(OSAID scriptID, DescType desiredType) -> (AEDesc resultingSourceData)")},
     {"OSACoerceFromDesc", (PyCFunction)OSAObj_OSACoerceFromDesc, 1,
-     PyDoc_STR("(AEDesc scriptData, long modeFlags) -> (OSAID resultingScriptID)")},
+     PyDoc_STR("(AEDesc scriptData, REALLYLONG modeFlags) -> (OSAID resultingScriptID)")},
     {"OSACoerceToDesc", (PyCFunction)OSAObj_OSACoerceToDesc, 1,
-     PyDoc_STR("(OSAID scriptID, DescType desiredType, long modeFlags) -> (AEDesc result)")},
+     PyDoc_STR("(OSAID scriptID, DescType desiredType, REALLYLONG modeFlags) -> (AEDesc result)")},
     {"OSASetDefaultTarget", (PyCFunction)OSAObj_OSASetDefaultTarget, 1,
      PyDoc_STR("(AEAddressDesc target) -> None")},
     {"OSAStartRecording", (PyCFunction)OSAObj_OSAStartRecording, 1,
@@ -762,11 +762,11 @@ static PyMethodDef OSAObj_methods[] = {
     {"OSAStopRecording", (PyCFunction)OSAObj_OSAStopRecording, 1,
      PyDoc_STR("(OSAID compiledScriptID) -> None")},
     {"OSALoadExecute", (PyCFunction)OSAObj_OSALoadExecute, 1,
-     PyDoc_STR("(AEDesc scriptData, OSAID contextID, long modeFlags) -> (OSAID resultingScriptValueID)")},
+     PyDoc_STR("(AEDesc scriptData, OSAID contextID, REALLYLONG modeFlags) -> (OSAID resultingScriptValueID)")},
     {"OSACompileExecute", (PyCFunction)OSAObj_OSACompileExecute, 1,
-     PyDoc_STR("(AEDesc sourceData, OSAID contextID, long modeFlags) -> (OSAID resultingScriptValueID)")},
+     PyDoc_STR("(AEDesc sourceData, OSAID contextID, REALLYLONG modeFlags) -> (OSAID resultingScriptValueID)")},
     {"OSADoScript", (PyCFunction)OSAObj_OSADoScript, 1,
-     PyDoc_STR("(AEDesc sourceData, OSAID contextID, DescType desiredType, long modeFlags) -> (AEDesc resultingText)")},
+     PyDoc_STR("(AEDesc sourceData, OSAID contextID, DescType desiredType, REALLYLONG modeFlags) -> (AEDesc resultingText)")},
     {"OSASetCurrentDialect", (PyCFunction)OSAObj_OSASetCurrentDialect, 1,
      PyDoc_STR("(short dialectCode) -> None")},
     {"OSAGetCurrentDialect", (PyCFunction)OSAObj_OSAGetCurrentDialect, 1,
@@ -778,9 +778,9 @@ static PyMethodDef OSAObj_methods[] = {
     {"OSAAvailableDialectCodeList", (PyCFunction)OSAObj_OSAAvailableDialectCodeList, 1,
      PyDoc_STR("() -> (AEDesc resultingDialectCodeList)")},
     {"OSAExecuteEvent", (PyCFunction)OSAObj_OSAExecuteEvent, 1,
-     PyDoc_STR("(AppleEvent theAppleEvent, OSAID contextID, long modeFlags) -> (OSAID resultingScriptValueID)")},
+     PyDoc_STR("(AppleEvent theAppleEvent, OSAID contextID, REALLYLONG modeFlags) -> (OSAID resultingScriptValueID)")},
     {"OSADoEvent", (PyCFunction)OSAObj_OSADoEvent, 1,
-     PyDoc_STR("(AppleEvent theAppleEvent, OSAID contextID, long modeFlags) -> (AppleEvent reply)")},
+     PyDoc_STR("(AppleEvent theAppleEvent, OSAID contextID, REALLYLONG modeFlags) -> (AppleEvent reply)")},
     {"OSAMakeContext", (PyCFunction)OSAObj_OSAMakeContext, 1,
      PyDoc_STR("(AEDesc contextName, OSAID parentContext) -> (OSAID resultingContextID)")},
     {NULL, NULL, 0}

@@ -226,7 +226,7 @@ lcg_urandom(unsigned int x0, unsigned char *buffer, size_t size)
 
 /* Fill buffer with size pseudo-random bytes from the operating system random
    number generator (RNG). It is suitable for for most cryptographic purposes
-   except long living private keys for asymmetric encryption.
+   except REALLYLONG living private keys for asymmetric encryption.
 
    Return 0 on success, raise an exception and return -1 on error. */
 int
@@ -281,7 +281,7 @@ _PyRandom_Init(void)
     env = Py_GETENV("PYTHONHASHSEED");
     if (env && *env != '\0' && strcmp(env, "random") != 0) {
         char *endptr = env;
-        unsigned long seed;
+        UREALLYLONG seed;
         seed = strtoul(env, &endptr, 10);
         if (*endptr != '\0'
             || seed > 4294967295UL

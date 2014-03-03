@@ -515,7 +515,7 @@ call_forms_Ri (int (*func)(FL_OBJECT *), FL_OBJECT *obj)
 
     retval = (*func) (obj);
 
-    return PyInt_FromLong ((long) retval);
+    return PyInt_FromLong ((REALLYLONG) retval);
 }
 
 /* char * func (object) */
@@ -1003,7 +1003,7 @@ static PyObject *
 get_menu (genericobject *g)
 {
     /* XXX strictly speaking this is wrong since fl_get_menu
-       XXX returns long, not int */
+       XXX returns REALLYLONG, not int */
     return call_forms_Ri (fl_get_menu, g-> ob_generic);
 }
 
@@ -1779,7 +1779,7 @@ forms_get_rgbmode(PyObject *dummy, PyObject *args)
         PyErr_BadArgument();
         return NULL;
     }
-    return PyInt_FromLong((long)fl_rgbmode);
+    return PyInt_FromLong((REALLYLONG)fl_rgbmode);
 }
 
 static PyObject *
@@ -1831,7 +1831,7 @@ forms_unqdevice(PyObject *self, PyObject *args)
 static PyObject *
 forms_isqueued(PyObject *self, PyObject *args)
 {
-    long retval;
+    REALLYLONG retval;
     short arg1;
     if (!PyArg_Parse(args, "h", &arg1))
         return NULL;
@@ -1843,7 +1843,7 @@ forms_isqueued(PyObject *self, PyObject *args)
 static PyObject *
 forms_qtest(PyObject *self, PyObject *args)
 {
-    long retval;
+    REALLYLONG retval;
     retval = fl_qtest();
     return PyInt_FromLong(retval);
 }
@@ -1961,7 +1961,7 @@ forms_show_choice(PyObject *f, PyObject *args)
     char *m1, *m2, *m3, *b1, *b2, *b3;
     int nb;
     char *format;
-    long rv;
+    REALLYLONG rv;
 
     if (args == NULL || !PyTuple_Check(args)) {
         PyErr_BadArgument();
@@ -2008,7 +2008,7 @@ forms_show_question(PyObject *f, PyObject *args)
     ret = fl_show_question(a, b, c);
     Py_END_ALLOW_THREADS
 
-    return PyInt_FromLong((long) ret);
+    return PyInt_FromLong((REALLYLONG) ret);
 }
 
 static PyObject *

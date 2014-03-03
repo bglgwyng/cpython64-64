@@ -15,15 +15,15 @@ PyAPI_DATA(PyTypeObject) PyLong_Type;
 		PyType_FastSubclass(Py_TYPE(op), Py_TPFLAGS_LONG_SUBCLASS)
 #define PyLong_CheckExact(op) (Py_TYPE(op) == &PyLong_Type)
 
-PyAPI_FUNC(PyObject *) PyLong_FromLong(long);
-PyAPI_FUNC(PyObject *) PyLong_FromUnsignedLong(unsigned long);
+PyAPI_FUNC(PyObject *) PyLong_FromLong(REALLYLONG);
+PyAPI_FUNC(PyObject *) PyLong_FromUnsignedLong(UREALLYLONG);
 PyAPI_FUNC(PyObject *) PyLong_FromDouble(double);
 PyAPI_FUNC(PyObject *) PyLong_FromSize_t(size_t);
 PyAPI_FUNC(PyObject *) PyLong_FromSsize_t(Py_ssize_t);
-PyAPI_FUNC(long) PyLong_AsLong(PyObject *);
-PyAPI_FUNC(long) PyLong_AsLongAndOverflow(PyObject *, int *);
-PyAPI_FUNC(unsigned long) PyLong_AsUnsignedLong(PyObject *);
-PyAPI_FUNC(unsigned long) PyLong_AsUnsignedLongMask(PyObject *);
+PyAPI_FUNC(REALLYLONG) PyLong_AsLong(PyObject *);
+PyAPI_FUNC(REALLYLONG) PyLong_AsLongAndOverflow(PyObject *, int *);
+PyAPI_FUNC(UREALLYLONG) PyLong_AsUnsignedLong(PyObject *);
+PyAPI_FUNC(UREALLYLONG) PyLong_AsUnsignedLongMask(PyObject *);
 PyAPI_FUNC(Py_ssize_t) PyLong_AsSsize_t(PyObject *);
 PyAPI_FUNC(int) _PyLong_AsInt(PyObject *);
 PyAPI_FUNC(PyObject *) PyLong_GetInfo(void);
@@ -77,7 +77,7 @@ PyAPI_FUNC(int) _PyLong_Sign(PyObject *v);
 PyAPI_FUNC(size_t) _PyLong_NumBits(PyObject *v);
 
 /* _PyLong_FromByteArray:  View the n unsigned bytes as a binary integer in
-   base 256, and return a Python long with the same numeric value.
+   base 256, and return a Python REALLYLONG with the same numeric value.
    If n is 0, the integer is 0.  Else:
    If little_endian is 1/true, bytes[n-1] is the MSB and bytes[0] the LSB;
    else (little_endian is 0/false) bytes[0] is the MSB and bytes[n-1] the
@@ -116,7 +116,7 @@ PyAPI_FUNC(int) _PyLong_AsByteArray(PyLongObject* v,
 	unsigned char* bytes, size_t n,
 	int little_endian, int is_signed);
 
-/* _PyLong_Format: Convert the long to a string object with given base,
+/* _PyLong_Format: Convert the REALLYLONG to a string object with given base,
    appending a base prefix of 0[box] if base is 2, 8 or 16.
    Add a trailing "L" if addL is non-zero.
    If newstyle is zero, then use the pre-2.6 behavior of octal having

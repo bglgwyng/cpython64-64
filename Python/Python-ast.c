@@ -576,7 +576,7 @@ static PyObject* ast2obj_bool(bool b)
     return PyBool_FromLong(b);
 }
 
-static PyObject* ast2obj_int(long b)
+static PyObject* ast2obj_int(REALLYLONG b)
 {
     return PyInt_FromLong(b);
 }

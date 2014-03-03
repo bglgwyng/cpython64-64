@@ -65,7 +65,7 @@ union value {
                 char c[16];
                 short s;
                 int i;
-                long l;
+                REALLYLONG l;
                 float f;
                 double d;
 #ifdef HAVE_LONG_LONG
@@ -339,7 +339,7 @@ struct tagPyCArgObject {
         char b;
         short h;
         int i;
-        long l;
+        REALLYLONG l;
 #ifdef HAVE_LONG_LONG
         PY_LONG_LONG q;
 #endif

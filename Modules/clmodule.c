@@ -1545,7 +1545,7 @@ initcl(void)
     Py_DECREF(x);
 #endif
 #ifdef CL_EXTERNAL_DEVICE
-    x = PyInt_FromLong((long) CL_EXTERNAL_DEVICE);
+    x = PyInt_FromLong((REALLYLONG) CL_EXTERNAL_DEVICE);
     if (x == NULL || PyDict_SetItemString(d, "EXTERNAL_DEVICE", x) < 0)
         return;
     Py_DECREF(x);

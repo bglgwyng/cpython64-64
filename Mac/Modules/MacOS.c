@@ -72,7 +72,7 @@ static char rf_read__doc__[] =
 static PyObject *
 rf_read(rfobject *self, PyObject *args)
 {
-    long n;
+    REALLYLONG n;
     PyObject *v;
     OSErr err;
     ByteCount n2;
@@ -108,7 +108,7 @@ static PyObject *
 rf_write(rfobject *self, PyObject *args)
 {
     char *buffer;
-    long size;
+    REALLYLONG size;
     OSErr err;
 
     if (self->isclosed) {
@@ -134,7 +134,7 @@ static char rf_seek__doc__[] =
 static PyObject *
 rf_seek(rfobject *self, PyObject *args)
 {
-    long amount;
+    REALLYLONG amount;
     int whence = SEEK_SET;
     int mode;
     OSErr err;
@@ -179,7 +179,7 @@ static char rf_tell__doc__[] =
 static PyObject *
 rf_tell(rfobject *self, PyObject *args)
 {
-    long long where;
+    REALLYLONG where;
     OSErr err;
 
     if (self->isclosed) {
@@ -716,7 +716,7 @@ initMacOS(void)
     */
     {
         PyStringObject *p = 0;
-        long off = (long)&(p->ob_sval[0]);
+        REALLYLONG off = (REALLYLONG)&(p->ob_sval[0]);
 
         if( PyDict_SetItemString(d, "string_id_to_buffer", Py_BuildValue("i", off)) != 0)
             return;

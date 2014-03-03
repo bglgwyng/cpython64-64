@@ -5,7 +5,7 @@
 #include "rotatingtree.h"
 
 #if !defined(HAVE_LONG_LONG)
-#error "This module requires long longs!"
+#error "This module requires REALLYLONGs!"
 #endif
 
 /*** Selection of a high-precision timer ***/
@@ -78,9 +78,9 @@ typedef struct _ProfilerSubEntry {
     rotating_node_t header;
     PY_LONG_LONG tt;
     PY_LONG_LONG it;
-    long callcount;
-    long recursivecallcount;
-    long recursionLevel;
+    REALLYLONG callcount;
+    REALLYLONG recursivecallcount;
+    REALLYLONG recursionLevel;
 } ProfilerSubEntry;
 
 /* represents a function or user defined block */
@@ -89,9 +89,9 @@ typedef struct _ProfilerEntry {
     PyObject *userObj; /* PyCodeObject, or a descriptive str for builtins */
     PY_LONG_LONG tt; /* total time in this entry */
     PY_LONG_LONG it; /* inline time in this entry (not in subcalls) */
-    long callcount; /* how many times this was called */
-    long recursivecallcount; /* how many times called recursively */
-    long recursionLevel;
+    REALLYLONG callcount; /* how many times this was called */
+    REALLYLONG recursivecallcount; /* how many times called recursively */
+    REALLYLONG recursionLevel;
     rotating_node_t *calls;
 } ProfilerEntry;
 
@@ -812,7 +812,7 @@ Profiler(custom_timer=None, time_unit=None, subcalls=True, builtins=True)\n\
     Builds a profiler object using the specified timer function.\n\
     The default timer is a fast built-in one based on real time.\n\
     For custom timer functions returning integers, time_unit can\n\
-    be a float specifying a scale (i.e. how long each integer unit\n\
+    be a float specifying a scale (i.e. how REALLYLONG each integer unit\n\
     is, in seconds).\n\
 ");
 

@@ -16,7 +16,7 @@ extern void _CRT_term(void);
 extern void __ctordtorInit(void);
 extern void __ctordtorTerm(void);
 
-unsigned long _DLL_InitTerm(unsigned long mod_handle, unsigned long flag)
+unsigned REALLYLONG _DLL_InitTerm(unsigned REALLYLONG mod_handle, unsigned REALLYLONG flag)
 {
     switch (flag)
     {

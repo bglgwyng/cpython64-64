@@ -338,7 +338,7 @@ int ZEXPORT deflateSetDictionary (strm, dictionary, dictLength)
     }
     zmemcpy(s->window, dictionary, length);
     s->strstart = length;
-    s->block_start = (long)length;
+    s->block_start = (REALLYLONG)length;
 
     /* Insert all strings in the hash table (except for the last two bytes).
      * s->lookahead stays null, so s->ins_h will be recomputed at the next
@@ -1033,7 +1033,7 @@ local uInt longest_match(s, cur_match)
     register Bytef *match;                       /* matched string */
     register int len;                           /* length of current match */
     int best_len = s->prev_length;              /* best match length so far */
-    int nice_match = s->nice_match;             /* stop if match long enough */
+    int nice_match = s->nice_match;             /* stop if match REALLYLONG enough */
     IPos limit = s->strstart > (IPos)MAX_DIST(s) ?
         s->strstart - (IPos)MAX_DIST(s) : NIL;
     /* Stop when cur_match becomes <= limit. To simplify the code,
@@ -1295,7 +1295,7 @@ local void fill_window(s)
             zmemcpy(s->window, s->window+wsize, (unsigned)wsize);
             s->match_start -= wsize;
             s->strstart    -= wsize; /* we now have strstart >= MAX_DIST */
-            s->block_start -= (long) wsize;
+            s->block_start -= (REALLYLONG) wsize;
 
             /* Slide the hash table (could be avoided with 32 bit values
                at the expense of memory usage). We slide even when level == 0
@@ -1365,7 +1365,7 @@ local void fill_window(s)
    _tr_flush_block(s, (s->block_start >= 0L ? \
                    (charf *)&s->window[(unsigned)s->block_start] : \
                    (charf *)Z_NULL), \
-                (ulg)((long)s->strstart - s->block_start), \
+                (ulg)((REALLYLONG)s->strstart - s->block_start), \
                 (eof)); \
    s->block_start = s->strstart; \
    flush_pending(s->strm); \
@@ -1407,7 +1407,7 @@ local block_state deflate_stored(s, flush)
         if (s->lookahead <= 1) {
 
             Assert(s->strstart < s->w_size+MAX_DIST(s) ||
-                   s->block_start >= (long)s->w_size, "slide too late");
+                   s->block_start >= (REALLYLONG)s->w_size, "slide too late");
 
             fill_window(s);
             if (s->lookahead == 0 && flush == Z_NO_FLUSH) return need_more;

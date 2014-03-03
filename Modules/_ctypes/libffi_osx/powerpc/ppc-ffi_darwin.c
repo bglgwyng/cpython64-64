@@ -83,7 +83,7 @@ typedef struct aix_fd_struct {
    |   Current backchain pointer       4/8      | |     during
    |--------------------------------------------|-/ <<< ffi_call_DARWIN
 
-	Note: ppc64 CR is saved in the low word of a long on the stack.
+	Note: ppc64 CR is saved in the low word of a REALLYLONG on the stack.
 */
 
 /*@-exportheader@*/
@@ -100,18 +100,18 @@ ffi_prep_args(
 	const unsigned bytes	= ecif->cif->bytes;
 	const unsigned flags	= ecif->cif->flags;
 
-	/*	Cast the stack arg from int* to long*. sizeof(long) == 4 in 32-bit mode
+	/*	Cast the stack arg from int* to REALLYLONG*. sizeof(REALLYLONG) == 4 in 32-bit mode
 		and 8 in 64-bit mode.	*/
-	unsigned long *const longStack	= (unsigned long *const)stack;
+	unsigned REALLYLONG *const longStack	= (unsigned REALLYLONG *const)stack;
 
 	/* 'stacktop' points at the previous backchain pointer.	*/
 #if defined(__ppc64__)
 	//	In ppc-darwin.s, an extra 96 bytes is reserved for the linkage area,
 	//	saved registers, and an extra FPR.
-	unsigned long *const stacktop	=
-		(unsigned long *)(unsigned long)((char*)longStack + bytes + 96);
+	unsigned REALLYLONG *const stacktop	=
+		(unsigned REALLYLONG *)(unsigned REALLYLONG)((char*)longStack + bytes + 96);
 #elif defined(__ppc__)
-	unsigned long *const stacktop	= longStack + (bytes / sizeof(long));
+	unsigned REALLYLONG *const stacktop	= longStack + (bytes / sizeof(REALLYLONG));
 #else
 #error undefined architecture
 #endif
@@ -130,12 +130,12 @@ ffi_prep_args(
 	unsigned int	fparg_count = 0;
 
 	/* 'next_arg' grows up as we put parameters in it.  */
-	unsigned long*	next_arg = longStack + 6; /* 6 reserved positions.  */
+	unsigned REALLYLONG*	next_arg = longStack + 6; /* 6 reserved positions.  */
 
 	int				i;
 	double			double_tmp;
 	void**			p_argv = ecif->avalue;
-	unsigned long	gprvalue;
+	unsigned REALLYLONG	gprvalue;
 	ffi_type**		ptr = ecif->cif->arg_types;
 
 	/* Check that everything starts aligned properly.  */
@@ -148,7 +148,7 @@ ffi_prep_args(
 		Return values are referenced by r3, so r4 is the first parameter.  */
 
 	if (flags & FLAG_RETVAL_REFERENCE)
-		*next_arg++ = (unsigned long)(char*)ecif->rvalue;
+		*next_arg++ = (unsigned REALLYLONG)(char*)ecif->rvalue;
 
 	/* Now for the arguments.  */
 	for (i = ecif->cif->nargs; i > 0; i--, ptr++, p_argv++)
@@ -213,10 +213,10 @@ ffi_prep_args(
 			case FFI_TYPE_UINT64:
 			case FFI_TYPE_SINT64:
 #if defined(__ppc64__)
-				gprvalue = *(long long*)*p_argv;
+				gprvalue = *(REALLYLONG*)*p_argv;
 				goto putgpr;
 #elif defined(__ppc__)
-				*(long long*)next_arg = *(long long*)*p_argv;
+				*(REALLYLONG*)next_arg = *(REALLYLONG*)*p_argv;
 				next_arg += 2;
 				break;
 #else
@@ -224,7 +224,7 @@ ffi_prep_args(
 #endif
 
 			case FFI_TYPE_POINTER:
-				gprvalue = *(unsigned long*)*p_argv;
+				gprvalue = *(unsigned REALLYLONG*)*p_argv;
 				goto putgpr;
 
 			case FFI_TYPE_UINT8:
@@ -251,7 +251,7 @@ ffi_prep_args(
 
 				ffi64_struct_to_reg_form(*ptr, (char*)*p_argv, NULL, &fparg_count,
 					(char*)next_arg, &gprSize, (char*)fpr_base, &fprSize);
-				next_arg += gprSize / sizeof(long);
+				next_arg += gprSize / sizeof(REALLYLONG);
 				fpr_base += fprSize / sizeof(double);
 
 #elif defined(__ppc__)
@@ -344,7 +344,7 @@ ffi_prep_cif_machdep(
 
 	/*	Space for the frame pointer, callee's LR, CR, etc, and for
 		the asm's temp regs.  */
-	unsigned int	bytes = (6 + ASM_NEEDS_REGISTERS) * sizeof(long);
+	unsigned int	bytes = (6 + ASM_NEEDS_REGISTERS) * sizeof(REALLYLONG);
 
 	/*	Return value handling.  The rules are as follows:
 		- 32-bit (or less) integer values are returned in gpr3;
@@ -460,7 +460,7 @@ ffi_prep_cif_machdep(
 
 			case FFI_TYPE_UINT64:
 			case FFI_TYPE_SINT64:
-				/*	'long long' arguments are passed as two words, but
+				/*	'REALLYLONG' arguments are passed as two words, but
 					either both words must fit in registers or both go
 					on the stack.  If they go on the stack, they must
 					be 8-byte-aligned.  */
@@ -536,15 +536,15 @@ ffi_prep_cif_machdep(
 	/* Stack space.  */
 #if defined(__ppc64__)
 	if ((intarg_count + fparg_count) > NUM_GPR_ARG_REGISTERS)
-		bytes += (intarg_count + fparg_count) * sizeof(long);
+		bytes += (intarg_count + fparg_count) * sizeof(REALLYLONG);
 #elif defined(__ppc__)
 	if ((intarg_count + 2 * fparg_count) > NUM_GPR_ARG_REGISTERS)
-		bytes += (intarg_count + 2 * fparg_count) * sizeof(long);
+		bytes += (intarg_count + 2 * fparg_count) * sizeof(REALLYLONG);
 #else
 #error undefined architecture
 #endif
 	else
-		bytes += NUM_GPR_ARG_REGISTERS * sizeof(long);
+		bytes += NUM_GPR_ARG_REGISTERS * sizeof(REALLYLONG);
 
 	/* The stack space allocated needs to be a multiple of 16/32 bytes.  */
 	bytes = SF_ROUND(bytes);
@@ -569,7 +569,7 @@ ffi_call_AIX(
 extern void
 ffi_call_DARWIN(
 /*@out@*/	extended_cif*,
-			unsigned long,
+			unsigned REALLYLONG,
 			unsigned,
 /*@out@*/	unsigned*,
 			void (*fn)(void),
@@ -612,7 +612,7 @@ ffi_call(
 
 		case FFI_DARWIN:
 			/*@-usedef@*/
-			ffi_call_DARWIN(&ecif, -(long)cif->bytes,
+			ffi_call_DARWIN(&ecif, -(REALLYLONG)cif->bytes,
 				cif->flags, ecif.rvalue, fn, ffi_prep_args);
 			/*@=usedef@*/
 			break;
@@ -734,8 +734,8 @@ ffi_prep_closure(
 			tramp[5] = 0x7d8903a6;	//	mtctr	r12
 			tramp[6] = 0xe96b0020;	//	ld		r11,32(r11)
 			tramp[7] = 0x4e800420;	//	bctr
-			*(unsigned long*)&tramp[8] = (unsigned long)ffi_closure_ASM;
-			*(unsigned long*)&tramp[10] = (unsigned long)closure;
+			*(unsigned REALLYLONG*)&tramp[8] = (unsigned REALLYLONG)ffi_closure_ASM;
+			*(unsigned REALLYLONG*)&tramp[10] = (unsigned REALLYLONG)closure;
 #elif defined(__ppc__)
 			tramp[0] = 0x7c0802a6;	//	mflr	r0
 			tramp[1] = 0x429f0005;	//	bcl		20,31,+0x8
@@ -745,8 +745,8 @@ ffi_prep_closure(
 			tramp[5] = 0x7d8903a6;	//	mtctr	r12
 			tramp[6] = 0x816b001c;	//	lwz		r11,28(r11)
 			tramp[7] = 0x4e800420;	//	bctr
-			tramp[8] = (unsigned long)ffi_closure_ASM;
-			tramp[9] = (unsigned long)closure;
+			tramp[8] = (unsigned REALLYLONG)ffi_closure_ASM;
+			tramp[9] = (unsigned REALLYLONG)closure;
 #else
 #error undefined architecture
 #endif
@@ -814,7 +814,7 @@ int
 ffi_closure_helper_DARWIN(
 	ffi_closure*	closure,
 	void*			rvalue,
-	unsigned long*	pgr,
+	unsigned REALLYLONG*	pgr,
 	ffi_dblfl*		pfr)
 {
 	/*	rvalue is the pointer to space for return value in closure assembly
@@ -830,7 +830,7 @@ ffi_closure_helper_DARWIN(
 	unsigned int		nf = 0;	/* number of FPRs already used.  */
 	unsigned int		ng = 0;	/* number of GPRs already used.  */
 	ffi_cif*			cif = closure->cif;
-	long				avn = cif->nargs;
+	REALLYLONG				avn = cif->nargs;
 	void**				avalue = alloca(cif->nargs * sizeof(void*));
 	ffi_type**			arg_types = cif->arg_types;
 
@@ -892,8 +892,8 @@ ffi_closure_helper_DARWIN(
 					ffi64_struct_to_ram_form(arg_types[i], (const char*)pgr,
 						&gprSize, (const char*)pfr, &fprSize, &nf, avalue[i], NULL);
  
-					ng	+= gprSize / sizeof(long);
-					pgr	+= gprSize / sizeof(long);
+					ng	+= gprSize / sizeof(REALLYLONG);
+					pgr	+= gprSize / sizeof(REALLYLONG);
 					pfr	+= (fprSize - savedFPRSize) / sizeof(double);
 
 #elif defined(__ppc__)
@@ -911,8 +911,8 @@ ffi_closure_helper_DARWIN(
 					else
 						avalue[i] = (void*)pgr;
 
-					ng	+= (size_al + 3) / sizeof(long);
-					pgr += (size_al + 3) / sizeof(long);
+					ng	+= (size_al + 3) / sizeof(REALLYLONG);
+					pgr += (size_al + 3) / sizeof(REALLYLONG);
 #else
 #error undefined architecture
 #endif
@@ -925,7 +925,7 @@ ffi_closure_helper_DARWIN(
 #endif
 			case FFI_TYPE_SINT64:
 			case FFI_TYPE_UINT64:
-				/* Long long ints are passed in 1 or 2 GPRs.  */
+				/* Long REALLYLONG ints are passed in 1 or 2 GPRs.  */
 				avalue[i] = pgr;
 				ng += MODE_CHOICE(2,1);
 				pgr += MODE_CHOICE(2,1);
@@ -1238,8 +1238,8 @@ ffi64_struct_to_ram_form(
 				srcGMarker = ALIGN(srcGMarker, 8);
 				destMarker = ALIGN(destMarker, 8);
 
-				*(long long*)&outStruct[destMarker] =
-					*(long long*)&inGPRs[srcGMarker];
+				*(REALLYLONG*)&outStruct[destMarker] =
+					*(REALLYLONG*)&inGPRs[srcGMarker];
 				srcGMarker += 8;
 				destMarker += 8;
 
@@ -1472,9 +1472,9 @@ ffi64_struct_to_reg_form(
 						if (outGPRs != NULL && inStruct != NULL)
 						{
 							// Avoid memcpy for small chunks.
-							if (inType->size <= sizeof(long))
-								*(long*)&outGPRs[destGMarker] =
-									*(long*)&inStruct[srcMarker];
+							if (inType->size <= sizeof(REALLYLONG))
+								*(REALLYLONG*)&outGPRs[destGMarker] =
+									*(REALLYLONG*)&inStruct[srcMarker];
 							else
 								memcpy(&outGPRs[destGMarker],
 									&inStruct[srcMarker], inType->size);
@@ -1547,8 +1547,8 @@ ffi64_struct_to_reg_form(
 				destGMarker = ALIGN(destGMarker, 8);
 
 				if (outGPRs != NULL && inStruct != NULL)
-					*(long long*)&outGPRs[destGMarker] =
-						*(long long*)&inStruct[srcMarker];
+					*(REALLYLONG*)&outGPRs[destGMarker] =
+						*(REALLYLONG*)&inStruct[srcMarker];
 
 				srcMarker += 8;
 				destGMarker += 8;

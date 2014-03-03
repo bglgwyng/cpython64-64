@@ -11,7 +11,7 @@
 
 typedef struct A {
   unsigned char a;
-  unsigned long long b;
+  unsigned REALLYLONG b;
 } A;
 
 typedef struct B {
@@ -20,7 +20,7 @@ typedef struct B {
 } B;
 
 typedef struct C {
-  unsigned long d;
+  unsigned REALLYLONG d;
   unsigned char e;
 } C;
 

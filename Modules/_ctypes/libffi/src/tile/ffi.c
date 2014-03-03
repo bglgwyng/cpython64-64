@@ -69,7 +69,7 @@ ffi_prep_cif_machdep(ffi_cif *cif)
 }
 
 
-static long
+static REALLYLONG
 assign_to_ffi_arg(ffi_sarg *out, void *in, const ffi_type *type,
                   int write_to_reg)
 {
@@ -149,8 +149,8 @@ ffi_call(ffi_cif *cif, void (*fn)(void), void *rvalue, void **avalue)
   ffi_sarg * const stack_args = &reg_args[NUM_ARG_REGS];
   ffi_sarg *argp = arg_mem;
   ffi_type ** const arg_types = cif->arg_types;
-  const long num_args = cif->nargs;
-  long i;
+  const REALLYLONG num_args = cif->nargs;
+  REALLYLONG i;
 
   if (cif->flags == FFI_TYPE_STRUCT)
     {
@@ -172,7 +172,7 @@ ffi_call(ffi_cif *cif, void (*fn)(void), void *rvalue, void **avalue)
 #ifndef __tilegx__
       /* Doubleword-aligned values are always in an even-number register
          pair, or doubleword-aligned stack slot if out of registers. */
-      long align = arg_word & (type->alignment > FFI_SIZEOF_ARG);
+      REALLYLONG align = arg_word & (type->alignment > FFI_SIZEOF_ARG);
       argp += align;
       arg_word += align;
 #endif
@@ -293,7 +293,7 @@ ffi_closure_tile_inner(ffi_closure *closure,
   ffi_sarg * const reg_args_in = reg_args[0];
   ffi_sarg * const reg_args_out = reg_args[1];
   ffi_sarg * argp;
-  long i, arg_word, nargs = cif->nargs;
+  REALLYLONG i, arg_word, nargs = cif->nargs;
   /* Use a union to guarantee proper alignment for double. */
   union { ffi_sarg arg[NUM_ARG_REGS]; double d; UINT64 u64; } closure_ret;
 
@@ -325,7 +325,7 @@ ffi_closure_tile_inner(ffi_closure *closure,
 #ifndef __tilegx__
       /* Doubleword-aligned values are always in an even-number register
          pair, or doubleword-aligned stack slot if out of registers. */
-      long align = arg_word & (type->alignment > FFI_SIZEOF_ARG);
+      REALLYLONG align = arg_word & (type->alignment > FFI_SIZEOF_ARG);
       argp += align;
       arg_word += align;
 #endif

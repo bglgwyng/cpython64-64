@@ -59,7 +59,7 @@ my_eventProc(NavEventCallbackMessage callBackSelector,
     if ( pyfunc == Py_None ) {
         return;
     }
-    rv = PyObject_CallFunction(pyfunc, "ls#", (long)callBackSelector,
+    rv = PyObject_CallFunction(pyfunc, "ls#", (REALLYLONG)callBackSelector,
                     (void *)callBackParms, sizeof(NavCBRec));
     if ( rv )
         Py_DECREF(rv);
@@ -318,16 +318,16 @@ navrr_getattr(navrrobject *self, char *name)
     if( strcmp(name, "version") == 0 )
         return Py_BuildValue("h", self->itself.version);
     if( strcmp(name, "validRecord") == 0 )
-        return Py_BuildValue("l", (long)self->itself.validRecord);
+        return Py_BuildValue("l", (REALLYLONG)self->itself.validRecord);
     if( strcmp(name, "replacing") == 0 )
-        return Py_BuildValue("l", (long)self->itself.replacing);
+        return Py_BuildValue("l", (REALLYLONG)self->itself.replacing);
     if( strcmp(name, "isStationery") == 0 )
-        return Py_BuildValue("l", (long)self->itself.isStationery);
+        return Py_BuildValue("l", (REALLYLONG)self->itself.isStationery);
     if( strcmp(name, "translationNeeded") == 0 )
-        return Py_BuildValue("l", (long)self->itself.translationNeeded);
+        return Py_BuildValue("l", (REALLYLONG)self->itself.translationNeeded);
     if( strcmp(name, "selection") == 0 ) {
         SInt32 i;
-        long count;
+        REALLYLONG count;
         OSErr err;
         PyObject *rv, *rvitem;
         AEDesc desc;
@@ -358,7 +358,7 @@ navrr_getattr(navrrobject *self, char *name)
     }
     if( strcmp(name, "selection_fsr") == 0 ) {
         SInt32 i;
-        long count;
+        REALLYLONG count;
         OSErr err;
         PyObject *rv, *rvitem;
         AEDesc desc;
@@ -537,7 +537,7 @@ nav_NavAskSaveChanges(PyObject *self, PyObject *args, PyObject *kw)
         PyErr_Mac(ErrorObject, err);
         return NULL;
     }
-    return Py_BuildValue("l", (long)reply);
+    return Py_BuildValue("l", (REALLYLONG)reply);
 }
 
 static char nav_NavCustomAskSaveChanges__doc__[] =
@@ -566,7 +566,7 @@ nav_NavCustomAskSaveChanges(PyObject *self, PyObject *args, PyObject *kw)
         PyErr_Mac(ErrorObject, err);
         return NULL;
     }
-    return Py_BuildValue("l", (long)reply);
+    return Py_BuildValue("l", (REALLYLONG)reply);
 }
 
 static char nav_NavAskDiscardChanges__doc__[] =
@@ -595,7 +595,7 @@ nav_NavAskDiscardChanges(PyObject *self, PyObject *args, PyObject *kw)
         PyErr_Mac(ErrorObject, err);
         return NULL;
     }
-    return Py_BuildValue("l", (long)reply);
+    return Py_BuildValue("l", (REALLYLONG)reply);
 }
 
 static char nav_NavChooseFile__doc__[] =
@@ -792,7 +792,7 @@ nav_NavServicesCanRun(PyObject *self, PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return NULL;
     rv = NavServicesCanRun();
-    return Py_BuildValue("l", (long)rv);
+    return Py_BuildValue("l", (REALLYLONG)rv);
 }
 
 static char nav_NavServicesAvailable__doc__[] =
@@ -807,7 +807,7 @@ nav_NavServicesAvailable(PyObject *self, PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return NULL;
     rv = NavServicesAvailable();
-    return Py_BuildValue("l", (long)rv);
+    return Py_BuildValue("l", (REALLYLONG)rv);
 }
 /* XX */
 static char nav_NavLoad__doc__[] =
@@ -852,7 +852,7 @@ nav_NavLibraryVersion(PyObject *self, PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return NULL;
     rv = NavLibraryVersion();
-    return Py_BuildValue("l", (long)rv);
+    return Py_BuildValue("l", (REALLYLONG)rv);
 }
 
 static char nav_NavGetDefaultDialogOptions__doc__[] =

@@ -53,7 +53,7 @@ static BOOL WINAPI PyCtrlHandler(DWORD dwCtrlType)
     */
     return FALSE;
 }
-static long main_thread;
+static REALLYLONG main_thread;
 
 
 #if defined(__BORLANDC__)
@@ -251,7 +251,7 @@ tmtotuple(struct tm *p)
     if (v == NULL)
         return NULL;
 
-#define SET(i,val) PyStructSequence_SET_ITEM(v, i, PyInt_FromLong((long) val))
+#define SET(i,val) PyStructSequence_SET_ITEM(v, i, PyInt_FromLong((REALLYLONG) val))
 
     SET(0, p->tm_year + 1900);
     SET(1, p->tm_mon + 1);         /* Want January == 1 */
@@ -730,7 +730,7 @@ inittimezone(PyObject *m) {
 #define YEAR ((time_t)((365 * 24 + 6) * 3600))
         time_t t;
         struct tm *p;
-        long janzone, julyzone;
+        REALLYLONG janzone, julyzone;
         char janname[10], julyname[10];
         t = (time((time_t *)0) / YEAR) * YEAR;
         p = localtime(&t);
@@ -857,7 +857,7 @@ inittime(void)
 
     /* Accept 2-digit dates unless PYTHONY2K is set and non-empty */
     p = Py_GETENV("PYTHONY2K");
-    PyModule_AddIntConstant(m, "accept2dyear", (long) (!p || !*p));
+    PyModule_AddIntConstant(m, "accept2dyear", (REALLYLONG) (!p || !*p));
     /* If an embedded interpreter is shutdown and reinitialized the old
        moddict was not decrefed on shutdown and the next import of this
        module leads to a leak.  Conditionally decref here to prevent that.
@@ -942,8 +942,8 @@ floatsleep(double secs)
     double frac;
     frac = fmod(secs, 1.0);
     secs = floor(secs);
-    t.tv_sec = (long)secs;
-    t.tv_usec = (long)(frac*1000000.0);
+    t.tv_sec = (REALLYLONG)secs;
+    t.tv_usec = (REALLYLONG)(frac*1000000.0);
     Py_BEGIN_ALLOW_THREADS
     if (select(0, (fd_set *)0, (fd_set *)0, (fd_set *)0, &t) != 0) {
 #ifdef EINTR
@@ -965,7 +965,7 @@ floatsleep(double secs)
 #elif defined(MS_WINDOWS)
     {
         double millisecs = secs * 1000.0;
-        unsigned long ul_millis;
+        UREALLYLONG ul_millis;
 
         if (millisecs > (double)ULONG_MAX) {
             PyErr_SetString(PyExc_OverflowError,
@@ -976,7 +976,7 @@ floatsleep(double secs)
         /* Allow sleep(0) to maintain win32 semantics, and as decreed
          * by Guido, only the main thread can be interrupted.
          */
-        ul_millis = (unsigned long)millisecs;
+        ul_millis = (UREALLYLONG)millisecs;
         if (ul_millis == 0 ||
             main_thread != PyThread_get_thread_ident())
             Sleep(ul_millis);
@@ -1039,7 +1039,7 @@ floatsleep(double secs)
         }
         /* This sleep *CAN BE* interrupted. */
         Py_BEGIN_ALLOW_THREADS
-        if(sleep((long)millisecs) < 0){
+        if(sleep((REALLYLONG)millisecs) < 0){
             Py_BLOCK_THREADS
             PyErr_SetFromErrno(PyExc_IOError);
             return -1;

@@ -381,7 +381,7 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/
 
      /* Implemented elsewhere:
 
-     long PyObject_Hash(PyObject *o);
+     REALLYLONG PyObject_Hash(PyObject *o);
 
      Compute and return the hash, hash_value, of an object, o.  On
      failure, return -1.  This is the equivalent of the Python
@@ -853,7 +853,7 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/
      PyAPI_FUNC(PyObject *) PyNumber_Index(PyObject *o);
 
        /*
-     Returns the object converted to a Python long or int
+     Returns the object converted to a Python REALLYLONG or int
      or NULL with an error raised on failure.
        */
 
@@ -861,7 +861,7 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/
 
        /*
      Returns the Integral instance converted to an int. The
-     instance is expected to be int or long or have an __int__
+     instance is expected to be int or REALLYLONG or have an __int__
      method. Steals integral's reference. error_format will be
      used to create the TypeError if integral isn't actually an
      Integral instance. error_format should be a format string
@@ -892,7 +892,7 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/
      PyAPI_FUNC(PyObject *) PyNumber_Long(PyObject *o);
 
        /*
-     Returns the o converted to a long integer object on success,
+     Returns the o converted to a REALLYLONG integer object on success,
      or NULL on failure.  This is the equivalent of the Python
      expression: long(o).
 

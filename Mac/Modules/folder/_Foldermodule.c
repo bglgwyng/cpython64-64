@@ -256,7 +256,7 @@ static PyObject *Folder_InvalidateFolderDescriptorCache(PyObject *_self, PyObjec
     PyObject *_res = NULL;
     OSErr _err;
     short vRefNum;
-    long dirID;
+    REALLYLONG dirID;
     if (!PyArg_ParseTuple(_args, "hl",
                           &vRefNum,
                           &dirID))
@@ -274,7 +274,7 @@ static PyObject *Folder_IdentifyFolder(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     OSErr _err;
     short vRefNum;
-    long dirID;
+    REALLYLONG dirID;
     FolderType foldType;
     if (!PyArg_ParseTuple(_args, "hl",
                           &vRefNum,
@@ -291,7 +291,7 @@ static PyObject *Folder_IdentifyFolder(PyObject *_self, PyObject *_args)
 
 static PyMethodDef Folder_methods[] = {
     {"FindFolder", (PyCFunction)Folder_FindFolder, 1,
-     PyDoc_STR("(short vRefNum, OSType folderType, Boolean createFolder) -> (short foundVRefNum, long foundDirID)")},
+     PyDoc_STR("(short vRefNum, OSType folderType, Boolean createFolder) -> (short foundVRefNum, REALLYLONG foundDirID)")},
     {"ReleaseFolder", (PyCFunction)Folder_ReleaseFolder, 1,
      PyDoc_STR("(short vRefNum, OSType folderType) -> None")},
     {"FSFindFolder", (PyCFunction)Folder_FSFindFolder, 1,
@@ -313,9 +313,9 @@ static PyMethodDef Folder_methods[] = {
      PyDoc_STR("(OSType fileType, FolderType routeFromFolder) -> (FolderType routeToFolder, RoutingFlags flags)")},
 #endif /* !__LP64__ */
     {"InvalidateFolderDescriptorCache", (PyCFunction)Folder_InvalidateFolderDescriptorCache, 1,
-     PyDoc_STR("(short vRefNum, long dirID) -> None")},
+     PyDoc_STR("(short vRefNum, REALLYLONG dirID) -> None")},
     {"IdentifyFolder", (PyCFunction)Folder_IdentifyFolder, 1,
-     PyDoc_STR("(short vRefNum, long dirID) -> (FolderType foldType)")},
+     PyDoc_STR("(short vRefNum, REALLYLONG dirID) -> (FolderType foldType)")},
     {NULL, NULL, 0}
 };
 

@@ -125,7 +125,7 @@ static void fpe_reset(Sigfunc *handler)
      */
 #include <sigfpe.h>
     typedef void user_routine (unsigned[5], int[2]);
-    typedef void abort_routine (unsigned long);
+    typedef void abort_routine (unsigned REALLYLONG);
     handle_sigfpes(_OFF, 0,
                  (user_routine *)0,
                  _TURN_OFF_HANDLER_ON_ERROR,
@@ -147,7 +147,7 @@ static void fpe_reset(Sigfunc *handler)
 #ifndef _SUNMATH_H
     extern void nonstandard_arithmetic(void);
     extern int ieee_flags(const char*, const char*, const char*, char **);
-    extern long ieee_handler(const char*, const char*, sigfpe_handler_type);
+    extern REALLYLONG ieee_handler(const char*, const char*, sigfpe_handler_type);
 #endif
 
     char *mode="exception", *in="all", *out;
@@ -179,7 +179,7 @@ static void fpe_reset(Sigfunc *handler)
     /* cc -c -I/usr/local/python/include fpectlmodule.c */
     /* ld -shared -o fpectlmodule.so fpectlmodule.o */
 #include <machine/fpu.h>
-    unsigned long fp_control =
+    unsigned REALLYLONG fp_control =
     IEEE_TRAP_ENABLE_INV | IEEE_TRAP_ENABLE_DZE | IEEE_TRAP_ENABLE_OVF;
     ieee_set_fp_control(fp_control);
     PyOS_setsig(SIGFPE, handler);
@@ -187,7 +187,7 @@ static void fpe_reset(Sigfunc *handler)
 /*-- DEC ALPHA LINUX ------------------------------------------------------*/
 #elif defined(__alpha) && defined(linux)
 #include <asm/fpu.h>
-    unsigned long fp_control =
+    unsigned REALLYLONG fp_control =
     IEEE_TRAP_ENABLE_INV | IEEE_TRAP_ENABLE_DZE | IEEE_TRAP_ENABLE_OVF;
     ieee_set_fp_control(fp_control);
     PyOS_setsig(SIGFPE, handler);

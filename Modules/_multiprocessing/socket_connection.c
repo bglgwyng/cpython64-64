@@ -246,8 +246,8 @@ conn_poll(ConnectionObject *conn, double timeout, PyThreadState *_save)
         } while (res < 0 && errno == EINTR);
     } else {
         struct timeval tv;
-        tv.tv_sec = (long)timeout;
-        tv.tv_usec = (long)((timeout - tv.tv_sec) * 1e6 + 0.5);
+        tv.tv_sec = (REALLYLONG)timeout;
+        tv.tv_usec = (REALLYLONG)((timeout - tv.tv_sec) * 1e6 + 0.5);
         res = select((int)conn->handle+1, &rfds, NULL, NULL, &tv);
         if (res < 0 && errno == EINTR) {
             /* We were interrupted by a signal.  Just indicate a

@@ -288,7 +288,7 @@ PyFloat_AsDouble(PyObject *op)
    the value in dbl; this replaces the functionality of the coercion
    slot function.  If conversion to double raises an exception, obj is
    set to NULL, and the function invoking this macro returns NULL.  If
-   obj is not of float, int or long type, Py_NotImplemented is incref'ed,
+   obj is not of float, int or REALLYLONG type, Py_NotImplemented is incref'ed,
    stored in obj, and returned from the function invoking this macro.
 */
 #define CONVERT_TO_DOUBLE(obj, dbl)                     \
@@ -395,9 +395,9 @@ float_str(PyFloatObject *v)
  * When mixing float with an integer type, there's no good *uniform* approach.
  * Converting the double to an integer obviously doesn't work, since we
  * may lose info from fractional bits.  Converting the integer to a double
- * also has two failure modes:  (1) a long int may trigger overflow (too
- * large to fit in the dynamic range of a C double); (2) even a C long may have
- * more bits than fit in a C double (e.g., on a a 64-bit box long may have
+ * also has two failure modes:  (1) a REALLYLONG int may trigger overflow (too
+ * large to fit in the dynamic range of a C double); (2) even a C REALLYLONG may have
+ * more bits than fit in a C double (e.g., on a a 64-bit box REALLYLONG may have
  * 63 bits of precision, but a C double probably has only 53), and then
  * we can falsely claim equality when low-order integer bits are lost by
  * coercion to double.  So this part is painful too.
@@ -430,13 +430,13 @@ float_richcompare(PyObject *v, PyObject *w, int op)
     }
 
     else if (PyInt_Check(w)) {
-        long jj = PyInt_AS_LONG(w);
+        REALLYLONG jj = PyInt_AS_LONG(w);
         /* In the worst realistic case I can imagine, C double is a
-         * Cray single with 48 bits of precision, and long has 64
+         * Cray single with 48 bits of precision, and REALLYLONG has 64
          * bits.
          */
 #if SIZEOF_LONG > 6
-        unsigned long abs = (unsigned long)(jj < 0 ? -jj : jj);
+        UREALLYLONG abs = (UREALLYLONG)(jj < 0 ? -jj : jj);
         if (abs >> 48) {
             /* Needs more than 48 bits.  Make it take the
              * PyLong path.
@@ -452,7 +452,7 @@ float_richcompare(PyObject *v, PyObject *w, int op)
         }
 #endif
         j = (double)jj;
-        assert((long)j == jj);
+        assert((REALLYLONG)j == jj);
     }
 
     else if (PyLong_Check(w)) {
@@ -473,7 +473,7 @@ float_richcompare(PyObject *v, PyObject *w, int op)
         /* Convert w to a double if it fits.  In particular, 0 fits. */
         nbits = _PyLong_NumBits(w);
         if (nbits == (size_t)-1 && PyErr_Occurred()) {
-            /* This long is so large that size_t isn't big enough
+            /* This REALLYLONG is so large that size_t isn't big enough
              * to hold the # of bits.  Replace with little doubles
              * that give the same outcome -- w is so large that
              * its magnitude must exceed the magnitude of any
@@ -584,7 +584,7 @@ float_richcompare(PyObject *v, PyObject *w, int op)
         }
     } /* else if (PyLong_Check(w)) */
 
-    else        /* w isn't float, int, or long */
+    else        /* w isn't float, int, or REALLYLONG */
         goto Unimplemented;
 
  Compare:
@@ -617,7 +617,7 @@ float_richcompare(PyObject *v, PyObject *w, int op)
     return Py_NotImplemented;
 }
 
-static long
+static REALLYLONG
 float_hash(PyFloatObject *v)
 {
     return _Py_HashDouble(v->ob_fval);
@@ -950,7 +950,7 @@ static int
 float_coerce(PyObject **pv, PyObject **pw)
 {
     if (PyInt_Check(*pw)) {
-        long x = PyInt_AsLong(*pw);
+        REALLYLONG x = PyInt_AsLong(*pw);
         *pw = PyFloat_FromDouble((double)x);
         Py_INCREF(*pv);
         return 0;
@@ -1001,7 +1001,7 @@ float_is_inf(PyObject *v)
     double x = PyFloat_AsDouble(v);
     if (x == -1.0 && PyErr_Occurred())
         return NULL;
-    return PyBool_FromLong((long)Py_IS_INFINITY(x));
+    return PyBool_FromLong((REALLYLONG)Py_IS_INFINITY(x));
 }
 
 static PyObject *
@@ -1010,7 +1010,7 @@ float_is_nan(PyObject *v)
     double x = PyFloat_AsDouble(v);
     if (x == -1.0 && PyErr_Occurred())
         return NULL;
-    return PyBool_FromLong((long)Py_IS_NAN(x));
+    return PyBool_FromLong((REALLYLONG)Py_IS_NAN(x));
 }
 
 static PyObject *
@@ -1019,7 +1019,7 @@ float_is_finite(PyObject *v)
     double x = PyFloat_AsDouble(v);
     if (x == -1.0 && PyErr_Occurred())
         return NULL;
-    return PyBool_FromLong((long)Py_IS_FINITE(x));
+    return PyBool_FromLong((REALLYLONG)Py_IS_FINITE(x));
 }
 #endif
 
@@ -1031,7 +1031,7 @@ float_trunc(PyObject *v)
 
     (void)modf(x, &wholepart);
     /* Try to get out cheap if this fits in a Python int.  The attempt
-     * to cast to long must be protected, as C doesn't define what
+     * to cast to REALLYLONG must be protected, as C doesn't define what
      * happens if the double is too big to fit in a long.  Some rare
      * systems raise an exception then (RISCOS was mentioned as one,
      * and someone using a non-default option on Sun also bumped into
@@ -1046,7 +1046,7 @@ float_trunc(PyObject *v)
      * the comparisons with (double)LONG_MIN below should be safe.
      */
     if ((double)LONG_MIN <= wholepart && wholepart < -(double)LONG_MIN) {
-        const long aslong = (long)wholepart;
+        const REALLYLONG aslong = (REALLYLONG)wholepart;
         return PyInt_FromLong(aslong);
     }
     return PyLong_FromDouble(wholepart);
@@ -1442,7 +1442,7 @@ float_fromhex(PyObject *cls, PyObject *arg)
 {
     PyObject *result_as_float, *result;
     double x;
-    long exp, top_exp, lsb, key_digit;
+    REALLYLONG exp, top_exp, lsb, key_digit;
     char *s, *coeff_start, *s_store, *coeff_end, *exp_start, *s_end;
     int half_eps, digit, round_up, sign=1;
     Py_ssize_t length, ndigits, fdigits, i;
@@ -1597,10 +1597,10 @@ float_fromhex(PyObject *cls, PyObject *arg)
         goto overflow_error;
 
     /* Adjust exponent for fractional part. */
-    exp = exp - 4*((long)fdigits);
+    exp = exp - 4*((REALLYLONG)fdigits);
 
     /* top_exp = 1 more than exponent of most sig. bit of coefficient */
-    top_exp = exp + 4*((long)ndigits - 1);
+    top_exp = exp + 4*((REALLYLONG)ndigits - 1);
     for (digit = HEX_DIGIT(ndigits-1); digit != 0; digit /= 2)
         top_exp++;
 
@@ -1614,7 +1614,7 @@ float_fromhex(PyObject *cls, PyObject *arg)
 
     /* lsb = exponent of least significant bit of the *rounded* value.
        This is top_exp - DBL_MANT_DIG unless result is subnormal. */
-    lsb = MAX(top_exp, (long)DBL_MIN_EXP) - DBL_MANT_DIG;
+    lsb = MAX(top_exp, (REALLYLONG)DBL_MIN_EXP) - DBL_MANT_DIG;
 
     x = 0.0;
     if (exp >= lsb) {
@@ -1748,7 +1748,7 @@ float_as_integer_ratio(PyObject *v, PyObject *unused)
 
     /* fold in 2**exponent */
     denominator = PyLong_FromLong(1);
-    py_exponent = PyLong_FromLong(labs((long)exponent));
+    py_exponent = PyLong_FromLong(labs((REALLYLONG)exponent));
     if (py_exponent == NULL) goto error;
     INPLACE_UPDATE(py_exponent,
                    long_methods->nb_lshift(denominator, py_exponent));
@@ -2084,7 +2084,7 @@ static PyNumberMethods float_as_number = {
     0,                  /*nb_or*/
     float_coerce,       /*nb_coerce*/
     float_trunc,        /*nb_int*/
-    float_long,         /*nb_long*/
+    float_long,         /*nb_REALLYLONG*/
     float_float,        /*nb_float*/
     0,                  /* nb_oct */
     0,                  /* nb_hex */
@@ -2286,7 +2286,7 @@ PyFloat_Fini(void)
                         */
                         fprintf(stderr,
                  "#   <float at %p, refcnt=%ld, val=%s>\n",
-                                    p, (long)Py_REFCNT(p), buf);
+                                    p, (REALLYLONG)Py_REFCNT(p), buf);
                                     PyMem_Free(buf);
                             }
                 }

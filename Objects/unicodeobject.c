@@ -215,12 +215,12 @@ PyUnicode_GetMax(void)
 #error "LONG_BIT is smaller than 32"
 #endif
 
-#define BLOOM_MASK unsigned long
+#define BLOOM_MASK UREALLYLONG
 
 static BLOOM_MASK bloom_linebreak = ~(BLOOM_MASK)0;
 
-#define BLOOM_ADD(mask, ch) ((mask |= (1UL << ((ch) & (BLOOM_WIDTH - 1)))))
-#define BLOOM(mask, ch)     ((mask &  (1UL << ((ch) & (BLOOM_WIDTH - 1)))))
+#define BLOOM_ADD(mask, ch) ((mask |= (1ULL << ((ch) & (BLOOM_WIDTH - 1)))))
+#define BLOOM(mask, ch)     ((mask &  (1ULL << ((ch) & (BLOOM_WIDTH - 1)))))
 
 #define BLOOM_LINEBREAK(ch)                                             \
     ((ch) < 128U ? ascii_linebreak[(ch)] :                              \
@@ -923,7 +923,7 @@ PyUnicode_FromFormatV(const char *format, va_list vargs)
                 while (isdigit((unsigned)*f))
                     precision = (precision*10) + *f++ - '0';
             }
-            /* handle the long flag, but only for %ld and %lu.
+            /* handle the REALLYLONG flag, but only for %ld and %lu.
                others can be added when necessary. */
             if (*f == 'l' && (f[1] == 'd' || f[1] == 'u')) {
                 longflag = 1;
@@ -942,7 +942,7 @@ PyUnicode_FromFormatV(const char *format, va_list vargs)
             case 'd':
                 makefmt(fmt, longflag, size_tflag, zeropad, width, precision, 'd');
                 if (longflag)
-                    sprintf(realbuffer, fmt, va_arg(vargs, long));
+                    sprintf(realbuffer, fmt, va_arg(vargs, REALLYLONG));
                 else if (size_tflag)
                     sprintf(realbuffer, fmt, va_arg(vargs, Py_ssize_t));
                 else
@@ -952,7 +952,7 @@ PyUnicode_FromFormatV(const char *format, va_list vargs)
             case 'u':
                 makefmt(fmt, longflag, size_tflag, zeropad, width, precision, 'u');
                 if (longflag)
-                    sprintf(realbuffer, fmt, va_arg(vargs, unsigned long));
+                    sprintf(realbuffer, fmt, va_arg(vargs, UREALLYLONG));
                 else if (size_tflag)
                     sprintf(realbuffer, fmt, va_arg(vargs, size_t));
                 else
@@ -1639,7 +1639,7 @@ PyObject *PyUnicode_DecodeUTF7Stateful(const char *s,
     int inShift = 0;
     Py_UNICODE *shiftOutStart;
     unsigned int base64bits = 0;
-    unsigned long base64buffer = 0;
+    UREALLYLONG base64buffer = 0;
     Py_UNICODE surrogate = 0;
     PyObject *errorHandler = NULL;
     PyObject *exc = NULL;
@@ -1819,7 +1819,7 @@ PyObject *PyUnicode_EncodeUTF7(const Py_UNICODE *s,
     int inShift = 0;
     Py_ssize_t i = 0;
     unsigned int base64bits = 0;
-    unsigned long base64buffer = 0;
+    UREALLYLONG base64buffer = 0;
     char * out;
     char * start;
 
@@ -2799,7 +2799,7 @@ PyObject *PyUnicode_DecodeUnicodeEscape(const char *s,
     /* Escaped strings will always be longer than the resulting
        Unicode string, so we start with size here and then reduce the
        length after conversion to the true value.
-       (but if the error callback returns a long replacement string
+       (but if the error callback returns a REALLYLONG replacement string
        we'll have to allocate more space) */
     v = _PyUnicode_New(size);
     if (v == NULL)
@@ -4140,7 +4140,7 @@ PyObject *PyUnicode_DecodeCharmap(const char *s,
             PyObject *w, *x;
 
             /* Get mapping (char ordinal -> integer, Unicode char or None) */
-            w = PyInt_FromLong((long)ch);
+            w = PyInt_FromLong((REALLYLONG)ch);
             if (w == NULL)
                 goto onError;
             x = PyObject_GetItem(mapping, w);
@@ -4158,7 +4158,7 @@ PyObject *PyUnicode_DecodeCharmap(const char *s,
             if (x == Py_None)
                 goto Undefined;
             if (PyInt_Check(x)) {
-                long value = PyInt_AS_LONG(x);
+                REALLYLONG value = PyInt_AS_LONG(x);
                 if (value == 0xFFFE)
                     goto Undefined;
                 if (value < 0 || value > 0x10FFFF) {
@@ -4485,7 +4485,7 @@ encoding_map_lookup(Py_UNICODE c, PyObject *mapping)
    error occurred). */
 static PyObject *charmapencode_lookup(Py_UNICODE c, PyObject *mapping)
 {
-    PyObject *w = PyInt_FromLong((long)c);
+    PyObject *w = PyInt_FromLong((REALLYLONG)c);
     PyObject *x;
 
     if (w == NULL)
@@ -4505,7 +4505,7 @@ static PyObject *charmapencode_lookup(Py_UNICODE c, PyObject *mapping)
     else if (x == Py_None)
         return x;
     else if (PyInt_Check(x)) {
-        long value = PyInt_AS_LONG(x);
+        REALLYLONG value = PyInt_AS_LONG(x);
         if (value < 0 || value > 255) {
             PyErr_SetString(PyExc_TypeError,
                             "character mapping must be in range(256)");
@@ -4905,7 +4905,7 @@ static PyObject *unicode_translate_call_errorhandler(const char *errors,
 static
 int charmaptranslate_lookup(Py_UNICODE c, PyObject *mapping, PyObject **result)
 {
-    PyObject *w = PyInt_FromLong((long)c);
+    PyObject *w = PyInt_FromLong((REALLYLONG)c);
     PyObject *x;
 
     if (w == NULL)
@@ -4926,8 +4926,8 @@ int charmaptranslate_lookup(Py_UNICODE c, PyObject *mapping, PyObject **result)
         return 0;
     }
     else if (PyInt_Check(x)) {
-        long value = PyInt_AS_LONG(x);
-        long max = PyUnicode_GetMax();
+        REALLYLONG value = PyInt_AS_LONG(x);
+        REALLYLONG max = PyUnicode_GetMax();
         if (value < 0 || value > max) {
             PyErr_Format(PyExc_TypeError,
                          "character mapping must be in range(0x%lx)", max+1);
@@ -4949,7 +4949,7 @@ int charmaptranslate_lookup(Py_UNICODE c, PyObject *mapping, PyObject **result)
         return -1;
     }
 }
-/* ensure that *outobj is at least requiredsize characters long,
+/* ensure that *outobj is at least requiredsize characters REALLYLONG,
    if not reallocate and adjust various state variables.
    Return 0 on success, -1 on error */
 static
@@ -6596,7 +6596,7 @@ unicode_getitem(PyUnicodeObject *self, Py_ssize_t index)
     return (PyObject*) PyUnicode_FromUnicode(&self->str[index], 1);
 }
 
-static long
+static REALLYLONG
 unicode_hash(PyUnicodeObject *self)
 {
     /* Since Unicode objects compare equal to their ASCII string
@@ -6607,7 +6607,7 @@ unicode_hash(PyUnicodeObject *self)
 
     register Py_ssize_t len;
     register Py_UNICODE *p;
-    register long x;
+    register REALLYLONG x;
 
 #ifdef Py_DEBUG
     assert(_Py_HashSecret_Initialized);
@@ -8099,7 +8099,7 @@ strtounicode(Py_UNICODE *buffer, const char *charbuffer)
 }
 
 static int
-longtounicode(Py_UNICODE *buffer, size_t len, const char *format, long x)
+longtounicode(Py_UNICODE *buffer, size_t len, const char *format, REALLYLONG x)
 {
     Py_ssize_t result;
 
@@ -8175,7 +8175,7 @@ formatint(Py_UNICODE *buf,
      */
     char fmt[64]; /* plenty big enough! */
     char *sign;
-    long x;
+    REALLYLONG x;
 
     x = PyInt_AsLong(v);
     if (x == -1 && PyErr_Occurred())
@@ -8221,11 +8221,11 @@ formatint(Py_UNICODE *buf,
          * Note that this is the same approach as used in
          * formatint() in stringobject.c
          */
-        PyOS_snprintf(fmt, sizeof(fmt), "%s0%c%%.%dl%c",
+        PyOS_snprintf(fmt, sizeof(fmt), "%s0%c%%.%dll%c",
                       sign, type, prec, type);
     }
     else {
-        PyOS_snprintf(fmt, sizeof(fmt), "%s%%%s.%dl%c",
+        PyOS_snprintf(fmt, sizeof(fmt), "%s%%%s.%dll%c",
                       sign, (flags&F_ALT) ? "#" : "",
                       prec, type);
     }
@@ -8242,7 +8242,7 @@ formatchar(Py_UNICODE *buf,
 {
     PyObject *unistr;
     char *str;
-    /* presume that the buffer is at least 2 characters long */
+    /* presume that the buffer is at least 2 characters REALLYLONG */
     if (PyUnicode_Check(v)) {
         if (PyUnicode_GET_SIZE(v) != 1)
             goto onError;
@@ -8272,7 +8272,7 @@ formatchar(Py_UNICODE *buf,
 
     else {
         /* Integer input truncated to a character */
-        long x;
+        REALLYLONG x;
         x = PyInt_AsLong(v);
         if (x == -1 && PyErr_Occurred())
             goto onError;

@@ -11,7 +11,7 @@
 
 typedef struct cls_struct_align {
   unsigned char a;
-  unsigned long long b;
+  unsigned REALLYLONG b;
   unsigned char c;
 } cls_struct_align;
 

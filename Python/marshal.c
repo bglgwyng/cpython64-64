@@ -109,7 +109,7 @@ w_short(int x, WFILE *p)
 }
 
 static void
-w_long(long x, WFILE *p)
+w_long(REALLYLONG x, WFILE *p)
 {
     w_byte((char)( x      & 0xff), p);
     w_byte((char)((x>> 8) & 0xff), p);
@@ -119,7 +119,7 @@ w_long(long x, WFILE *p)
 
 #if SIZEOF_LONG > 4
 static void
-w_long64(long x, WFILE *p)
+w_long64(REALLYLONG x, WFILE *p)
 {
     w_long(x, p);
     w_long(x>>32, p);
@@ -135,7 +135,7 @@ w_long64(long x, WFILE *p)
             (p)->error = WFERR_UNMARSHALLABLE;  \
             return;                             \
         }                                       \
-        w_long((long)(n), p);                   \
+        w_long((REALLYLONG)(n), p);                   \
     } while(0)
 #else
 # define W_SIZE  w_long
@@ -168,7 +168,7 @@ w_PyLong(const PyLongObject *ob, WFILE *p)
 
     w_byte(TYPE_LONG, p);
     if (Py_SIZE(ob) == 0) {
-        w_long((long)0, p);
+        w_long((REALLYLONG)0, p);
         return;
     }
 
@@ -186,7 +186,7 @@ w_PyLong(const PyLongObject *ob, WFILE *p)
         p->error = WFERR_UNMARSHALLABLE;
         return;
     }
-    w_long((long)(Py_SIZE(ob) > 0 ? l : -l), p);
+    w_long((REALLYLONG)(Py_SIZE(ob) > 0 ? l : -l), p);
 
     for (i=0; i < n-1; i++) {
         d = ob->ob_digit[i];
@@ -232,9 +232,9 @@ w_object(PyObject *v, WFILE *p)
         w_byte(TYPE_TRUE, p);
     }
     else if (PyInt_CheckExact(v)) {
-        long x = PyInt_AS_LONG((PyIntObject *)v);
+        REALLYLONG x = PyInt_AS_LONG((PyIntObject *)v);
 #if SIZEOF_LONG > 4
-        long y = Py_ARITHMETIC_RIGHT_SHIFT(long, x, 31);
+        REALLYLONG y = Py_ARITHMETIC_RIGHT_SHIFT(REALLYLONG, x, 31);
         if (y && y != -1) {
             w_byte(TYPE_INT64, p);
             w_long64(x, p);
@@ -323,7 +323,7 @@ w_object(PyObject *v, WFILE *p)
         if (p->strings && PyString_CHECK_INTERNED(v)) {
             PyObject *o = PyDict_GetItem(p->strings, v);
             if (o) {
-                long w = PyInt_AsLong(o);
+                REALLYLONG w = PyInt_AsLong(o);
                 w_byte(TYPE_STRINGREF, p);
                 w_long(w, p);
                 goto exit;
@@ -456,7 +456,7 @@ w_object(PyObject *v, WFILE *p)
 
 /* version currently has no effect for writing longs. */
 void
-PyMarshal_WriteLongToFile(long x, FILE *fp, int version)
+PyMarshal_WriteLongToFile(REALLYLONG x, FILE *fp, int version)
 {
     WFILE wf;
     wf.fp = fp;
@@ -510,32 +510,32 @@ r_short(RFILE *p)
     return x;
 }
 
-static long
+static REALLYLONG
 r_long(RFILE *p)
 {
-    register long x;
+    register REALLYLONG x;
     register FILE *fp = p->fp;
     if (fp) {
         x = getc(fp);
-        x |= (long)getc(fp) << 8;
-        x |= (long)getc(fp) << 16;
-        x |= (long)getc(fp) << 24;
+        x |= (REALLYLONG)getc(fp) << 8;
+        x |= (REALLYLONG)getc(fp) << 16;
+        x |= (REALLYLONG)getc(fp) << 24;
     }
     else {
         x = rs_byte(p);
-        x |= (long)rs_byte(p) << 8;
-        x |= (long)rs_byte(p) << 16;
-        x |= (long)rs_byte(p) << 24;
+        x |= (REALLYLONG)rs_byte(p) << 8;
+        x |= (REALLYLONG)rs_byte(p) << 16;
+        x |= (REALLYLONG)rs_byte(p) << 24;
     }
 #if SIZEOF_LONG > 4
     /* Sign extension for 64-bit machines */
-    x |= -(x & 0x80000000L);
+    x |= -(x & 0x80000000LL);
 #endif
     return x;
 }
 
 /* r_long64 deals with the TYPE_INT64 code.  On a machine with
-   sizeof(long) > 4, it returns a Python int object, else a Python long
+   sizeof(REALLYLONG) > 4, it returns a Python int object, else a Python long
    object.  Note that w_long64 writes out TYPE_INT if 32 bits is enough,
    so there's no inefficiency here in returning a PyLong on 32-bit boxes
    for everything written via TYPE_INT64 (i.e., if an int is written via
@@ -544,10 +544,10 @@ r_long(RFILE *p)
 static PyObject *
 r_long64(RFILE *p)
 {
-    long lo4 = r_long(p);
-    long hi4 = r_long(p);
+    REALLYLONG lo4 = r_long(p);
+    REALLYLONG hi4 = r_long(p);
 #if SIZEOF_LONG > 4
-    long x = (hi4 << 32) | (lo4 & 0xFFFFFFFFL);
+    REALLYLONG x = (hi4 << 32) | (lo4 & 0xFFFFFFFFLL);
     return PyInt_FromLong(x);
 #else
     unsigned char buf[8];
@@ -569,7 +569,7 @@ static PyObject *
 r_PyLong(RFILE *p)
 {
     PyLongObject *ob;
-    long n, size, i;
+    REALLYLONG n, size, i;
     int j, md, shorts_in_top_digit;
     digit d;
 
@@ -578,7 +578,7 @@ r_PyLong(RFILE *p)
         return (PyObject *)_PyLong_New(0);
     if (n < -SIZE32_MAX || n > SIZE32_MAX) {
         PyErr_SetString(PyExc_ValueError,
-                       "bad marshal data (long size out of range)");
+                       "bad marshal data (REALLYLONG size out of range)");
         return NULL;
     }
 
@@ -608,7 +608,7 @@ r_PyLong(RFILE *p)
         if (md == 0 && j == shorts_in_top_digit - 1) {
             Py_DECREF(ob);
             PyErr_SetString(PyExc_ValueError,
-                "bad marshal data (unnormalized long data)");
+                "bad marshal data (unnormalized REALLYLONG data)");
             return NULL;
         }
         d += (digit)md << j*PyLong_MARSHAL_SHIFT;
@@ -620,7 +620,7 @@ r_PyLong(RFILE *p)
   bad_digit:
     Py_DECREF(ob);
     PyErr_SetString(PyExc_ValueError,
-                    "bad marshal data (digit out of range in long)");
+                    "bad marshal data (digit out of range in REALLYLONG)");
     return NULL;
 }
 
@@ -631,7 +631,8 @@ r_object(RFILE *p)
     /* NULL is a valid return value, it does not necessarily means that
        an exception is set. */
     PyObject *v, *v2;
-    long i, n;
+    NATIVELONG i;
+	REALLYLONG n;
     int type = r_byte(p);
     PyObject *retval;
 
@@ -1100,7 +1101,7 @@ PyMarshal_ReadShortFromFile(FILE *fp)
     return r_short(&rf);
 }
 
-long
+REALLYLONG
 PyMarshal_ReadLongFromFile(FILE *fp)
 {
     RFILE rf;
@@ -1379,7 +1380,7 @@ machine architecture issues.\n\
 Not all Python object types are supported; in general, only objects\n\
 whose value is independent from a particular invocation of Python can be\n\
 written and read by this module. The following types are supported:\n\
-None, integers, long integers, floating point numbers, strings, Unicode\n\
+None, integers, REALLYLONG integers, floating point numbers, strings, Unicode\n\
 objects, tuples, lists, sets, dictionaries, and code objects, where it\n\
 should be understood that tuples, lists and dictionaries are only\n\
 supported as long as the values contained therein are themselves\n\

@@ -104,12 +104,12 @@ typedef char XML_LChar;
 typedef __int64 XML_Index; 
 typedef unsigned __int64 XML_Size;
 #else
-typedef long long XML_Index;
-typedef unsigned long long XML_Size;
+typedef long long XML_Index;  /* REALLYLONG */
+typedef unsigned long long XML_Size;  /* UREALLYLONG */
 #endif
 #else
-typedef long XML_Index;
-typedef unsigned long XML_Size;
+typedef long long XML_Index;  /* REALLYLONG */
+typedef unsigned long long XML_Size;  /* UREALLYLONG */
 #endif /* XML_LARGE_SIZE */
 
 #ifdef __cplusplus

@@ -2420,7 +2420,7 @@ type_new(PyTypeObject *metatype, PyObject *args, PyObject *kwds)
     }
     if (add_dict) {
         if (base->tp_itemsize)
-            type->tp_dictoffset = -(long)sizeof(PyObject *);
+            type->tp_dictoffset = -(REALLYLONG)sizeof(PyObject *);
         else
             type->tp_dictoffset = slotoffset;
         slotoffset += sizeof(PyObject *);
@@ -4221,7 +4221,7 @@ wrap_lenfunc(PyObject *self, PyObject *args, void *wrapped)
     res = (*func)(self);
     if (res == -1 && PyErr_Occurred())
         return NULL;
-    return PyInt_FromLong((long)res);
+    return PyInt_FromLong((REALLYLONG)res);
 }
 
 static PyObject *
@@ -4235,7 +4235,7 @@ wrap_inquirypred(PyObject *self, PyObject *args, void *wrapped)
     res = (*func)(self);
     if (res == -1 && PyErr_Occurred())
         return NULL;
-    return PyBool_FromLong((long)res);
+    return PyBool_FromLong((REALLYLONG)res);
 }
 
 static PyObject *
@@ -4563,7 +4563,7 @@ wrap_cmpfunc(PyObject *self, PyObject *args, void *wrapped)
     res = (*func)(self, other);
     if (PyErr_Occurred())
         return NULL;
-    return PyInt_FromLong((long)res);
+    return PyInt_FromLong((REALLYLONG)res);
 }
 
 /* Helper to check for object.__setattr__ or __delattr__ applied to a type.
@@ -4627,7 +4627,7 @@ static PyObject *
 wrap_hashfunc(PyObject *self, PyObject *args, void *wrapped)
 {
     hashfunc func = (hashfunc)wrapped;
-    long res;
+    REALLYLONG res;
 
     if (!check_num_args(args, 0))
         return NULL;
@@ -5379,12 +5379,12 @@ slot_tp_str(PyObject *self)
     }
 }
 
-static long
+static REALLYLONG
 slot_tp_hash(PyObject *self)
 {
     PyObject *func;
     static PyObject *hash_str, *eq_str, *cmp_str;
-    long h;
+    REALLYLONG h;
 
     func = lookup_method(self, "__hash__", &hash_str);
 
@@ -6059,7 +6059,7 @@ static void **
 slotptr(PyTypeObject *type, int ioffset)
 {
     char *ptr;
-    long offset = ioffset;
+    REALLYLONG offset = ioffset;
 
     /* Note: this depends on the order of the members of PyHeapTypeObject! */
     assert(offset >= 0);

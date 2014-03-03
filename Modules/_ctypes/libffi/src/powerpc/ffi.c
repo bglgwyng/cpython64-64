@@ -103,7 +103,7 @@ ffi_prep_args_SYSV (extended_cif *ecif, unsigned *const stack)
   typedef union {
     char *c;
     unsigned *u;
-    long long *ll;
+    REALLYLONG *ll;
     float *f;
     double *d;
   } valp;
@@ -140,7 +140,7 @@ ffi_prep_args_SYSV (extended_cif *ecif, unsigned *const stack)
     signed short **ss;
     unsigned short **us;
     unsigned int **ui;
-    long long **ll;
+    REALLYLONG **ll;
     float **f;
     double **d;
   } p_argv;
@@ -161,16 +161,16 @@ ffi_prep_args_SYSV (extended_cif *ecif, unsigned *const stack)
   next_arg.u = stack + 2;
 
   /* Check that everything starts aligned properly.  */
-  FFI_ASSERT (((unsigned long) (char *) stack & 0xF) == 0);
-  FFI_ASSERT (((unsigned long) copy_space.c & 0xF) == 0);
-  FFI_ASSERT (((unsigned long) stacktop.c & 0xF) == 0);
+  FFI_ASSERT (((unsigned REALLYLONG) (char *) stack & 0xF) == 0);
+  FFI_ASSERT (((unsigned REALLYLONG) copy_space.c & 0xF) == 0);
+  FFI_ASSERT (((unsigned REALLYLONG) stacktop.c & 0xF) == 0);
   FFI_ASSERT ((bytes & 0xF) == 0);
   FFI_ASSERT (copy_space.c >= next_arg.c);
 
   /* Deal with return values that are actually pass-by-reference.  */
   if (flags & FLAG_RETVAL_REFERENCE)
     {
-      *gpr_base.u++ = (unsigned long) (char *) ecif->rvalue;
+      *gpr_base.u++ = (unsigned REALLYLONG) (char *) ecif->rvalue;
       intarg_count++;
     }
 
@@ -312,9 +312,9 @@ ffi_prep_args_SYSV (extended_cif *ecif, unsigned *const stack)
 	  else
 	    {
 	      /* whoops: abi states only certain register pairs
-	       * can be used for passing long long int
+	       * can be used for passing REALLYLONG int
 	       * specifically (r3,r4), (r5,r6), (r7,r8),
-	       * (r9,r10) and if next arg is long long but
+	       * (r9,r10) and if next arg is REALLYLONG but
 	       * not correct starting register of pair then skip
 	       * until the proper starting register
 	       */
@@ -333,7 +333,7 @@ ffi_prep_args_SYSV (extended_cif *ecif, unsigned *const stack)
 	  copy_space.c -= struct_copy_size;
 	  memcpy (copy_space.c, *p_argv.c, (*ptr)->size);
 
-	  gprvalue = (unsigned long) copy_space.c;
+	  gprvalue = (unsigned REALLYLONG) copy_space.c;
 
 	  FFI_ASSERT (copy_space.c > next_arg.c);
 	  FFI_ASSERT (flags & FLAG_ARG_NEEDS_COPY);
@@ -427,14 +427,14 @@ enum { ASM_NEEDS_REGISTERS64 = 4 };
 */
 
 void FFI_HIDDEN
-ffi_prep_args64 (extended_cif *ecif, unsigned long *const stack)
+ffi_prep_args64 (extended_cif *ecif, unsigned REALLYLONG *const stack)
 {
-  const unsigned long bytes = ecif->cif->bytes;
-  const unsigned long flags = ecif->cif->flags;
+  const unsigned REALLYLONG bytes = ecif->cif->bytes;
+  const unsigned REALLYLONG flags = ecif->cif->flags;
 
   typedef union {
     char *c;
-    unsigned long *ul;
+    unsigned REALLYLONG *ul;
     float *f;
     double *d;
   } valp;
@@ -466,11 +466,11 @@ ffi_prep_args64 (extended_cif *ecif, unsigned long *const stack)
     unsigned short **us;
     signed int **si;
     unsigned int **ui;
-    unsigned long **ul;
+    unsigned REALLYLONG **ul;
     float **f;
     double **d;
   } p_argv;
-  unsigned long gprvalue;
+  unsigned REALLYLONG gprvalue;
 
   stacktop.c = (char *) stack + bytes;
   gpr_base.ul = stacktop.ul - ASM_NEEDS_REGISTERS64 - NUM_GPR_ARG_REGISTERS64;
@@ -481,13 +481,13 @@ ffi_prep_args64 (extended_cif *ecif, unsigned long *const stack)
   next_arg.ul = gpr_base.ul;
 
   /* Check that everything starts aligned properly.  */
-  FFI_ASSERT (((unsigned long) (char *) stack & 0xF) == 0);
-  FFI_ASSERT (((unsigned long) stacktop.c & 0xF) == 0);
+  FFI_ASSERT (((unsigned REALLYLONG) (char *) stack & 0xF) == 0);
+  FFI_ASSERT (((unsigned REALLYLONG) stacktop.c & 0xF) == 0);
   FFI_ASSERT ((bytes & 0xF) == 0);
 
   /* Deal with return values that are actually pass-by-reference.  */
   if (flags & FLAG_RETVAL_REFERENCE)
-    *next_arg.ul++ = (unsigned long) (char *) ecif->rvalue;
+    *next_arg.ul++ = (unsigned REALLYLONG) (char *) ecif->rvalue;
 
   /* Now for the arguments.  */
   p_argv.v = ecif->avalue;
@@ -635,10 +635,10 @@ ffi_prep_cif_machdep (ffi_cif *cif)
 
       /* Space for backchain, CR, LR, cc/ld doubleword, TOC and the asm's temp
 	 regs.  */
-      bytes = (6 + ASM_NEEDS_REGISTERS64) * sizeof (long);
+      bytes = (6 + ASM_NEEDS_REGISTERS64) * sizeof (REALLYLONG);
 
       /* Space for the mandatory parm save area and general registers.  */
-      bytes += 2 * NUM_GPR_ARG_REGISTERS64 * sizeof (long);
+      bytes += 2 * NUM_GPR_ARG_REGISTERS64 * sizeof (REALLYLONG);
     }
 
   /* Return value handling.  The rules for SYSV are as follows:
@@ -799,13 +799,13 @@ ffi_prep_cif_machdep (ffi_cif *cif)
 
 	  case FFI_TYPE_UINT64:
 	  case FFI_TYPE_SINT64:
-	    /* 'long long' arguments are passed as two words, but
+	    /* 'REALLYLONG' arguments are passed as two words, but
 	       either both words must fit in registers or both go
 	       on the stack.  If they go on the stack, they must
 	       be 8-byte-aligned.
 
 	       Also, only certain register pairs can be used for
-	       passing long long int -- specifically (r3,r4), (r5,r6),
+	       passing REALLYLONG int -- specifically (r3,r4), (r5,r6),
 	       (r7,r8), (r9,r10).
 	    */
 	    if (intarg_count == NUM_GPR_ARG_REGISTERS-1
@@ -918,7 +918,7 @@ ffi_prep_cif_machdep (ffi_cif *cif)
 
       /* Stack space.  */
       if (intarg_count > NUM_GPR_ARG_REGISTERS64)
-	bytes += (intarg_count - NUM_GPR_ARG_REGISTERS64) * sizeof (long);
+	bytes += (intarg_count - NUM_GPR_ARG_REGISTERS64) * sizeof (REALLYLONG);
     }
 
   /* The stack space allocated needs to be a multiple of 16 bytes.  */
@@ -935,8 +935,8 @@ ffi_prep_cif_machdep (ffi_cif *cif)
 
 extern void ffi_call_SYSV(extended_cif *, unsigned, unsigned, unsigned *,
 			  void (*fn)(void));
-extern void FFI_HIDDEN ffi_call_LINUX64(extended_cif *, unsigned long,
-					unsigned long, unsigned long *,
+extern void FFI_HIDDEN ffi_call_LINUX64(extended_cif *, unsigned REALLYLONG,
+					unsigned REALLYLONG, unsigned REALLYLONG *,
 					void (*fn)(void));
 
 void
@@ -982,7 +982,7 @@ ffi_call(ffi_cif *cif, void (*fn)(void), void *rvalue, void **avalue)
       break;
 #else
     case FFI_LINUX64:
-      ffi_call_LINUX64 (&ecif, -(long) cif->bytes, cif->flags, ecif.rvalue, fn);
+      ffi_call_LINUX64 (&ecif, -(REALLYLONG) cif->bytes, cif->flags, ecif.rvalue, fn);
       break;
 #endif
     default:
@@ -1065,8 +1065,8 @@ typedef union
   double d;
 } ffi_dblfl;
 
-int ffi_closure_helper_SYSV (ffi_closure *, void *, unsigned long *,
-			     ffi_dblfl *, unsigned long *);
+int ffi_closure_helper_SYSV (ffi_closure *, void *, unsigned REALLYLONG *,
+			     ffi_dblfl *, unsigned REALLYLONG *);
 
 /* Basically the trampoline invokes ffi_closure_SYSV, and on
  * entry, r11 holds the address of the closure.
@@ -1078,8 +1078,8 @@ int ffi_closure_helper_SYSV (ffi_closure *, void *, unsigned long *,
 
 int
 ffi_closure_helper_SYSV (ffi_closure *closure, void *rvalue,
-			 unsigned long *pgr, ffi_dblfl *pfr,
-			 unsigned long *pst)
+			 unsigned REALLYLONG *pgr, ffi_dblfl *pfr,
+			 unsigned REALLYLONG *pst)
 {
   /* rvalue is the pointer to space for return value in closure assembly */
   /* pgr is the pointer to where r3-r10 are stored in ffi_closure_SYSV */
@@ -1088,11 +1088,11 @@ ffi_closure_helper_SYSV (ffi_closure *closure, void *rvalue,
 
   void **          avalue;
   ffi_type **      arg_types;
-  long             i, avn;
+  REALLYLONG             i, avn;
 #ifndef __NO_FPRS__
-  long             nf = 0;   /* number of floating registers already used */
+  REALLYLONG             nf = 0;   /* number of floating registers already used */
 #endif
-  long             ng = 0;   /* number of general registers already used */
+  REALLYLONG             ng = 0;   /* number of general registers already used */
 
   ffi_cif *cif = closure->cif;
   unsigned       size     = cif->rtype->size;
@@ -1191,7 +1191,7 @@ ffi_closure_helper_SYSV (ffi_closure *closure, void *rvalue,
 	    }
 	  else
 	    {
-	      if (((long) pst) & 4)
+	      if (((REALLYLONG) pst) & 4)
 		pst++;
 	      avalue[i] = pst;
 	      pst += 2;
@@ -1208,7 +1208,7 @@ ffi_closure_helper_SYSV (ffi_closure *closure, void *rvalue,
 	    }
 	  else
 	    {
-	      if (((long) pst) & 4)
+	      if (((REALLYLONG) pst) & 4)
 		pst++;
 	      avalue[i] = pst;
 	      pst += 4;
@@ -1301,7 +1301,7 @@ ffi_closure_helper_SYSV (ffi_closure *closure, void *rvalue,
 
 	case FFI_TYPE_SINT64:
 	case FFI_TYPE_UINT64:
-	  /* passing long long ints are complex, they must
+	  /* passing REALLYLONG ints are complex, they must
 	   * be passed in suitable register pairs such as
 	   * (r3,r4) or (r5,r6) or (r6,r7), or (r7,r8) or (r9,r10)
 	   * and if the entire pair aren't available then the outgoing
@@ -1324,7 +1324,7 @@ ffi_closure_helper_SYSV (ffi_closure *closure, void *rvalue,
 	    }
 	  else
 	    {
-	      if (((long) pst) & 4)
+	      if (((REALLYLONG) pst) & 4)
 		pst++;
 	      avalue[i] = pst;
 	      pst += 2;
@@ -1356,11 +1356,11 @@ ffi_closure_helper_SYSV (ffi_closure *closure, void *rvalue,
 }
 
 int FFI_HIDDEN ffi_closure_helper_LINUX64 (ffi_closure *, void *,
-					   unsigned long *, ffi_dblfl *);
+					   unsigned REALLYLONG *, ffi_dblfl *);
 
 int FFI_HIDDEN
 ffi_closure_helper_LINUX64 (ffi_closure *closure, void *rvalue,
-			    unsigned long *pst, ffi_dblfl *pfr)
+			    unsigned REALLYLONG *pst, ffi_dblfl *pfr)
 {
   /* rvalue is the pointer to space for return value in closure assembly */
   /* pst is the pointer to parameter save area
@@ -1369,7 +1369,7 @@ ffi_closure_helper_LINUX64 (ffi_closure *closure, void *rvalue,
 
   void **avalue;
   ffi_type **arg_types;
-  long i, avn;
+  REALLYLONG i, avn;
   ffi_cif *cif;
   ffi_dblfl *end_pfr = pfr + NUM_FPR_ARG_REGISTERS64;
 
@@ -1475,7 +1475,7 @@ ffi_closure_helper_LINUX64 (ffi_closure *closure, void *rvalue,
 		{
 		  /* Passed partly in f13 and partly on the stack.
 		     Move it all to the stack.  */
-		  *pst = *(unsigned long *) pfr;
+		  *pst = *(unsigned REALLYLONG *) pfr;
 		  pfr++;
 		}
 	      avalue[i] = pst;

@@ -25,7 +25,7 @@ PyByteArray_Init(void)
 static int
 _getbytevalue(PyObject* arg, int *value)
 {
-    long face_value;
+    REALLYLONG face_value;
 
     if (PyBytes_CheckExact(arg)) {
         if (Py_SIZE(arg) != 1) {
@@ -50,7 +50,7 @@ _getbytevalue(PyObject* arg, int *value)
     }
 
     if (face_value < 0 || face_value >= 256) {
-        /* this includes the OverflowError in case the long is too large */
+        /* this includes the OverflowError in case the REALLYLONG is too large */
         PyErr_SetString(PyExc_ValueError, "byte must be in range(0, 256)");
         return 0;
     }
@@ -2611,7 +2611,7 @@ bytearray_join(PyByteArrayObject *self, PyObject *it)
                          "can only join an iterable of bytes "
                          "(item %ld has type '%.100s')",
                          /* XXX %ld isn't right on Win64 */
-                         (long)i, Py_TYPE(obj)->tp_name);
+                         (REALLYLONG)i, Py_TYPE(obj)->tp_name);
             goto error;
         }
         if (i > 0)

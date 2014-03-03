@@ -291,11 +291,11 @@ internal_print(PyObject *op, FILE *fp, int flags, int nesting)
     }
     else {
         if (op->ob_refcnt <= 0)
-            /* XXX(twouters) cast refcount to long until %zd is
+            /* XXX(twouters) cast refcount to REALLYLONG until %zd is
                universally available */
             Py_BEGIN_ALLOW_THREADS
             fprintf(fp, "<refcnt %ld at %p>",
-                (long)op->ob_refcnt, op);
+                (REALLYLONG)op->ob_refcnt, op);
             Py_END_ALLOW_THREADS
         else if (Py_TYPE(op)->tp_print == NULL) {
             PyObject *s;
@@ -348,14 +348,14 @@ void _PyObject_Dump(PyObject* op)
 #ifdef WITH_THREAD
         PyGILState_Release(gil);
 #endif
-        /* XXX(twouters) cast refcount to long until %zd is
+        /* XXX(twouters) cast refcount to REALLYLONG until %zd is
            universally available */
         fprintf(stderr, "\n"
             "type    : %s\n"
             "refcount: %ld\n"
             "address : %p\n",
             Py_TYPE(op)==NULL ? "NULL" : Py_TYPE(op)->tp_name,
-            (long)op->ob_refcnt,
+            (REALLYLONG)op->ob_refcnt,
             op);
     }
 }
@@ -1018,13 +1018,13 @@ PyObject_RichCompareBool(PyObject *v, PyObject *w, int op)
    All the utility functions (_Py_Hash*()) return "-1" to signify an error.
 */
 
-long
+REALLYLONG
 _Py_HashDouble(double v)
 {
     double intpart, fractpart;
     int expo;
-    long hipart;
-    long x;             /* the final hash value */
+    REALLYLONG hipart;
+    REALLYLONG x;             /* the final hash value */
     /* This is designed so that Python numbers of different types
      * that compare equal hash to the same value; otherwise comparisons
      * of mapping keys will turn out weird.
@@ -1040,8 +1040,8 @@ _Py_HashDouble(double v)
     if (fractpart == 0.0) {
         /* This must return the same hash as an equal int or long. */
         if (intpart > LONG_MAX/2 || -intpart > LONG_MAX/2) {
-            /* Convert to long and use its hash. */
-            PyObject *plong;                    /* converted to Python long */
+            /* Convert to REALLYLONG and use its hash. */
+            PyObject *plong;                    /* converted to Python REALLYLONG */
             plong = PyLong_FromDouble(v);
             if (plong == NULL)
                 return -1;
@@ -1049,8 +1049,8 @@ _Py_HashDouble(double v)
             Py_DECREF(plong);
             return x;
         }
-        /* Fits in a C long == a Python int, so is its own hash. */
-        x = (long)intpart;
+        /* Fits in a C REALLYLONG == a Python int, so is its own hash. */
+        x = (REALLYLONG)intpart;
         if (x == -1)
             x = -2;
         return x;
@@ -1061,37 +1061,37 @@ _Py_HashDouble(double v)
      * Since the VAX D double format has 56 mantissa bits, which is the
      * most of any double format in use, each of these parts may have as
      * many as (but no more than) 56 significant bits.
-     * So, assuming sizeof(long) >= 4, each part can be broken into two
+     * So, assuming sizeof(REALLYLONG) >= 4, each part can be broken into two
      * longs; frexp and multiplication are used to do that.
      * Also, since the Cray double format has 15 exponent bits, which is
      * the most of any double format in use, shifting the exponent field
-     * left by 15 won't overflow a long (again assuming sizeof(long) >= 4).
+     * left by 15 won't overflow a REALLYLONG (again assuming sizeof(REALLYLONG) >= 4).
      */
     v = frexp(v, &expo);
     v *= 2147483648.0;          /* 2**31 */
-    hipart = (long)v;           /* take the top 32 bits */
+    hipart = (REALLYLONG)v;           /* take the top 32 bits */
     v = (v - (double)hipart) * 2147483648.0; /* get the next 32 bits */
-    x = hipart + (long)v + (expo << 15);
+    x = hipart + (REALLYLONG)v + (expo << 15);
     if (x == -1)
         x = -2;
     return x;
 }
 
-long
+REALLYLONG
 _Py_HashPointer(void *p)
 {
-    long x;
+    REALLYLONG x;
     size_t y = (size_t)p;
     /* bottom 3 or 4 bits are likely to be 0; rotate y by 4 to avoid
        excessive hash collisions for dicts and sets */
     y = (y >> 4) | (y << (8 * SIZEOF_VOID_P - 4));
-    x = (long)y;
+    x = (REALLYLONG)y;
     if (x == -1)
         x = -2;
     return x;
 }
 
-long
+REALLYLONG
 PyObject_HashNotImplemented(PyObject *self)
 {
     PyErr_Format(PyExc_TypeError, "unhashable type: '%.200s'",
@@ -1101,7 +1101,7 @@ PyObject_HashNotImplemented(PyObject *self)
 
 _Py_HashSecret_t _Py_HashSecret;
 
-long
+REALLYLONG
 PyObject_Hash(PyObject *v)
 {
     PyTypeObject *tp = v->ob_type;
@@ -1293,7 +1293,7 @@ _PyObject_GetDictPtr(PyObject *obj)
             tsize = -tsize;
         size = _PyObject_VAR_SIZE(tp, tsize);
 
-        dictoffset += (long)size;
+        dictoffset += (REALLYLONG)size;
         assert(dictoffset > 0);
         assert(dictoffset % SIZEOF_VOID_P == 0);
     }
@@ -1415,7 +1415,7 @@ _PyObject_GenericGetAttrWithDict(PyObject *obj, PyObject *name, PyObject *dict)
                     tsize = -tsize;
                 size = _PyObject_VAR_SIZE(tp, tsize);
 
-                dictoffset += (long)size;
+                dictoffset += (REALLYLONG)size;
                 assert(dictoffset > 0);
                 assert(dictoffset % SIZEOF_VOID_P == 0);
             }
@@ -2139,7 +2139,7 @@ _Py_ReadyTypes(void)
         Py_FatalError("Can't initialize buffer type");
 
     if (PyType_Ready(&PyLong_Type) < 0)
-        Py_FatalError("Can't initialize long type");
+        Py_FatalError("Can't initialize REALLYLONG type");
 
     if (PyType_Ready(&PyInt_Type) < 0)
         Py_FatalError("Can't initialize int type");

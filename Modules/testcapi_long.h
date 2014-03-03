@@ -1,6 +1,6 @@
 /* Poor-man's template.  Macros used:
    TESTNAME     name of the test (like test_long_api_inner)
-   TYPENAME     the signed type (like long)
+   TYPENAME     the signed type (like REALLYLONG)
    F_S_TO_PY    convert signed to pylong; TYPENAME -> PyObject*
    F_PY_TO_S    convert pylong to signed; PyObject* -> TYPENAME
    F_U_TO_PY    convert unsigned to pylong; unsigned TYPENAME -> PyObject*
@@ -105,7 +105,7 @@ TESTNAME(PyObject *error(const char*))
         UNBIND(x);
 
         /* Unsigned complains about 2**NBITS? */
-        y = PyLong_FromLong((long)NBITS);
+        y = PyLong_FromLong((REALLYLONG)NBITS);
         if (y == NULL)
             return error(
                 "unexpected NULL from PyLong_FromLong");

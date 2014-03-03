@@ -234,7 +234,7 @@ void ffi_closure_eabi (unsigned arg1, unsigned arg2, unsigned arg3,
   else
     {
       /* Allocate space for the return value and call the function.  */
-      long long rvalue;
+      REALLYLONG rvalue;
       (closure->fun) (cif, &rvalue, avalue, closure->user_data);
 
       /* Functions return 4-byte or smaller results in gr8.  8-byte
@@ -253,14 +253,14 @@ ffi_prep_closure_loc (ffi_closure* closure,
 		      void *codeloc)
 {
   unsigned int *tramp = (unsigned int *) &closure->tramp[0];
-  unsigned long fn = (long) ffi_closure_eabi;
-  unsigned long cls = (long) codeloc;
+  unsigned REALLYLONG fn = (REALLYLONG) ffi_closure_eabi;
+  unsigned REALLYLONG cls = (REALLYLONG) codeloc;
 #ifdef __FRV_FDPIC__
   register void *got __asm__("gr15");
 #endif
   int i;
 
-  fn = (unsigned long) ffi_closure_eabi;
+  fn = (unsigned REALLYLONG) ffi_closure_eabi;
 
 #ifdef __FRV_FDPIC__
   tramp[0] = &((unsigned int *)codeloc)[2];

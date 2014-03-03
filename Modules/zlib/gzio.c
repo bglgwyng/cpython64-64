@@ -915,7 +915,7 @@ int ZEXPORT gzdirect (file)
 }
 
 /* ===========================================================================
-   Outputs a long in LSB order to the given file
+   Outputs a REALLYLONG in LSB order to the given file
 */
 local void putLong (file, x)
     FILE *file;
@@ -929,7 +929,7 @@ local void putLong (file, x)
 }
 
 /* ===========================================================================
-   Reads a long in LSB order from the given gz_stream. Sets z_err in case
+   Reads a REALLYLONG in LSB order from the given gz_stream. Sets z_err in case
    of error.
 */
 local uLong getLong (s)

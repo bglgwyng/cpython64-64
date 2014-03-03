@@ -33,7 +33,7 @@ int main (void)
   void *values[13];
   float fa[13];
   float f, ff;
-  unsigned long ul;
+  unsigned REALLYLONG ul;
 
   for (ul = 0; ul < 13; ul++)
     {

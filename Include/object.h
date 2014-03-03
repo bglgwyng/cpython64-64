@@ -311,7 +311,7 @@ typedef int (*setattrfunc)(PyObject *, char *, PyObject *);
 typedef int (*setattrofunc)(PyObject *, PyObject *, PyObject *);
 typedef int (*cmpfunc)(PyObject *, PyObject *);
 typedef PyObject *(*reprfunc)(PyObject *);
-typedef long (*hashfunc)(PyObject *);
+typedef REALLYLONG (*hashfunc)(PyObject *);
 typedef PyObject *(*richcmpfunc) (PyObject *, PyObject *, int);
 typedef PyObject *(*getiterfunc) (PyObject *);
 typedef PyObject *(*iternextfunc) (PyObject *);
@@ -353,7 +353,7 @@ typedef struct _typeobject {
     PyBufferProcs *tp_as_buffer;
 
     /* Flags to define presence of optional/expanded features */
-    long tp_flags;
+    REALLYLONG tp_flags;
 
     const char *tp_doc; /* Documentation string */
 
@@ -480,8 +480,8 @@ PyAPI_FUNC(PyObject *) _PyObject_NextNotImplemented(PyObject *);
 PyAPI_FUNC(PyObject *) PyObject_GenericGetAttr(PyObject *, PyObject *);
 PyAPI_FUNC(int) PyObject_GenericSetAttr(PyObject *,
                                               PyObject *, PyObject *);
-PyAPI_FUNC(long) PyObject_Hash(PyObject *);
-PyAPI_FUNC(long) PyObject_HashNotImplemented(PyObject *);
+PyAPI_FUNC(REALLYLONG) PyObject_Hash(PyObject *);
+PyAPI_FUNC(REALLYLONG) PyObject_HashNotImplemented(PyObject *);
 PyAPI_FUNC(int) PyObject_IsTrue(PyObject *);
 PyAPI_FUNC(int) PyObject_Not(PyObject *);
 PyAPI_FUNC(int) PyCallable_Check(PyObject *);
@@ -514,12 +514,12 @@ PyAPI_FUNC(int) Py_ReprEnter(PyObject *);
 PyAPI_FUNC(void) Py_ReprLeave(PyObject *);
 
 /* Helpers for hash functions */
-PyAPI_FUNC(long) _Py_HashDouble(double);
-PyAPI_FUNC(long) _Py_HashPointer(void*);
+PyAPI_FUNC(REALLYLONG) _Py_HashDouble(double);
+PyAPI_FUNC(REALLYLONG) _Py_HashPointer(void*);
 
 typedef struct {
-    long prefix;
-    long suffix;
+    REALLYLONG prefix;
+    REALLYLONG suffix;
 } _Py_HashSecret_t;
 PyAPI_DATA(_Py_HashSecret_t) _Py_HashSecret;
 

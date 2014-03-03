@@ -142,7 +142,7 @@ static void beos_add_dyn( char *name, image_id id )
         retval = PyDict_DelItemString( beos_dyn_images, name );
     }
 
-    py_id = PyInt_FromLong( (long)id );
+    py_id = PyInt_FromLong( (REALLYLONG)id );
     if( py_id ) {
         retval = PyDict_SetItemString( beos_dyn_images, name, py_id );
     }

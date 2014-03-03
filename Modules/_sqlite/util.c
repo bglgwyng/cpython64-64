@@ -142,7 +142,7 @@ _pysqlite_long_as_int64(PyObject * py_val)
 #ifdef HAVE_LONG_LONG
     PY_LONG_LONG value = PyLong_AsLongLongAndOverflow(py_val, &overflow);
 #else
-    long value = PyLong_AsLongAndOverflow(py_val, &overflow);
+    REALLYLONG value = PyLong_AsLongAndOverflow(py_val, &overflow);
 #endif
     if (value == -1 && PyErr_Occurred())
         return -1;

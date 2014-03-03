@@ -35,7 +35,7 @@
 #if defined(linux)
 
 #ifndef HAVE_STDINT_H
-typedef unsigned long uint32_t;
+typedef unsigned REALLYLONG uint32_t;
 #endif
 
 #elif defined(__FreeBSD__)
@@ -895,7 +895,7 @@ static PyMethodDef ossaudiodev_methods[] = {
 
 
 #define _EXPORT_INT(mod, name) \
-  if (PyModule_AddIntConstant(mod, #name, (long) (name)) == -1) return;
+  if (PyModule_AddIntConstant(mod, #name, (REALLYLONG) (name)) == -1) return;
 
 
 static char *control_labels[] = SOUND_DEVICE_LABELS;

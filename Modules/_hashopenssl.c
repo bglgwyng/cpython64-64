@@ -263,7 +263,7 @@ static PyMethodDef EVP_methods[] = {
 static PyObject *
 EVP_get_block_size(EVPobject *self, void *closure)
 {
-    long block_size;
+    REALLYLONG block_size;
     block_size = EVP_MD_CTX_block_size(&self->ctx);
     return PyLong_FromLong(block_size);
 }
@@ -271,7 +271,7 @@ EVP_get_block_size(EVPobject *self, void *closure)
 static PyObject *
 EVP_get_digest_size(EVPobject *self, void *closure)
 {
-    long size;
+    REALLYLONG size;
     size = EVP_MD_CTX_size(&self->ctx);
     return PyLong_FromLong(size);
 }

@@ -112,7 +112,7 @@ svc_YUVtoRGB(captureobject *self, PyObject *args)
         PyErr_SetString(SvError, "data had bad format");
         return NULL;
     }
-    return svc_conversion(self, args, svYUVtoRGB, (float) sizeof(long));
+    return svc_conversion(self, args, svYUVtoRGB, (float) sizeof(REALLYLONG));
 }
 
 static PyObject *
@@ -122,7 +122,7 @@ svc_RGB8toRGB32(captureobject *self, PyObject *args)
         PyErr_SetString(SvError, "data has bad format");
         return NULL;
     }
-    return svc_conversion(self, args, svRGB8toRGB32, (float) sizeof(long));
+    return svc_conversion(self, args, svRGB8toRGB32, (float) sizeof(REALLYLONG));
 }
 
 static PyObject *
@@ -196,7 +196,7 @@ svc_lrectwrite(captureobject *self, PyObject *args)
     if (!PyArg_Parse(args, "(hhhh)", &x1, &x2, &y1, &y2))
         return NULL;
 
-    lrectwrite(x1, x2, y1, y2, (unsigned long *) self->ob_capture);
+    lrectwrite(x1, x2, y1, y2, (unsigned REALLYLONG *) self->ob_capture);
 
     Py_INCREF(Py_None);
     return Py_None;
@@ -223,7 +223,7 @@ svc_writefile(captureobject *self, PyObject *args)
 
     size = self->ob_info.width * self->ob_info.height;
 
-    if (fwrite(self->ob_capture, sizeof(long), size, fp) != size) {
+    if (fwrite(self->ob_capture, sizeof(REALLYLONG), size, fp) != size) {
         PyErr_SetString(SvError, "writing failed");
         return NULL;
     }
@@ -326,7 +326,7 @@ static PyObject *
 sv_GetCaptureData(svobject *self, PyObject *args)
 {
     void *ptr;
-    long fieldID;
+    REALLYLONG fieldID;
     PyObject *res, *c;
 
     if (!PyArg_Parse(args, ""))
@@ -351,7 +351,7 @@ sv_GetCaptureData(svobject *self, PyObject *args)
 static PyObject *
 sv_BindGLWindow(svobject *self, PyObject *args)
 {
-    long wid;
+    REALLYLONG wid;
     int mode;
 
     if (!PyArg_Parse(args, "(ii)", &wid, &mode))
@@ -390,7 +390,7 @@ sv_IsVideoDisplayed(svobject *self, PyObject *args)
     if (v == -1)
         return sv_error();
 
-    return PyInt_FromLong((long) v);
+    return PyInt_FromLong((REALLYLONG) v);
 }
 
 static PyObject *
@@ -438,7 +438,7 @@ sv_QuerySize(svobject *self, PyObject *args)
     if (svQuerySize(self->ob_svideo, w, h, &rw, &rh))
         return sv_error();
 
-    return Py_BuildValue("(ii)", (long) rw, (long) rh);
+    return Py_BuildValue("(ii)", (REALLYLONG) rw, (REALLYLONG) rh);
 }
 
 static PyObject *
@@ -730,12 +730,12 @@ sv_CloseVideo(svobject *self, PyObject *args)
 
 static PyObject *
 doParams(svobject *self, PyObject *args,
-         int (*func)(SV_nodeP, long *, int), int modified)
+         int (*func)(SV_nodeP, REALLYLONG *, int), int modified)
 {
     PyObject *list;
     PyObject *res = NULL;
-    long *PVbuffer = NULL;
-    long length;
+    REALLYLONG *PVbuffer = NULL;
+    REALLYLONG length;
     int i;
 
     if (!PyArg_Parse(args, "O", &list))
@@ -749,7 +749,7 @@ doParams(svobject *self, PyObject *args,
     if ((length = PyList_Size(list)) < 0)
         return NULL;
 
-    PVbuffer = PyMem_NEW(long, length);
+    PVbuffer = PyMem_NEW(REALLYLONG, length);
     if (PVbuffer == NULL)
         return PyErr_NoMemory();
 
@@ -845,7 +845,7 @@ sv_conversion(PyObject *self, PyObject *args, void (*function)(),
         return NULL;
 
     if (width * height * inputfactor > inputlength) {
-        PyErr_SetString(SvError, "input buffer not long enough");
+        PyErr_SetString(SvError, "input buffer not REALLYLONG enough");
         return NULL;
     }
 
@@ -872,13 +872,13 @@ sv_InterleaveFields(PyObject *self, PyObject *args)
 static PyObject *
 sv_RGB8toRGB32(PyObject *self, PyObject *args)
 {
-    return sv_conversion(self, args, svRGB8toRGB32, 1, (float) sizeof(long));
+    return sv_conversion(self, args, svRGB8toRGB32, 1, (float) sizeof(REALLYLONG));
 }
 
 static PyObject *
 sv_YUVtoRGB(PyObject *self, PyObject *args)
 {
-    return sv_conversion(self, args, svYUVtoRGB, 2, (float) sizeof(long));
+    return sv_conversion(self, args, svYUVtoRGB, 2, (float) sizeof(REALLYLONG));
 }
 
 static void

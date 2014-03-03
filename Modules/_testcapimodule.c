@@ -58,7 +58,7 @@ test_config(PyObject *self)
 
     CHECK_SIZEOF(SIZEOF_SHORT, short);
     CHECK_SIZEOF(SIZEOF_INT, int);
-    CHECK_SIZEOF(SIZEOF_LONG, long);
+    CHECK_SIZEOF(SIZEOF_LONG, REALLYLONG);
     CHECK_SIZEOF(SIZEOF_VOID_P, void*);
     CHECK_SIZEOF(SIZEOF_TIME_T, time_t);
 #ifdef HAVE_LONG_LONG
@@ -224,7 +224,7 @@ test_lazy_hash_inheritance(PyObject* self)
 {
     PyTypeObject *type;
     PyObject *obj;
-    long hash;
+    REALLYLONG hash;
 
     type = &_HashInheritanceTester_Type;
 
@@ -401,7 +401,7 @@ raise_test_long_error(const char* msg)
 }
 
 #define TESTNAME        test_long_api_inner
-#define TYPENAME        long
+#define TYPENAME        long long
 #define F_S_TO_PY       PyLong_FromLong
 #define F_PY_TO_S       PyLong_AsLong
 #define F_U_TO_PY       PyLong_FromUnsignedLong
@@ -461,7 +461,7 @@ static PyObject *
 test_long_and_overflow(PyObject *self)
 {
     PyObject *num, *one, *temp;
-    long value;
+    REALLYLONG value;
     int overflow;
 
     /* Test that overflow is set properly for a large value. */
@@ -485,7 +485,7 @@ test_long_and_overflow(PyObject *self)
     num = PyLong_FromLong(LONG_MAX);
     if (num == NULL)
         return NULL;
-    one = PyLong_FromLong(1L);
+    one = PyLong_FromLong(1LL);
     if (one == NULL) {
         Py_DECREF(num);
         return NULL;
@@ -529,7 +529,7 @@ test_long_and_overflow(PyObject *self)
     num = PyLong_FromLong(LONG_MIN);
     if (num == NULL)
         return NULL;
-    one = PyLong_FromLong(1L);
+    one = PyLong_FromLong(1LL);
     if (one == NULL) {
         Py_DECREF(num);
         return NULL;
@@ -650,7 +650,7 @@ test_long_long_and_overflow(PyObject *self)
     num = PyLong_FromLongLong(PY_LLONG_MAX);
     if (num == NULL)
         return NULL;
-    one = PyLong_FromLong(1L);
+    one = PyLong_FromLong(1LL);
     if (one == NULL) {
         Py_DECREF(num);
         return NULL;
@@ -694,7 +694,7 @@ test_long_long_and_overflow(PyObject *self)
     num = PyLong_FromLongLong(PY_LLONG_MIN);
     if (num == NULL)
         return NULL;
-    one = PyLong_FromLong(1L);
+    one = PyLong_FromLong(1LL);
     if (one == NULL) {
         Py_DECREF(num);
         return NULL;
@@ -783,7 +783,7 @@ test_long_long_and_overflow(PyObject *self)
 }
 
 /* Test the L code for PyArg_ParseTuple.  This should deliver a PY_LONG_LONG
-   for both long and int arguments.  The test may leak a little memory if
+   for both REALLYLONG and int arguments.  The test may leak a little memory if
    it fails.
 */
 static PyObject *
@@ -807,7 +807,7 @@ test_L_code(PyObject *self)
         return NULL;
     if (value != 42)
         return raiseTestError("test_L_code",
-            "L code returned wrong value for long 42");
+            "L code returned wrong value for REALLYLONG 42");
 
     Py_DECREF(num);
     num = PyInt_FromLong(42);
@@ -865,7 +865,7 @@ getargs_b(PyObject *self, PyObject *args)
     unsigned char value;
     if (!PyArg_ParseTuple(args, "b", &value))
         return NULL;
-    return PyLong_FromUnsignedLong((unsigned long)value);
+    return PyLong_FromUnsignedLong((UREALLYLONG)value);
 }
 
 static PyObject *
@@ -874,7 +874,7 @@ getargs_B(PyObject *self, PyObject *args)
     unsigned char value;
     if (!PyArg_ParseTuple(args, "B", &value))
         return NULL;
-    return PyLong_FromUnsignedLong((unsigned long)value);
+    return PyLong_FromUnsignedLong((UREALLYLONG)value);
 }
 
 static PyObject *
@@ -883,7 +883,7 @@ getargs_h(PyObject *self, PyObject *args)
     short value;
     if (!PyArg_ParseTuple(args, "h", &value))
         return NULL;
-    return PyLong_FromLong((long)value);
+    return PyLong_FromLong((REALLYLONG)value);
 }
 
 static PyObject *
@@ -892,7 +892,7 @@ getargs_H(PyObject *self, PyObject *args)
     unsigned short value;
     if (!PyArg_ParseTuple(args, "H", &value))
         return NULL;
-    return PyLong_FromUnsignedLong((unsigned long)value);
+    return PyLong_FromUnsignedLong((UREALLYLONG)value);
 }
 
 static PyObject *
@@ -901,13 +901,13 @@ getargs_I(PyObject *self, PyObject *args)
     unsigned int value;
     if (!PyArg_ParseTuple(args, "I", &value))
         return NULL;
-    return PyLong_FromUnsignedLong((unsigned long)value);
+    return PyLong_FromUnsignedLong((UREALLYLONG)value);
 }
 
 static PyObject *
 getargs_k(PyObject *self, PyObject *args)
 {
-    unsigned long value;
+    UREALLYLONG value;
     if (!PyArg_ParseTuple(args, "k", &value))
         return NULL;
     return PyLong_FromUnsignedLong(value);
@@ -919,13 +919,13 @@ getargs_i(PyObject *self, PyObject *args)
     int value;
     if (!PyArg_ParseTuple(args, "i", &value))
         return NULL;
-    return PyLong_FromLong((long)value);
+    return PyLong_FromLong((REALLYLONG)value);
 }
 
 static PyObject *
 getargs_l(PyObject *self, PyObject *args)
 {
-    long value;
+    REALLYLONG value;
     if (!PyArg_ParseTuple(args, "l", &value))
         return NULL;
     return PyLong_FromLong(value);
@@ -966,7 +966,7 @@ static PyObject *
 test_k_code(PyObject *self)
 {
     PyObject *tuple, *num;
-    unsigned long value;
+    UREALLYLONG value;
 
     tuple = PyTuple_New(1);
     if (tuple == NULL)
@@ -978,18 +978,18 @@ test_k_code(PyObject *self)
         return NULL;
 
     value = PyInt_AsUnsignedLongMask(num);
-    if (value != ULONG_MAX)
+    if (value != ULLONG_MAX)
         return raiseTestError("test_k_code",
-        "PyInt_AsUnsignedLongMask() returned wrong value for long 0xFFF...FFF");
+        "PyInt_AsUnsignedLongMask() returned wrong value for REALLYLONG 0xFFF...FFF");
 
     PyTuple_SET_ITEM(tuple, 0, num);
 
     value = 0;
     if (PyArg_ParseTuple(tuple, "k:test_k_code", &value) < 0)
         return NULL;
-    if (value != ULONG_MAX)
+    if (value != ULLONG_MAX)
         return raiseTestError("test_k_code",
-            "k code returned wrong value for long 0xFFF...FFF");
+            "k code returned wrong value for REALLYLONG 0xFFF...FFF");
 
     Py_DECREF(num);
     num = PyLong_FromString("-FFFFFFFF000000000000000042", NULL, 16);
@@ -997,18 +997,18 @@ test_k_code(PyObject *self)
         return NULL;
 
     value = PyInt_AsUnsignedLongMask(num);
-    if (value != (unsigned long)-0x42)
+    if (value != (UREALLYLONG)-0x42)
         return raiseTestError("test_k_code",
-        "PyInt_AsUnsignedLongMask() returned wrong value for long 0xFFF...FFF");
+        "PyInt_AsUnsignedLongMask() returned wrong value for REALLYLONG 0xFFF...FFF");
 
     PyTuple_SET_ITEM(tuple, 0, num);
 
     value = 0;
     if (PyArg_ParseTuple(tuple, "k:test_k_code", &value) < 0)
         return NULL;
-    if (value != (unsigned long)-0x42)
+    if (value != (UREALLYLONG)-0x42)
         return raiseTestError("test_k_code",
-            "k code returned wrong value for long -0xFFF..000042");
+            "k code returned wrong value for REALLYLONG -0xFFF..000042");
 
     Py_DECREF(tuple);
     Py_INCREF(Py_None);
@@ -1193,7 +1193,7 @@ static PyObject *
 test_long_numbits(PyObject *self)
 {
     struct triple {
-        long input;
+        REALLYLONG input;
         size_t nbits;
         int sign;
     } testcases[] = {{0, 0, 0},
@@ -1205,7 +1205,7 @@ test_long_numbits(PyObject *self)
                      {-3L, 2, -1},
                      {4L, 3, 1},
                      {-4L, 3, -1},
-                     {0x7fffL, 15, 1},          /* one Python long digit */
+                     {0x7fffL, 15, 1},          /* one Python REALLYLONG digit */
              {-0x7fffL, 15, -1},
              {0xffffL, 16, 1},
              {-0xffffL, 16, -1},
@@ -1439,13 +1439,13 @@ test_string_from_format(PyObject *self, PyObject *args)
     Py_DECREF(result)
 
     CHECK_1_FORMAT("%d", int);
-    CHECK_1_FORMAT("%ld", long);
+    CHECK_1_FORMAT("%lld", REALLYLONG);
     /* The z width modifier was added in Python 2.5. */
     CHECK_1_FORMAT("%zd", Py_ssize_t);
 
     /* The u type code was added in Python 2.5. */
     CHECK_1_FORMAT("%u", unsigned int);
-    CHECK_1_FORMAT("%lu", unsigned long);
+    CHECK_1_FORMAT("%lu", UREALLYLONG);
     CHECK_1_FORMAT("%zu", size_t);
 
     /* "%lld" and "%llu" support added in Python 2.7. */
@@ -1758,8 +1758,8 @@ typedef struct {
     unsigned short ushort_member;
     int int_member;
     unsigned int uint_member;
-    long long_member;
-    unsigned long ulong_member;
+    REALLYLONG long_member;
+    UREALLYLONG ulong_member;
     float float_member;
     double double_member;
     char inplace_member[6];
@@ -1927,9 +1927,9 @@ init_testcapi(void)
     PyModule_AddObject(m, "INT_MAX",  PyLong_FromLong(INT_MAX));
     PyModule_AddObject(m, "INT_MIN",  PyLong_FromLong(INT_MIN));
     PyModule_AddObject(m, "UINT_MAX",  PyLong_FromUnsignedLong(UINT_MAX));
-    PyModule_AddObject(m, "LONG_MAX", PyInt_FromLong(LONG_MAX));
-    PyModule_AddObject(m, "LONG_MIN", PyInt_FromLong(LONG_MIN));
-    PyModule_AddObject(m, "ULONG_MAX", PyLong_FromUnsignedLong(ULONG_MAX));
+    PyModule_AddObject(m, "LONG_MAX", PyInt_FromLong(LLONG_MAX));
+    PyModule_AddObject(m, "LONG_MIN", PyInt_FromLong(LLONG_MIN));
+    PyModule_AddObject(m, "ULONG_MAX", PyLong_FromUnsignedLong(ULLONG_MAX));
     PyModule_AddObject(m, "FLT_MAX", PyFloat_FromDouble(FLT_MAX));
     PyModule_AddObject(m, "FLT_MIN", PyFloat_FromDouble(FLT_MIN));
     PyModule_AddObject(m, "DBL_MAX", PyFloat_FromDouble(DBL_MAX));

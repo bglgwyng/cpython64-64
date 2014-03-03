@@ -235,7 +235,7 @@ PyDoc_STRVAR(module_doc,
 "Bisection algorithms.\n\
 \n\
 This module provides support for maintaining a list in sorted order without\n\
-having to sort the list after each insertion. For long lists of items with\n\
+having to sort the list after each insertion. For REALLYLONG lists of items with\n\
 expensive comparison operations, this can be an improvement over the more\n\
 common approach.\n");
 

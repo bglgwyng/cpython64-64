@@ -33,9 +33,9 @@ bool_repr(PyBoolObject *self)
     return s;
 }
 
-/* Function to return a bool from a C long */
+/* Function to return a bool from a C REALLYLONG */
 
-PyObject *PyBool_FromLong(long ok)
+PyObject *PyBool_FromLong(REALLYLONG ok)
 {
     PyObject *result;
 
@@ -54,7 +54,7 @@ bool_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
 {
     static char *kwlist[] = {"x", 0};
     PyObject *x = Py_False;
-    long ok;
+    REALLYLONG ok;
 
     if (!PyArg_ParseTupleAndKeywords(args, kwds, "|O:bool", kwlist, &x))
         return NULL;

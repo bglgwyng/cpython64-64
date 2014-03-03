@@ -225,7 +225,7 @@ struct key {
     struct key *next;
 
     /* The thread id, according to PyThread_get_thread_ident(). */
-    long id;
+    REALLYLONG id;
 
     /* The key and its associated value. */
     int key;
@@ -261,7 +261,7 @@ static struct key *
 find_key(int key, void *value)
 {
     struct key *p, *prev_p;
-    long id = PyThread_get_thread_ident();
+    REALLYLONG id = PyThread_get_thread_ident();
 
     if (!keymutex)
         return NULL;
@@ -369,7 +369,7 @@ PyThread_get_key_value(int key)
 void
 PyThread_delete_key_value(int key)
 {
-    long id = PyThread_get_thread_ident();
+    REALLYLONG id = PyThread_get_thread_ident();
     struct key *p, **q;
 
     PyThread_acquire_lock(keymutex, 1);
@@ -395,7 +395,7 @@ PyThread_delete_key_value(int key)
 void
 PyThread_ReInitTLS(void)
 {
-    long id = PyThread_get_thread_ident();
+    REALLYLONG id = PyThread_get_thread_ident();
     struct key *p, **q;
 
     if (!keymutex)

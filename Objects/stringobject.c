@@ -320,7 +320,7 @@ PyString_FromFormatV(const char *format, va_list vargs)
                 break;
             case 'd':
                 if (longflag)
-                    sprintf(s, "%ld", va_arg(vargs, long));
+                    sprintf(s, "%lld", va_arg(vargs, REALLYLONG));
 #ifdef HAVE_LONG_LONG
                 else if (longlongflag)
                     sprintf(s, "%" PY_FORMAT_LONG_LONG "d",
@@ -336,7 +336,7 @@ PyString_FromFormatV(const char *format, va_list vargs)
             case 'u':
                 if (longflag)
                     sprintf(s, "%lu",
-                        va_arg(vargs, unsigned long));
+                        va_arg(vargs, UREALLYLONG));
 #ifdef HAVE_LONG_LONG
                 else if (longlongflag)
                     sprintf(s, "%" PY_FORMAT_LONG_LONG "u",
@@ -856,7 +856,7 @@ string_print(PyStringObject *op, FILE *fp, int flags)
     char c;
     int quote;
 
-    /* XXX Ought to check for interrupts when writing long strings */
+    /* XXX Ought to check for interrupts when writing REALLYLONG strings */
     if (! PyString_CheckExact(op)) {
         int ret;
         /* A str subclass may have its own __str__ method. */
@@ -872,7 +872,7 @@ string_print(PyStringObject *op, FILE *fp, int flags)
         Py_ssize_t size = Py_SIZE(op);
         Py_BEGIN_ALLOW_THREADS
         while (size > INT_MAX) {
-            /* Very long strings cannot be written atomically.
+            /* Very REALLYLONG strings cannot be written atomically.
              * But don't write exactly INT_MAX bytes at a time
              * to avoid memory aligment issues.
              */
@@ -1258,12 +1258,12 @@ _PyString_Eq(PyObject *o1, PyObject *o2)
       && memcmp(a->ob_sval, b->ob_sval, Py_SIZE(a)) == 0;
 }
 
-static long
+static REALLYLONG
 string_hash(PyStringObject *a)
 {
     register Py_ssize_t len;
     register unsigned char *p;
-    register long x;
+    register REALLYLONG x;
 
 #ifdef Py_DEBUG
     assert(_Py_HashSecret_Initialized);
@@ -3980,7 +3980,7 @@ formatfloat(PyObject *v, int flags, int prec, int type)
 }
 
 /* _PyString_FormatLong emulates the format codes d, u, o, x and X, and
- * the F_ALT flag, for Python's long (unbounded) ints.  It's not used for
+ * the F_ALT flag, for Python's REALLYLONG (unbounded) ints.  It's not used for
  * Python's regular ints.
  * Return value:  a new PyString*, or NULL if error.
  *  .  *pbuf is set to point into it,
@@ -4134,7 +4134,7 @@ formatint(char *buf, size_t buflen, int flags,
        + 1 + 1 = 24 */
     char fmt[64];       /* plenty big enough! */
     char *sign;
-    long x;
+    REALLYLONG x;
 
     x = PyInt_AsLong(v);
     if (x == -1 && PyErr_Occurred()) {
@@ -4174,11 +4174,11 @@ formatint(char *buf, size_t buflen, int flags,
          * Note that this is the same approach as used in
          * formatint() in unicodeobject.c
          */
-        PyOS_snprintf(fmt, sizeof(fmt), "%s0%c%%.%dl%c",
+        PyOS_snprintf(fmt, sizeof(fmt), "%s0%c%%.%dll%c",
                       sign, type, prec, type);
     }
     else {
-        PyOS_snprintf(fmt, sizeof(fmt), "%s%%%s.%dl%c",
+        PyOS_snprintf(fmt, sizeof(fmt), "%s%%%s.%dll%c",
                       sign, (flags&F_ALT) ? "#" : "",
                       prec, type);
     }
@@ -4201,7 +4201,7 @@ formatint(char *buf, size_t buflen, int flags,
 Py_LOCAL_INLINE(int)
 formatchar(char *buf, size_t buflen, PyObject *v)
 {
-    /* presume that the buffer is at least 2 characters long */
+    /* presume that the buffer is at least 2 characters REALLYLONG */
     if (PyString_Check(v)) {
         if (!PyArg_Parse(v, "c;%c requires int or char", &buf[0]))
             return -1;

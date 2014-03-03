@@ -19,7 +19,7 @@ typedef struct struct_72byte {
 	double f;
 	double g;
 	double h;
-	long long i;
+	REALLYLONG i;
 } struct_72byte;
 
 struct_72byte cls_struct_72byte_fn(

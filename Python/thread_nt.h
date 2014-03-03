@@ -87,7 +87,7 @@ FreeNonRecursiveMutex(PNRMUTEX mutex)
     }
 }
 
-long PyThread_get_thread_ident(void);
+REALLYLONG PyThread_get_thread_ident(void);
 
 /*
  * Initialization of the C package, should not be needed.
@@ -123,7 +123,7 @@ bootstrap(void *call)
     return 0;
 }
 
-long
+REALLYLONG
 PyThread_start_new_thread(void (*func)(void *), void *arg)
 {
     HANDLE hThread;
@@ -174,14 +174,14 @@ PyThread_start_new_thread(void (*func)(void *), void *arg)
                  PyThread_get_thread_ident(), (void*)hThread));
         CloseHandle(hThread);
     }
-    return (long) threadID;
+    return (REALLYLONG) threadID;
 }
 
 /*
  * Return the thread Id instead of an handle. The Id is said to uniquely identify the
  * thread in the system
  */
-long
+REALLYLONG
 PyThread_get_thread_ident(void)
 {
     if (!initialized)

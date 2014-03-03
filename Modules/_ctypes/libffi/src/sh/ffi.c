@@ -512,8 +512,8 @@ ffi_prep_closure_loc (ffi_closure* closure,
 
 int
 ffi_closure_helper_SYSV (ffi_closure *closure, void *rvalue, 
-			 unsigned long *pgr, unsigned long *pfr, 
-			 unsigned long *pst)
+			 unsigned REALLYLONG *pgr, unsigned REALLYLONG *pfr, 
+			 unsigned REALLYLONG *pst)
 {
   void **avalue;
   ffi_type **p_arg;

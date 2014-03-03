@@ -20,9 +20,12 @@ _Py_TrueStruct and _Py_ZeroStruct in boolobject.h; don't use this.
 extern "C" {
 #endif
 
+#ifndef REALLYLONG
+typedef long long REALLYLONG;
+#endif
 typedef struct {
     PyObject_HEAD
-    long ob_ival;
+    REALLYLONG ob_ival;
 } PyIntObject;
 
 PyAPI_DATA(PyTypeObject) PyInt_Type;
@@ -35,18 +38,18 @@ PyAPI_FUNC(PyObject *) PyInt_FromString(char*, char**, int);
 #ifdef Py_USING_UNICODE
 PyAPI_FUNC(PyObject *) PyInt_FromUnicode(Py_UNICODE*, Py_ssize_t, int);
 #endif
-PyAPI_FUNC(PyObject *) PyInt_FromLong(long);
+PyAPI_FUNC(PyObject *) PyInt_FromLong(REALLYLONG);
 PyAPI_FUNC(PyObject *) PyInt_FromSize_t(size_t);
 PyAPI_FUNC(PyObject *) PyInt_FromSsize_t(Py_ssize_t);
-PyAPI_FUNC(long) PyInt_AsLong(PyObject *);
+PyAPI_FUNC(REALLYLONG) PyInt_AsLong(PyObject *);
 PyAPI_FUNC(Py_ssize_t) PyInt_AsSsize_t(PyObject *);
 PyAPI_FUNC(int) _PyInt_AsInt(PyObject *);
-PyAPI_FUNC(unsigned long) PyInt_AsUnsignedLongMask(PyObject *);
+PyAPI_FUNC(UREALLYLONG) PyInt_AsUnsignedLongMask(PyObject *);
 #ifdef HAVE_LONG_LONG
 PyAPI_FUNC(unsigned PY_LONG_LONG) PyInt_AsUnsignedLongLongMask(PyObject *);
 #endif
 
-PyAPI_FUNC(long) PyInt_GetMax(void);
+PyAPI_FUNC(REALLYLONG) PyInt_GetMax(void);
 
 /* Macro, trading safety for speed */
 #define PyInt_AS_LONG(op) (((PyIntObject *)(op))->ob_ival)
@@ -57,8 +60,8 @@ PyAPI_FUNC(long) PyInt_GetMax(void);
  * into the main Python shared library/DLL.  Guido thinks I'm weird for
  * building it this way.  :-)  [cjh]
  */
-PyAPI_FUNC(unsigned long) PyOS_strtoul(char *, char **, int);
-PyAPI_FUNC(long) PyOS_strtol(char *, char **, int);
+PyAPI_FUNC(UREALLYLONG) PyOS_strtoul(char *, char **, int);
+PyAPI_FUNC(REALLYLONG) PyOS_strtol(char *, char **, int);
 
 /* free list api */
 PyAPI_FUNC(int) PyInt_ClearFreeList(void);

@@ -7,9 +7,9 @@ Each definition must be contained on one line:
 
 <returntype> <name> <type> <arg> <type> <arg>
 
-<returntype> can be: void, short, long (XXX maybe others?)
+<returntype> can be: void, short, REALLYLONG (XXX maybe others?)
 
-<type> can be: char, string, short, float, long, or double
+<type> can be: char, string, short, float, REALLYLONG, or double
     string indicates a null terminated string;
     if <type> is char and <arg> begins with a *, the * is stripped
     and <type> is changed into string
@@ -62,7 +62,7 @@ generator can include it in the table of functions.
 static PyObject *
 gl_qread(PyObject *self, PyObject *args)
 {
-    long retval;
+    REALLYLONG retval;
     short arg1 ;
     Py_BEGIN_ALLOW_THREADS
     retval = qread( & arg1 );
@@ -235,18 +235,18 @@ gen_nvarray(PyObject *args, int inorm)
 static PyObject *
 gl_nurbssurface(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     double * arg2 ;
-    long arg3 ;
+    REALLYLONG arg3 ;
     double * arg4 ;
     double *arg5 ;
-    long arg6 ;
-    long arg7 ;
-    long arg8 ;
-    long ncoords;
-    long s_byte_stride, t_byte_stride;
-    long s_nctl, t_nctl;
-    long s, t;
+    REALLYLONG arg6 ;
+    REALLYLONG arg7 ;
+    REALLYLONG arg8 ;
+    REALLYLONG ncoords;
+    REALLYLONG s_byte_stride, t_byte_stride;
+    REALLYLONG s_nctl, t_nctl;
+    REALLYLONG s, t;
     PyObject *v, *w, *pt;
     double *pnext;
     if (!PyArg_GetLongArraySize(args, 6, 0, &arg1))
@@ -321,12 +321,12 @@ gl_nurbssurface(PyObject *self, PyObject *args)
 static PyObject *
 gl_nurbscurve(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     double * arg2 ;
-    long arg3 ;
+    REALLYLONG arg3 ;
     double * arg4 ;
-    long arg5 ;
-    long arg6 ;
+    REALLYLONG arg5 ;
+    REALLYLONG arg6 ;
     int ncoords, npoints;
     int i;
     PyObject *v;
@@ -382,9 +382,9 @@ static PyObject *
 gl_pwlcurve(PyObject *self, PyObject *args)
 {
     PyObject *v;
-    long type;
+    REALLYLONG type;
     double *data, *pnext;
-    long npoints, ncoords;
+    REALLYLONG npoints, ncoords;
     int i;
     if (!PyArg_GetObject(args, 2, 0, &v))
         return NULL;
@@ -420,7 +420,7 @@ gl_pwlcurve(PyObject *self, PyObject *args)
 /* Picking and Selecting */
 
 static short *pickbuffer = NULL;
-static long pickbuffersize;
+static REALLYLONG pickbuffersize;
 
 static PyObject *
 pick_select(PyObject *args, void (*func)())
@@ -441,7 +441,7 @@ pick_select(PyObject *args, void (*func)())
 }
 
 static PyObject *
-endpick_select(long (*func)())
+endpick_select(REALLYLONG (*func)())
 {
     PyObject *v, *w;
     int i, nhits, n;
@@ -465,7 +465,7 @@ endpick_select(long (*func)())
     /* XXX Could do it nicer and interpret the data structure here,
        returning a list of lists. But this can be done in Python... */
     for (i = 0; i < n; i++) {
-        w = PyInt_FromLong((long)pickbuffer[i]);
+        w = PyInt_FromLong((REALLYLONG)pickbuffer[i]);
         if (w == NULL) {
             Py_DECREF(v);
             return NULL;
@@ -478,7 +478,7 @@ endpick_select(long (*func)())
 }
 
 extern void pick(), gselect();
-extern long endpick(), endselect();
+extern REALLYLONG endpick(), endselect();
 
 static PyObject *gl_pick(PyObject *self, PyObject *args)
 {
@@ -592,14 +592,14 @@ gl_lrectwrite(PyObject *self, PyObject *args)
         return NULL;
 #if 0
 /* Don't check this, it breaks experiments with pixmode(PM_SIZE, ...) */
-    pixcount = (long)(x2+1-x1) * (long)(y2+1-y1);
-    if (!PyString_Check(s) || PyString_Size(s) != pixcount*sizeof(long)) {
+    pixcount = (REALLYLONG)(x2+1-x1) * (REALLYLONG)(y2+1-y1);
+    if (!PyString_Check(s) || PyString_Size(s) != pixcount*sizeof(REALLYLONG)) {
         PyErr_SetString(PyExc_RuntimeError,
                    "string arg to lrectwrite has wrong size");
         return NULL;
     }
 #endif
-    lrectwrite( x1 , y1 , x2 , y2 , (unsigned long *) parray );
+    lrectwrite( x1 , y1 , x2 , y2 , (unsigned REALLYLONG *) parray );
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -622,11 +622,11 @@ gl_lrectread(PyObject *self, PyObject *args)
         return NULL;
     if (!PyArg_GetShort(args, 4, 3, &y2))
         return NULL;
-    pixcount = (long)(x2+1-x1) * (long)(y2+1-y1);
-    parray = PyString_FromStringAndSize((char *)NULL, pixcount*sizeof(long));
+    pixcount = (REALLYLONG)(x2+1-x1) * (REALLYLONG)(y2+1-y1);
+    parray = PyString_FromStringAndSize((char *)NULL, pixcount*sizeof(REALLYLONG));
     if (parray == NULL)
         return NULL; /* No memory */
-    lrectread(x1, y1, x2, y2, (unsigned long *) PyString_AsString(parray));
+    lrectread(x1, y1, x2, y2, (unsigned REALLYLONG *) PyString_AsString(parray));
     return parray;
 }
 
@@ -635,17 +635,17 @@ static PyObject *
 gl_readdisplay(PyObject *self, PyObject *args)
 {
     short x1, y1, x2, y2;
-    unsigned long *parray, hints;
-    long size, size_ret;
+    unsigned REALLYLONG *parray, hints;
+    REALLYLONG size, size_ret;
     PyObject *rv;
 
     if ( !PyArg_Parse(args, "hhhhl", &x1, &y1, &x2, &y2, &hints) )
       return 0;
-    size = (long)(x2+1-x1) * (long)(y2+1-y1);
-    rv = PyString_FromStringAndSize((char *)NULL, size*sizeof(long));
+    size = (REALLYLONG)(x2+1-x1) * (REALLYLONG)(y2+1-y1);
+    rv = PyString_FromStringAndSize((char *)NULL, size*sizeof(REALLYLONG));
     if ( rv == NULL )
       return NULL;
-    parray = (unsigned long *)PyString_AsString(rv);
+    parray = (unsigned REALLYLONG *)PyString_AsString(rv);
     size_ret = readdisplay(x1, y1, x2, y2, parray, hints);
     if ( size_ret != size ) {
         printf("gl_readdisplay: got %ld pixels, expected %ld\n",
@@ -676,13 +676,13 @@ gl_readdisplay(PyObject *self, PyObject *args)
 static PyObject *
 gl_packrect(PyObject *self, PyObject *args)
 {
-    long width, height, packfactor;
+    REALLYLONG width, height, packfactor;
     char *s;
     PyObject *unpacked, *packed;
     int pixcount, packedcount, x, y, r, g, b;
-    unsigned long pixel;
+    unsigned REALLYLONG pixel;
     unsigned char *p;
-    unsigned long *parray;
+    unsigned REALLYLONG *parray;
     if (!PyArg_GetLong(args, 4, 0, &width))
         return NULL;
     if (!PyArg_GetLong(args, 4, 1, &height))
@@ -700,7 +700,7 @@ gl_packrect(PyObject *self, PyObject *args)
     pixcount = width*height;
     packedcount = ((width+packfactor-1)/packfactor) *
         ((height+packfactor-1)/packfactor);
-    if (PyString_Size(unpacked) != pixcount*sizeof(long)) {
+    if (PyString_Size(unpacked) != pixcount*sizeof(REALLYLONG)) {
         PyErr_SetString(PyExc_RuntimeError,
                    "string arg to packrect has wrong size");
         return NULL;
@@ -708,7 +708,7 @@ gl_packrect(PyObject *self, PyObject *args)
     packed = PyString_FromStringAndSize((char *)NULL, packedcount);
     if (packed == NULL)
         return NULL;
-    parray = (unsigned long *) PyString_AsString(unpacked);
+    parray = (unsigned REALLYLONG *) PyString_AsString(unpacked);
     p = (unsigned char *) PyString_AsString(packed);
     for (y = 0; y < height; y += packfactor, parray += packfactor*width) {
         for (x = 0; x < width; x += packfactor) {
@@ -723,18 +723,18 @@ gl_packrect(PyObject *self, PyObject *args)
 }
 
 
-static unsigned long unpacktab[256];
+static unsigned REALLYLONG unpacktab[256];
 static int unpacktab_inited = 0;
 
 static PyObject *
 gl_unpackrect(PyObject *self, PyObject *args)
 {
-    long width, height, packfactor;
+    REALLYLONG width, height, packfactor;
     char *s;
     PyObject *unpacked, *packed;
     int pixcount, packedcount;
     register unsigned char *p;
-    register unsigned long *parray;
+    register unsigned REALLYLONG *parray;
     if (!unpacktab_inited) {
         register int white;
         for (white = 256; --white >= 0; )
@@ -763,10 +763,10 @@ gl_unpackrect(PyObject *self, PyObject *args)
                    "string arg to unpackrect has wrong size");
         return NULL;
     }
-    unpacked = PyString_FromStringAndSize((char *)NULL, pixcount*sizeof(long));
+    unpacked = PyString_FromStringAndSize((char *)NULL, pixcount*sizeof(REALLYLONG));
     if (unpacked == NULL)
         return NULL;
-    parray = (unsigned long *) PyString_AsString(unpacked);
+    parray = (unsigned REALLYLONG *) PyString_AsString(unpacked);
     p = (unsigned char *) PyString_AsString(packed);
     if (packfactor == 1 && width*height > 0) {
         /* Just expand bytes to longs */
@@ -781,7 +781,7 @@ gl_unpackrect(PyObject *self, PyObject *args)
              y += packfactor, parray += packfactor*width) {
             register int x;
             for (x = 0; x < width-packfactor+1; x += packfactor) {
-                register unsigned long pixel = unpacktab[*p++];
+                register unsigned REALLYLONG pixel = unpacktab[*p++];
                 register int i;
                 for (i = packfactor*width; (i-=width) >= 0;) {
                     register int j;
@@ -815,23 +815,23 @@ gl_clear(PyObject *self, PyObject *args)
 /* End of manually written stubs */
 
 
-/* long getshade */
+/* REALLYLONG getshade */
 
 static PyObject *
 gl_getshade(PyObject *self, PyObject *args)
 {
-    long retval;
+    REALLYLONG retval;
     retval = getshade( );
     return mknewlongobject(retval);
 }
 
-/* void devport short s long s */
+/* void devport short s REALLYLONG s */
 
 static PyObject *
 gl_devport(PyObject *self, PyObject *args)
 {
     short arg1 ;
-    long arg2 ;
+    REALLYLONG arg2 ;
     if (!getishortarg(args, 2, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 2, 1, &arg2))
@@ -841,13 +841,13 @@ gl_devport(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void rdr2i long s long s */
+/* void rdr2i REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_rdr2i(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
     if (!getilongarg(args, 2, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 2, 1, &arg2))
@@ -901,13 +901,13 @@ gl_rects(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void rmv2i long s long s */
+/* void rmv2i REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_rmv2i(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
     if (!getilongarg(args, 2, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 2, 1, &arg2))
@@ -1663,12 +1663,12 @@ gl_pagewritemask(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void callobj long s */
+/* void callobj REALLYLONG s */
 
 static PyObject *
 gl_callobj(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     callobj( arg1 );
@@ -1676,12 +1676,12 @@ gl_callobj(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void delobj long s */
+/* void delobj REALLYLONG s */
 
 static PyObject *
 gl_delobj(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     delobj( arg1 );
@@ -1689,12 +1689,12 @@ gl_delobj(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void editobj long s */
+/* void editobj REALLYLONG s */
 
 static PyObject *
 gl_editobj(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     editobj( arg1 );
@@ -1702,12 +1702,12 @@ gl_editobj(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void makeobj long s */
+/* void makeobj REALLYLONG s */
 
 static PyObject *
 gl_makeobj(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     makeobj( arg1 );
@@ -1715,12 +1715,12 @@ gl_makeobj(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void maketag long s */
+/* void maketag REALLYLONG s */
 
 static PyObject *
 gl_maketag(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     maketag( arg1 );
@@ -1728,12 +1728,12 @@ gl_maketag(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void chunksize long s */
+/* void chunksize REALLYLONG s */
 
 static PyObject *
 gl_chunksize(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     chunksize( arg1 );
@@ -1741,12 +1741,12 @@ gl_chunksize(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void compactify long s */
+/* void compactify REALLYLONG s */
 
 static PyObject *
 gl_compactify(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     compactify( arg1 );
@@ -1754,12 +1754,12 @@ gl_compactify(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void deltag long s */
+/* void deltag REALLYLONG s */
 
 static PyObject *
 gl_deltag(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     deltag( arg1 );
@@ -1767,12 +1767,12 @@ gl_deltag(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void lsrepeat long s */
+/* void lsrepeat REALLYLONG s */
 
 static PyObject *
 gl_lsrepeat(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     lsrepeat( arg1 );
@@ -1780,12 +1780,12 @@ gl_lsrepeat(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void objinsert long s */
+/* void objinsert REALLYLONG s */
 
 static PyObject *
 gl_objinsert(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     objinsert( arg1 );
@@ -1793,12 +1793,12 @@ gl_objinsert(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void objreplace long s */
+/* void objreplace REALLYLONG s */
 
 static PyObject *
 gl_objreplace(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     objreplace( arg1 );
@@ -1806,12 +1806,12 @@ gl_objreplace(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void winclose long s */
+/* void winclose REALLYLONG s */
 
 static PyObject *
 gl_winclose(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     winclose( arg1 );
@@ -1819,12 +1819,12 @@ gl_winclose(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void blanktime long s */
+/* void blanktime REALLYLONG s */
 
 static PyObject *
 gl_blanktime(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     blanktime( arg1 );
@@ -1832,12 +1832,12 @@ gl_blanktime(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void freepup long s */
+/* void freepup REALLYLONG s */
 
 static PyObject *
 gl_freepup(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     freepup( arg1 );
@@ -1845,12 +1845,12 @@ gl_freepup(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void backbuffer long s */
+/* void backbuffer REALLYLONG s */
 
 static PyObject *
 gl_backbuffer(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     backbuffer( arg1 );
@@ -1858,12 +1858,12 @@ gl_backbuffer(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void frontbuffer long s */
+/* void frontbuffer REALLYLONG s */
 
 static PyObject *
 gl_frontbuffer(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     frontbuffer( arg1 );
@@ -1871,12 +1871,12 @@ gl_frontbuffer(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void lsbackup long s */
+/* void lsbackup REALLYLONG s */
 
 static PyObject *
 gl_lsbackup(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     lsbackup( arg1 );
@@ -1884,12 +1884,12 @@ gl_lsbackup(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void resetls long s */
+/* void resetls REALLYLONG s */
 
 static PyObject *
 gl_resetls(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     resetls( arg1 );
@@ -1897,12 +1897,12 @@ gl_resetls(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void lampon long s */
+/* void lampon REALLYLONG s */
 
 static PyObject *
 gl_lampon(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     lampon( arg1 );
@@ -1910,12 +1910,12 @@ gl_lampon(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void lampoff long s */
+/* void lampoff REALLYLONG s */
 
 static PyObject *
 gl_lampoff(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     lampoff( arg1 );
@@ -1923,12 +1923,12 @@ gl_lampoff(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void setbell long s */
+/* void setbell REALLYLONG s */
 
 static PyObject *
 gl_setbell(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     setbell( arg1 );
@@ -1936,12 +1936,12 @@ gl_setbell(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void blankscreen long s */
+/* void blankscreen REALLYLONG s */
 
 static PyObject *
 gl_blankscreen(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     blankscreen( arg1 );
@@ -1949,12 +1949,12 @@ gl_blankscreen(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void depthcue long s */
+/* void depthcue REALLYLONG s */
 
 static PyObject *
 gl_depthcue(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     depthcue( arg1 );
@@ -1962,12 +1962,12 @@ gl_depthcue(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void zbuffer long s */
+/* void zbuffer REALLYLONG s */
 
 static PyObject *
 gl_zbuffer(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     zbuffer( arg1 );
@@ -1975,12 +1975,12 @@ gl_zbuffer(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void backface long s */
+/* void backface REALLYLONG s */
 
 static PyObject *
 gl_backface(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     backface( arg1 );
@@ -1988,13 +1988,13 @@ gl_backface(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void cmov2i long s long s */
+/* void cmov2i REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_cmov2i(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
     if (!getilongarg(args, 2, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 2, 1, &arg2))
@@ -2004,13 +2004,13 @@ gl_cmov2i(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void draw2i long s long s */
+/* void draw2i REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_draw2i(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
     if (!getilongarg(args, 2, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 2, 1, &arg2))
@@ -2020,13 +2020,13 @@ gl_draw2i(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void move2i long s long s */
+/* void move2i REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_move2i(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
     if (!getilongarg(args, 2, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 2, 1, &arg2))
@@ -2036,13 +2036,13 @@ gl_move2i(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void pnt2i long s long s */
+/* void pnt2i REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_pnt2i(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
     if (!getilongarg(args, 2, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 2, 1, &arg2))
@@ -2052,13 +2052,13 @@ gl_pnt2i(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void patchbasis long s long s */
+/* void patchbasis REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_patchbasis(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
     if (!getilongarg(args, 2, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 2, 1, &arg2))
@@ -2068,13 +2068,13 @@ gl_patchbasis(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void patchprecision long s long s */
+/* void patchprecision REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_patchprecision(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
     if (!getilongarg(args, 2, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 2, 1, &arg2))
@@ -2084,13 +2084,13 @@ gl_patchprecision(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void pdr2i long s long s */
+/* void pdr2i REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_pdr2i(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
     if (!getilongarg(args, 2, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 2, 1, &arg2))
@@ -2100,13 +2100,13 @@ gl_pdr2i(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void pmv2i long s long s */
+/* void pmv2i REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_pmv2i(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
     if (!getilongarg(args, 2, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 2, 1, &arg2))
@@ -2116,13 +2116,13 @@ gl_pmv2i(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void rpdr2i long s long s */
+/* void rpdr2i REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_rpdr2i(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
     if (!getilongarg(args, 2, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 2, 1, &arg2))
@@ -2132,13 +2132,13 @@ gl_rpdr2i(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void rpmv2i long s long s */
+/* void rpmv2i REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_rpmv2i(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
     if (!getilongarg(args, 2, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 2, 1, &arg2))
@@ -2148,13 +2148,13 @@ gl_rpmv2i(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void xfpt2i long s long s */
+/* void xfpt2i REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_xfpt2i(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
     if (!getilongarg(args, 2, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 2, 1, &arg2))
@@ -2164,13 +2164,13 @@ gl_xfpt2i(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void objdelete long s long s */
+/* void objdelete REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_objdelete(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
     if (!getilongarg(args, 2, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 2, 1, &arg2))
@@ -2180,13 +2180,13 @@ gl_objdelete(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void patchcurves long s long s */
+/* void patchcurves REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_patchcurves(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
     if (!getilongarg(args, 2, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 2, 1, &arg2))
@@ -2196,13 +2196,13 @@ gl_patchcurves(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void minsize long s long s */
+/* void minsize REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_minsize(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
     if (!getilongarg(args, 2, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 2, 1, &arg2))
@@ -2212,13 +2212,13 @@ gl_minsize(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void maxsize long s long s */
+/* void maxsize REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_maxsize(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
     if (!getilongarg(args, 2, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 2, 1, &arg2))
@@ -2228,13 +2228,13 @@ gl_maxsize(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void keepaspect long s long s */
+/* void keepaspect REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_keepaspect(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
     if (!getilongarg(args, 2, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 2, 1, &arg2))
@@ -2244,13 +2244,13 @@ gl_keepaspect(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void prefsize long s long s */
+/* void prefsize REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_prefsize(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
     if (!getilongarg(args, 2, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 2, 1, &arg2))
@@ -2260,13 +2260,13 @@ gl_prefsize(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void stepunit long s long s */
+/* void stepunit REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_stepunit(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
     if (!getilongarg(args, 2, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 2, 1, &arg2))
@@ -2276,13 +2276,13 @@ gl_stepunit(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void fudge long s long s */
+/* void fudge REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_fudge(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
     if (!getilongarg(args, 2, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 2, 1, &arg2))
@@ -2292,13 +2292,13 @@ gl_fudge(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void winmove long s long s */
+/* void winmove REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_winmove(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
     if (!getilongarg(args, 2, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 2, 1, &arg2))
@@ -2808,14 +2808,14 @@ gl_rcrv(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void addtopup long s char *s long s */
+/* void addtopup REALLYLONG s char *s REALLYLONG s */
 
 static PyObject *
 gl_addtopup(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     string arg2 ;
-    long arg3 ;
+    REALLYLONG arg3 ;
     if (!getilongarg(args, 3, 0, &arg1))
         return NULL;
     if (!getistringarg(args, 3, 1, &arg2))
@@ -2853,12 +2853,12 @@ gl_getport(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* long strwidth char *s */
+/* REALLYLONG strwidth char *s */
 
 static PyObject *
 gl_strwidth(PyObject *self, PyObject *args)
 {
-    long retval;
+    REALLYLONG retval;
     string arg1 ;
     if (!getistringarg(args, 1, 0, &arg1))
         return NULL;
@@ -2866,12 +2866,12 @@ gl_strwidth(PyObject *self, PyObject *args)
     return mknewlongobject(retval);
 }
 
-/* long winopen char *s */
+/* REALLYLONG winopen char *s */
 
 static PyObject *
 gl_winopen(PyObject *self, PyObject *args)
 {
-    long retval;
+    REALLYLONG retval;
     string arg1 ;
     if (!getistringarg(args, 1, 0, &arg1))
         return NULL;
@@ -2892,12 +2892,12 @@ gl_wintitle(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void polf long s float s[3*arg1] */
+/* void polf REALLYLONG s float s[3*arg1] */
 
 static PyObject *
 gl_polf(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     float (* arg2) [ 3 ] ;
     if (!getilongarraysize(args, 1, 0, &arg1))
         return NULL;
@@ -2912,12 +2912,12 @@ gl_polf(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void polf2 long s float s[2*arg1] */
+/* void polf2 REALLYLONG s float s[2*arg1] */
 
 static PyObject *
 gl_polf2(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     float (* arg2) [ 2 ] ;
     if (!getilongarraysize(args, 1, 0, &arg1))
         return NULL;
@@ -2932,12 +2932,12 @@ gl_polf2(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void poly long s float s[3*arg1] */
+/* void poly REALLYLONG s float s[3*arg1] */
 
 static PyObject *
 gl_poly(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     float (* arg2) [ 3 ] ;
     if (!getilongarraysize(args, 1, 0, &arg1))
         return NULL;
@@ -2952,12 +2952,12 @@ gl_poly(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void poly2 long s float s[2*arg1] */
+/* void poly2 REALLYLONG s float s[2*arg1] */
 
 static PyObject *
 gl_poly2(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     float (* arg2) [ 2 ] ;
     if (!getilongarraysize(args, 1, 0, &arg1))
         return NULL;
@@ -2972,12 +2972,12 @@ gl_poly2(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void crvn long s float s[3*arg1] */
+/* void crvn REALLYLONG s float s[3*arg1] */
 
 static PyObject *
 gl_crvn(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     float (* arg2) [ 3 ] ;
     if (!getilongarraysize(args, 1, 0, &arg1))
         return NULL;
@@ -2992,12 +2992,12 @@ gl_crvn(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void rcrvn long s float s[4*arg1] */
+/* void rcrvn REALLYLONG s float s[4*arg1] */
 
 static PyObject *
 gl_rcrvn(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     float (* arg2) [ 4 ] ;
     if (!getilongarraysize(args, 1, 0, &arg1))
         return NULL;
@@ -3012,19 +3012,19 @@ gl_rcrvn(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void polf2i long s long s[2*arg1] */
+/* void polf2i REALLYLONG s REALLYLONG s[2*arg1] */
 
 static PyObject *
 gl_polf2i(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long (* arg2) [ 2 ] ;
+    REALLYLONG arg1 ;
+    REALLYLONG (* arg2) [ 2 ] ;
     if (!getilongarraysize(args, 1, 0, &arg1))
         return NULL;
     arg1 = arg1 / 2;
-    if ((arg2 = (long(*)[2]) PyMem_NEW(long , 2 * arg1 )) == NULL)
+    if ((arg2 = (long(*)[2]) PyMem_NEW(REALLYLONG , 2 * arg1 )) == NULL)
         return PyErr_NoMemory();
-    if (!getilongarray(args, 1, 0, 2 * arg1 , (long *) arg2))
+    if (!getilongarray(args, 1, 0, 2 * arg1 , (REALLYLONG *) arg2))
         return NULL;
     polf2i( arg1 , arg2 );
     PyMem_DEL(arg2);
@@ -3032,19 +3032,19 @@ gl_polf2i(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void polfi long s long s[3*arg1] */
+/* void polfi REALLYLONG s REALLYLONG s[3*arg1] */
 
 static PyObject *
 gl_polfi(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long (* arg2) [ 3 ] ;
+    REALLYLONG arg1 ;
+    REALLYLONG (* arg2) [ 3 ] ;
     if (!getilongarraysize(args, 1, 0, &arg1))
         return NULL;
     arg1 = arg1 / 3;
-    if ((arg2 = (long(*)[3]) PyMem_NEW(long , 3 * arg1 )) == NULL)
+    if ((arg2 = (long(*)[3]) PyMem_NEW(REALLYLONG , 3 * arg1 )) == NULL)
         return PyErr_NoMemory();
-    if (!getilongarray(args, 1, 0, 3 * arg1 , (long *) arg2))
+    if (!getilongarray(args, 1, 0, 3 * arg1 , (REALLYLONG *) arg2))
         return NULL;
     polfi( arg1 , arg2 );
     PyMem_DEL(arg2);
@@ -3052,19 +3052,19 @@ gl_polfi(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void poly2i long s long s[2*arg1] */
+/* void poly2i REALLYLONG s REALLYLONG s[2*arg1] */
 
 static PyObject *
 gl_poly2i(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long (* arg2) [ 2 ] ;
+    REALLYLONG arg1 ;
+    REALLYLONG (* arg2) [ 2 ] ;
     if (!getilongarraysize(args, 1, 0, &arg1))
         return NULL;
     arg1 = arg1 / 2;
-    if ((arg2 = (long(*)[2]) PyMem_NEW(long , 2 * arg1 )) == NULL)
+    if ((arg2 = (long(*)[2]) PyMem_NEW(REALLYLONG , 2 * arg1 )) == NULL)
         return PyErr_NoMemory();
-    if (!getilongarray(args, 1, 0, 2 * arg1 , (long *) arg2))
+    if (!getilongarray(args, 1, 0, 2 * arg1 , (REALLYLONG *) arg2))
         return NULL;
     poly2i( arg1 , arg2 );
     PyMem_DEL(arg2);
@@ -3072,19 +3072,19 @@ gl_poly2i(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void polyi long s long s[3*arg1] */
+/* void polyi REALLYLONG s REALLYLONG s[3*arg1] */
 
 static PyObject *
 gl_polyi(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long (* arg2) [ 3 ] ;
+    REALLYLONG arg1 ;
+    REALLYLONG (* arg2) [ 3 ] ;
     if (!getilongarraysize(args, 1, 0, &arg1))
         return NULL;
     arg1 = arg1 / 3;
-    if ((arg2 = (long(*)[3]) PyMem_NEW(long , 3 * arg1 )) == NULL)
+    if ((arg2 = (long(*)[3]) PyMem_NEW(REALLYLONG , 3 * arg1 )) == NULL)
         return PyErr_NoMemory();
-    if (!getilongarray(args, 1, 0, 3 * arg1 , (long *) arg2))
+    if (!getilongarray(args, 1, 0, 3 * arg1 , (REALLYLONG *) arg2))
         return NULL;
     polyi( arg1 , arg2 );
     PyMem_DEL(arg2);
@@ -3092,12 +3092,12 @@ gl_polyi(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void polf2s long s short s[2*arg1] */
+/* void polf2s REALLYLONG s short s[2*arg1] */
 
 static PyObject *
 gl_polf2s(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     short (* arg2) [ 2 ] ;
     if (!getilongarraysize(args, 1, 0, &arg1))
         return NULL;
@@ -3112,12 +3112,12 @@ gl_polf2s(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void polfs long s short s[3*arg1] */
+/* void polfs REALLYLONG s short s[3*arg1] */
 
 static PyObject *
 gl_polfs(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     short (* arg2) [ 3 ] ;
     if (!getilongarraysize(args, 1, 0, &arg1))
         return NULL;
@@ -3132,12 +3132,12 @@ gl_polfs(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void polys long s short s[3*arg1] */
+/* void polys REALLYLONG s short s[3*arg1] */
 
 static PyObject *
 gl_polys(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     short (* arg2) [ 3 ] ;
     if (!getilongarraysize(args, 1, 0, &arg1))
         return NULL;
@@ -3152,12 +3152,12 @@ gl_polys(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void poly2s long s short s[2*arg1] */
+/* void poly2s REALLYLONG s short s[2*arg1] */
 
 static PyObject *
 gl_poly2s(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     short (* arg2) [ 2 ] ;
     if (!getilongarraysize(args, 1, 0, &arg1))
         return NULL;
@@ -3207,12 +3207,12 @@ gl_writepixels(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void defbasis long s float s[4*4] */
+/* void defbasis REALLYLONG s float s[4*4] */
 
 static PyObject *
 gl_defbasis(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     float arg2 [ 4 ] [ 4 ] ;
     if (!getilongarg(args, 2, 0, &arg1))
         return NULL;
@@ -3274,14 +3274,14 @@ gl_rot(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void circfi long s long s long s */
+/* void circfi REALLYLONG s REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_circfi(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
-    long arg3 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
+    REALLYLONG arg3 ;
     if (!getilongarg(args, 3, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 3, 1, &arg2))
@@ -3293,14 +3293,14 @@ gl_circfi(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void circi long s long s long s */
+/* void circi REALLYLONG s REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_circi(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
-    long arg3 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
+    REALLYLONG arg3 ;
     if (!getilongarg(args, 3, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 3, 1, &arg2))
@@ -3312,14 +3312,14 @@ gl_circi(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void cmovi long s long s long s */
+/* void cmovi REALLYLONG s REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_cmovi(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
-    long arg3 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
+    REALLYLONG arg3 ;
     if (!getilongarg(args, 3, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 3, 1, &arg2))
@@ -3331,14 +3331,14 @@ gl_cmovi(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void drawi long s long s long s */
+/* void drawi REALLYLONG s REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_drawi(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
-    long arg3 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
+    REALLYLONG arg3 ;
     if (!getilongarg(args, 3, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 3, 1, &arg2))
@@ -3350,14 +3350,14 @@ gl_drawi(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void movei long s long s long s */
+/* void movei REALLYLONG s REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_movei(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
-    long arg3 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
+    REALLYLONG arg3 ;
     if (!getilongarg(args, 3, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 3, 1, &arg2))
@@ -3369,14 +3369,14 @@ gl_movei(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void pnti long s long s long s */
+/* void pnti REALLYLONG s REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_pnti(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
-    long arg3 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
+    REALLYLONG arg3 ;
     if (!getilongarg(args, 3, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 3, 1, &arg2))
@@ -3388,14 +3388,14 @@ gl_pnti(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void newtag long s long s long s */
+/* void newtag REALLYLONG s REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_newtag(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
-    long arg3 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
+    REALLYLONG arg3 ;
     if (!getilongarg(args, 3, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 3, 1, &arg2))
@@ -3407,14 +3407,14 @@ gl_newtag(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void pdri long s long s long s */
+/* void pdri REALLYLONG s REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_pdri(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
-    long arg3 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
+    REALLYLONG arg3 ;
     if (!getilongarg(args, 3, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 3, 1, &arg2))
@@ -3426,14 +3426,14 @@ gl_pdri(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void pmvi long s long s long s */
+/* void pmvi REALLYLONG s REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_pmvi(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
-    long arg3 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
+    REALLYLONG arg3 ;
     if (!getilongarg(args, 3, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 3, 1, &arg2))
@@ -3445,14 +3445,14 @@ gl_pmvi(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void rdri long s long s long s */
+/* void rdri REALLYLONG s REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_rdri(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
-    long arg3 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
+    REALLYLONG arg3 ;
     if (!getilongarg(args, 3, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 3, 1, &arg2))
@@ -3464,14 +3464,14 @@ gl_rdri(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void rmvi long s long s long s */
+/* void rmvi REALLYLONG s REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_rmvi(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
-    long arg3 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
+    REALLYLONG arg3 ;
     if (!getilongarg(args, 3, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 3, 1, &arg2))
@@ -3483,14 +3483,14 @@ gl_rmvi(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void rpdri long s long s long s */
+/* void rpdri REALLYLONG s REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_rpdri(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
-    long arg3 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
+    REALLYLONG arg3 ;
     if (!getilongarg(args, 3, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 3, 1, &arg2))
@@ -3502,14 +3502,14 @@ gl_rpdri(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void rpmvi long s long s long s */
+/* void rpmvi REALLYLONG s REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_rpmvi(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
-    long arg3 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
+    REALLYLONG arg3 ;
     if (!getilongarg(args, 3, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 3, 1, &arg2))
@@ -3521,14 +3521,14 @@ gl_rpmvi(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void xfpti long s long s long s */
+/* void xfpti REALLYLONG s REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_xfpti(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
-    long arg3 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
+    REALLYLONG arg3 ;
     if (!getilongarg(args, 3, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 3, 1, &arg2))
@@ -4205,12 +4205,12 @@ gl_patch(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void splf long s float s[3*arg1] u_short s[arg1] */
+/* void splf REALLYLONG s float s[3*arg1] u_short s[arg1] */
 
 static PyObject *
 gl_splf(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     float (* arg2) [ 3 ] ;
     unsigned short * arg3 ;
     if (!getilongarraysize(args, 2, 0, &arg1))
@@ -4231,12 +4231,12 @@ gl_splf(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void splf2 long s float s[2*arg1] u_short s[arg1] */
+/* void splf2 REALLYLONG s float s[2*arg1] u_short s[arg1] */
 
 static PyObject *
 gl_splf2(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     float (* arg2) [ 2 ] ;
     unsigned short * arg3 ;
     if (!getilongarraysize(args, 2, 0, &arg1))
@@ -4257,20 +4257,20 @@ gl_splf2(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void splfi long s long s[3*arg1] u_short s[arg1] */
+/* void splfi REALLYLONG s REALLYLONG s[3*arg1] u_short s[arg1] */
 
 static PyObject *
 gl_splfi(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long (* arg2) [ 3 ] ;
+    REALLYLONG arg1 ;
+    REALLYLONG (* arg2) [ 3 ] ;
     unsigned short * arg3 ;
     if (!getilongarraysize(args, 2, 0, &arg1))
         return NULL;
     arg1 = arg1 / 3;
-    if ((arg2 = (long(*)[3]) PyMem_NEW(long , 3 * arg1 )) == NULL)
+    if ((arg2 = (long(*)[3]) PyMem_NEW(REALLYLONG , 3 * arg1 )) == NULL)
         return PyErr_NoMemory();
-    if (!getilongarray(args, 2, 0, 3 * arg1 , (long *) arg2))
+    if (!getilongarray(args, 2, 0, 3 * arg1 , (REALLYLONG *) arg2))
         return NULL;
     if ((arg3 = PyMem_NEW(unsigned short , arg1 )) == NULL)
         return PyErr_NoMemory();
@@ -4283,20 +4283,20 @@ gl_splfi(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void splf2i long s long s[2*arg1] u_short s[arg1] */
+/* void splf2i REALLYLONG s REALLYLONG s[2*arg1] u_short s[arg1] */
 
 static PyObject *
 gl_splf2i(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long (* arg2) [ 2 ] ;
+    REALLYLONG arg1 ;
+    REALLYLONG (* arg2) [ 2 ] ;
     unsigned short * arg3 ;
     if (!getilongarraysize(args, 2, 0, &arg1))
         return NULL;
     arg1 = arg1 / 2;
-    if ((arg2 = (long(*)[2]) PyMem_NEW(long , 2 * arg1 )) == NULL)
+    if ((arg2 = (long(*)[2]) PyMem_NEW(REALLYLONG , 2 * arg1 )) == NULL)
         return PyErr_NoMemory();
-    if (!getilongarray(args, 2, 0, 2 * arg1 , (long *) arg2))
+    if (!getilongarray(args, 2, 0, 2 * arg1 , (REALLYLONG *) arg2))
         return NULL;
     if ((arg3 = PyMem_NEW(unsigned short , arg1 )) == NULL)
         return PyErr_NoMemory();
@@ -4309,12 +4309,12 @@ gl_splf2i(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void splfs long s short s[3*arg1] u_short s[arg1] */
+/* void splfs REALLYLONG s short s[3*arg1] u_short s[arg1] */
 
 static PyObject *
 gl_splfs(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     short (* arg2) [ 3 ] ;
     unsigned short * arg3 ;
     if (!getilongarraysize(args, 2, 0, &arg1))
@@ -4335,12 +4335,12 @@ gl_splfs(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void splf2s long s short s[2*arg1] u_short s[arg1] */
+/* void splf2s REALLYLONG s short s[2*arg1] u_short s[arg1] */
 
 static PyObject *
 gl_splf2s(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     short (* arg2) [ 2 ] ;
     unsigned short * arg3 ;
     if (!getilongarraysize(args, 2, 0, &arg1))
@@ -4625,15 +4625,15 @@ gl_xfpt4s(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void rectfi long s long s long s long s */
+/* void rectfi REALLYLONG s REALLYLONG s REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_rectfi(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
-    long arg3 ;
-    long arg4 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
+    REALLYLONG arg3 ;
+    REALLYLONG arg4 ;
     if (!getilongarg(args, 4, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 4, 1, &arg2))
@@ -4647,15 +4647,15 @@ gl_rectfi(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void recti long s long s long s long s */
+/* void recti REALLYLONG s REALLYLONG s REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_recti(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
-    long arg3 ;
-    long arg4 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
+    REALLYLONG arg3 ;
+    REALLYLONG arg4 ;
     if (!getilongarg(args, 4, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 4, 1, &arg2))
@@ -4669,15 +4669,15 @@ gl_recti(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void xfpt4i long s long s long s long s */
+/* void xfpt4i REALLYLONG s REALLYLONG s REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_xfpt4i(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
-    long arg3 ;
-    long arg4 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
+    REALLYLONG arg3 ;
+    REALLYLONG arg4 ;
     if (!getilongarg(args, 4, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 4, 1, &arg2))
@@ -4691,15 +4691,15 @@ gl_xfpt4i(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void prefposition long s long s long s long s */
+/* void prefposition REALLYLONG s REALLYLONG s REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_prefposition(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
-    long arg3 ;
-    long arg4 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
+    REALLYLONG arg3 ;
+    REALLYLONG arg4 ;
     if (!getilongarg(args, 4, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 4, 1, &arg2))
@@ -4763,14 +4763,14 @@ gl_arcf(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void arcfi long s long s long s short s short s */
+/* void arcfi REALLYLONG s REALLYLONG s REALLYLONG s short s short s */
 
 static PyObject *
 gl_arcfi(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
-    long arg3 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
+    REALLYLONG arg3 ;
     short arg4 ;
     short arg5 ;
     if (!getilongarg(args, 5, 0, &arg1))
@@ -4788,14 +4788,14 @@ gl_arcfi(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void arci long s long s long s short s short s */
+/* void arci REALLYLONG s REALLYLONG s REALLYLONG s short s short s */
 
 static PyObject *
 gl_arci(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
-    long arg3 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
+    REALLYLONG arg3 ;
     short arg4 ;
     short arg5 ;
     if (!getilongarg(args, 5, 0, &arg1))
@@ -4841,17 +4841,17 @@ gl_bbox2(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void bbox2i short s short s long s long s long s long s */
+/* void bbox2i short s short s REALLYLONG s REALLYLONG s REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_bbox2i(PyObject *self, PyObject *args)
 {
     short arg1 ;
     short arg2 ;
-    long arg3 ;
-    long arg4 ;
-    long arg5 ;
-    long arg6 ;
+    REALLYLONG arg3 ;
+    REALLYLONG arg4 ;
+    REALLYLONG arg5 ;
+    REALLYLONG arg6 ;
     if (!getishortarg(args, 6, 0, &arg1))
         return NULL;
     if (!getishortarg(args, 6, 1, &arg2))
@@ -5162,12 +5162,12 @@ gl_RGBcursor(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* long getbutton short s */
+/* REALLYLONG getbutton short s */
 
 static PyObject *
 gl_getbutton(PyObject *self, PyObject *args)
 {
-    long retval;
+    REALLYLONG retval;
     short arg1 ;
     if (!getishortarg(args, 1, 0, &arg1))
         return NULL;
@@ -5175,85 +5175,85 @@ gl_getbutton(PyObject *self, PyObject *args)
     return mknewlongobject(retval);
 }
 
-/* long getcmmode */
+/* REALLYLONG getcmmode */
 
 static PyObject *
 gl_getcmmode(PyObject *self, PyObject *args)
 {
-    long retval;
+    REALLYLONG retval;
     retval = getcmmode( );
     return mknewlongobject(retval);
 }
 
-/* long getlsbackup */
+/* REALLYLONG getlsbackup */
 
 static PyObject *
 gl_getlsbackup(PyObject *self, PyObject *args)
 {
-    long retval;
+    REALLYLONG retval;
     retval = getlsbackup( );
     return mknewlongobject(retval);
 }
 
-/* long getresetls */
+/* REALLYLONG getresetls */
 
 static PyObject *
 gl_getresetls(PyObject *self, PyObject *args)
 {
-    long retval;
+    REALLYLONG retval;
     retval = getresetls( );
     return mknewlongobject(retval);
 }
 
-/* long getdcm */
+/* REALLYLONG getdcm */
 
 static PyObject *
 gl_getdcm(PyObject *self, PyObject *args)
 {
-    long retval;
+    REALLYLONG retval;
     retval = getdcm( );
     return mknewlongobject(retval);
 }
 
-/* long getzbuffer */
+/* REALLYLONG getzbuffer */
 
 static PyObject *
 gl_getzbuffer(PyObject *self, PyObject *args)
 {
-    long retval;
+    REALLYLONG retval;
     retval = getzbuffer( );
     return mknewlongobject(retval);
 }
 
-/* long ismex */
+/* REALLYLONG ismex */
 
 static PyObject *
 gl_ismex(PyObject *self, PyObject *args)
 {
-    long retval;
+    REALLYLONG retval;
     retval = ismex( );
     return mknewlongobject(retval);
 }
 
-/* long isobj long s */
+/* REALLYLONG isobj REALLYLONG s */
 
 static PyObject *
 gl_isobj(PyObject *self, PyObject *args)
 {
-    long retval;
-    long arg1 ;
+    REALLYLONG retval;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     retval = isobj( arg1 );
     return mknewlongobject(retval);
 }
 
-/* long isqueued short s */
+/* REALLYLONG isqueued short s */
 
 static PyObject *
 gl_isqueued(PyObject *self, PyObject *args)
 {
-    long retval;
+    REALLYLONG retval;
     short arg1 ;
     if (!getishortarg(args, 1, 0, &arg1))
         return NULL;
@@ -5261,245 +5261,245 @@ gl_isqueued(PyObject *self, PyObject *args)
     return mknewlongobject(retval);
 }
 
-/* long istag long s */
+/* REALLYLONG istag REALLYLONG s */
 
 static PyObject *
 gl_istag(PyObject *self, PyObject *args)
 {
-    long retval;
-    long arg1 ;
+    REALLYLONG retval;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     retval = istag( arg1 );
     return mknewlongobject(retval);
 }
 
-/* long genobj */
+/* REALLYLONG genobj */
 
 static PyObject *
 gl_genobj(PyObject *self, PyObject *args)
 {
-    long retval;
+    REALLYLONG retval;
     retval = genobj( );
     return mknewlongobject(retval);
 }
 
-/* long gentag */
+/* REALLYLONG gentag */
 
 static PyObject *
 gl_gentag(PyObject *self, PyObject *args)
 {
-    long retval;
+    REALLYLONG retval;
     retval = gentag( );
     return mknewlongobject(retval);
 }
 
-/* long getbuffer */
+/* REALLYLONG getbuffer */
 
 static PyObject *
 gl_getbuffer(PyObject *self, PyObject *args)
 {
-    long retval;
+    REALLYLONG retval;
     retval = getbuffer( );
     return mknewlongobject(retval);
 }
 
-/* long getcolor */
+/* REALLYLONG getcolor */
 
 static PyObject *
 gl_getcolor(PyObject *self, PyObject *args)
 {
-    long retval;
+    REALLYLONG retval;
     retval = getcolor( );
     return mknewlongobject(retval);
 }
 
-/* long getdisplaymode */
+/* REALLYLONG getdisplaymode */
 
 static PyObject *
 gl_getdisplaymode(PyObject *self, PyObject *args)
 {
-    long retval;
+    REALLYLONG retval;
     retval = getdisplaymode( );
     return mknewlongobject(retval);
 }
 
-/* long getfont */
+/* REALLYLONG getfont */
 
 static PyObject *
 gl_getfont(PyObject *self, PyObject *args)
 {
-    long retval;
+    REALLYLONG retval;
     retval = getfont( );
     return mknewlongobject(retval);
 }
 
-/* long getheight */
+/* REALLYLONG getheight */
 
 static PyObject *
 gl_getheight(PyObject *self, PyObject *args)
 {
-    long retval;
+    REALLYLONG retval;
     retval = getheight( );
     return mknewlongobject(retval);
 }
 
-/* long gethitcode */
+/* REALLYLONG gethitcode */
 
 static PyObject *
 gl_gethitcode(PyObject *self, PyObject *args)
 {
-    long retval;
+    REALLYLONG retval;
     retval = gethitcode( );
     return mknewlongobject(retval);
 }
 
-/* long getlstyle */
+/* REALLYLONG getlstyle */
 
 static PyObject *
 gl_getlstyle(PyObject *self, PyObject *args)
 {
-    long retval;
+    REALLYLONG retval;
     retval = getlstyle( );
     return mknewlongobject(retval);
 }
 
-/* long getlwidth */
+/* REALLYLONG getlwidth */
 
 static PyObject *
 gl_getlwidth(PyObject *self, PyObject *args)
 {
-    long retval;
+    REALLYLONG retval;
     retval = getlwidth( );
     return mknewlongobject(retval);
 }
 
-/* long getmap */
+/* REALLYLONG getmap */
 
 static PyObject *
 gl_getmap(PyObject *self, PyObject *args)
 {
-    long retval;
+    REALLYLONG retval;
     retval = getmap( );
     return mknewlongobject(retval);
 }
 
-/* long getplanes */
+/* REALLYLONG getplanes */
 
 static PyObject *
 gl_getplanes(PyObject *self, PyObject *args)
 {
-    long retval;
+    REALLYLONG retval;
     retval = getplanes( );
     return mknewlongobject(retval);
 }
 
-/* long getwritemask */
+/* REALLYLONG getwritemask */
 
 static PyObject *
 gl_getwritemask(PyObject *self, PyObject *args)
 {
-    long retval;
+    REALLYLONG retval;
     retval = getwritemask( );
     return mknewlongobject(retval);
 }
 
-/* long qtest */
+/* REALLYLONG qtest */
 
 static PyObject *
 gl_qtest(PyObject *self, PyObject *args)
 {
-    long retval;
+    REALLYLONG retval;
     retval = qtest( );
     return mknewlongobject(retval);
 }
 
-/* long getlsrepeat */
+/* REALLYLONG getlsrepeat */
 
 static PyObject *
 gl_getlsrepeat(PyObject *self, PyObject *args)
 {
-    long retval;
+    REALLYLONG retval;
     retval = getlsrepeat( );
     return mknewlongobject(retval);
 }
 
-/* long getmonitor */
+/* REALLYLONG getmonitor */
 
 static PyObject *
 gl_getmonitor(PyObject *self, PyObject *args)
 {
-    long retval;
+    REALLYLONG retval;
     retval = getmonitor( );
     return mknewlongobject(retval);
 }
 
-/* long getopenobj */
+/* REALLYLONG getopenobj */
 
 static PyObject *
 gl_getopenobj(PyObject *self, PyObject *args)
 {
-    long retval;
+    REALLYLONG retval;
     retval = getopenobj( );
     return mknewlongobject(retval);
 }
 
-/* long getpattern */
+/* REALLYLONG getpattern */
 
 static PyObject *
 gl_getpattern(PyObject *self, PyObject *args)
 {
-    long retval;
+    REALLYLONG retval;
     retval = getpattern( );
     return mknewlongobject(retval);
 }
 
-/* long winget */
+/* REALLYLONG winget */
 
 static PyObject *
 gl_winget(PyObject *self, PyObject *args)
 {
-    long retval;
+    REALLYLONG retval;
     retval = winget( );
     return mknewlongobject(retval);
 }
 
-/* long winattach */
+/* REALLYLONG winattach */
 
 static PyObject *
 gl_winattach(PyObject *self, PyObject *args)
 {
-    long retval;
+    REALLYLONG retval;
     retval = winattach( );
     return mknewlongobject(retval);
 }
 
-/* long getothermonitor */
+/* REALLYLONG getothermonitor */
 
 static PyObject *
 gl_getothermonitor(PyObject *self, PyObject *args)
 {
-    long retval;
+    REALLYLONG retval;
     retval = getothermonitor( );
     return mknewlongobject(retval);
 }
 
-/* long newpup */
+/* REALLYLONG newpup */
 
 static PyObject *
 gl_newpup(PyObject *self, PyObject *args)
 {
-    long retval;
+    REALLYLONG retval;
     retval = newpup( );
     return mknewlongobject(retval);
 }
 
-/* long getvaluator short s */
+/* REALLYLONG getvaluator short s */
 
 static PyObject *
 gl_getvaluator(PyObject *self, PyObject *args)
 {
-    long retval;
+    REALLYLONG retval;
     short arg1 ;
     if (!getishortarg(args, 1, 0, &arg1))
         return NULL;
@@ -5507,12 +5507,12 @@ gl_getvaluator(PyObject *self, PyObject *args)
     return mknewlongobject(retval);
 }
 
-/* void winset long s */
+/* void winset REALLYLONG s */
 
 static PyObject *
 gl_winset(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     winset( arg1 );
@@ -5520,13 +5520,13 @@ gl_winset(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* long dopup long s */
+/* REALLYLONG dopup REALLYLONG s */
 
 static PyObject *
 gl_dopup(PyObject *self, PyObject *args)
 {
-    long retval;
-    long arg1 ;
+    REALLYLONG retval;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     retval = dopup( arg1 );
@@ -5565,13 +5565,13 @@ gl_getcpos(PyObject *self, PyObject *args)
     }
 }
 
-/* void getsize long r long r */
+/* void getsize REALLYLONG r REALLYLONG r */
 
 static PyObject *
 gl_getsize(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
     getsize( & arg1 , & arg2 );
     { PyObject *v = PyTuple_New( 2 );
       if (v == NULL) return NULL;
@@ -5581,13 +5581,13 @@ gl_getsize(PyObject *self, PyObject *args)
     }
 }
 
-/* void getorigin long r long r */
+/* void getorigin REALLYLONG r REALLYLONG r */
 
 static PyObject *
 gl_getorigin(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
     getorigin( & arg1 , & arg2 );
     { PyObject *v = PyTuple_New( 2 );
       if (v == NULL) return NULL;
@@ -5657,15 +5657,15 @@ gl_getgpos(PyObject *self, PyObject *args)
     }
 }
 
-/* void winposition long s long s long s long s */
+/* void winposition REALLYLONG s REALLYLONG s REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_winposition(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
-    long arg3 ;
-    long arg4 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
+    REALLYLONG arg3 ;
+    REALLYLONG arg4 ;
     if (!getilongarg(args, 4, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 4, 1, &arg2))
@@ -5756,12 +5756,12 @@ gl_getmcolor(PyObject *self, PyObject *args)
     }
 }
 
-/* void mapw long s short s short s float r float r float r float r float r float r */
+/* void mapw REALLYLONG s short s short s float r float r float r float r float r float r */
 
 static PyObject *
 gl_mapw(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     short arg2 ;
     short arg3 ;
     float arg4 ;
@@ -5789,12 +5789,12 @@ gl_mapw(PyObject *self, PyObject *args)
     }
 }
 
-/* void mapw2 long s short s short s float r float r */
+/* void mapw2 REALLYLONG s short s short s float r float r */
 
 static PyObject *
 gl_mapw2(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     short arg2 ;
     short arg3 ;
     float arg4 ;
@@ -5814,7 +5814,7 @@ gl_mapw2(PyObject *self, PyObject *args)
     }
 }
 
-/* void getcursor short r u_short r u_short r long r */
+/* void getcursor short r u_short r u_short r REALLYLONG r */
 
 static PyObject *
 gl_getcursor(PyObject *self, PyObject *args)
@@ -5822,7 +5822,7 @@ gl_getcursor(PyObject *self, PyObject *args)
     short arg1 ;
     unsigned short arg2 ;
     unsigned short arg3 ;
-    long arg4 ;
+    REALLYLONG arg4 ;
     getcursor( & arg1 , & arg2 , & arg3 , & arg4 );
     { PyObject *v = PyTuple_New( 4 );
       if (v == NULL) return NULL;
@@ -5844,12 +5844,12 @@ gl_cmode(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void concave long s */
+/* void concave REALLYLONG s */
 
 static PyObject *
 gl_concave(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     concave( arg1 );
@@ -5857,12 +5857,12 @@ gl_concave(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void curstype long s */
+/* void curstype REALLYLONG s */
 
 static PyObject *
 gl_curstype(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     curstype( arg1 );
@@ -5870,12 +5870,12 @@ gl_curstype(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void drawmode long s */
+/* void drawmode REALLYLONG s */
 
 static PyObject *
 gl_drawmode(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     drawmode( arg1 );
@@ -5902,63 +5902,63 @@ gl_gammaramp(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* long getbackface */
+/* REALLYLONG getbackface */
 
 static PyObject *
 gl_getbackface(PyObject *self, PyObject *args)
 {
-    long retval;
+    REALLYLONG retval;
     retval = getbackface( );
     return mknewlongobject(retval);
 }
 
-/* long getdescender */
+/* REALLYLONG getdescender */
 
 static PyObject *
 gl_getdescender(PyObject *self, PyObject *args)
 {
-    long retval;
+    REALLYLONG retval;
     retval = getdescender( );
     return mknewlongobject(retval);
 }
 
-/* long getdrawmode */
+/* REALLYLONG getdrawmode */
 
 static PyObject *
 gl_getdrawmode(PyObject *self, PyObject *args)
 {
-    long retval;
+    REALLYLONG retval;
     retval = getdrawmode( );
     return mknewlongobject(retval);
 }
 
-/* long getmmode */
+/* REALLYLONG getmmode */
 
 static PyObject *
 gl_getmmode(PyObject *self, PyObject *args)
 {
-    long retval;
+    REALLYLONG retval;
     retval = getmmode( );
     return mknewlongobject(retval);
 }
 
-/* long getsm */
+/* REALLYLONG getsm */
 
 static PyObject *
 gl_getsm(PyObject *self, PyObject *args)
 {
-    long retval;
+    REALLYLONG retval;
     retval = getsm( );
     return mknewlongobject(retval);
 }
 
-/* long getvideo long s */
+/* REALLYLONG getvideo REALLYLONG s */
 
 static PyObject *
 gl_getvideo(PyObject *self, PyObject *args)
 {
-    long retval;
-    long arg1 ;
+    REALLYLONG retval;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     retval = getvideo( arg1 );
@@ -5991,14 +5991,14 @@ gl_lmbind(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void lmdef long s long s long s float s[arg3] */
+/* void lmdef REALLYLONG s REALLYLONG s REALLYLONG s float s[arg3] */
 
 static PyObject *
 gl_lmdef(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
-    long arg3 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
+    REALLYLONG arg3 ;
     float * arg4 ;
     if (!getilongarg(args, 3, 0, &arg1))
         return NULL;
@@ -6016,12 +6016,12 @@ gl_lmdef(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void mmode long s */
+/* void mmode REALLYLONG s */
 
 static PyObject *
 gl_mmode(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     mmode( arg1 );
@@ -6042,12 +6042,12 @@ gl_normal(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void overlay long s */
+/* void overlay REALLYLONG s */
 
 static PyObject *
 gl_overlay(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     overlay( arg1 );
@@ -6089,13 +6089,13 @@ gl_RGBrange(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void setvideo long s long s */
+/* void setvideo REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_setvideo(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
     if (!getilongarg(args, 2, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 2, 1, &arg2))
@@ -6105,12 +6105,12 @@ gl_setvideo(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void shademodel long s */
+/* void shademodel REALLYLONG s */
 
 static PyObject *
 gl_shademodel(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     shademodel( arg1 );
@@ -6118,12 +6118,12 @@ gl_shademodel(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void underlay long s */
+/* void underlay REALLYLONG s */
 
 static PyObject *
 gl_underlay(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     underlay( arg1 );
@@ -6271,13 +6271,13 @@ gl_endtrim(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void blendfunction long s long s */
+/* void blendfunction REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_blendfunction(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
     if (!getilongarg(args, 2, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 2, 1, &arg2))
@@ -6300,12 +6300,12 @@ gl_c3f(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void c3i long s[3] */
+/* void c3i REALLYLONG s[3] */
 
 static PyObject *
 gl_c3i(PyObject *self, PyObject *args)
 {
-    long arg1 [ 3 ] ;
+    REALLYLONG arg1 [ 3 ] ;
     if (!getilongarray(args, 1, 0, 3 , arg1))
         return NULL;
     c3i( arg1 );
@@ -6339,12 +6339,12 @@ gl_c4f(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void c4i long s[4] */
+/* void c4i REALLYLONG s[4] */
 
 static PyObject *
 gl_c4i(PyObject *self, PyObject *args)
 {
-    long arg1 [ 4 ] ;
+    REALLYLONG arg1 [ 4 ] ;
     if (!getilongarray(args, 1, 0, 4 , arg1))
         return NULL;
     c4i( arg1 );
@@ -6378,12 +6378,12 @@ gl_colorf(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void cpack long s */
+/* void cpack REALLYLONG s */
 
 static PyObject *
 gl_cpack(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     cpack( arg1 );
@@ -6391,13 +6391,13 @@ gl_cpack(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void czclear long s long s */
+/* void czclear REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_czclear(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
     if (!getilongarg(args, 2, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 2, 1, &arg2))
@@ -6407,12 +6407,12 @@ gl_czclear(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void dglclose long s */
+/* void dglclose REALLYLONG s */
 
 static PyObject *
 gl_dglclose(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     dglclose( arg1 );
@@ -6420,14 +6420,14 @@ gl_dglclose(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* long dglopen char *s long s */
+/* REALLYLONG dglopen char *s REALLYLONG s */
 
 static PyObject *
 gl_dglopen(PyObject *self, PyObject *args)
 {
-    long retval;
+    REALLYLONG retval;
     string arg1 ;
-    long arg2 ;
+    REALLYLONG arg2 ;
     if (!getistringarg(args, 2, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 2, 1, &arg2))
@@ -6436,25 +6436,25 @@ gl_dglopen(PyObject *self, PyObject *args)
     return mknewlongobject(retval);
 }
 
-/* long getgdesc long s */
+/* REALLYLONG getgdesc REALLYLONG s */
 
 static PyObject *
 gl_getgdesc(PyObject *self, PyObject *args)
 {
-    long retval;
-    long arg1 ;
+    REALLYLONG retval;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     retval = getgdesc( arg1 );
     return mknewlongobject(retval);
 }
 
-/* void getnurbsproperty long s float r */
+/* void getnurbsproperty REALLYLONG s float r */
 
 static PyObject *
 gl_getnurbsproperty(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     float arg2 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
@@ -6462,13 +6462,13 @@ gl_getnurbsproperty(PyObject *self, PyObject *args)
     return mknewfloatobject(arg2);
 }
 
-/* void glcompat long s long s */
+/* void glcompat REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_glcompat(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
     if (!getilongarg(args, 2, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 2, 1, &arg2))
@@ -6478,13 +6478,13 @@ gl_glcompat(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void iconsize long s long s */
+/* void iconsize REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_iconsize(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
     if (!getilongarg(args, 2, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 2, 1, &arg2))
@@ -6507,7 +6507,7 @@ gl_icontitle(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void lRGBrange short s short s short s short s short s short s long s long s */
+/* void lRGBrange short s short s short s short s short s short s REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_lRGBrange(PyObject *self, PyObject *args)
@@ -6518,8 +6518,8 @@ gl_lRGBrange(PyObject *self, PyObject *args)
     short arg4 ;
     short arg5 ;
     short arg6 ;
-    long arg7 ;
-    long arg8 ;
+    REALLYLONG arg7 ;
+    REALLYLONG arg8 ;
     if (!getishortarg(args, 8, 0, &arg1))
         return NULL;
     if (!getishortarg(args, 8, 1, &arg2))
@@ -6541,12 +6541,12 @@ gl_lRGBrange(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void linesmooth long s */
+/* void linesmooth REALLYLONG s */
 
 static PyObject *
 gl_linesmooth(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     linesmooth( arg1 );
@@ -6554,12 +6554,12 @@ gl_linesmooth(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void lmcolor long s */
+/* void lmcolor REALLYLONG s */
 
 static PyObject *
 gl_lmcolor(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     lmcolor( arg1 );
@@ -6567,12 +6567,12 @@ gl_lmcolor(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void logicop long s */
+/* void logicop REALLYLONG s */
 
 static PyObject *
 gl_logicop(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     logicop( arg1 );
@@ -6580,13 +6580,13 @@ gl_logicop(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void lsetdepth long s long s */
+/* void lsetdepth REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_lsetdepth(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
     if (!getilongarg(args, 2, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 2, 1, &arg2))
@@ -6596,15 +6596,15 @@ gl_lsetdepth(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void lshaderange short s short s long s long s */
+/* void lshaderange short s short s REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_lshaderange(PyObject *self, PyObject *args)
 {
     short arg1 ;
     short arg2 ;
-    long arg3 ;
-    long arg4 ;
+    REALLYLONG arg3 ;
+    REALLYLONG arg4 ;
     if (!getishortarg(args, 4, 0, &arg1))
         return NULL;
     if (!getishortarg(args, 4, 1, &arg2))
@@ -6641,12 +6641,12 @@ gl_noborder(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void pntsmooth long s */
+/* void pntsmooth REALLYLONG s */
 
 static PyObject *
 gl_pntsmooth(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     pntsmooth( arg1 );
@@ -6654,12 +6654,12 @@ gl_pntsmooth(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void readsource long s */
+/* void readsource REALLYLONG s */
 
 static PyObject *
 gl_readsource(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     readsource( arg1 );
@@ -6705,15 +6705,15 @@ gl_sbox(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void sboxi long s long s long s long s */
+/* void sboxi REALLYLONG s REALLYLONG s REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_sboxi(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
-    long arg3 ;
-    long arg4 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
+    REALLYLONG arg3 ;
+    REALLYLONG arg4 ;
     if (!getilongarg(args, 4, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 4, 1, &arg2))
@@ -6771,15 +6771,15 @@ gl_sboxf(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void sboxfi long s long s long s long s */
+/* void sboxfi REALLYLONG s REALLYLONG s REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_sboxfi(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
-    long arg3 ;
-    long arg4 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
+    REALLYLONG arg3 ;
+    REALLYLONG arg4 ;
     if (!getilongarg(args, 4, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 4, 1, &arg2))
@@ -6815,12 +6815,12 @@ gl_sboxfs(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void setnurbsproperty long s float s */
+/* void setnurbsproperty REALLYLONG s float s */
 
 static PyObject *
 gl_setnurbsproperty(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     float arg2 ;
     if (!getilongarg(args, 2, 0, &arg1))
         return NULL;
@@ -6831,14 +6831,14 @@ gl_setnurbsproperty(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void setpup long s long s long s */
+/* void setpup REALLYLONG s REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_setpup(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
-    long arg3 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
+    REALLYLONG arg3 ;
     if (!getilongarg(args, 3, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 3, 1, &arg2))
@@ -6850,12 +6850,12 @@ gl_setpup(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void smoothline long s */
+/* void smoothline REALLYLONG s */
 
 static PyObject *
 gl_smoothline(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     smoothline( arg1 );
@@ -6863,12 +6863,12 @@ gl_smoothline(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void subpixel long s */
+/* void subpixel REALLYLONG s */
 
 static PyObject *
 gl_subpixel(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     subpixel( arg1 );
@@ -6886,13 +6886,13 @@ gl_swaptmesh(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* long swinopen long s */
+/* REALLYLONG swinopen REALLYLONG s */
 
 static PyObject *
 gl_swinopen(PyObject *self, PyObject *args)
 {
-    long retval;
-    long arg1 ;
+    REALLYLONG retval;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     retval = swinopen( arg1 );
@@ -6912,12 +6912,12 @@ gl_v2f(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void v2i long s[2] */
+/* void v2i REALLYLONG s[2] */
 
 static PyObject *
 gl_v2i(PyObject *self, PyObject *args)
 {
-    long arg1 [ 2 ] ;
+    REALLYLONG arg1 [ 2 ] ;
     if (!getilongarray(args, 1, 0, 2 , arg1))
         return NULL;
     v2i( arg1 );
@@ -6951,12 +6951,12 @@ gl_v3f(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void v3i long s[3] */
+/* void v3i REALLYLONG s[3] */
 
 static PyObject *
 gl_v3i(PyObject *self, PyObject *args)
 {
-    long arg1 [ 3 ] ;
+    REALLYLONG arg1 [ 3 ] ;
     if (!getilongarray(args, 1, 0, 3 , arg1))
         return NULL;
     v3i( arg1 );
@@ -6990,12 +6990,12 @@ gl_v4f(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void v4i long s[4] */
+/* void v4i REALLYLONG s[4] */
 
 static PyObject *
 gl_v4i(PyObject *self, PyObject *args)
 {
-    long arg1 [ 4 ] ;
+    REALLYLONG arg1 [ 4 ] ;
     if (!getilongarray(args, 1, 0, 4 , arg1))
         return NULL;
     v4i( arg1 );
@@ -7016,12 +7016,12 @@ gl_v4s(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void videocmd long s */
+/* void videocmd REALLYLONG s */
 
 static PyObject *
 gl_videocmd(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     videocmd( arg1 );
@@ -7029,25 +7029,25 @@ gl_videocmd(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* long windepth long s */
+/* REALLYLONG windepth REALLYLONG s */
 
 static PyObject *
 gl_windepth(PyObject *self, PyObject *args)
 {
-    long retval;
-    long arg1 ;
+    REALLYLONG retval;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     retval = windepth( arg1 );
     return mknewlongobject(retval);
 }
 
-/* void wmpack long s */
+/* void wmpack REALLYLONG s */
 
 static PyObject *
 gl_wmpack(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     wmpack( arg1 );
@@ -7055,12 +7055,12 @@ gl_wmpack(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void zdraw long s */
+/* void zdraw REALLYLONG s */
 
 static PyObject *
 gl_zdraw(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     zdraw( arg1 );
@@ -7068,12 +7068,12 @@ gl_zdraw(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void zfunction long s */
+/* void zfunction REALLYLONG s */
 
 static PyObject *
 gl_zfunction(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     zfunction( arg1 );
@@ -7081,12 +7081,12 @@ gl_zfunction(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void zsource long s */
+/* void zsource REALLYLONG s */
 
 static PyObject *
 gl_zsource(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     zsource( arg1 );
@@ -7094,12 +7094,12 @@ gl_zsource(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void zwritemask long s */
+/* void zwritemask REALLYLONG s */
 
 static PyObject *
 gl_zwritemask(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     zwritemask( arg1 );
@@ -7146,13 +7146,13 @@ gl_v4d(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* void pixmode long s long s */
+/* void pixmode REALLYLONG s REALLYLONG s */
 
 static PyObject *
 gl_pixmode(PyObject *self, PyObject *args)
 {
-    long arg1 ;
-    long arg2 ;
+    REALLYLONG arg1 ;
+    REALLYLONG arg2 ;
     if (!getilongarg(args, 2, 0, &arg1))
         return NULL;
     if (!getilongarg(args, 2, 1, &arg2))
@@ -7162,22 +7162,22 @@ gl_pixmode(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-/* long qgetfd */
+/* REALLYLONG qgetfd */
 
 static PyObject *
 gl_qgetfd(PyObject *self, PyObject *args)
 {
-    long retval;
+    REALLYLONG retval;
     retval = qgetfd( );
     return mknewlongobject(retval);
 }
 
-/* void dither long s */
+/* void dither REALLYLONG s */
 
 static PyObject *
 gl_dither(PyObject *self, PyObject *args)
 {
-    long arg1 ;
+    REALLYLONG arg1 ;
     if (!getilongarg(args, 1, 0, &arg1))
         return NULL;
     dither( arg1 );

@@ -1,5 +1,5 @@
 /* Area:	ffi_call
-   Purpose:	Check if long long are passed in the corresponding regs on ppc.
+   Purpose:	Check if REALLYLONG are passed in the corresponding regs on ppc.
    Limitations:	none.
    PR:		20104.
    Originator:	<andreast@gcc.gnu.org> 20050222  */
@@ -7,7 +7,7 @@
 /* { dg-do run } */
 /* { dg-options "-Wno-format" { target alpha*-dec-osf* } } */
 #include "ffitest.h"
-static long long return_ll(int ll0, long long ll1, int ll2)
+static REALLYLONG return_ll(int ll0, REALLYLONG ll1, int ll2)
 {
   return ll0 + ll1 + ll2;
 }
@@ -17,8 +17,8 @@ int main (void)
   ffi_cif cif;
   ffi_type *args[MAX_ARGS];
   void *values[MAX_ARGS];
-  long long rlonglong;
-  long long ll1;
+  REALLYLONG rlonglong;
+  REALLYLONG ll1;
   unsigned ll0, ll2;
 
   args[0] = &ffi_type_sint;

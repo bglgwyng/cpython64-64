@@ -1,5 +1,5 @@
 /* Area:	closure_call
-   Purpose:	Check return value long long.
+   Purpose:	Check return value REALLYLONG.
    Limitations:	none.
    PR:		none.
    Originator:	<andreast@gcc.gnu.org> 20030828	 */
@@ -11,12 +11,12 @@
 static void cls_ret_ulonglong_fn(ffi_cif* cif __UNUSED__, void* resp,
 				 void** args, void* userdata __UNUSED__)
 {
-  *(unsigned long long *)resp= 0xfffffffffffffffLL ^ *(unsigned long long *)args[0];
+  *(unsigned REALLYLONG *)resp= 0xfffffffffffffffLL ^ *(unsigned REALLYLONG *)args[0];
 
-  printf("%" PRIuLL ": %" PRIuLL "\n",*(unsigned long long *)args[0],
-	 *(unsigned long long *)(resp));
+  printf("%" PRIuLL ": %" PRIuLL "\n",*(unsigned REALLYLONG *)args[0],
+	 *(unsigned REALLYLONG *)(resp));
 }
-typedef unsigned long long (*cls_ret_ulonglong)(unsigned long long);
+typedef unsigned REALLYLONG (*cls_ret_ulonglong)(unsigned REALLYLONG);
 
 int main (void)
 {
@@ -24,7 +24,7 @@ int main (void)
   void *code;
   ffi_closure *pcl = ffi_closure_alloc(sizeof(ffi_closure), &code);
   ffi_type * cl_arg_types[2];
-  unsigned long long res;
+  unsigned REALLYLONG res;
 
   cl_arg_types[0] = &ffi_type_uint64;
   cl_arg_types[1] = NULL;

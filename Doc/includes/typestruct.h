@@ -30,7 +30,7 @@ typedef struct _typeobject {
     PyBufferProcs *tp_as_buffer;
 
     /* Flags to define presence of optional/expanded features */
-    long tp_flags;
+    REALLYLONG tp_flags;
 
     char *tp_doc; /* Documentation string */
 
@@ -46,7 +46,7 @@ typedef struct _typeobject {
     richcmpfunc tp_richcompare;
 
     /* weak reference enabler */
-    long tp_weaklistoffset;
+    REALLYLONG tp_weaklistoffset;
 
     /* Added in release 2.2 */
     /* Iterators */
@@ -61,7 +61,7 @@ typedef struct _typeobject {
     PyObject *tp_dict;
     descrgetfunc tp_descr_get;
     descrsetfunc tp_descr_set;
-    long tp_dictoffset;
+    REALLYLONG tp_dictoffset;
     initproc tp_init;
     allocfunc tp_alloc;
     newfunc tp_new;

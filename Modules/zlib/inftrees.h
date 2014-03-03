@@ -35,7 +35,7 @@ typedef struct {
     01000000 - invalid code
  */
 
-/* Maximum size of dynamic tree.  The maximum found in a long but non-
+/* Maximum size of dynamic tree.  The maximum found in a REALLYLONG but non-
    exhaustive search was 1444 code structures (852 for length/literals
    and 592 for distances, the latter actually the result of an
    exhaustive search).  The true maximum is not known, but the value

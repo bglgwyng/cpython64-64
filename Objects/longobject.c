@@ -95,14 +95,14 @@ _PyLong_Copy(PyLongObject *src)
     return (PyObject *)result;
 }
 
-/* Create a new long int object from a C long int */
+/* Create a new long int object from a C REALLYLONG int */
 
 PyObject *
-PyLong_FromLong(long ival)
+PyLong_FromLong(REALLYLONG ival)
 {
     PyLongObject *v;
-    unsigned long abs_ival;
-    unsigned long t;  /* unsigned so >> doesn't propagate sign bit */
+    UREALLYLONG abs_ival;
+    UREALLYLONG t;  /* unsigned so >> doesn't propagate sign bit */
     int ndigits = 0;
     int negative = 0;
 
@@ -110,11 +110,11 @@ PyLong_FromLong(long ival)
         /* if LONG_MIN == -LONG_MAX-1 (true on most platforms) then
            ANSI C says that the result of -ival is undefined when ival
            == LONG_MIN.  Hence the following workaround. */
-        abs_ival = (unsigned long)(-1-ival) + 1;
+        abs_ival = (UREALLYLONG)(-1-ival) + 1;
         negative = 1;
     }
     else {
-        abs_ival = (unsigned long)ival;
+        abs_ival = (UREALLYLONG)ival;
     }
 
     /* Count the number of Python digits.
@@ -139,17 +139,17 @@ PyLong_FromLong(long ival)
     return (PyObject *)v;
 }
 
-/* Create a new long int object from a C unsigned long int */
+/* Create a new long int object from a C UREALLYLONG int */
 
 PyObject *
-PyLong_FromUnsignedLong(unsigned long ival)
+PyLong_FromUnsignedLong(UREALLYLONG ival)
 {
     PyLongObject *v;
-    unsigned long t;
+    UREALLYLONG t;
     int ndigits = 0;
 
     /* Count the number of Python digits. */
-    t = (unsigned long)ival;
+    t = (UREALLYLONG)ival;
     while (t) {
         ++ndigits;
         t >>= PyLong_SHIFT;
@@ -211,16 +211,16 @@ PyLong_FromDouble(double dval)
 /* Checking for overflow in PyLong_AsLong is a PITA since C doesn't define
  * anything about what happens when a signed integer operation overflows,
  * and some compilers think they're doing you a favor by being "clever"
- * then.  The bit pattern for the largest postive signed long is
- * (unsigned long)LONG_MAX, and for the smallest negative signed long
- * it is abs(LONG_MIN), which we could write -(unsigned long)LONG_MIN.
+ * then.  The bit pattern for the largest postive signed REALLYLONG is
+ * (UREALLYLONG)LONG_MAX, and for the smallest negative signed long
+ * it is abs(LONG_MIN), which we could write -(UREALLYLONG)LONG_MIN.
  * However, some other compilers warn about applying unary minus to an
  * unsigned operand.  Hence the weird "0-".
  */
-#define PY_ABS_LONG_MIN         (0-(unsigned long)LONG_MIN)
+#define PY_ABS_LONG_MIN         (0-(UREALLYLONG)LONG_MIN)
 #define PY_ABS_SSIZE_T_MIN      (0-(size_t)PY_SSIZE_T_MIN)
 
-/* Get a C long int from a Python long or Python int object.
+/* Get a C REALLYLONG int from a Python REALLYLONG or Python int object.
    On overflow, returns -1 and sets *overflow to 1 or -1 depending
    on the sign of the result.  Otherwise *overflow is 0.
 
@@ -228,13 +228,13 @@ PyLong_FromDouble(double dval)
    condition.
 */
 
-long
+REALLYLONG
 PyLong_AsLongAndOverflow(PyObject *vv, int *overflow)
 {
     /* This version by Tim Peters */
     register PyLongObject *v;
-    unsigned long x, prev;
-    long res;
+    UREALLYLONG x, prev;
+    REALLYLONG res;
     Py_ssize_t i;
     int sign;
     int do_decref = 0; /* if nb_int was called */
@@ -301,11 +301,11 @@ PyLong_AsLongAndOverflow(PyObject *vv, int *overflow)
                 goto exit;
             }
         }
-        /* Haven't lost any bits, but casting to long requires extra
+        /* Haven't lost any bits, but casting to REALLYLONG requires extra
          * care (see comment above).
          */
-        if (x <= (unsigned long)LONG_MAX) {
-            res = (long)x * sign;
+        if (x <= (UREALLYLONG)LONG_MAX) {
+            res = (REALLYLONG)x * sign;
         }
         else if (sign < 0 && x == PY_ABS_LONG_MIN) {
             res = LONG_MIN;
@@ -322,14 +322,14 @@ PyLong_AsLongAndOverflow(PyObject *vv, int *overflow)
     return res;
 }
 
-/* Get a C long int from a long int object.
+/* Get a C REALLYLONG int from a REALLYLONG int object.
    Returns -1 and sets an error condition if overflow occurs. */
 
-long
+REALLYLONG
 PyLong_AsLong(PyObject *obj)
 {
     int overflow;
-    long result = PyLong_AsLongAndOverflow(obj, &overflow);
+    REALLYLONG result = PyLong_AsLongAndOverflow(obj, &overflow);
     if (overflow) {
         /* XXX: could be cute and give a different
            message for overflow == -1 */
@@ -339,14 +339,14 @@ PyLong_AsLong(PyObject *obj)
     return result;
 }
 
-/* Get a C int from a long int object or any object that has an __int__
+/* Get a C int from a REALLYLONG int object or any object that has an __int__
    method.  Return -1 and set an error if overflow occurs. */
 
 int
 _PyLong_AsInt(PyObject *obj)
 {
     int overflow;
-    long result = PyLong_AsLongAndOverflow(obj, &overflow);
+    REALLYLONG result = PyLong_AsLongAndOverflow(obj, &overflow);
     if (overflow || result > INT_MAX || result < INT_MIN) {
         /* XXX: could be cute and give a different
            message for overflow == -1 */
@@ -357,7 +357,7 @@ _PyLong_AsInt(PyObject *obj)
     return (int)result;
 }
 
-/* Get a Py_ssize_t from a long int object.
+/* Get a Py_ssize_t from a REALLYLONG int object.
    Returns -1 and sets an error condition if overflow occurs. */
 
 Py_ssize_t
@@ -402,37 +402,37 @@ PyLong_AsSsize_t(PyObject *vv) {
     return -1;
 }
 
-/* Get a C unsigned long int from a long int object.
+/* Get a C UREALLYLONG int from a long int object.
    Returns -1 and sets an error condition if overflow occurs. */
 
-unsigned long
+UREALLYLONG
 PyLong_AsUnsignedLong(PyObject *vv)
 {
     register PyLongObject *v;
-    unsigned long x, prev;
+    UREALLYLONG x, prev;
     Py_ssize_t i;
 
     if (vv == NULL || !PyLong_Check(vv)) {
         if (vv != NULL && PyInt_Check(vv)) {
-            long val = PyInt_AsLong(vv);
+            REALLYLONG val = PyInt_AsLong(vv);
             if (val < 0) {
                 PyErr_SetString(PyExc_OverflowError,
                                 "can't convert negative value "
-                                "to unsigned long");
-                return (unsigned long) -1;
+                                "to UREALLYLONG");
+                return (UREALLYLONG) -1;
             }
             return val;
         }
         PyErr_BadInternalCall();
-        return (unsigned long) -1;
+        return (UREALLYLONG) -1;
     }
     v = (PyLongObject *)vv;
     i = Py_SIZE(v);
     x = 0;
     if (i < 0) {
         PyErr_SetString(PyExc_OverflowError,
-                        "can't convert negative value to unsigned long");
-        return (unsigned long) -1;
+                        "can't convert negative value to UREALLYLONG");
+        return (UREALLYLONG) -1;
     }
     while (--i >= 0) {
         prev = x;
@@ -440,20 +440,20 @@ PyLong_AsUnsignedLong(PyObject *vv)
         if ((x >> PyLong_SHIFT) != prev) {
             PyErr_SetString(PyExc_OverflowError,
                             "long int too large to convert");
-            return (unsigned long) -1;
+            return (UREALLYLONG) -1;
         }
     }
     return x;
 }
 
-/* Get a C unsigned long int from a long int object, ignoring the high bits.
+/* Get a C UREALLYLONG int from a long int object, ignoring the high bits.
    Returns -1 and sets an error condition if an error occurs. */
 
-unsigned long
+UREALLYLONG
 PyLong_AsUnsignedLongMask(PyObject *vv)
 {
     register PyLongObject *v;
-    unsigned long x;
+    UREALLYLONG x;
     Py_ssize_t i;
     int sign;
 
@@ -461,7 +461,7 @@ PyLong_AsUnsignedLongMask(PyObject *vv)
         if (vv != NULL && PyInt_Check(vv))
             return PyInt_AsUnsignedLongMask(vv);
         PyErr_BadInternalCall();
-        return (unsigned long) -1;
+        return (UREALLYLONG) -1;
     }
     v = (PyLongObject *)vv;
     i = v->ob_size;
@@ -528,12 +528,12 @@ _PyLong_FromByteArray(const unsigned char* bytes, size_t n,
     int incr;                           /* direction to move pstartbyte */
     const unsigned char* pendbyte;      /* MSB of bytes */
     size_t numsignificantbytes;         /* number of bytes that matter */
-    Py_ssize_t ndigits;                 /* number of Python long digits */
+    Py_ssize_t ndigits;                 /* number of Python REALLYLONG digits */
     PyLongObject* v;                    /* result */
     Py_ssize_t idigit = 0;              /* next free index in v->ob_digit */
 
     if (n == 0)
-        return PyLong_FromLong(0L);
+        return PyLong_FromLong(0LL);
 
     if (little_endian) {
         pstartbyte = bytes;
@@ -673,7 +673,7 @@ _PyLong_AsByteArray(PyLongObject* v,
 
     /* Copy over all the Python digits.
        It's crucial that every Python digit except for the MSD contribute
-       exactly PyLong_SHIFT bits to the total, so first assert that the long is
+       exactly PyLong_SHIFT bits to the total, so first assert that the REALLYLONG is
        normalized. */
     assert(ndigits == 0 || v->ob_digit[ndigits - 1] != 0);
     j = 0;
@@ -728,7 +728,7 @@ _PyLong_AsByteArray(PyLongObject* v,
         ++j;
         if (do_twos_comp) {
             /* Fill leading bits of the byte with sign bits
-               (appropriately pretending that the long had an
+               (appropriately pretending that the REALLYLONG had an
                infinite supply of sign bits). */
             accum |= (~(twodigits)0) << accumbits;
         }
@@ -764,19 +764,19 @@ _PyLong_AsByteArray(PyLongObject* v,
 
 }
 
-/* Create a new long (or int) object from a C pointer */
+/* Create a new REALLYLONG (or int) object from a C pointer */
 
 PyObject *
 PyLong_FromVoidPtr(void *p)
 {
 #if SIZEOF_VOID_P <= SIZEOF_LONG
-    if ((long)p < 0)
-        return PyLong_FromUnsignedLong((unsigned long)p);
-    return PyInt_FromLong((long)p);
+    if ((REALLYLONG)p < 0)
+        return PyLong_FromUnsignedLong((UREALLYLONG)p);
+    return PyInt_FromLong((REALLYLONG)p);
 #else
 
 #ifndef HAVE_LONG_LONG
-#   error "PyLong_FromVoidPtr: sizeof(void*) > sizeof(long), but no long long"
+#   error "PyLong_FromVoidPtr: sizeof(void*) > sizeof(REALLYLONG), but no long long"
 #endif
 #if SIZEOF_LONG_LONG < SIZEOF_VOID_P
 #   error "PyLong_FromVoidPtr: sizeof(PY_LONG_LONG) < sizeof(void*)"
@@ -789,17 +789,17 @@ PyLong_FromVoidPtr(void *p)
 #endif /* SIZEOF_VOID_P <= SIZEOF_LONG */
 }
 
-/* Get a C pointer from a long object (or an int object in some cases) */
+/* Get a C pointer from a REALLYLONG object (or an int object in some cases) */
 
 void *
 PyLong_AsVoidPtr(PyObject *vv)
 {
-    /* This function will allow int or long objects. If vv is neither,
+    /* This function will allow int or REALLYLONG objects. If vv is neither,
        then the PyLong_AsLong*() functions will raise the exception:
        PyExc_SystemError, "bad argument to internal function"
     */
 #if SIZEOF_VOID_P <= SIZEOF_LONG
-    long x;
+    REALLYLONG x;
 
     if (PyInt_Check(vv))
         x = PyInt_AS_LONG(vv);
@@ -810,7 +810,7 @@ PyLong_AsVoidPtr(PyObject *vv)
 #else
 
 #ifndef HAVE_LONG_LONG
-#   error "PyLong_AsVoidPtr: sizeof(void*) > sizeof(long), but no long long"
+#   error "PyLong_AsVoidPtr: sizeof(void*) > sizeof(REALLYLONG), but no long long"
 #endif
 #if SIZEOF_LONG_LONG < SIZEOF_VOID_P
 #   error "PyLong_AsVoidPtr: sizeof(PY_LONG_LONG) < sizeof(void*)"
@@ -840,7 +840,7 @@ PyLong_AsVoidPtr(PyObject *vv)
 #define IS_LITTLE_ENDIAN (int)*(unsigned char*)&one
 #define PY_ABS_LLONG_MIN (0-(unsigned PY_LONG_LONG)PY_LLONG_MIN)
 
-/* Create a new long int object from a C PY_LONG_LONG int. */
+/* Create a new REALLYLONG int object from a C PY_LONG_LONG int. */
 
 PyObject *
 PyLong_FromLongLong(PY_LONG_LONG ival)
@@ -883,7 +883,7 @@ PyLong_FromLongLong(PY_LONG_LONG ival)
     return (PyObject *)v;
 }
 
-/* Create a new long int object from a C unsigned PY_LONG_LONG int. */
+/* Create a new REALLYLONG int object from a C unsigned PY_LONG_LONG int. */
 
 PyObject *
 PyLong_FromUnsignedLongLong(unsigned PY_LONG_LONG ival)
@@ -910,7 +910,7 @@ PyLong_FromUnsignedLongLong(unsigned PY_LONG_LONG ival)
     return (PyObject *)v;
 }
 
-/* Create a new long int object from a C Py_ssize_t. */
+/* Create a new REALLYLONG int object from a C Py_ssize_t. */
 
 PyObject *
 PyLong_FromSsize_t(Py_ssize_t ival)
@@ -921,7 +921,7 @@ PyLong_FromSsize_t(Py_ssize_t ival)
                                  SIZEOF_SIZE_T, IS_LITTLE_ENDIAN, 1);
 }
 
-/* Create a new long int object from a C size_t. */
+/* Create a new REALLYLONG int object from a C size_t. */
 
 PyObject *
 PyLong_FromSize_t(size_t ival)
@@ -932,7 +932,7 @@ PyLong_FromSize_t(size_t ival)
                                  SIZEOF_SIZE_T, IS_LITTLE_ENDIAN, 0);
 }
 
-/* Get a C PY_LONG_LONG int from a long int object.
+/* Get a C PY_LONG_LONG int from a REALLYLONG int object.
    Return -1 and set an error if overflow occurs. */
 
 PY_LONG_LONG
@@ -984,7 +984,7 @@ PyLong_AsLongLong(PyObject *vv)
         return bytes;
 }
 
-/* Get a C unsigned PY_LONG_LONG int from a long int object.
+/* Get a C unsigned PY_LONG_LONG int from a REALLYLONG int object.
    Return -1 and set an error if overflow occurs. */
 
 unsigned PY_LONG_LONG
@@ -1009,7 +1009,7 @@ PyLong_AsUnsignedLongLong(PyObject *vv)
         return bytes;
 }
 
-/* Get a C unsigned long int from a long int object, ignoring the high bits.
+/* Get a C UREALLYLONG int from a long int object, ignoring the high bits.
    Returns -1 and sets an error condition if an error occurs. */
 
 unsigned PY_LONG_LONG
@@ -1022,7 +1022,7 @@ PyLong_AsUnsignedLongLongMask(PyObject *vv)
 
     if (vv == NULL || !PyLong_Check(vv)) {
         PyErr_BadInternalCall();
-        return (unsigned long) -1;
+        return (UREALLYLONG) -1;
     }
     v = (PyLongObject *)vv;
     i = v->ob_size;
@@ -1119,7 +1119,7 @@ PyLong_AsLongLongAndOverflow(PyObject *vv, int *overflow)
                 goto exit;
             }
         }
-        /* Haven't lost any bits, but casting to long requires extra
+        /* Haven't lost any bits, but casting to REALLYLONG requires extra
          * care (see comment above).
          */
         if (x <= (unsigned PY_LONG_LONG)PY_LLONG_MAX) {
@@ -1288,7 +1288,7 @@ v_rshift(digit *z, digit *a, Py_ssize_t m, int d)
     return carry;
 }
 
-/* Divide long pin, w/ size digits, by non-zero digit n, storing quotient
+/* Divide REALLYLONG pin, w/ size digits, by non-zero digit n, storing quotient
    in pout, and returning the remainder.  pin and pout point at the LSD.
    It's OK for pin == pout on entry, which saves oodles of mallocs/frees in
    _PyLong_Format, but that should be done with great care since longs are
@@ -1311,7 +1311,7 @@ inplace_divrem1(digit *pout, digit *pin, Py_ssize_t size, digit n)
     return (digit)rem;
 }
 
-/* Divide a long integer by a digit, returning both the quotient
+/* Divide a REALLYLONG integer by a digit, returning both the quotient
    (as function result) and the remainder (through *prem).
    The sign of a is ignored; n should not be zero. */
 
@@ -1329,7 +1329,7 @@ divrem1(PyLongObject *a, digit n, digit *prem)
     return long_normalize(z);
 }
 
-/* Convert a long integer to a base 10 string.  Returns a new non-shared
+/* Convert a REALLYLONG integer to a base 10 string.  Returns a new non-shared
    string.  (Return value is non-shared so that callers can modify the
    returned value if necessary.) */
 
@@ -1446,7 +1446,7 @@ long_to_decimal_string(PyObject *aa, int addL)
     return (PyObject *)str;
 }
 
-/* Convert the long to a string object with given base,
+/* Convert the REALLYLONG to a string object with given base,
    appending a base prefix of 0[box] if base is 2, 8 or 16.
    Add a trailing "L" if addL is non-zero.
    If newstyle is zero, then use the pre-2.6 behavior of octal having
@@ -1647,7 +1647,7 @@ int _PyLong_DigitValue[256] = {
 
 /* *str points to the first digit in a string of base `base` digits.  base
  * is a power of 2 (2, 4, 8, 16, or 32).  *str is set to point to the first
- * non-digit (which may be *str!).  A normalized long is returned.
+ * non-digit (which may be *str!).  A normalized REALLYLONG is returned.
  * The point to this routine is that it takes time linear in the number of
  * string characters.
  */
@@ -1682,7 +1682,7 @@ long_from_binary_base(char **str, int base)
     z = _PyLong_New(n);
     if (z == NULL)
         return NULL;
-    /* Read string from right, and fill in long from left; i.e.,
+    /* Read string from right, and fill in REALLYLONG from left; i.e.,
      * from least to most significant in both.
      */
     accum = 0;
@@ -1777,7 +1777,7 @@ case number of Python digits needed to hold it is the smallest integer n s.t.
     n >= log(B**N)/log(PyLong_BASE) = N * log(B)/log(PyLong_BASE)
 
 The static array log_base_PyLong_BASE[base] == log(base)/log(PyLong_BASE) so
-we can compute this quickly.  A Python long with that much space is reserved
+we can compute this quickly.  A Python REALLYLONG with that much space is reserved
 near the start, and the result is computed into it.
 
 The input string is actually treated as being in base base**i (i.e., i digits
@@ -1844,7 +1844,7 @@ is very close to an integer.  If we were working with IEEE single-precision,
 rounding errors could kill us.  Finding worst cases in IEEE double-precision
 requires better-than-double-precision log() functions, and Tim didn't bother.
 Instead the code checks to see whether the allocated space is enough as each
-new Python digit is added, and copies the whole thing to a larger long if not.
+new Python digit is added, and copies the whole thing to a larger REALLYLONG if not.
 This should happen extremely rarely, and in fact I don't have a test case
 that triggers it(!).  Instead the code was tested by artificially allocating
 just 1 digit at the start, so that the copying code was exercised for every
@@ -1885,7 +1885,7 @@ digit beyond the first.
         while (_PyLong_DigitValue[Py_CHARMASK(*scan)] < base)
             ++scan;
 
-        /* Create a long object that can contain the largest possible
+        /* Create a REALLYLONG object that can contain the largest possible
          * integer with this base and length.  Note that there's no
          * need to initialize z->ob_digit -- no slot is read up before
          * being stored into.
@@ -2048,7 +2048,7 @@ long_divrem(PyLongObject *a, PyLongObject *b,
         z = divrem1(a, b->ob_digit[0], &rem);
         if (z == NULL)
             return -1;
-        *prem = (PyLongObject *) PyLong_FromLong((long)rem);
+        *prem = (PyLongObject *) PyLong_FromLong((REALLYLONG)rem);
         if (*prem == NULL) {
             Py_DECREF(z);
             return -1;
@@ -2071,7 +2071,7 @@ long_divrem(PyLongObject *a, PyLongObject *b,
     return 0;
 }
 
-/* Unsigned long division with remainder -- the algorithm.  The arguments v1
+/* UREALLYLONG division with remainder -- the algorithm.  The arguments v1
    and w1 should satisfy 2 <= ABS(Py_SIZE(w1)) <= ABS(Py_SIZE(v1)). */
 
 static PyLongObject *
@@ -2323,7 +2323,7 @@ _PyLong_Frexp(PyLongObject *a, Py_ssize_t *e)
     return -1.0;
 }
 
-/* Get a C double from a long int object.  Rounds to the nearest double,
+/* Get a C double from a REALLYLONG int object.  Rounds to the nearest double,
    using the round-half-to-even rule in the case of a tie. */
 
 double
@@ -2388,10 +2388,10 @@ long_compare(PyLongObject *a, PyLongObject *b)
     return sign < 0 ? -1 : sign > 0 ? 1 : 0;
 }
 
-static long
+static REALLYLONG
 long_hash(PyLongObject *v)
 {
-    unsigned long x;
+    UREALLYLONG x;
     Py_ssize_t i;
     int sign;
 
@@ -2405,11 +2405,11 @@ long_hash(PyLongObject *v)
         sign = -1;
         i = -(i);
     }
-    /* The following loop produces a C unsigned long x such that x is
+    /* The following loop produces a C UREALLYLONG x such that x is
        congruent to the absolute value of v modulo ULONG_MAX.  The
        resulting x is nonzero if and only if v is. */
     while (--i >= 0) {
-        /* Force a native long #-bits (32 or 64) circular shift */
+        /* Force a native REALLYLONG #-bits (32 or 64) circular shift */
         x = (x >> (8*SIZEOF_LONG-PyLong_SHIFT)) | (x << PyLong_SHIFT);
         x += v->ob_digit[i];
         /* If the addition above overflowed we compensate by
@@ -2419,13 +2419,13 @@ long_hash(PyLongObject *v)
             x++;
     }
     x = x * sign;
-    if (x == (unsigned long)-1)
-        x = (unsigned long)-2;
-    return (long)x;
+    if (x == (UREALLYLONG)-1)
+        x = (UREALLYLONG)-2;
+    return (REALLYLONG)x;
 }
 
 
-/* Add the absolute values of two long integers. */
+/* Add the absolute values of two REALLYLONG integers. */
 
 static PyLongObject *
 x_add(PyLongObject *a, PyLongObject *b)
@@ -2627,7 +2627,7 @@ x_mul(PyLongObject *a, PyLongObject *b)
             assert((carry >> PyLong_SHIFT) == 0);
         }
     }
-    else {      /* a is not the same as b -- gradeschool long mult */
+    else {      /* a is not the same as b -- gradeschool REALLYLONG mult */
         for (i = 0; i < size_a; ++i) {
             twodigits carry = 0;
             twodigits f = a->ob_digit[i];
@@ -2655,7 +2655,7 @@ x_mul(PyLongObject *a, PyLongObject *b)
 }
 
 /* A helper for Karatsuba multiplication (k_mul).
-   Takes a long "n" and an integer "size" representing the place to
+   Takes a REALLYLONG "n" and an integer "size" representing the place to
    split, and sets low and high such that abs(n) == (high << size) + low,
    viewing the shift as being by digits.  The sign bit is ignored, and
    the return values are >= 0.
@@ -3074,7 +3074,7 @@ long_classic_div(PyObject *v, PyObject *w)
 
     CONVERT_BINOP(v, w, &a, &b);
     if (Py_DivisionWarningFlag &&
-        PyErr_Warn(PyExc_DeprecationWarning, "classic long division") < 0)
+        PyErr_Warn(PyExc_DeprecationWarning, "classic REALLYLONG division") < 0)
         div = NULL;
     else if (l_divmod(a, b, &div, NULL) < 0)
         div = NULL;
@@ -3956,7 +3956,7 @@ long_long(PyObject *v)
 static PyObject *
 long_int(PyObject *v)
 {
-    long x;
+    REALLYLONG x;
     x = PyLong_AsLong(v);
     if (PyErr_Occurred()) {
         if (PyErr_ExceptionMatches(PyExc_OverflowError)) {
@@ -4054,9 +4054,9 @@ long_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
 }
 
 /* Wimpy, slow approach to tp_new calls for subtypes of long:
-   first create a regular long from whatever arguments we got,
+   first create a regular REALLYLONG from whatever arguments we got,
    then allocate a subtype instance and initialize it from
-   the regular long.  The regular long is then thrown away.
+   the regular long.  The regular REALLYLONG is then thrown away.
 */
 static PyObject *
 long_subtype_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
@@ -4159,7 +4159,7 @@ long_bit_length(PyLongObject *v)
         msd_bits += 6;
         msd >>= 6;
     }
-    msd_bits += (long)(BitLengthTable[msd]);
+    msd_bits += (REALLYLONG)(BitLengthTable[msd]);
 
     if (ndigits <= PY_SSIZE_T_MAX/PyLong_SHIFT)
         return PyInt_FromSsize_t((ndigits-1)*PyLong_SHIFT + msd_bits);
@@ -4178,7 +4178,7 @@ long_bit_length(PyLongObject *v)
     Py_DECREF(result);
     result = y;
 
-    x = (PyLongObject *)PyLong_FromLong((long)msd_bits);
+    x = (PyLongObject *)PyLong_FromLong((REALLYLONG)msd_bits);
     if (x == NULL)
         goto error;
     y = (PyLongObject *)long_add(result, x);
@@ -4254,7 +4254,7 @@ PyDoc_STRVAR(long_doc,
 "long(x=0) -> long\n\
 long(x, base=10) -> long\n\
 \n\
-Convert a number or string to a long integer, or return 0L if no arguments\n\
+Convert a number or string to a REALLYLONG integer, or return 0L if no arguments\n\
 are given.  If x is floating point, the conversion truncates towards zero.\n\
 \n\
 If x is not a number or if base is given, then x must be a string or\n\
@@ -4285,7 +4285,7 @@ static PyNumberMethods long_as_number = {
     long_or,                    /*nb_or*/
     long_coerce,                /*nb_coerce*/
     long_int,                   /*nb_int*/
-    long_long,                  /*nb_long*/
+    long_long,                  /*nb_REALLYLONG*/
     long_float,                 /*nb_float*/
     long_oct,                   /*nb_oct*/
     long_hex,                   /*nb_hex*/

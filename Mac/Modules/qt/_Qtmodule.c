@@ -698,7 +698,7 @@ static PyObject *MovieCtlObj_MCKey(MovieControllerObject *_self, PyObject *_args
     PyObject *_res = NULL;
     ComponentResult _rv;
     SInt8 key;
-    long modifiers;
+    REALLYLONG modifiers;
 #ifndef MCKey
     PyMac_PRECHECK(MCKey);
 #endif
@@ -720,8 +720,8 @@ static PyObject *MovieCtlObj_MCClick(MovieControllerObject *_self, PyObject *_ar
     ComponentResult _rv;
     WindowPtr w;
     Point where;
-    long when;
-    long modifiers;
+    REALLYLONG when;
+    REALLYLONG modifiers;
 #ifndef MCClick
     PyMac_PRECHECK(MCClick);
 #endif
@@ -762,7 +762,7 @@ static PyObject *MovieCtlObj_MCEnableEditing(MovieControllerObject *_self, PyObj
 static PyObject *MovieCtlObj_MCIsEditingEnabled(MovieControllerObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long _rv;
+    REALLYLONG _rv;
 #ifndef MCIsEditingEnabled
     PyMac_PRECHECK(MCIsEditingEnabled);
 #endif
@@ -858,7 +858,7 @@ static PyObject *MovieCtlObj_MCPositionController(MovieControllerObject *_self, 
     ComponentResult _rv;
     Rect movieRect;
     Rect controllerRect;
-    long someFlags;
+    REALLYLONG someFlags;
 #ifndef MCPositionController
     PyMac_PRECHECK(MCPositionController);
 #endif
@@ -880,7 +880,7 @@ static PyObject *MovieCtlObj_MCGetControllerInfo(MovieControllerObject *_self, P
 {
     PyObject *_res = NULL;
     ComponentResult _rv;
-    long someFlags;
+    REALLYLONG someFlags;
 #ifndef MCGetControllerInfo
     PyMac_PRECHECK(MCGetControllerInfo);
 #endif
@@ -961,7 +961,7 @@ static PyObject *MovieCtlObj_MCSetUpEditMenu(MovieControllerObject *_self, PyObj
 {
     PyObject *_res = NULL;
     ComponentResult _rv;
-    long modifiers;
+    REALLYLONG modifiers;
     MenuHandle mh;
 #ifndef MCSetUpEditMenu
     PyMac_PRECHECK(MCSetUpEditMenu);
@@ -982,7 +982,7 @@ static PyObject *MovieCtlObj_MCGetMenuString(MovieControllerObject *_self, PyObj
 {
     PyObject *_res = NULL;
     ComponentResult _rv;
-    long modifiers;
+    REALLYLONG modifiers;
     short item;
     Str255 aString;
 #ifndef MCGetMenuString
@@ -1050,7 +1050,7 @@ static PyObject *MovieCtlObj_MCAdjustCursor(MovieControllerObject *_self, PyObje
     ComponentResult _rv;
     WindowPtr w;
     Point where;
-    long modifiers;
+    REALLYLONG modifiers;
 #ifndef MCAdjustCursor
     PyMac_PRECHECK(MCAdjustCursor);
 #endif
@@ -1147,8 +1147,8 @@ static PyObject *MovieCtlObj_MCSetControllerCapabilities(MovieControllerObject *
 {
     PyObject *_res = NULL;
     ComponentResult _rv;
-    long flags;
-    long flagsMask;
+    REALLYLONG flags;
+    REALLYLONG flagsMask;
 #ifndef MCSetControllerCapabilities
     PyMac_PRECHECK(MCSetControllerCapabilities);
 #endif
@@ -1214,13 +1214,13 @@ static PyMethodDef MovieCtlObj_methods[] = {
     {"MCIdle", (PyCFunction)MovieCtlObj_MCIdle, 1,
      PyDoc_STR("() -> (ComponentResult _rv)")},
     {"MCKey", (PyCFunction)MovieCtlObj_MCKey, 1,
-     PyDoc_STR("(SInt8 key, long modifiers) -> (ComponentResult _rv)")},
+     PyDoc_STR("(SInt8 key, REALLYLONG modifiers) -> (ComponentResult _rv)")},
     {"MCClick", (PyCFunction)MovieCtlObj_MCClick, 1,
-     PyDoc_STR("(WindowPtr w, Point where, long when, long modifiers) -> (ComponentResult _rv)")},
+     PyDoc_STR("(WindowPtr w, Point where, REALLYLONG when, REALLYLONG modifiers) -> (ComponentResult _rv)")},
     {"MCEnableEditing", (PyCFunction)MovieCtlObj_MCEnableEditing, 1,
      PyDoc_STR("(Boolean enabled) -> (ComponentResult _rv)")},
     {"MCIsEditingEnabled", (PyCFunction)MovieCtlObj_MCIsEditingEnabled, 1,
-     PyDoc_STR("() -> (long _rv)")},
+     PyDoc_STR("() -> (REALLYLONG _rv)")},
     {"MCCopy", (PyCFunction)MovieCtlObj_MCCopy, 1,
      PyDoc_STR("() -> (Movie _rv)")},
     {"MCCut", (PyCFunction)MovieCtlObj_MCCut, 1,
@@ -1232,9 +1232,9 @@ static PyMethodDef MovieCtlObj_methods[] = {
     {"MCUndo", (PyCFunction)MovieCtlObj_MCUndo, 1,
      PyDoc_STR("() -> (ComponentResult _rv)")},
     {"MCPositionController", (PyCFunction)MovieCtlObj_MCPositionController, 1,
-     PyDoc_STR("(Rect movieRect, Rect controllerRect, long someFlags) -> (ComponentResult _rv)")},
+     PyDoc_STR("(Rect movieRect, Rect controllerRect, REALLYLONG someFlags) -> (ComponentResult _rv)")},
     {"MCGetControllerInfo", (PyCFunction)MovieCtlObj_MCGetControllerInfo, 1,
-     PyDoc_STR("() -> (ComponentResult _rv, long someFlags)")},
+     PyDoc_STR("() -> (ComponentResult _rv, REALLYLONG someFlags)")},
     {"MCSetClip", (PyCFunction)MovieCtlObj_MCSetClip, 1,
      PyDoc_STR("(RgnHandle theClip, RgnHandle movieClip) -> (ComponentResult _rv)")},
     {"MCGetClip", (PyCFunction)MovieCtlObj_MCGetClip, 1,
@@ -1242,15 +1242,15 @@ static PyMethodDef MovieCtlObj_methods[] = {
     {"MCDrawBadge", (PyCFunction)MovieCtlObj_MCDrawBadge, 1,
      PyDoc_STR("(RgnHandle movieRgn) -> (ComponentResult _rv, RgnHandle badgeRgn)")},
     {"MCSetUpEditMenu", (PyCFunction)MovieCtlObj_MCSetUpEditMenu, 1,
-     PyDoc_STR("(long modifiers, MenuHandle mh) -> (ComponentResult _rv)")},
+     PyDoc_STR("(REALLYLONG modifiers, MenuHandle mh) -> (ComponentResult _rv)")},
     {"MCGetMenuString", (PyCFunction)MovieCtlObj_MCGetMenuString, 1,
-     PyDoc_STR("(long modifiers, short item, Str255 aString) -> (ComponentResult _rv)")},
+     PyDoc_STR("(REALLYLONG modifiers, short item, Str255 aString) -> (ComponentResult _rv)")},
     {"MCPtInController", (PyCFunction)MovieCtlObj_MCPtInController, 1,
      PyDoc_STR("(Point thePt) -> (ComponentResult _rv, Boolean inController)")},
     {"MCInvalidate", (PyCFunction)MovieCtlObj_MCInvalidate, 1,
      PyDoc_STR("(WindowPtr w, RgnHandle invalidRgn) -> (ComponentResult _rv)")},
     {"MCAdjustCursor", (PyCFunction)MovieCtlObj_MCAdjustCursor, 1,
-     PyDoc_STR("(WindowPtr w, Point where, long modifiers) -> (ComponentResult _rv)")},
+     PyDoc_STR("(WindowPtr w, Point where, REALLYLONG modifiers) -> (ComponentResult _rv)")},
     {"MCGetInterfaceElement", (PyCFunction)MovieCtlObj_MCGetInterfaceElement, 1,
      PyDoc_STR("(MCInterfaceElement whichElement, void * element) -> (ComponentResult _rv)")},
     {"MCAddMovieSegment", (PyCFunction)MovieCtlObj_MCAddMovieSegment, 1,
@@ -1260,7 +1260,7 @@ static PyMethodDef MovieCtlObj_methods[] = {
     {"MCSetIdleManager", (PyCFunction)MovieCtlObj_MCSetIdleManager, 1,
      PyDoc_STR("(IdleManager im) -> (ComponentResult _rv)")},
     {"MCSetControllerCapabilities", (PyCFunction)MovieCtlObj_MCSetControllerCapabilities, 1,
-     PyDoc_STR("(long flags, long flagsMask) -> (ComponentResult _rv)")},
+     PyDoc_STR("(REALLYLONG flags, REALLYLONG flagsMask) -> (ComponentResult _rv)")},
     {NULL, NULL, 0}
 };
 
@@ -1567,7 +1567,7 @@ static PyObject *TimeBaseObj_SetTimeBaseStopTime(TimeBaseObject *_self, PyObject
 static PyObject *TimeBaseObj_GetTimeBaseFlags(TimeBaseObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long _rv;
+    REALLYLONG _rv;
 #ifndef GetTimeBaseFlags
     PyMac_PRECHECK(GetTimeBaseFlags);
 #endif
@@ -1582,7 +1582,7 @@ static PyObject *TimeBaseObj_GetTimeBaseFlags(TimeBaseObject *_self, PyObject *_
 static PyObject *TimeBaseObj_SetTimeBaseFlags(TimeBaseObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long timeBaseFlags;
+    REALLYLONG timeBaseFlags;
 #ifndef SetTimeBaseFlags
     PyMac_PRECHECK(SetTimeBaseFlags);
 #endif
@@ -1669,7 +1669,7 @@ static PyObject *TimeBaseObj_GetTimeBaseMasterClock(TimeBaseObject *_self, PyObj
 static PyObject *TimeBaseObj_GetTimeBaseStatus(TimeBaseObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long _rv;
+    REALLYLONG _rv;
     TimeRecord unpinnedTime;
 #ifndef GetTimeBaseStatus
     PyMac_PRECHECK(GetTimeBaseStatus);
@@ -1738,9 +1738,9 @@ static PyMethodDef TimeBaseObj_methods[] = {
     {"SetTimeBaseStopTime", (PyCFunction)TimeBaseObj_SetTimeBaseStopTime, 1,
      PyDoc_STR("(TimeRecord tr) -> None")},
     {"GetTimeBaseFlags", (PyCFunction)TimeBaseObj_GetTimeBaseFlags, 1,
-     PyDoc_STR("() -> (long _rv)")},
+     PyDoc_STR("() -> (REALLYLONG _rv)")},
     {"SetTimeBaseFlags", (PyCFunction)TimeBaseObj_SetTimeBaseFlags, 1,
-     PyDoc_STR("(long timeBaseFlags) -> None")},
+     PyDoc_STR("(REALLYLONG timeBaseFlags) -> None")},
     {"SetTimeBaseMasterTimeBase", (PyCFunction)TimeBaseObj_SetTimeBaseMasterTimeBase, 1,
      PyDoc_STR("(TimeBase master, TimeRecord slaveZero) -> None")},
     {"GetTimeBaseMasterTimeBase", (PyCFunction)TimeBaseObj_GetTimeBaseMasterTimeBase, 1,
@@ -1750,7 +1750,7 @@ static PyMethodDef TimeBaseObj_methods[] = {
     {"GetTimeBaseMasterClock", (PyCFunction)TimeBaseObj_GetTimeBaseMasterClock, 1,
      PyDoc_STR("() -> (ComponentInstance _rv)")},
     {"GetTimeBaseStatus", (PyCFunction)TimeBaseObj_GetTimeBaseStatus, 1,
-     PyDoc_STR("() -> (long _rv, TimeRecord unpinnedTime)")},
+     PyDoc_STR("() -> (REALLYLONG _rv, TimeRecord unpinnedTime)")},
     {"SetTimeBaseZero", (PyCFunction)TimeBaseObj_SetTimeBaseZero, 1,
      PyDoc_STR("(TimeRecord zero) -> None")},
     {"GetTimeBaseEffectiveRate", (PyCFunction)TimeBaseObj_GetTimeBaseEffectiveRate, 1,
@@ -1884,7 +1884,7 @@ static PyObject *UserDataObj_GetUserData(UserDataObject *_self, PyObject *_args)
     OSErr _err;
     Handle data;
     OSType udType;
-    long index;
+    REALLYLONG index;
 #ifndef GetUserData
     PyMac_PRECHECK(GetUserData);
 #endif
@@ -1930,7 +1930,7 @@ static PyObject *UserDataObj_RemoveUserData(UserDataObject *_self, PyObject *_ar
     PyObject *_res = NULL;
     OSErr _err;
     OSType udType;
-    long index;
+    REALLYLONG index;
 #ifndef RemoveUserData
     PyMac_PRECHECK(RemoveUserData);
 #endif
@@ -1968,7 +1968,7 @@ static PyObject *UserDataObj_CountUserDataType(UserDataObject *_self, PyObject *
 static PyObject *UserDataObj_GetNextUserDataType(UserDataObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long _rv;
+    REALLYLONG _rv;
     OSType udType;
 #ifndef GetNextUserDataType
     PyMac_PRECHECK(GetNextUserDataType);
@@ -1989,7 +1989,7 @@ static PyObject *UserDataObj_AddUserDataText(UserDataObject *_self, PyObject *_a
     OSErr _err;
     Handle data;
     OSType udType;
-    long index;
+    REALLYLONG index;
     short itlRegionTag;
 #ifndef AddUserDataText
     PyMac_PRECHECK(AddUserDataText);
@@ -2017,7 +2017,7 @@ static PyObject *UserDataObj_GetUserDataText(UserDataObject *_self, PyObject *_a
     OSErr _err;
     Handle data;
     OSType udType;
-    long index;
+    REALLYLONG index;
     short itlRegionTag;
 #ifndef GetUserDataText
     PyMac_PRECHECK(GetUserDataText);
@@ -2044,7 +2044,7 @@ static PyObject *UserDataObj_RemoveUserDataText(UserDataObject *_self, PyObject 
     PyObject *_res = NULL;
     OSErr _err;
     OSType udType;
-    long index;
+    REALLYLONG index;
     short itlRegionTag;
 #ifndef RemoveUserDataText
     PyMac_PRECHECK(RemoveUserDataText);
@@ -2107,21 +2107,21 @@ static PyObject *UserDataObj_CopyUserData(UserDataObject *_self, PyObject *_args
 
 static PyMethodDef UserDataObj_methods[] = {
     {"GetUserData", (PyCFunction)UserDataObj_GetUserData, 1,
-     PyDoc_STR("(Handle data, OSType udType, long index) -> None")},
+     PyDoc_STR("(Handle data, OSType udType, REALLYLONG index) -> None")},
     {"AddUserData", (PyCFunction)UserDataObj_AddUserData, 1,
      PyDoc_STR("(Handle data, OSType udType) -> None")},
     {"RemoveUserData", (PyCFunction)UserDataObj_RemoveUserData, 1,
-     PyDoc_STR("(OSType udType, long index) -> None")},
+     PyDoc_STR("(OSType udType, REALLYLONG index) -> None")},
     {"CountUserDataType", (PyCFunction)UserDataObj_CountUserDataType, 1,
      PyDoc_STR("(OSType udType) -> (short _rv)")},
     {"GetNextUserDataType", (PyCFunction)UserDataObj_GetNextUserDataType, 1,
-     PyDoc_STR("(OSType udType) -> (long _rv)")},
+     PyDoc_STR("(OSType udType) -> (REALLYLONG _rv)")},
     {"AddUserDataText", (PyCFunction)UserDataObj_AddUserDataText, 1,
-     PyDoc_STR("(Handle data, OSType udType, long index, short itlRegionTag) -> None")},
+     PyDoc_STR("(Handle data, OSType udType, REALLYLONG index, short itlRegionTag) -> None")},
     {"GetUserDataText", (PyCFunction)UserDataObj_GetUserDataText, 1,
-     PyDoc_STR("(Handle data, OSType udType, long index, short itlRegionTag) -> None")},
+     PyDoc_STR("(Handle data, OSType udType, REALLYLONG index, short itlRegionTag) -> None")},
     {"RemoveUserDataText", (PyCFunction)UserDataObj_RemoveUserDataText, 1,
-     PyDoc_STR("(OSType udType, long index, short itlRegionTag) -> None")},
+     PyDoc_STR("(OSType udType, REALLYLONG index, short itlRegionTag) -> None")},
     {"PutUserDataIntoHandle", (PyCFunction)UserDataObj_PutUserDataIntoHandle, 1,
      PyDoc_STR("(Handle h) -> None")},
     {"CopyUserData", (PyCFunction)UserDataObj_CopyUserData, 1,
@@ -2255,7 +2255,7 @@ static PyObject *MediaObj_LoadMediaIntoRam(MediaObject *_self, PyObject *_args)
     OSErr _err;
     TimeValue time;
     TimeValue duration;
-    long flags;
+    REALLYLONG flags;
 #ifndef LoadMediaIntoRam
     PyMac_PRECHECK(LoadMediaIntoRam);
 #endif
@@ -2292,7 +2292,7 @@ static PyObject *MediaObj_GetMediaTrack(MediaObject *_self, PyObject *_args)
 static PyObject *MediaObj_GetMediaCreationTime(MediaObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    unsigned long _rv;
+    unsigned REALLYLONG _rv;
 #ifndef GetMediaCreationTime
     PyMac_PRECHECK(GetMediaCreationTime);
 #endif
@@ -2307,7 +2307,7 @@ static PyObject *MediaObj_GetMediaCreationTime(MediaObject *_self, PyObject *_ar
 static PyObject *MediaObj_GetMediaModificationTime(MediaObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    unsigned long _rv;
+    unsigned REALLYLONG _rv;
 #ifndef GetMediaModificationTime
     PyMac_PRECHECK(GetMediaModificationTime);
 #endif
@@ -2620,7 +2620,7 @@ static PyObject *MediaObj_SetMediaDataHandler(MediaObject *_self, PyObject *_arg
 static PyObject *MediaObj_GetMediaSampleDescriptionCount(MediaObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long _rv;
+    REALLYLONG _rv;
 #ifndef GetMediaSampleDescriptionCount
     PyMac_PRECHECK(GetMediaSampleDescriptionCount);
 #endif
@@ -2635,7 +2635,7 @@ static PyObject *MediaObj_GetMediaSampleDescriptionCount(MediaObject *_self, PyO
 static PyObject *MediaObj_GetMediaSampleDescription(MediaObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long index;
+    REALLYLONG index;
     SampleDescriptionHandle descH;
 #ifndef GetMediaSampleDescription
     PyMac_PRECHECK(GetMediaSampleDescription);
@@ -2656,7 +2656,7 @@ static PyObject *MediaObj_SetMediaSampleDescription(MediaObject *_self, PyObject
 {
     PyObject *_res = NULL;
     OSErr _err;
-    long index;
+    REALLYLONG index;
     SampleDescriptionHandle descH;
 #ifndef SetMediaSampleDescription
     PyMac_PRECHECK(SetMediaSampleDescription);
@@ -2677,7 +2677,7 @@ static PyObject *MediaObj_SetMediaSampleDescription(MediaObject *_self, PyObject
 static PyObject *MediaObj_GetMediaSampleCount(MediaObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long _rv;
+    REALLYLONG _rv;
 #ifndef GetMediaSampleCount
     PyMac_PRECHECK(GetMediaSampleCount);
 #endif
@@ -2692,7 +2692,7 @@ static PyObject *MediaObj_GetMediaSampleCount(MediaObject *_self, PyObject *_arg
 static PyObject *MediaObj_GetMediaSyncSampleCount(MediaObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long _rv;
+    REALLYLONG _rv;
 #ifndef GetMediaSyncSampleCount
     PyMac_PRECHECK(GetMediaSyncSampleCount);
 #endif
@@ -2707,7 +2707,7 @@ static PyObject *MediaObj_GetMediaSyncSampleCount(MediaObject *_self, PyObject *
 static PyObject *MediaObj_SampleNumToMediaTime(MediaObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long logicalSampleNum;
+    REALLYLONG logicalSampleNum;
     TimeValue sampleTime;
     TimeValue sampleDuration;
 #ifndef SampleNumToMediaTime
@@ -2730,7 +2730,7 @@ static PyObject *MediaObj_MediaTimeToSampleNum(MediaObject *_self, PyObject *_ar
 {
     PyObject *_res = NULL;
     TimeValue time;
-    long sampleNum;
+    REALLYLONG sampleNum;
     TimeValue sampleTime;
     TimeValue sampleDuration;
 #ifndef MediaTimeToSampleNum
@@ -2756,11 +2756,11 @@ static PyObject *MediaObj_AddMediaSample(MediaObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     OSErr _err;
     Handle dataIn;
-    long inOffset;
-    unsigned long size;
+    REALLYLONG inOffset;
+    unsigned REALLYLONG size;
     TimeValue durationPerSample;
     SampleDescriptionHandle sampleDescriptionH;
-    long numberOfSamples;
+    REALLYLONG numberOfSamples;
     short sampleFlags;
     TimeValue sampleTime;
 #ifndef AddMediaSample
@@ -2794,11 +2794,11 @@ static PyObject *MediaObj_AddMediaSampleReference(MediaObject *_self, PyObject *
 {
     PyObject *_res = NULL;
     OSErr _err;
-    long dataOffset;
-    unsigned long size;
+    REALLYLONG dataOffset;
+    unsigned REALLYLONG size;
     TimeValue durationPerSample;
     SampleDescriptionHandle sampleDescriptionH;
-    long numberOfSamples;
+    REALLYLONG numberOfSamples;
     short sampleFlags;
     TimeValue sampleTime;
 #ifndef AddMediaSampleReference
@@ -2831,15 +2831,15 @@ static PyObject *MediaObj_GetMediaSample(MediaObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     OSErr _err;
     Handle dataOut;
-    long maxSizeToGrow;
-    long size;
+    REALLYLONG maxSizeToGrow;
+    REALLYLONG size;
     TimeValue time;
     TimeValue sampleTime;
     TimeValue durationPerSample;
     SampleDescriptionHandle sampleDescriptionH;
-    long sampleDescriptionIndex;
-    long maxNumberOfSamples;
-    long numberOfSamples;
+    REALLYLONG sampleDescriptionIndex;
+    REALLYLONG maxNumberOfSamples;
+    REALLYLONG numberOfSamples;
     short sampleFlags;
 #ifndef GetMediaSample
     PyMac_PRECHECK(GetMediaSample);
@@ -2878,15 +2878,15 @@ static PyObject *MediaObj_GetMediaSampleReference(MediaObject *_self, PyObject *
 {
     PyObject *_res = NULL;
     OSErr _err;
-    long dataOffset;
-    long size;
+    REALLYLONG dataOffset;
+    REALLYLONG size;
     TimeValue time;
     TimeValue sampleTime;
     TimeValue durationPerSample;
     SampleDescriptionHandle sampleDescriptionH;
-    long sampleDescriptionIndex;
-    long maxNumberOfSamples;
-    long numberOfSamples;
+    REALLYLONG sampleDescriptionIndex;
+    REALLYLONG maxNumberOfSamples;
+    REALLYLONG numberOfSamples;
     short sampleFlags;
 #ifndef GetMediaSampleReference
     PyMac_PRECHECK(GetMediaSampleReference);
@@ -2923,7 +2923,7 @@ static PyObject *MediaObj_SetMediaPreferredChunkSize(MediaObject *_self, PyObjec
 {
     PyObject *_res = NULL;
     OSErr _err;
-    long maxChunkSize;
+    REALLYLONG maxChunkSize;
 #ifndef SetMediaPreferredChunkSize
     PyMac_PRECHECK(SetMediaPreferredChunkSize);
 #endif
@@ -2942,7 +2942,7 @@ static PyObject *MediaObj_GetMediaPreferredChunkSize(MediaObject *_self, PyObjec
 {
     PyObject *_res = NULL;
     OSErr _err;
-    long maxChunkSize;
+    REALLYLONG maxChunkSize;
 #ifndef GetMediaPreferredChunkSize
     PyMac_PRECHECK(GetMediaPreferredChunkSize);
 #endif
@@ -2960,8 +2960,8 @@ static PyObject *MediaObj_SetMediaShadowSync(MediaObject *_self, PyObject *_args
 {
     PyObject *_res = NULL;
     OSErr _err;
-    long frameDiffSampleNum;
-    long syncSampleNum;
+    REALLYLONG frameDiffSampleNum;
+    REALLYLONG syncSampleNum;
 #ifndef SetMediaShadowSync
     PyMac_PRECHECK(SetMediaShadowSync);
 #endif
@@ -2982,8 +2982,8 @@ static PyObject *MediaObj_GetMediaShadowSync(MediaObject *_self, PyObject *_args
 {
     PyObject *_res = NULL;
     OSErr _err;
-    long frameDiffSampleNum;
-    long syncSampleNum;
+    REALLYLONG frameDiffSampleNum;
+    REALLYLONG syncSampleNum;
 #ifndef GetMediaShadowSync
     PyMac_PRECHECK(GetMediaShadowSync);
 #endif
@@ -3002,7 +3002,7 @@ static PyObject *MediaObj_GetMediaShadowSync(MediaObject *_self, PyObject *_args
 static PyObject *MediaObj_GetMediaDataSize(MediaObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long _rv;
+    REALLYLONG _rv;
     TimeValue startTime;
     TimeValue duration;
 #ifndef GetMediaDataSize
@@ -3101,7 +3101,7 @@ static PyObject *MediaObj_GetMediaDataRef(MediaObject *_self, PyObject *_args)
     short index;
     Handle dataRef;
     OSType dataRefType;
-    long dataRefAttributes;
+    REALLYLONG dataRefAttributes;
 #ifndef GetMediaDataRef
     PyMac_PRECHECK(GetMediaDataRef);
 #endif
@@ -3151,7 +3151,7 @@ static PyObject *MediaObj_SetMediaDataRefAttributes(MediaObject *_self, PyObject
     PyObject *_res = NULL;
     OSErr _err;
     short index;
-    long dataRefAttributes;
+    REALLYLONG dataRefAttributes;
 #ifndef SetMediaDataRefAttributes
     PyMac_PRECHECK(SetMediaDataRefAttributes);
 #endif
@@ -3213,8 +3213,8 @@ static PyObject *MediaObj_GetMediaDataRefCount(MediaObject *_self, PyObject *_ar
 static PyObject *MediaObj_SetMediaPlayHints(MediaObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long flags;
-    long flagsMask;
+    REALLYLONG flags;
+    REALLYLONG flagsMask;
 #ifndef SetMediaPlayHints
     PyMac_PRECHECK(SetMediaPlayHints);
 #endif
@@ -3233,7 +3233,7 @@ static PyObject *MediaObj_SetMediaPlayHints(MediaObject *_self, PyObject *_args)
 static PyObject *MediaObj_GetMediaPlayHints(MediaObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long flags;
+    REALLYLONG flags;
 #ifndef GetMediaPlayHints
     PyMac_PRECHECK(GetMediaPlayHints);
 #endif
@@ -3273,13 +3273,13 @@ static PyObject *MediaObj_GetMediaNextInterestingTimeOnly(MediaObject *_self, Py
 
 static PyMethodDef MediaObj_methods[] = {
     {"LoadMediaIntoRam", (PyCFunction)MediaObj_LoadMediaIntoRam, 1,
-     PyDoc_STR("(TimeValue time, TimeValue duration, long flags) -> None")},
+     PyDoc_STR("(TimeValue time, TimeValue duration, REALLYLONG flags) -> None")},
     {"GetMediaTrack", (PyCFunction)MediaObj_GetMediaTrack, 1,
      PyDoc_STR("() -> (Track _rv)")},
     {"GetMediaCreationTime", (PyCFunction)MediaObj_GetMediaCreationTime, 1,
-     PyDoc_STR("() -> (unsigned long _rv)")},
+     PyDoc_STR("() -> (unsigned REALLYLONG _rv)")},
     {"GetMediaModificationTime", (PyCFunction)MediaObj_GetMediaModificationTime, 1,
-     PyDoc_STR("() -> (unsigned long _rv)")},
+     PyDoc_STR("() -> (unsigned REALLYLONG _rv)")},
     {"GetMediaTimeScale", (PyCFunction)MediaObj_GetMediaTimeScale, 1,
      PyDoc_STR("() -> (TimeScale _rv)")},
     {"SetMediaTimeScale", (PyCFunction)MediaObj_SetMediaTimeScale, 1,
@@ -3315,37 +3315,37 @@ static PyMethodDef MediaObj_methods[] = {
     {"SetMediaDataHandler", (PyCFunction)MediaObj_SetMediaDataHandler, 1,
      PyDoc_STR("(short index, DataHandlerComponent dataHandler) -> None")},
     {"GetMediaSampleDescriptionCount", (PyCFunction)MediaObj_GetMediaSampleDescriptionCount, 1,
-     PyDoc_STR("() -> (long _rv)")},
+     PyDoc_STR("() -> (REALLYLONG _rv)")},
     {"GetMediaSampleDescription", (PyCFunction)MediaObj_GetMediaSampleDescription, 1,
-     PyDoc_STR("(long index, SampleDescriptionHandle descH) -> None")},
+     PyDoc_STR("(REALLYLONG index, SampleDescriptionHandle descH) -> None")},
     {"SetMediaSampleDescription", (PyCFunction)MediaObj_SetMediaSampleDescription, 1,
-     PyDoc_STR("(long index, SampleDescriptionHandle descH) -> None")},
+     PyDoc_STR("(REALLYLONG index, SampleDescriptionHandle descH) -> None")},
     {"GetMediaSampleCount", (PyCFunction)MediaObj_GetMediaSampleCount, 1,
-     PyDoc_STR("() -> (long _rv)")},
+     PyDoc_STR("() -> (REALLYLONG _rv)")},
     {"GetMediaSyncSampleCount", (PyCFunction)MediaObj_GetMediaSyncSampleCount, 1,
-     PyDoc_STR("() -> (long _rv)")},
+     PyDoc_STR("() -> (REALLYLONG _rv)")},
     {"SampleNumToMediaTime", (PyCFunction)MediaObj_SampleNumToMediaTime, 1,
-     PyDoc_STR("(long logicalSampleNum) -> (TimeValue sampleTime, TimeValue sampleDuration)")},
+     PyDoc_STR("(REALLYLONG logicalSampleNum) -> (TimeValue sampleTime, TimeValue sampleDuration)")},
     {"MediaTimeToSampleNum", (PyCFunction)MediaObj_MediaTimeToSampleNum, 1,
-     PyDoc_STR("(TimeValue time) -> (long sampleNum, TimeValue sampleTime, TimeValue sampleDuration)")},
+     PyDoc_STR("(TimeValue time) -> (REALLYLONG sampleNum, TimeValue sampleTime, TimeValue sampleDuration)")},
     {"AddMediaSample", (PyCFunction)MediaObj_AddMediaSample, 1,
-     PyDoc_STR("(Handle dataIn, long inOffset, unsigned long size, TimeValue durationPerSample, SampleDescriptionHandle sampleDescriptionH, long numberOfSamples, short sampleFlags) -> (TimeValue sampleTime)")},
+     PyDoc_STR("(Handle dataIn, REALLYLONG inOffset, unsigned REALLYLONG size, TimeValue durationPerSample, SampleDescriptionHandle sampleDescriptionH, REALLYLONG numberOfSamples, short sampleFlags) -> (TimeValue sampleTime)")},
     {"AddMediaSampleReference", (PyCFunction)MediaObj_AddMediaSampleReference, 1,
-     PyDoc_STR("(long dataOffset, unsigned long size, TimeValue durationPerSample, SampleDescriptionHandle sampleDescriptionH, long numberOfSamples, short sampleFlags) -> (TimeValue sampleTime)")},
+     PyDoc_STR("(REALLYLONG dataOffset, unsigned REALLYLONG size, TimeValue durationPerSample, SampleDescriptionHandle sampleDescriptionH, REALLYLONG numberOfSamples, short sampleFlags) -> (TimeValue sampleTime)")},
     {"GetMediaSample", (PyCFunction)MediaObj_GetMediaSample, 1,
-     PyDoc_STR("(Handle dataOut, long maxSizeToGrow, TimeValue time, SampleDescriptionHandle sampleDescriptionH, long maxNumberOfSamples) -> (long size, TimeValue sampleTime, TimeValue durationPerSample, long sampleDescriptionIndex, long numberOfSamples, short sampleFlags)")},
+     PyDoc_STR("(Handle dataOut, REALLYLONG maxSizeToGrow, TimeValue time, SampleDescriptionHandle sampleDescriptionH, REALLYLONG maxNumberOfSamples) -> (REALLYLONG size, TimeValue sampleTime, TimeValue durationPerSample, REALLYLONG sampleDescriptionIndex, REALLYLONG numberOfSamples, short sampleFlags)")},
     {"GetMediaSampleReference", (PyCFunction)MediaObj_GetMediaSampleReference, 1,
-     PyDoc_STR("(TimeValue time, SampleDescriptionHandle sampleDescriptionH, long maxNumberOfSamples) -> (long dataOffset, long size, TimeValue sampleTime, TimeValue durationPerSample, long sampleDescriptionIndex, long numberOfSamples, short sampleFlags)")},
+     PyDoc_STR("(TimeValue time, SampleDescriptionHandle sampleDescriptionH, REALLYLONG maxNumberOfSamples) -> (REALLYLONG dataOffset, REALLYLONG size, TimeValue sampleTime, TimeValue durationPerSample, REALLYLONG sampleDescriptionIndex, REALLYLONG numberOfSamples, short sampleFlags)")},
     {"SetMediaPreferredChunkSize", (PyCFunction)MediaObj_SetMediaPreferredChunkSize, 1,
-     PyDoc_STR("(long maxChunkSize) -> None")},
+     PyDoc_STR("(REALLYLONG maxChunkSize) -> None")},
     {"GetMediaPreferredChunkSize", (PyCFunction)MediaObj_GetMediaPreferredChunkSize, 1,
-     PyDoc_STR("() -> (long maxChunkSize)")},
+     PyDoc_STR("() -> (REALLYLONG maxChunkSize)")},
     {"SetMediaShadowSync", (PyCFunction)MediaObj_SetMediaShadowSync, 1,
-     PyDoc_STR("(long frameDiffSampleNum, long syncSampleNum) -> None")},
+     PyDoc_STR("(REALLYLONG frameDiffSampleNum, REALLYLONG syncSampleNum) -> None")},
     {"GetMediaShadowSync", (PyCFunction)MediaObj_GetMediaShadowSync, 1,
-     PyDoc_STR("(long frameDiffSampleNum) -> (long syncSampleNum)")},
+     PyDoc_STR("(REALLYLONG frameDiffSampleNum) -> (REALLYLONG syncSampleNum)")},
     {"GetMediaDataSize", (PyCFunction)MediaObj_GetMediaDataSize, 1,
-     PyDoc_STR("(TimeValue startTime, TimeValue duration) -> (long _rv)")},
+     PyDoc_STR("(TimeValue startTime, TimeValue duration) -> (REALLYLONG _rv)")},
     {"GetMediaDataSize64", (PyCFunction)MediaObj_GetMediaDataSize64, 1,
      PyDoc_STR("(TimeValue startTime, TimeValue duration) -> (wide dataSize)")},
     {"CopyMediaUserData", (PyCFunction)MediaObj_CopyMediaUserData, 1,
@@ -3353,19 +3353,19 @@ static PyMethodDef MediaObj_methods[] = {
     {"GetMediaNextInterestingTime", (PyCFunction)MediaObj_GetMediaNextInterestingTime, 1,
      PyDoc_STR("(short interestingTimeFlags, TimeValue time, Fixed rate) -> (TimeValue interestingTime, TimeValue interestingDuration)")},
     {"GetMediaDataRef", (PyCFunction)MediaObj_GetMediaDataRef, 1,
-     PyDoc_STR("(short index) -> (Handle dataRef, OSType dataRefType, long dataRefAttributes)")},
+     PyDoc_STR("(short index) -> (Handle dataRef, OSType dataRefType, REALLYLONG dataRefAttributes)")},
     {"SetMediaDataRef", (PyCFunction)MediaObj_SetMediaDataRef, 1,
      PyDoc_STR("(short index, Handle dataRef, OSType dataRefType) -> None")},
     {"SetMediaDataRefAttributes", (PyCFunction)MediaObj_SetMediaDataRefAttributes, 1,
-     PyDoc_STR("(short index, long dataRefAttributes) -> None")},
+     PyDoc_STR("(short index, REALLYLONG dataRefAttributes) -> None")},
     {"AddMediaDataRef", (PyCFunction)MediaObj_AddMediaDataRef, 1,
      PyDoc_STR("(Handle dataRef, OSType dataRefType) -> (short index)")},
     {"GetMediaDataRefCount", (PyCFunction)MediaObj_GetMediaDataRefCount, 1,
      PyDoc_STR("() -> (short count)")},
     {"SetMediaPlayHints", (PyCFunction)MediaObj_SetMediaPlayHints, 1,
-     PyDoc_STR("(long flags, long flagsMask) -> None")},
+     PyDoc_STR("(REALLYLONG flags, REALLYLONG flagsMask) -> None")},
     {"GetMediaPlayHints", (PyCFunction)MediaObj_GetMediaPlayHints, 1,
-     PyDoc_STR("() -> (long flags)")},
+     PyDoc_STR("() -> (REALLYLONG flags)")},
     {"GetMediaNextInterestingTimeOnly", (PyCFunction)MediaObj_GetMediaNextInterestingTimeOnly, 1,
      PyDoc_STR("(short interestingTimeFlags, TimeValue time, Fixed rate) -> (TimeValue interestingTime)")},
     {NULL, NULL, 0}
@@ -3497,7 +3497,7 @@ static PyObject *TrackObj_LoadTrackIntoRam(TrackObject *_self, PyObject *_args)
     OSErr _err;
     TimeValue time;
     TimeValue duration;
-    long flags;
+    REALLYLONG flags;
 #ifndef LoadTrackIntoRam
     PyMac_PRECHECK(LoadTrackIntoRam);
 #endif
@@ -3646,7 +3646,7 @@ static PyObject *TrackObj_SetTrackMatte(TrackObject *_self, PyObject *_args)
 static PyObject *TrackObj_GetTrackID(TrackObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long _rv;
+    REALLYLONG _rv;
 #ifndef GetTrackID
     PyMac_PRECHECK(GetTrackID);
 #endif
@@ -3676,7 +3676,7 @@ static PyObject *TrackObj_GetTrackMovie(TrackObject *_self, PyObject *_args)
 static PyObject *TrackObj_GetTrackCreationTime(TrackObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    unsigned long _rv;
+    unsigned REALLYLONG _rv;
 #ifndef GetTrackCreationTime
     PyMac_PRECHECK(GetTrackCreationTime);
 #endif
@@ -3691,7 +3691,7 @@ static PyObject *TrackObj_GetTrackCreationTime(TrackObject *_self, PyObject *_ar
 static PyObject *TrackObj_GetTrackModificationTime(TrackObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    unsigned long _rv;
+    unsigned REALLYLONG _rv;
 #ifndef GetTrackModificationTime
     PyMac_PRECHECK(GetTrackModificationTime);
 #endif
@@ -3738,7 +3738,7 @@ static PyObject *TrackObj_SetTrackEnabled(TrackObject *_self, PyObject *_args)
 static PyObject *TrackObj_GetTrackUsage(TrackObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long _rv;
+    REALLYLONG _rv;
 #ifndef GetTrackUsage
     PyMac_PRECHECK(GetTrackUsage);
 #endif
@@ -3753,7 +3753,7 @@ static PyObject *TrackObj_GetTrackUsage(TrackObject *_self, PyObject *_args)
 static PyObject *TrackObj_SetTrackUsage(TrackObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long usage;
+    REALLYLONG usage;
 #ifndef SetTrackUsage
     PyMac_PRECHECK(SetTrackUsage);
 #endif
@@ -4234,7 +4234,7 @@ static PyObject *TrackObj_AddClonedTrackToMovie(TrackObject *_self, PyObject *_a
     PyObject *_res = NULL;
     OSErr _err;
     Movie dstMovie;
-    long flags;
+    REALLYLONG flags;
     Track dstTrack;
 #ifndef AddClonedTrackToMovie
     PyMac_PRECHECK(AddClonedTrackToMovie);
@@ -4259,7 +4259,7 @@ static PyObject *TrackObj_AddTrackReference(TrackObject *_self, PyObject *_args)
     OSErr _err;
     Track refTrack;
     OSType refType;
-    long addedIndex;
+    REALLYLONG addedIndex;
 #ifndef AddTrackReference
     PyMac_PRECHECK(AddTrackReference);
 #endif
@@ -4282,7 +4282,7 @@ static PyObject *TrackObj_DeleteTrackReference(TrackObject *_self, PyObject *_ar
     PyObject *_res = NULL;
     OSErr _err;
     OSType refType;
-    long index;
+    REALLYLONG index;
 #ifndef DeleteTrackReference
     PyMac_PRECHECK(DeleteTrackReference);
 #endif
@@ -4305,7 +4305,7 @@ static PyObject *TrackObj_SetTrackReference(TrackObject *_self, PyObject *_args)
     OSErr _err;
     Track refTrack;
     OSType refType;
-    long index;
+    REALLYLONG index;
 #ifndef SetTrackReference
     PyMac_PRECHECK(SetTrackReference);
 #endif
@@ -4329,7 +4329,7 @@ static PyObject *TrackObj_GetTrackReference(TrackObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     Track _rv;
     OSType refType;
-    long index;
+    REALLYLONG index;
 #ifndef GetTrackReference
     PyMac_PRECHECK(GetTrackReference);
 #endif
@@ -4366,7 +4366,7 @@ static PyObject *TrackObj_GetNextTrackReferenceType(TrackObject *_self, PyObject
 static PyObject *TrackObj_GetTrackReferenceCount(TrackObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long _rv;
+    REALLYLONG _rv;
     OSType refType;
 #ifndef GetTrackReferenceCount
     PyMac_PRECHECK(GetTrackReferenceCount);
@@ -4402,7 +4402,7 @@ static PyObject *TrackObj_GetTrackEditRate(TrackObject *_self, PyObject *_args)
 static PyObject *TrackObj_GetTrackDataSize(TrackObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long _rv;
+    REALLYLONG _rv;
     TimeValue startTime;
     TimeValue duration;
 #ifndef GetTrackDataSize
@@ -4553,8 +4553,8 @@ static PyObject *TrackObj_SetTrackLoadSettings(TrackObject *_self, PyObject *_ar
     PyObject *_res = NULL;
     TimeValue preloadTime;
     TimeValue preloadDuration;
-    long preloadFlags;
-    long defaultHints;
+    REALLYLONG preloadFlags;
+    REALLYLONG defaultHints;
 #ifndef SetTrackLoadSettings
     PyMac_PRECHECK(SetTrackLoadSettings);
 #endif
@@ -4579,8 +4579,8 @@ static PyObject *TrackObj_GetTrackLoadSettings(TrackObject *_self, PyObject *_ar
     PyObject *_res = NULL;
     TimeValue preloadTime;
     TimeValue preloadDuration;
-    long preloadFlags;
-    long defaultHints;
+    REALLYLONG preloadFlags;
+    REALLYLONG defaultHints;
 #ifndef GetTrackLoadSettings
     PyMac_PRECHECK(GetTrackLoadSettings);
 #endif
@@ -4601,7 +4601,7 @@ static PyObject *TrackObj_GetTrackLoadSettings(TrackObject *_self, PyObject *_ar
 
 static PyMethodDef TrackObj_methods[] = {
     {"LoadTrackIntoRam", (PyCFunction)TrackObj_LoadTrackIntoRam, 1,
-     PyDoc_STR("(TimeValue time, TimeValue duration, long flags) -> None")},
+     PyDoc_STR("(TimeValue time, TimeValue duration, REALLYLONG flags) -> None")},
     {"GetTrackPict", (PyCFunction)TrackObj_GetTrackPict, 1,
      PyDoc_STR("(TimeValue time) -> (PicHandle _rv)")},
     {"GetTrackClipRgn", (PyCFunction)TrackObj_GetTrackClipRgn, 1,
@@ -4619,21 +4619,21 @@ static PyMethodDef TrackObj_methods[] = {
     {"SetTrackMatte", (PyCFunction)TrackObj_SetTrackMatte, 1,
      PyDoc_STR("(PixMapHandle theMatte) -> None")},
     {"GetTrackID", (PyCFunction)TrackObj_GetTrackID, 1,
-     PyDoc_STR("() -> (long _rv)")},
+     PyDoc_STR("() -> (REALLYLONG _rv)")},
     {"GetTrackMovie", (PyCFunction)TrackObj_GetTrackMovie, 1,
      PyDoc_STR("() -> (Movie _rv)")},
     {"GetTrackCreationTime", (PyCFunction)TrackObj_GetTrackCreationTime, 1,
-     PyDoc_STR("() -> (unsigned long _rv)")},
+     PyDoc_STR("() -> (unsigned REALLYLONG _rv)")},
     {"GetTrackModificationTime", (PyCFunction)TrackObj_GetTrackModificationTime, 1,
-     PyDoc_STR("() -> (unsigned long _rv)")},
+     PyDoc_STR("() -> (unsigned REALLYLONG _rv)")},
     {"GetTrackEnabled", (PyCFunction)TrackObj_GetTrackEnabled, 1,
      PyDoc_STR("() -> (Boolean _rv)")},
     {"SetTrackEnabled", (PyCFunction)TrackObj_SetTrackEnabled, 1,
      PyDoc_STR("(Boolean isEnabled) -> None")},
     {"GetTrackUsage", (PyCFunction)TrackObj_GetTrackUsage, 1,
-     PyDoc_STR("() -> (long _rv)")},
+     PyDoc_STR("() -> (REALLYLONG _rv)")},
     {"SetTrackUsage", (PyCFunction)TrackObj_SetTrackUsage, 1,
-     PyDoc_STR("(long usage) -> None")},
+     PyDoc_STR("(REALLYLONG usage) -> None")},
     {"GetTrackDuration", (PyCFunction)TrackObj_GetTrackDuration, 1,
      PyDoc_STR("() -> (TimeValue _rv)")},
     {"GetTrackOffset", (PyCFunction)TrackObj_GetTrackOffset, 1,
@@ -4683,23 +4683,23 @@ static PyMethodDef TrackObj_methods[] = {
     {"AddEmptyTrackToMovie", (PyCFunction)TrackObj_AddEmptyTrackToMovie, 1,
      PyDoc_STR("(Movie dstMovie, Handle dataRef, OSType dataRefType) -> (Track dstTrack)")},
     {"AddClonedTrackToMovie", (PyCFunction)TrackObj_AddClonedTrackToMovie, 1,
-     PyDoc_STR("(Movie dstMovie, long flags) -> (Track dstTrack)")},
+     PyDoc_STR("(Movie dstMovie, REALLYLONG flags) -> (Track dstTrack)")},
     {"AddTrackReference", (PyCFunction)TrackObj_AddTrackReference, 1,
-     PyDoc_STR("(Track refTrack, OSType refType) -> (long addedIndex)")},
+     PyDoc_STR("(Track refTrack, OSType refType) -> (REALLYLONG addedIndex)")},
     {"DeleteTrackReference", (PyCFunction)TrackObj_DeleteTrackReference, 1,
-     PyDoc_STR("(OSType refType, long index) -> None")},
+     PyDoc_STR("(OSType refType, REALLYLONG index) -> None")},
     {"SetTrackReference", (PyCFunction)TrackObj_SetTrackReference, 1,
-     PyDoc_STR("(Track refTrack, OSType refType, long index) -> None")},
+     PyDoc_STR("(Track refTrack, OSType refType, REALLYLONG index) -> None")},
     {"GetTrackReference", (PyCFunction)TrackObj_GetTrackReference, 1,
-     PyDoc_STR("(OSType refType, long index) -> (Track _rv)")},
+     PyDoc_STR("(OSType refType, REALLYLONG index) -> (Track _rv)")},
     {"GetNextTrackReferenceType", (PyCFunction)TrackObj_GetNextTrackReferenceType, 1,
      PyDoc_STR("(OSType refType) -> (OSType _rv)")},
     {"GetTrackReferenceCount", (PyCFunction)TrackObj_GetTrackReferenceCount, 1,
-     PyDoc_STR("(OSType refType) -> (long _rv)")},
+     PyDoc_STR("(OSType refType) -> (REALLYLONG _rv)")},
     {"GetTrackEditRate", (PyCFunction)TrackObj_GetTrackEditRate, 1,
      PyDoc_STR("(TimeValue atTime) -> (Fixed _rv)")},
     {"GetTrackDataSize", (PyCFunction)TrackObj_GetTrackDataSize, 1,
-     PyDoc_STR("(TimeValue startTime, TimeValue duration) -> (long _rv)")},
+     PyDoc_STR("(TimeValue startTime, TimeValue duration) -> (REALLYLONG _rv)")},
     {"GetTrackDataSize64", (PyCFunction)TrackObj_GetTrackDataSize64, 1,
      PyDoc_STR("(TimeValue startTime, TimeValue duration) -> (wide dataSize)")},
     {"PtInTrack", (PyCFunction)TrackObj_PtInTrack, 1,
@@ -4713,9 +4713,9 @@ static PyMethodDef TrackObj_methods[] = {
     {"GetTrackStatus", (PyCFunction)TrackObj_GetTrackStatus, 1,
      PyDoc_STR("() -> (ComponentResult _rv)")},
     {"SetTrackLoadSettings", (PyCFunction)TrackObj_SetTrackLoadSettings, 1,
-     PyDoc_STR("(TimeValue preloadTime, TimeValue preloadDuration, long preloadFlags, long defaultHints) -> None")},
+     PyDoc_STR("(TimeValue preloadTime, TimeValue preloadDuration, REALLYLONG preloadFlags, REALLYLONG defaultHints) -> None")},
     {"GetTrackLoadSettings", (PyCFunction)TrackObj_GetTrackLoadSettings, 1,
-     PyDoc_STR("() -> (TimeValue preloadTime, TimeValue preloadDuration, long preloadFlags, long defaultHints)")},
+     PyDoc_STR("() -> (TimeValue preloadTime, TimeValue preloadDuration, REALLYLONG preloadFlags, REALLYLONG defaultHints)")},
     {NULL, NULL, 0}
 };
 
@@ -4842,7 +4842,7 @@ static void MovieObj_dealloc(MovieObject *self)
 static PyObject *MovieObj_MoviesTask(MovieObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long maxMilliSecToUse;
+    REALLYLONG maxMilliSecToUse;
 #ifndef MoviesTask
     PyMac_PRECHECK(MoviesTask);
 #endif
@@ -4901,7 +4901,7 @@ static PyObject *MovieObj_LoadMovieIntoRam(MovieObject *_self, PyObject *_args)
     OSErr _err;
     TimeValue time;
     TimeValue duration;
-    long flags;
+    REALLYLONG flags;
 #ifndef LoadMovieIntoRam
     PyMac_PRECHECK(LoadMovieIntoRam);
 #endif
@@ -5127,7 +5127,7 @@ static PyObject *MovieObj_SetMovieMasterClock(MovieObject *_self, PyObject *_arg
 static PyObject *MovieObj_ChooseMovieClock(MovieObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long flags;
+    REALLYLONG flags;
 #ifndef ChooseMovieClock
     PyMac_PRECHECK(ChooseMovieClock);
 #endif
@@ -5468,8 +5468,8 @@ static PyObject *MovieObj_PutMovieIntoDataFork(MovieObject *_self, PyObject *_ar
     PyObject *_res = NULL;
     OSErr _err;
     short fRefNum;
-    long offset;
-    long maxSize;
+    REALLYLONG offset;
+    REALLYLONG maxSize;
 #ifndef PutMovieIntoDataFork
     PyMac_PRECHECK(PutMovieIntoDataFork);
 #endif
@@ -5492,9 +5492,9 @@ static PyObject *MovieObj_PutMovieIntoDataFork64(MovieObject *_self, PyObject *_
 {
     PyObject *_res = NULL;
     OSErr _err;
-    long fRefNum;
+    REALLYLONG fRefNum;
     wide offset;
-    unsigned long maxSize;
+    unsigned REALLYLONG maxSize;
 #ifndef PutMovieIntoDataFork64
     PyMac_PRECHECK(PutMovieIntoDataFork64);
 #endif
@@ -5519,7 +5519,7 @@ static PyObject *MovieObj_PutMovieIntoStorage(MovieObject *_self, PyObject *_arg
     OSErr _err;
     DataHandler dh;
     wide offset;
-    unsigned long maxSize;
+    unsigned REALLYLONG maxSize;
 #ifndef PutMovieIntoStorage
     PyMac_PRECHECK(PutMovieIntoStorage);
 #endif
@@ -5566,7 +5566,7 @@ static PyObject *MovieObj_PutMovieForDataRefIntoHandle(MovieObject *_self, PyObj
 static PyObject *MovieObj_GetMovieCreationTime(MovieObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    unsigned long _rv;
+    unsigned REALLYLONG _rv;
 #ifndef GetMovieCreationTime
     PyMac_PRECHECK(GetMovieCreationTime);
 #endif
@@ -5581,7 +5581,7 @@ static PyObject *MovieObj_GetMovieCreationTime(MovieObject *_self, PyObject *_ar
 static PyObject *MovieObj_GetMovieModificationTime(MovieObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    unsigned long _rv;
+    unsigned REALLYLONG _rv;
 #ifndef GetMovieModificationTime
     PyMac_PRECHECK(GetMovieModificationTime);
 #endif
@@ -5987,7 +5987,7 @@ static PyObject *MovieObj_GetMovieUserData(MovieObject *_self, PyObject *_args)
 static PyObject *MovieObj_GetMovieTrackCount(MovieObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long _rv;
+    REALLYLONG _rv;
 #ifndef GetMovieTrackCount
     PyMac_PRECHECK(GetMovieTrackCount);
 #endif
@@ -6003,7 +6003,7 @@ static PyObject *MovieObj_GetMovieTrack(MovieObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
     Track _rv;
-    long trackID;
+    REALLYLONG trackID;
 #ifndef GetMovieTrack
     PyMac_PRECHECK(GetMovieTrack);
 #endif
@@ -6021,7 +6021,7 @@ static PyObject *MovieObj_GetMovieIndTrack(MovieObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
     Track _rv;
-    long index;
+    REALLYLONG index;
 #ifndef GetMovieIndTrack
     PyMac_PRECHECK(GetMovieIndTrack);
 #endif
@@ -6039,9 +6039,9 @@ static PyObject *MovieObj_GetMovieIndTrackType(MovieObject *_self, PyObject *_ar
 {
     PyObject *_res = NULL;
     Track _rv;
-    long index;
+    REALLYLONG index;
     OSType trackType;
-    long flags;
+    REALLYLONG flags;
 #ifndef GetMovieIndTrackType
     PyMac_PRECHECK(GetMovieIndTrackType);
 #endif
@@ -6298,7 +6298,7 @@ static PyObject *MovieObj_PutMovieIntoTypedHandle(MovieObject *_self, PyObject *
     Handle publicMovie;
     TimeValue start;
     TimeValue dur;
-    long flags;
+    REALLYLONG flags;
     ComponentInstance userComp;
 #ifndef PutMovieIntoTypedHandle
     PyMac_PRECHECK(PutMovieIntoTypedHandle);
@@ -6355,7 +6355,7 @@ static PyObject *MovieObj_ConvertMovieToFile(MovieObject *_self, PyObject *_args
     OSType creator;
     ScriptCode scriptTag;
     short resID;
-    long flags;
+    REALLYLONG flags;
     ComponentInstance userComp;
 #ifndef ConvertMovieToFile
     PyMac_PRECHECK(ConvertMovieToFile);
@@ -6387,7 +6387,7 @@ static PyObject *MovieObj_ConvertMovieToFile(MovieObject *_self, PyObject *_args
 static PyObject *MovieObj_GetMovieDataSize(MovieObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long _rv;
+    REALLYLONG _rv;
     TimeValue startTime;
     TimeValue duration;
 #ifndef GetMovieDataSize
@@ -6450,7 +6450,7 @@ static PyObject *MovieObj_PtInMovie(MovieObject *_self, PyObject *_args)
 static PyObject *MovieObj_SetMovieLanguage(MovieObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long language;
+    REALLYLONG language;
 #ifndef SetMovieLanguage
     PyMac_PRECHECK(SetMovieLanguage);
 #endif
@@ -6719,11 +6719,11 @@ static PyObject *MovieObj_GetMovieColorTable(MovieObject *_self, PyObject *_args
 static PyObject *MovieObj_FlattenMovie(MovieObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long movieFlattenFlags;
+    REALLYLONG movieFlattenFlags;
     FSSpec theFile;
     OSType creator;
     ScriptCode scriptTag;
-    long createMovieFileFlags;
+    REALLYLONG createMovieFileFlags;
     short resId;
     Str255 resName;
 #ifndef FlattenMovie
@@ -6754,11 +6754,11 @@ static PyObject *MovieObj_FlattenMovieData(MovieObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
     Movie _rv;
-    long movieFlattenFlags;
+    REALLYLONG movieFlattenFlags;
     FSSpec theFile;
     OSType creator;
     ScriptCode scriptTag;
-    long createMovieFileFlags;
+    REALLYLONG createMovieFileFlags;
 #ifndef FlattenMovieData
     PyMac_PRECHECK(FlattenMovieData);
 #endif
@@ -6784,12 +6784,12 @@ static PyObject *MovieObj_FlattenMovieDataToDataRef(MovieObject *_self, PyObject
 {
     PyObject *_res = NULL;
     Movie _rv;
-    long movieFlattenFlags;
+    REALLYLONG movieFlattenFlags;
     Handle dataRef;
     OSType dataRefType;
     OSType creator;
     ScriptCode scriptTag;
-    long createMovieFileFlags;
+    REALLYLONG createMovieFileFlags;
 #ifndef FlattenMovieDataToDataRef
     PyMac_PRECHECK(FlattenMovieDataToDataRef);
 #endif
@@ -6818,11 +6818,11 @@ static PyObject *MovieObj_MovieSearchText(MovieObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     OSErr _err;
     Ptr text;
-    long size;
-    long searchFlags;
+    REALLYLONG size;
+    REALLYLONG searchFlags;
     Track searchTrack;
     TimeValue searchTime;
-    long searchOffset;
+    REALLYLONG searchOffset;
 #ifndef MovieSearchText
     PyMac_PRECHECK(MovieSearchText);
 #endif
@@ -6923,7 +6923,7 @@ static PyObject *MovieObj_NewMovieController(MovieObject *_self, PyObject *_args
     PyObject *_res = NULL;
     MovieController _rv;
     Rect movieRect;
-    long someFlags;
+    REALLYLONG someFlags;
 #ifndef NewMovieController
     PyMac_PRECHECK(NewMovieController);
 #endif
@@ -6943,7 +6943,7 @@ static PyObject *MovieObj_PutMovieOnScrap(MovieObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
     OSErr _err;
-    long movieScrapFlags;
+    REALLYLONG movieScrapFlags;
 #ifndef PutMovieOnScrap
     PyMac_PRECHECK(PutMovieOnScrap);
 #endif
@@ -6961,8 +6961,8 @@ static PyObject *MovieObj_PutMovieOnScrap(MovieObject *_self, PyObject *_args)
 static PyObject *MovieObj_SetMoviePlayHints(MovieObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long flags;
-    long flagsMask;
+    REALLYLONG flags;
+    REALLYLONG flagsMask;
 #ifndef SetMoviePlayHints
     PyMac_PRECHECK(SetMoviePlayHints);
 #endif
@@ -7020,7 +7020,7 @@ static PyObject *MovieObj_QTGetDataRefMaxFileOffset(MovieObject *_self, PyObject
     OSErr _err;
     OSType dataRefType;
     Handle dataRef;
-    long offset;
+    REALLYLONG offset;
 #ifndef QTGetDataRefMaxFileOffset
     PyMac_PRECHECK(QTGetDataRefMaxFileOffset);
 #endif
@@ -7040,13 +7040,13 @@ static PyObject *MovieObj_QTGetDataRefMaxFileOffset(MovieObject *_self, PyObject
 
 static PyMethodDef MovieObj_methods[] = {
     {"MoviesTask", (PyCFunction)MovieObj_MoviesTask, 1,
-     PyDoc_STR("(long maxMilliSecToUse) -> None")},
+     PyDoc_STR("(REALLYLONG maxMilliSecToUse) -> None")},
     {"PrerollMovie", (PyCFunction)MovieObj_PrerollMovie, 1,
      PyDoc_STR("(TimeValue time, Fixed Rate) -> None")},
     {"AbortPrePrerollMovie", (PyCFunction)MovieObj_AbortPrePrerollMovie, 1,
      PyDoc_STR("(OSErr err) -> None")},
     {"LoadMovieIntoRam", (PyCFunction)MovieObj_LoadMovieIntoRam, 1,
-     PyDoc_STR("(TimeValue time, TimeValue duration, long flags) -> None")},
+     PyDoc_STR("(TimeValue time, TimeValue duration, REALLYLONG flags) -> None")},
     {"SetMovieActive", (PyCFunction)MovieObj_SetMovieActive, 1,
      PyDoc_STR("(Boolean active) -> None")},
     {"GetMovieActive", (PyCFunction)MovieObj_GetMovieActive, 1,
@@ -7074,7 +7074,7 @@ static PyMethodDef MovieObj_methods[] = {
     {"SetMovieMasterClock", (PyCFunction)MovieObj_SetMovieMasterClock, 1,
      PyDoc_STR("(Component clockMeister, TimeRecord slaveZero) -> None")},
     {"ChooseMovieClock", (PyCFunction)MovieObj_ChooseMovieClock, 1,
-     PyDoc_STR("(long flags) -> None")},
+     PyDoc_STR("(REALLYLONG flags) -> None")},
     {"GetMovieGWorld", (PyCFunction)MovieObj_GetMovieGWorld, 1,
      PyDoc_STR("() -> (CGrafPtr port, GDHandle gdh)")},
     {"SetMovieGWorld", (PyCFunction)MovieObj_SetMovieGWorld, 1,
@@ -7114,17 +7114,17 @@ static PyMethodDef MovieObj_methods[] = {
     {"PutMovieIntoHandle", (PyCFunction)MovieObj_PutMovieIntoHandle, 1,
      PyDoc_STR("(Handle publicMovie) -> None")},
     {"PutMovieIntoDataFork", (PyCFunction)MovieObj_PutMovieIntoDataFork, 1,
-     PyDoc_STR("(short fRefNum, long offset, long maxSize) -> None")},
+     PyDoc_STR("(short fRefNum, REALLYLONG offset, REALLYLONG maxSize) -> None")},
     {"PutMovieIntoDataFork64", (PyCFunction)MovieObj_PutMovieIntoDataFork64, 1,
-     PyDoc_STR("(long fRefNum, wide offset, unsigned long maxSize) -> None")},
+     PyDoc_STR("(REALLYLONG fRefNum, wide offset, unsigned REALLYLONG maxSize) -> None")},
     {"PutMovieIntoStorage", (PyCFunction)MovieObj_PutMovieIntoStorage, 1,
-     PyDoc_STR("(DataHandler dh, wide offset, unsigned long maxSize) -> None")},
+     PyDoc_STR("(DataHandler dh, wide offset, unsigned REALLYLONG maxSize) -> None")},
     {"PutMovieForDataRefIntoHandle", (PyCFunction)MovieObj_PutMovieForDataRefIntoHandle, 1,
      PyDoc_STR("(Handle dataRef, OSType dataRefType, Handle publicMovie) -> None")},
     {"GetMovieCreationTime", (PyCFunction)MovieObj_GetMovieCreationTime, 1,
-     PyDoc_STR("() -> (unsigned long _rv)")},
+     PyDoc_STR("() -> (unsigned REALLYLONG _rv)")},
     {"GetMovieModificationTime", (PyCFunction)MovieObj_GetMovieModificationTime, 1,
-     PyDoc_STR("() -> (unsigned long _rv)")},
+     PyDoc_STR("() -> (unsigned REALLYLONG _rv)")},
     {"GetMovieTimeScale", (PyCFunction)MovieObj_GetMovieTimeScale, 1,
      PyDoc_STR("() -> (TimeScale _rv)")},
     {"SetMovieTimeScale", (PyCFunction)MovieObj_SetMovieTimeScale, 1,
@@ -7172,13 +7172,13 @@ static PyMethodDef MovieObj_methods[] = {
     {"GetMovieUserData", (PyCFunction)MovieObj_GetMovieUserData, 1,
      PyDoc_STR("() -> (UserData _rv)")},
     {"GetMovieTrackCount", (PyCFunction)MovieObj_GetMovieTrackCount, 1,
-     PyDoc_STR("() -> (long _rv)")},
+     PyDoc_STR("() -> (REALLYLONG _rv)")},
     {"GetMovieTrack", (PyCFunction)MovieObj_GetMovieTrack, 1,
-     PyDoc_STR("(long trackID) -> (Track _rv)")},
+     PyDoc_STR("(REALLYLONG trackID) -> (Track _rv)")},
     {"GetMovieIndTrack", (PyCFunction)MovieObj_GetMovieIndTrack, 1,
-     PyDoc_STR("(long index) -> (Track _rv)")},
+     PyDoc_STR("(REALLYLONG index) -> (Track _rv)")},
     {"GetMovieIndTrackType", (PyCFunction)MovieObj_GetMovieIndTrackType, 1,
-     PyDoc_STR("(long index, OSType trackType, long flags) -> (Track _rv)")},
+     PyDoc_STR("(REALLYLONG index, OSType trackType, REALLYLONG flags) -> (Track _rv)")},
     {"NewMovieTrack", (PyCFunction)MovieObj_NewMovieTrack, 1,
      PyDoc_STR("(Fixed width, Fixed height, short trackVolume) -> (Track _rv)")},
     {"SetAutoTrackAlternatesEnabled", (PyCFunction)MovieObj_SetAutoTrackAlternatesEnabled, 1,
@@ -7204,19 +7204,19 @@ static PyMethodDef MovieObj_methods[] = {
     {"ClearMovieSelection", (PyCFunction)MovieObj_ClearMovieSelection, 1,
      PyDoc_STR("() -> None")},
     {"PutMovieIntoTypedHandle", (PyCFunction)MovieObj_PutMovieIntoTypedHandle, 1,
-     PyDoc_STR("(Track targetTrack, OSType handleType, Handle publicMovie, TimeValue start, TimeValue dur, long flags, ComponentInstance userComp) -> None")},
+     PyDoc_STR("(Track targetTrack, OSType handleType, Handle publicMovie, TimeValue start, TimeValue dur, REALLYLONG flags, ComponentInstance userComp) -> None")},
     {"CopyMovieSettings", (PyCFunction)MovieObj_CopyMovieSettings, 1,
      PyDoc_STR("(Movie dstMovie) -> None")},
     {"ConvertMovieToFile", (PyCFunction)MovieObj_ConvertMovieToFile, 1,
-     PyDoc_STR("(Track onlyTrack, FSSpec outputFile, OSType fileType, OSType creator, ScriptCode scriptTag, long flags, ComponentInstance userComp) -> (short resID)")},
+     PyDoc_STR("(Track onlyTrack, FSSpec outputFile, OSType fileType, OSType creator, ScriptCode scriptTag, REALLYLONG flags, ComponentInstance userComp) -> (short resID)")},
     {"GetMovieDataSize", (PyCFunction)MovieObj_GetMovieDataSize, 1,
-     PyDoc_STR("(TimeValue startTime, TimeValue duration) -> (long _rv)")},
+     PyDoc_STR("(TimeValue startTime, TimeValue duration) -> (REALLYLONG _rv)")},
     {"GetMovieDataSize64", (PyCFunction)MovieObj_GetMovieDataSize64, 1,
      PyDoc_STR("(TimeValue startTime, TimeValue duration) -> (wide dataSize)")},
     {"PtInMovie", (PyCFunction)MovieObj_PtInMovie, 1,
      PyDoc_STR("(Point pt) -> (Boolean _rv)")},
     {"SetMovieLanguage", (PyCFunction)MovieObj_SetMovieLanguage, 1,
-     PyDoc_STR("(long language) -> None")},
+     PyDoc_STR("(REALLYLONG language) -> None")},
     {"CopyMovieUserData", (PyCFunction)MovieObj_CopyMovieUserData, 1,
      PyDoc_STR("(Movie dstMovie, OSType copyRule) -> None")},
     {"GetMovieNextInterestingTime", (PyCFunction)MovieObj_GetMovieNextInterestingTime, 1,
@@ -7242,13 +7242,13 @@ static PyMethodDef MovieObj_methods[] = {
     {"GetMovieColorTable", (PyCFunction)MovieObj_GetMovieColorTable, 1,
      PyDoc_STR("() -> (CTabHandle ctab)")},
     {"FlattenMovie", (PyCFunction)MovieObj_FlattenMovie, 1,
-     PyDoc_STR("(long movieFlattenFlags, FSSpec theFile, OSType creator, ScriptCode scriptTag, long createMovieFileFlags, Str255 resName) -> (short resId)")},
+     PyDoc_STR("(REALLYLONG movieFlattenFlags, FSSpec theFile, OSType creator, ScriptCode scriptTag, REALLYLONG createMovieFileFlags, Str255 resName) -> (short resId)")},
     {"FlattenMovieData", (PyCFunction)MovieObj_FlattenMovieData, 1,
-     PyDoc_STR("(long movieFlattenFlags, FSSpec theFile, OSType creator, ScriptCode scriptTag, long createMovieFileFlags) -> (Movie _rv)")},
+     PyDoc_STR("(REALLYLONG movieFlattenFlags, FSSpec theFile, OSType creator, ScriptCode scriptTag, REALLYLONG createMovieFileFlags) -> (Movie _rv)")},
     {"FlattenMovieDataToDataRef", (PyCFunction)MovieObj_FlattenMovieDataToDataRef, 1,
-     PyDoc_STR("(long movieFlattenFlags, Handle dataRef, OSType dataRefType, OSType creator, ScriptCode scriptTag, long createMovieFileFlags) -> (Movie _rv)")},
+     PyDoc_STR("(REALLYLONG movieFlattenFlags, Handle dataRef, OSType dataRefType, OSType creator, ScriptCode scriptTag, REALLYLONG createMovieFileFlags) -> (Movie _rv)")},
     {"MovieSearchText", (PyCFunction)MovieObj_MovieSearchText, 1,
-     PyDoc_STR("(Ptr text, long size, long searchFlags) -> (Track searchTrack, TimeValue searchTime, long searchOffset)")},
+     PyDoc_STR("(Ptr text, REALLYLONG size, REALLYLONG searchFlags) -> (Track searchTrack, TimeValue searchTime, REALLYLONG searchOffset)")},
     {"GetPosterBox", (PyCFunction)MovieObj_GetPosterBox, 1,
      PyDoc_STR("() -> (Rect boxRect)")},
     {"SetPosterBox", (PyCFunction)MovieObj_SetPosterBox, 1,
@@ -7258,17 +7258,17 @@ static PyMethodDef MovieObj_methods[] = {
     {"GetMovieStatus", (PyCFunction)MovieObj_GetMovieStatus, 1,
      PyDoc_STR("() -> (ComponentResult _rv, Track firstProblemTrack)")},
     {"NewMovieController", (PyCFunction)MovieObj_NewMovieController, 1,
-     PyDoc_STR("(Rect movieRect, long someFlags) -> (MovieController _rv)")},
+     PyDoc_STR("(Rect movieRect, REALLYLONG someFlags) -> (MovieController _rv)")},
     {"PutMovieOnScrap", (PyCFunction)MovieObj_PutMovieOnScrap, 1,
-     PyDoc_STR("(long movieScrapFlags) -> None")},
+     PyDoc_STR("(REALLYLONG movieScrapFlags) -> None")},
     {"SetMoviePlayHints", (PyCFunction)MovieObj_SetMoviePlayHints, 1,
-     PyDoc_STR("(long flags, long flagsMask) -> None")},
+     PyDoc_STR("(REALLYLONG flags, REALLYLONG flagsMask) -> None")},
     {"GetMaxLoadedTimeInMovie", (PyCFunction)MovieObj_GetMaxLoadedTimeInMovie, 1,
      PyDoc_STR("() -> (TimeValue time)")},
     {"QTMovieNeedsTimeTable", (PyCFunction)MovieObj_QTMovieNeedsTimeTable, 1,
      PyDoc_STR("() -> (Boolean needsTimeTable)")},
     {"QTGetDataRefMaxFileOffset", (PyCFunction)MovieObj_QTGetDataRefMaxFileOffset, 1,
-     PyDoc_STR("(OSType dataRefType, Handle dataRef) -> (long offset)")},
+     PyDoc_STR("(OSType dataRefType, Handle dataRef) -> (REALLYLONG offset)")},
     {NULL, NULL, 0}
 };
 
@@ -7627,7 +7627,7 @@ static PyObject *Qt_NewMovie(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
     Movie _rv;
-    long flags;
+    REALLYLONG flags;
 #ifndef NewMovie
     PyMac_PRECHECK(NewMovie);
 #endif
@@ -7644,8 +7644,8 @@ static PyObject *Qt_QTGetTimeUntilNextTask(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
     OSErr _err;
-    long duration;
-    long scale;
+    REALLYLONG duration;
+    REALLYLONG scale;
 #ifndef QTGetTimeUntilNextTask
     PyMac_PRECHECK(QTGetTimeUntilNextTask);
 #endif
@@ -7666,7 +7666,7 @@ static PyObject *Qt_GetDataHandler(PyObject *_self, PyObject *_args)
     Component _rv;
     Handle dataRef;
     OSType dataHandlerSubType;
-    long flags;
+    REALLYLONG flags;
 #ifndef GetDataHandler
     PyMac_PRECHECK(GetDataHandler);
 #endif
@@ -7690,7 +7690,7 @@ static PyObject *Qt_PasteHandleIntoMovie(PyObject *_self, PyObject *_args)
     Handle h;
     OSType handleType;
     Movie theMovie;
-    long flags;
+    REALLYLONG flags;
     ComponentInstance userComp;
 #ifndef PasteHandleIntoMovie
     PyMac_PRECHECK(PasteHandleIntoMovie);
@@ -7719,7 +7719,7 @@ static PyObject *Qt_GetMovieImporterForDataRef(PyObject *_self, PyObject *_args)
     OSErr _err;
     OSType dataRefType;
     Handle dataRef;
-    long flags;
+    REALLYLONG flags;
     Component importer;
 #ifndef GetMovieImporterForDataRef
     PyMac_PRECHECK(GetMovieImporterForDataRef);
@@ -7747,7 +7747,7 @@ static PyObject *Qt_QTGetMIMETypeInfo(PyObject *_self, PyObject *_args)
     short mimeStringLength;
     OSType infoSelector;
     void * infoDataPtr;
-    long infoDataSize;
+    REALLYLONG infoDataSize;
 #ifndef QTGetMIMETypeInfo
     PyMac_PRECHECK(QTGetMIMETypeInfo);
 #endif
@@ -7832,7 +7832,7 @@ static PyObject *Qt_CreateMovieFile(PyObject *_self, PyObject *_args)
     FSSpec fileSpec;
     OSType creator;
     ScriptCode scriptTag;
-    long createMovieFileFlags;
+    REALLYLONG createMovieFileFlags;
     short resRefNum;
     Movie newmovie;
 #ifndef CreateMovieFile
@@ -7979,7 +7979,7 @@ static PyObject *Qt_NewMovieFromDataFork(PyObject *_self, PyObject *_args)
     OSErr _err;
     Movie theMovie;
     short fRefNum;
-    long fileOffset;
+    REALLYLONG fileOffset;
     short newMovieFlags;
     Boolean dataRefWasChanged;
 #ifndef NewMovieFromDataFork
@@ -8007,7 +8007,7 @@ static PyObject *Qt_NewMovieFromDataFork64(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     OSErr _err;
     Movie theMovie;
-    long fRefNum;
+    REALLYLONG fRefNum;
     wide fileOffset;
     short newMovieFlags;
     Boolean dataRefWasChanged;
@@ -8150,7 +8150,7 @@ static PyObject *Qt_CreateMovieStorage(PyObject *_self, PyObject *_args)
     OSType dataRefType;
     OSType creator;
     ScriptCode scriptTag;
-    long createMovieFileFlags;
+    REALLYLONG createMovieFileFlags;
     DataHandler outDataHandler;
     Movie newmovie;
 #ifndef CreateMovieStorage
@@ -8183,7 +8183,7 @@ static PyObject *Qt_OpenMovieStorage(PyObject *_self, PyObject *_args)
     OSErr _err;
     Handle dataRef;
     OSType dataRefType;
-    long flags;
+    REALLYLONG flags;
     DataHandler outDataHandler;
 #ifndef OpenMovieStorage
     PyMac_PRECHECK(OpenMovieStorage);
@@ -8249,7 +8249,7 @@ static PyObject *Qt_CreateShortcutMovieFile(PyObject *_self, PyObject *_args)
     FSSpec fileSpec;
     OSType creator;
     ScriptCode scriptTag;
-    long createMovieFileFlags;
+    REALLYLONG createMovieFileFlags;
     Handle targetDataRef;
     OSType targetDataRefType;
 #ifndef CreateShortcutMovieFile
@@ -8346,7 +8346,7 @@ static PyObject *Qt_NewMovieFromScrap(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
     Movie _rv;
-    long newMovieFlags;
+    REALLYLONG newMovieFlags;
 #ifndef NewMovieFromScrap
     PyMac_PRECHECK(NewMovieFromScrap);
 #endif
@@ -8387,7 +8387,7 @@ static PyObject *Qt_EndFullScreen(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     OSErr _err;
     Ptr fullState;
-    long flags;
+    REALLYLONG flags;
 #ifndef EndFullScreen
     PyMac_PRECHECK(EndFullScreen);
 #endif
@@ -8514,7 +8514,7 @@ static PyObject *Qt_QTStandardParameterDialogDoAction(PyObject *_self, PyObject 
     PyObject *_res = NULL;
     OSErr _err;
     QTParameterDialog createdDialog;
-    long action;
+    REALLYLONG action;
     void * params;
 #ifndef QTStandardParameterDialogDoAction
     PyMac_PRECHECK(QTStandardParameterDialogDoAction);
@@ -8538,7 +8538,7 @@ static PyObject *Qt_QTRegisterAccessKey(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     OSErr _err;
     Str255 accessKeyType;
-    long flags;
+    REALLYLONG flags;
     Handle accessKey;
 #ifndef QTRegisterAccessKey
     PyMac_PRECHECK(QTRegisterAccessKey);
@@ -8562,7 +8562,7 @@ static PyObject *Qt_QTUnregisterAccessKey(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     OSErr _err;
     Str255 accessKeyType;
-    long flags;
+    REALLYLONG flags;
     Handle accessKey;
 #ifndef QTUnregisterAccessKey
     PyMac_PRECHECK(QTUnregisterAccessKey);
@@ -8606,8 +8606,8 @@ static PyObject *Qt_QTTextToNativeText(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     OSErr _err;
     Handle theText;
-    long encoding;
-    long flags;
+    REALLYLONG encoding;
+    REALLYLONG flags;
 #ifndef QTTextToNativeText
     PyMac_PRECHECK(QTTextToNativeText);
 #endif
@@ -8664,7 +8664,7 @@ static PyObject *Qt_VideoMediaGetStallCount(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     MediaHandler mh;
-    unsigned long stalls;
+    unsigned REALLYLONG stalls;
 #ifndef VideoMediaGetStallCount
     PyMac_PRECHECK(VideoMediaGetStallCount);
 #endif
@@ -8686,9 +8686,9 @@ static PyObject *Qt_VideoMediaSetCodecParameter(PyObject *_self, PyObject *_args
     MediaHandler mh;
     CodecType cType;
     OSType parameterID;
-    long parameterChangeSeed;
+    REALLYLONG parameterChangeSeed;
     void * dataPtr;
-    long dataSize;
+    REALLYLONG dataSize;
 #ifndef VideoMediaSetCodecParameter
     PyMac_PRECHECK(VideoMediaSetCodecParameter);
 #endif
@@ -8743,7 +8743,7 @@ static PyObject *Qt_TextMediaAddTextSample(PyObject *_self, PyObject *_args)
     ComponentResult _rv;
     MediaHandler mh;
     Ptr text;
-    unsigned long size;
+    unsigned REALLYLONG size;
     short fontNumber;
     short fontSize;
     Style textFace;
@@ -8751,7 +8751,7 @@ static PyObject *Qt_TextMediaAddTextSample(PyObject *_self, PyObject *_args)
     RGBColor backColor;
     short textJustification;
     Rect textBox;
-    long displayFlags;
+    REALLYLONG displayFlags;
     TimeValue scrollDelay;
     short hiliteStart;
     short hiliteEnd;
@@ -8811,7 +8811,7 @@ static PyObject *Qt_TextMediaAddTESample(PyObject *_self, PyObject *_args)
     RGBColor backColor;
     short textJustification;
     Rect textBox;
-    long displayFlags;
+    REALLYLONG displayFlags;
     TimeValue scrollDelay;
     short hiliteStart;
     short hiliteEnd;
@@ -8892,7 +8892,7 @@ static PyObject *Qt_TextMediaDrawRaw(PyObject *_self, PyObject *_args)
     GWorldPtr gw;
     GDHandle gd;
     void * data;
-    long dataSize;
+    REALLYLONG dataSize;
     TextDescriptionHandle tdh;
 #ifndef TextMediaDrawRaw
     PyMac_PRECHECK(TextMediaDrawRaw);
@@ -8922,9 +8922,9 @@ static PyObject *Qt_TextMediaSetTextProperty(PyObject *_self, PyObject *_args)
     ComponentResult _rv;
     MediaHandler mh;
     TimeValue atMediaTime;
-    long propertyType;
+    REALLYLONG propertyType;
     void * data;
-    long dataSize;
+    REALLYLONG dataSize;
 #ifndef TextMediaSetTextProperty
     PyMac_PRECHECK(TextMediaSetTextProperty);
 #endif
@@ -8953,7 +8953,7 @@ static PyObject *Qt_TextMediaRawSetup(PyObject *_self, PyObject *_args)
     GWorldPtr gw;
     GDHandle gd;
     void * data;
-    long dataSize;
+    REALLYLONG dataSize;
     TextDescriptionHandle tdh;
     TimeValue sampleDuration;
 #ifndef TextMediaRawSetup
@@ -8988,8 +8988,8 @@ static PyObject *Qt_TextMediaRawIdle(PyObject *_self, PyObject *_args)
     GWorldPtr gw;
     GDHandle gd;
     TimeValue sampleTime;
-    long flagsIn;
-    long flagsOut;
+    REALLYLONG flagsIn;
+    REALLYLONG flagsOut;
 #ifndef TextMediaRawIdle
     PyMac_PRECHECK(TextMediaRawIdle);
 #endif
@@ -9018,9 +9018,9 @@ static PyObject *Qt_TextMediaGetTextProperty(PyObject *_self, PyObject *_args)
     ComponentResult _rv;
     MediaHandler mh;
     TimeValue atMediaTime;
-    long propertyType;
+    REALLYLONG propertyType;
     void * data;
-    long dataSize;
+    REALLYLONG dataSize;
 #ifndef TextMediaGetTextProperty
     PyMac_PRECHECK(TextMediaGetTextProperty);
 #endif
@@ -9047,12 +9047,12 @@ static PyObject *Qt_TextMediaFindNextText(PyObject *_self, PyObject *_args)
     ComponentResult _rv;
     MediaHandler mh;
     Ptr text;
-    long size;
+    REALLYLONG size;
     short findFlags;
     TimeValue startTime;
     TimeValue foundTime;
     TimeValue foundDuration;
-    long offset;
+    REALLYLONG offset;
 #ifndef TextMediaFindNextText
     PyMac_PRECHECK(TextMediaFindNextText);
 #endif
@@ -9137,7 +9137,7 @@ static PyObject *Qt_SpriteMediaSetProperty(PyObject *_self, PyObject *_args)
     ComponentResult _rv;
     MediaHandler mh;
     short spriteIndex;
-    long propertyType;
+    REALLYLONG propertyType;
     void * propertyValue;
 #ifndef SpriteMediaSetProperty
     PyMac_PRECHECK(SpriteMediaSetProperty);
@@ -9163,7 +9163,7 @@ static PyObject *Qt_SpriteMediaGetProperty(PyObject *_self, PyObject *_args)
     ComponentResult _rv;
     MediaHandler mh;
     short spriteIndex;
-    long propertyType;
+    REALLYLONG propertyType;
     void * propertyValue;
 #ifndef SpriteMediaGetProperty
     PyMac_PRECHECK(SpriteMediaGetProperty);
@@ -9188,7 +9188,7 @@ static PyObject *Qt_SpriteMediaHitTestSprites(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     MediaHandler mh;
-    long flags;
+    REALLYLONG flags;
     Point loc;
     short spriteHitIndex;
 #ifndef SpriteMediaHitTestSprites
@@ -9277,7 +9277,7 @@ static PyObject *Qt_SpriteMediaGetDisplayedSampleNumber(PyObject *_self, PyObjec
     PyObject *_res = NULL;
     ComponentResult _rv;
     MediaHandler mh;
-    long sampleNum;
+    REALLYLONG sampleNum;
 #ifndef SpriteMediaGetDisplayedSampleNumber
     PyMac_PRECHECK(SpriteMediaGetDisplayedSampleNumber);
 #endif
@@ -9344,7 +9344,7 @@ static PyObject *Qt_SpriteMediaSetSpriteProperty(PyObject *_self, PyObject *_arg
     ComponentResult _rv;
     MediaHandler mh;
     QTAtomID spriteID;
-    long propertyType;
+    REALLYLONG propertyType;
     void * propertyValue;
 #ifndef SpriteMediaSetSpriteProperty
     PyMac_PRECHECK(SpriteMediaSetSpriteProperty);
@@ -9370,7 +9370,7 @@ static PyObject *Qt_SpriteMediaGetSpriteProperty(PyObject *_self, PyObject *_arg
     ComponentResult _rv;
     MediaHandler mh;
     QTAtomID spriteID;
-    long propertyType;
+    REALLYLONG propertyType;
     void * propertyValue;
 #ifndef SpriteMediaGetSpriteProperty
     PyMac_PRECHECK(SpriteMediaGetSpriteProperty);
@@ -9395,7 +9395,7 @@ static PyObject *Qt_SpriteMediaHitTestAllSprites(PyObject *_self, PyObject *_arg
     PyObject *_res = NULL;
     ComponentResult _rv;
     MediaHandler mh;
-    long flags;
+    REALLYLONG flags;
     Point loc;
     QTAtomID spriteHitID;
 #ifndef SpriteMediaHitTestAllSprites
@@ -9422,7 +9422,7 @@ static PyObject *Qt_SpriteMediaHitTestOneSprite(PyObject *_self, PyObject *_args
     ComponentResult _rv;
     MediaHandler mh;
     QTAtomID spriteID;
-    long flags;
+    REALLYLONG flags;
     Point loc;
     Boolean wasHit;
 #ifndef SpriteMediaHitTestOneSprite
@@ -9743,10 +9743,10 @@ static PyObject *Qt_FlashMediaSetZoomRect(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     MediaHandler mh;
-    long left;
-    long top;
-    long right;
-    long bottom;
+    REALLYLONG left;
+    REALLYLONG top;
+    REALLYLONG right;
+    REALLYLONG bottom;
 #ifndef FlashMediaSetZoomRect
     PyMac_PRECHECK(FlashMediaSetZoomRect);
 #endif
@@ -9772,11 +9772,11 @@ static PyObject *Qt_FlashMediaGetRefConBounds(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     MediaHandler mh;
-    long refCon;
-    long left;
-    long top;
-    long right;
-    long bottom;
+    REALLYLONG refCon;
+    REALLYLONG left;
+    REALLYLONG top;
+    REALLYLONG right;
+    REALLYLONG bottom;
 #ifndef FlashMediaGetRefConBounds
     PyMac_PRECHECK(FlashMediaGetRefConBounds);
 #endif
@@ -9804,8 +9804,8 @@ static PyObject *Qt_FlashMediaGetRefConID(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     MediaHandler mh;
-    long refCon;
-    long refConID;
+    REALLYLONG refCon;
+    REALLYLONG refConID;
 #ifndef FlashMediaGetRefConID
     PyMac_PRECHECK(FlashMediaGetRefConID);
 #endif
@@ -9827,8 +9827,8 @@ static PyObject *Qt_FlashMediaIDToRefCon(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     MediaHandler mh;
-    long refConID;
-    long refCon;
+    REALLYLONG refConID;
+    REALLYLONG refCon;
 #ifndef FlashMediaIDToRefCon
     PyMac_PRECHECK(FlashMediaIDToRefCon);
 #endif
@@ -9850,7 +9850,7 @@ static PyObject *Qt_FlashMediaGetDisplayedFrameNumber(PyObject *_self, PyObject 
     PyObject *_res = NULL;
     ComponentResult _rv;
     MediaHandler mh;
-    long flashFrameNumber;
+    REALLYLONG flashFrameNumber;
 #ifndef FlashMediaGetDisplayedFrameNumber
     PyMac_PRECHECK(FlashMediaGetDisplayedFrameNumber);
 #endif
@@ -9870,7 +9870,7 @@ static PyObject *Qt_FlashMediaFrameNumberToMovieTime(PyObject *_self, PyObject *
     PyObject *_res = NULL;
     ComponentResult _rv;
     MediaHandler mh;
-    long flashFrameNumber;
+    REALLYLONG flashFrameNumber;
     TimeValue movieTime;
 #ifndef FlashMediaFrameNumberToMovieTime
     PyMac_PRECHECK(FlashMediaFrameNumberToMovieTime);
@@ -9972,8 +9972,8 @@ static PyObject *Qt_FlashMediaDoButtonActions(PyObject *_self, PyObject *_args)
     ComponentResult _rv;
     MediaHandler mh;
     char path;
-    long buttonID;
-    long transition;
+    REALLYLONG buttonID;
+    REALLYLONG transition;
 #ifndef FlashMediaDoButtonActions
     PyMac_PRECHECK(FlashMediaDoButtonActions);
 #endif
@@ -10341,7 +10341,7 @@ static PyObject *Qt_MusicMediaGetIndexedTunePlayer(PyObject *_self, PyObject *_a
     PyObject *_res = NULL;
     ComponentResult _rv;
     ComponentInstance ti;
-    long sampleDescIndex;
+    REALLYLONG sampleDescIndex;
     ComponentInstance tp;
 #ifndef MusicMediaGetIndexedTunePlayer
     PyMac_PRECHECK(MusicMediaGetIndexedTunePlayer);
@@ -10363,7 +10363,7 @@ static PyObject *Qt_CodecManagerVersion(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
     OSErr _err;
-    long version;
+    REALLYLONG version;
 #ifndef CodecManagerVersion
     PyMac_PRECHECK(CodecManagerVersion);
 #endif
@@ -10386,7 +10386,7 @@ static PyObject *Qt_GetMaxCompressionSize(PyObject *_self, PyObject *_args)
     CodecQ quality;
     CodecType cType;
     CompressorComponent codec;
-    long size;
+    REALLYLONG size;
 #ifndef GetMaxCompressionSize
     PyMac_PRECHECK(GetMaxCompressionSize);
 #endif
@@ -10422,7 +10422,7 @@ static PyObject *Qt_GetCompressionTime(PyObject *_self, PyObject *_args)
     CompressorComponent codec;
     CodecQ spatialQuality;
     CodecQ temporalQuality;
-    unsigned long compressTime;
+    unsigned REALLYLONG compressTime;
 #ifndef GetCompressionTime
     PyMac_PRECHECK(GetCompressionTime);
 #endif
@@ -10594,8 +10594,8 @@ static PyObject *Qt_GetImageDescriptionExtension(PyObject *_self, PyObject *_arg
     OSErr _err;
     ImageDescriptionHandle desc;
     Handle extension;
-    long idType;
-    long index;
+    REALLYLONG idType;
+    REALLYLONG index;
 #ifndef GetImageDescriptionExtension
     PyMac_PRECHECK(GetImageDescriptionExtension);
 #endif
@@ -10620,7 +10620,7 @@ static PyObject *Qt_AddImageDescriptionExtension(PyObject *_self, PyObject *_arg
     OSErr _err;
     ImageDescriptionHandle desc;
     Handle extension;
-    long idType;
+    REALLYLONG idType;
 #ifndef AddImageDescriptionExtension
     PyMac_PRECHECK(AddImageDescriptionExtension);
 #endif
@@ -10643,8 +10643,8 @@ static PyObject *Qt_RemoveImageDescriptionExtension(PyObject *_self, PyObject *_
     PyObject *_res = NULL;
     OSErr _err;
     ImageDescriptionHandle desc;
-    long idType;
-    long index;
+    REALLYLONG idType;
+    REALLYLONG index;
 #ifndef RemoveImageDescriptionExtension
     PyMac_PRECHECK(RemoveImageDescriptionExtension);
 #endif
@@ -10667,8 +10667,8 @@ static PyObject *Qt_CountImageDescriptionExtensionType(PyObject *_self, PyObject
     PyObject *_res = NULL;
     OSErr _err;
     ImageDescriptionHandle desc;
-    long idType;
-    long count;
+    REALLYLONG idType;
+    REALLYLONG count;
 #ifndef CountImageDescriptionExtensionType
     PyMac_PRECHECK(CountImageDescriptionExtensionType);
 #endif
@@ -10690,7 +10690,7 @@ static PyObject *Qt_GetNextImageDescriptionExtensionType(PyObject *_self, PyObje
     PyObject *_res = NULL;
     OSErr _err;
     ImageDescriptionHandle desc;
-    long idType;
+    REALLYLONG idType;
 #ifndef GetNextImageDescriptionExtensionType
     PyMac_PRECHECK(GetNextImageDescriptionExtensionType);
 #endif
@@ -10993,7 +10993,7 @@ static PyObject *Qt_GetGraphicsImporterForFileWithFlags(PyObject *_self, PyObjec
     OSErr _err;
     FSSpec theFile;
     ComponentInstance gi;
-    long flags;
+    REALLYLONG flags;
 #ifndef GetGraphicsImporterForFileWithFlags
     PyMac_PRECHECK(GetGraphicsImporterForFileWithFlags);
 #endif
@@ -11017,7 +11017,7 @@ static PyObject *Qt_GetGraphicsImporterForDataRefWithFlags(PyObject *_self, PyOb
     Handle dataRef;
     OSType dataRefType;
     ComponentInstance gi;
-    long flags;
+    REALLYLONG flags;
 #ifndef GetGraphicsImporterForDataRefWithFlags
     PyMac_PRECHECK(GetGraphicsImporterForDataRefWithFlags);
 #endif
@@ -11113,7 +11113,7 @@ static PyObject *Qt_QTGetPixelFormatDepthForImageDescription(PyObject *_self, Py
 static PyObject *Qt_QTGetPixMapHandleRowBytes(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long _rv;
+    REALLYLONG _rv;
     PixMapHandle pm;
 #ifndef QTGetPixMapHandleRowBytes
     PyMac_PRECHECK(QTGetPixMapHandleRowBytes);
@@ -11132,7 +11132,7 @@ static PyObject *Qt_QTSetPixMapHandleRowBytes(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     OSErr _err;
     PixMapHandle pm;
-    long rowBytes;
+    REALLYLONG rowBytes;
 #ifndef QTSetPixMapHandleRowBytes
     PyMac_PRECHECK(QTSetPixMapHandleRowBytes);
 #endif
@@ -11296,8 +11296,8 @@ static PyObject *Qt_CompShift(PyObject *_self, PyObject *_args)
 static PyObject *Qt_CompMul(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long src1;
-    long src2;
+    REALLYLONG src1;
+    REALLYLONG src2;
     wide dst;
 #ifndef CompMul
     PyMac_PRECHECK(CompMul);
@@ -11317,10 +11317,10 @@ static PyObject *Qt_CompMul(PyObject *_self, PyObject *_args)
 static PyObject *Qt_CompDiv(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long _rv;
+    REALLYLONG _rv;
     wide numerator;
-    long denominator;
-    long remainder;
+    REALLYLONG denominator;
+    REALLYLONG remainder;
 #ifndef CompDiv
     PyMac_PRECHECK(CompDiv);
 #endif
@@ -11362,8 +11362,8 @@ static PyObject *Qt_CompMulDiv(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
     wide co;
-    long mul;
-    long divisor;
+    REALLYLONG mul;
+    REALLYLONG divisor;
 #ifndef CompMulDiv
     PyMac_PRECHECK(CompMulDiv);
 #endif
@@ -11383,9 +11383,9 @@ static PyObject *Qt_CompMulDivTrunc(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
     wide co;
-    long mul;
-    long divisor;
-    long remainder;
+    REALLYLONG mul;
+    REALLYLONG divisor;
+    REALLYLONG remainder;
 #ifndef CompMulDivTrunc
     PyMac_PRECHECK(CompMulDivTrunc);
 #endif
@@ -11406,7 +11406,7 @@ static PyObject *Qt_CompMulDivTrunc(PyObject *_self, PyObject *_args)
 static PyObject *Qt_CompCompare(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long _rv;
+    REALLYLONG _rv;
     wide a;
     wide minusb;
 #ifndef CompCompare
@@ -11426,7 +11426,7 @@ static PyObject *Qt_CompCompare(PyObject *_self, PyObject *_args)
 static PyObject *Qt_CompSquareRoot(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    unsigned long _rv;
+    unsigned REALLYLONG _rv;
     wide src;
 #ifndef CompSquareRoot
     PyMac_PRECHECK(CompSquareRoot);
@@ -11691,8 +11691,8 @@ static PyObject *Qt_GraphicsImportGetDataOffsetAndSize(PyObject *_self, PyObject
     PyObject *_res = NULL;
     ComponentResult _rv;
     GraphicsImportComponent ci;
-    unsigned long offset;
-    unsigned long size;
+    unsigned REALLYLONG offset;
+    unsigned REALLYLONG size;
 #ifndef GraphicsImportGetDataOffsetAndSize
     PyMac_PRECHECK(GraphicsImportGetDataOffsetAndSize);
 #endif
@@ -11715,8 +11715,8 @@ static PyObject *Qt_GraphicsImportReadData(PyObject *_self, PyObject *_args)
     ComponentResult _rv;
     GraphicsImportComponent ci;
     void * dataPtr;
-    unsigned long dataOffset;
-    unsigned long dataSize;
+    unsigned REALLYLONG dataOffset;
+    unsigned REALLYLONG dataSize;
 #ifndef GraphicsImportReadData
     PyMac_PRECHECK(GraphicsImportReadData);
 #endif
@@ -11966,7 +11966,7 @@ static PyObject *Qt_GraphicsImportSetGraphicsMode(PyObject *_self, PyObject *_ar
     PyObject *_res = NULL;
     ComponentResult _rv;
     GraphicsImportComponent ci;
-    long graphicsMode;
+    REALLYLONG graphicsMode;
     RGBColor opColor;
 #ifndef GraphicsImportSetGraphicsMode
     PyMac_PRECHECK(GraphicsImportSetGraphicsMode);
@@ -11989,7 +11989,7 @@ static PyObject *Qt_GraphicsImportGetGraphicsMode(PyObject *_self, PyObject *_ar
     PyObject *_res = NULL;
     ComponentResult _rv;
     GraphicsImportComponent ci;
-    long graphicsMode;
+    REALLYLONG graphicsMode;
     RGBColor opColor;
 #ifndef GraphicsImportGetGraphicsMode
     PyMac_PRECHECK(GraphicsImportGetGraphicsMode);
@@ -12075,8 +12075,8 @@ static PyObject *Qt_GraphicsImportSetDataReferenceOffsetAndLimit(PyObject *_self
     PyObject *_res = NULL;
     ComponentResult _rv;
     GraphicsImportComponent ci;
-    unsigned long offset;
-    unsigned long limit;
+    unsigned REALLYLONG offset;
+    unsigned REALLYLONG limit;
 #ifndef GraphicsImportSetDataReferenceOffsetAndLimit
     PyMac_PRECHECK(GraphicsImportSetDataReferenceOffsetAndLimit);
 #endif
@@ -12098,8 +12098,8 @@ static PyObject *Qt_GraphicsImportGetDataReferenceOffsetAndLimit(PyObject *_self
     PyObject *_res = NULL;
     ComponentResult _rv;
     GraphicsImportComponent ci;
-    unsigned long offset;
-    unsigned long limit;
+    unsigned REALLYLONG offset;
+    unsigned REALLYLONG limit;
 #ifndef GraphicsImportGetDataReferenceOffsetAndLimit
     PyMac_PRECHECK(GraphicsImportGetDataReferenceOffsetAndLimit);
 #endif
@@ -12333,7 +12333,7 @@ static PyObject *Qt_GraphicsImportGetImageCount(PyObject *_self, PyObject *_args
     PyObject *_res = NULL;
     ComponentResult _rv;
     GraphicsImportComponent ci;
-    unsigned long imageCount;
+    unsigned REALLYLONG imageCount;
 #ifndef GraphicsImportGetImageCount
     PyMac_PRECHECK(GraphicsImportGetImageCount);
 #endif
@@ -12353,7 +12353,7 @@ static PyObject *Qt_GraphicsImportSetImageIndex(PyObject *_self, PyObject *_args
     PyObject *_res = NULL;
     ComponentResult _rv;
     GraphicsImportComponent ci;
-    unsigned long imageIndex;
+    unsigned REALLYLONG imageIndex;
 #ifndef GraphicsImportSetImageIndex
     PyMac_PRECHECK(GraphicsImportSetImageIndex);
 #endif
@@ -12373,7 +12373,7 @@ static PyObject *Qt_GraphicsImportGetImageIndex(PyObject *_self, PyObject *_args
     PyObject *_res = NULL;
     ComponentResult _rv;
     GraphicsImportComponent ci;
-    unsigned long imageIndex;
+    unsigned REALLYLONG imageIndex;
 #ifndef GraphicsImportGetImageIndex
     PyMac_PRECHECK(GraphicsImportGetImageIndex);
 #endif
@@ -12418,7 +12418,7 @@ static PyObject *Qt_GraphicsImportReadData64(PyObject *_self, PyObject *_args)
     GraphicsImportComponent ci;
     void * dataPtr;
     wide dataOffset;
-    unsigned long dataSize;
+    unsigned REALLYLONG dataSize;
 #ifndef GraphicsImportReadData64
     PyMac_PRECHECK(GraphicsImportReadData64);
 #endif
@@ -12508,7 +12508,7 @@ static PyObject *Qt_GraphicsImportGetDefaultGraphicsMode(PyObject *_self, PyObje
     PyObject *_res = NULL;
     ComponentResult _rv;
     GraphicsImportComponent ci;
-    long defaultGraphicsMode;
+    REALLYLONG defaultGraphicsMode;
     RGBColor defaultOpColor;
 #ifndef GraphicsImportGetDefaultGraphicsMode
     PyMac_PRECHECK(GraphicsImportGetDefaultGraphicsMode);
@@ -12611,7 +12611,7 @@ static PyObject *Qt_GraphicsImportSetFlags(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     GraphicsImportComponent ci;
-    long flags;
+    REALLYLONG flags;
 #ifndef GraphicsImportSetFlags
     PyMac_PRECHECK(GraphicsImportSetFlags);
 #endif
@@ -12631,7 +12631,7 @@ static PyObject *Qt_GraphicsImportGetFlags(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     GraphicsImportComponent ci;
-    long flags;
+    REALLYLONG flags;
 #ifndef GraphicsImportGetFlags
     PyMac_PRECHECK(GraphicsImportGetFlags);
 #endif
@@ -12691,7 +12691,7 @@ static PyObject *Qt_GraphicsExportDoExport(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     GraphicsExportComponent ci;
-    unsigned long actualSizeWritten;
+    unsigned REALLYLONG actualSizeWritten;
 #ifndef GraphicsExportDoExport
     PyMac_PRECHECK(GraphicsExportDoExport);
 #endif
@@ -12974,7 +12974,7 @@ static PyObject *Qt_GraphicsExportSetInterlaceStyle(PyObject *_self, PyObject *_
     PyObject *_res = NULL;
     ComponentResult _rv;
     GraphicsExportComponent ci;
-    unsigned long interlaceStyle;
+    unsigned REALLYLONG interlaceStyle;
 #ifndef GraphicsExportSetInterlaceStyle
     PyMac_PRECHECK(GraphicsExportSetInterlaceStyle);
 #endif
@@ -12994,7 +12994,7 @@ static PyObject *Qt_GraphicsExportGetInterlaceStyle(PyObject *_self, PyObject *_
     PyObject *_res = NULL;
     ComponentResult _rv;
     GraphicsExportComponent ci;
-    unsigned long interlaceStyle;
+    unsigned REALLYLONG interlaceStyle;
 #ifndef GraphicsExportGetInterlaceStyle
     PyMac_PRECHECK(GraphicsExportGetInterlaceStyle);
 #endif
@@ -13054,7 +13054,7 @@ static PyObject *Qt_GraphicsExportSetTargetDataSize(PyObject *_self, PyObject *_
     PyObject *_res = NULL;
     ComponentResult _rv;
     GraphicsExportComponent ci;
-    unsigned long targetDataSize;
+    unsigned REALLYLONG targetDataSize;
 #ifndef GraphicsExportSetTargetDataSize
     PyMac_PRECHECK(GraphicsExportSetTargetDataSize);
 #endif
@@ -13074,7 +13074,7 @@ static PyObject *Qt_GraphicsExportGetTargetDataSize(PyObject *_self, PyObject *_
     PyObject *_res = NULL;
     ComponentResult _rv;
     GraphicsExportComponent ci;
-    unsigned long targetDataSize;
+    unsigned REALLYLONG targetDataSize;
 #ifndef GraphicsExportGetTargetDataSize
     PyMac_PRECHECK(GraphicsExportGetTargetDataSize);
 #endif
@@ -13094,7 +13094,7 @@ static PyObject *Qt_GraphicsExportSetCompressionMethod(PyObject *_self, PyObject
     PyObject *_res = NULL;
     ComponentResult _rv;
     GraphicsExportComponent ci;
-    long compressionMethod;
+    REALLYLONG compressionMethod;
 #ifndef GraphicsExportSetCompressionMethod
     PyMac_PRECHECK(GraphicsExportSetCompressionMethod);
 #endif
@@ -13114,7 +13114,7 @@ static PyObject *Qt_GraphicsExportGetCompressionMethod(PyObject *_self, PyObject
     PyObject *_res = NULL;
     ComponentResult _rv;
     GraphicsExportComponent ci;
-    long compressionMethod;
+    REALLYLONG compressionMethod;
 #ifndef GraphicsExportGetCompressionMethod
     PyMac_PRECHECK(GraphicsExportGetCompressionMethod);
 #endif
@@ -13220,7 +13220,7 @@ static PyObject *Qt_GraphicsExportSetDepth(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     GraphicsExportComponent ci;
-    long depth;
+    REALLYLONG depth;
 #ifndef GraphicsExportSetDepth
     PyMac_PRECHECK(GraphicsExportSetDepth);
 #endif
@@ -13240,7 +13240,7 @@ static PyObject *Qt_GraphicsExportGetDepth(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     GraphicsExportComponent ci;
-    long depth;
+    REALLYLONG depth;
 #ifndef GraphicsExportGetDepth
     PyMac_PRECHECK(GraphicsExportGetDepth);
 #endif
@@ -13436,7 +13436,7 @@ static PyObject *Qt_GraphicsExportSetInputPtr(PyObject *_self, PyObject *_args)
     ComponentResult _rv;
     GraphicsExportComponent ci;
     Ptr p;
-    unsigned long size;
+    unsigned REALLYLONG size;
     ImageDescriptionHandle desc;
 #ifndef GraphicsExportSetInputPtr
     PyMac_PRECHECK(GraphicsExportSetInputPtr);
@@ -13621,8 +13621,8 @@ static PyObject *Qt_GraphicsExportSetInputOffsetAndLimit(PyObject *_self, PyObje
     PyObject *_res = NULL;
     ComponentResult _rv;
     GraphicsExportComponent ci;
-    unsigned long offset;
-    unsigned long limit;
+    unsigned REALLYLONG offset;
+    unsigned REALLYLONG limit;
 #ifndef GraphicsExportSetInputOffsetAndLimit
     PyMac_PRECHECK(GraphicsExportSetInputOffsetAndLimit);
 #endif
@@ -13644,8 +13644,8 @@ static PyObject *Qt_GraphicsExportGetInputOffsetAndLimit(PyObject *_self, PyObje
     PyObject *_res = NULL;
     ComponentResult _rv;
     GraphicsExportComponent ci;
-    unsigned long offset;
-    unsigned long limit;
+    unsigned REALLYLONG offset;
+    unsigned REALLYLONG limit;
 #ifndef GraphicsExportGetInputOffsetAndLimit
     PyMac_PRECHECK(GraphicsExportGetInputOffsetAndLimit);
 #endif
@@ -13687,7 +13687,7 @@ static PyObject *Qt_GraphicsExportGetInputDataSize(PyObject *_self, PyObject *_a
     PyObject *_res = NULL;
     ComponentResult _rv;
     GraphicsExportComponent ci;
-    unsigned long size;
+    unsigned REALLYLONG size;
 #ifndef GraphicsExportGetInputDataSize
     PyMac_PRECHECK(GraphicsExportGetInputDataSize);
 #endif
@@ -13708,8 +13708,8 @@ static PyObject *Qt_GraphicsExportReadInputData(PyObject *_self, PyObject *_args
     ComponentResult _rv;
     GraphicsExportComponent ci;
     void * dataPtr;
-    unsigned long dataOffset;
-    unsigned long dataSize;
+    unsigned REALLYLONG dataOffset;
+    unsigned REALLYLONG dataSize;
 #ifndef GraphicsExportReadInputData
     PyMac_PRECHECK(GraphicsExportReadInputData);
 #endif
@@ -13773,7 +13773,7 @@ static PyObject *Qt_GraphicsExportGetInputImageDepth(PyObject *_self, PyObject *
     PyObject *_res = NULL;
     ComponentResult _rv;
     GraphicsExportComponent ci;
-    long inputDepth;
+    REALLYLONG inputDepth;
 #ifndef GraphicsExportGetInputImageDepth
     PyMac_PRECHECK(GraphicsExportGetInputImageDepth);
 #endif
@@ -13948,8 +13948,8 @@ static PyObject *Qt_GraphicsExportSetOutputOffsetAndMaxSize(PyObject *_self, PyO
     PyObject *_res = NULL;
     ComponentResult _rv;
     GraphicsExportComponent ci;
-    unsigned long offset;
-    unsigned long maxSize;
+    unsigned REALLYLONG offset;
+    unsigned REALLYLONG maxSize;
     Boolean truncateFile;
 #ifndef GraphicsExportSetOutputOffsetAndMaxSize
     PyMac_PRECHECK(GraphicsExportSetOutputOffsetAndMaxSize);
@@ -13974,8 +13974,8 @@ static PyObject *Qt_GraphicsExportGetOutputOffsetAndMaxSize(PyObject *_self, PyO
     PyObject *_res = NULL;
     ComponentResult _rv;
     GraphicsExportComponent ci;
-    unsigned long offset;
-    unsigned long maxSize;
+    unsigned REALLYLONG offset;
+    unsigned REALLYLONG maxSize;
     Boolean truncateFile;
 #ifndef GraphicsExportGetOutputOffsetAndMaxSize
     PyMac_PRECHECK(GraphicsExportGetOutputOffsetAndMaxSize);
@@ -14046,7 +14046,7 @@ static PyObject *Qt_GraphicsExportSetOutputMark(PyObject *_self, PyObject *_args
     PyObject *_res = NULL;
     ComponentResult _rv;
     GraphicsExportComponent ci;
-    unsigned long mark;
+    unsigned REALLYLONG mark;
 #ifndef GraphicsExportSetOutputMark
     PyMac_PRECHECK(GraphicsExportSetOutputMark);
 #endif
@@ -14066,7 +14066,7 @@ static PyObject *Qt_GraphicsExportGetOutputMark(PyObject *_self, PyObject *_args
     PyObject *_res = NULL;
     ComponentResult _rv;
     GraphicsExportComponent ci;
-    unsigned long mark;
+    unsigned REALLYLONG mark;
 #ifndef GraphicsExportGetOutputMark
     PyMac_PRECHECK(GraphicsExportGetOutputMark);
 #endif
@@ -14087,8 +14087,8 @@ static PyObject *Qt_GraphicsExportReadOutputData(PyObject *_self, PyObject *_arg
     ComponentResult _rv;
     GraphicsExportComponent ci;
     void * dataPtr;
-    unsigned long dataOffset;
-    unsigned long dataSize;
+    unsigned REALLYLONG dataOffset;
+    unsigned REALLYLONG dataSize;
 #ifndef GraphicsExportReadOutputData
     PyMac_PRECHECK(GraphicsExportReadOutputData);
 #endif
@@ -14113,8 +14113,8 @@ static PyObject *Qt_GraphicsExportSetThumbnailEnabled(PyObject *_self, PyObject 
     ComponentResult _rv;
     GraphicsExportComponent ci;
     Boolean enableThumbnail;
-    long maxThumbnailWidth;
-    long maxThumbnailHeight;
+    REALLYLONG maxThumbnailWidth;
+    REALLYLONG maxThumbnailHeight;
 #ifndef GraphicsExportSetThumbnailEnabled
     PyMac_PRECHECK(GraphicsExportSetThumbnailEnabled);
 #endif
@@ -14139,8 +14139,8 @@ static PyObject *Qt_GraphicsExportGetThumbnailEnabled(PyObject *_self, PyObject 
     ComponentResult _rv;
     GraphicsExportComponent ci;
     Boolean thumbnailEnabled;
-    long maxThumbnailWidth;
-    long maxThumbnailHeight;
+    REALLYLONG maxThumbnailWidth;
+    REALLYLONG maxThumbnailHeight;
 #ifndef GraphicsExportGetThumbnailEnabled
     PyMac_PRECHECK(GraphicsExportGetThumbnailEnabled);
 #endif
@@ -14207,7 +14207,7 @@ static PyObject *Qt_ImageTranscoderBeginSequence(PyObject *_self, PyObject *_arg
     ImageDescriptionHandle srcDesc;
     ImageDescriptionHandle dstDesc;
     void * data;
-    long dataSize;
+    REALLYLONG dataSize;
 #ifndef ImageTranscoderBeginSequence
     PyMac_PRECHECK(ImageTranscoderBeginSequence);
 #endif
@@ -14612,7 +14612,7 @@ static PyObject *Qt_SCCompressSequenceFrame(PyObject *_self, PyObject *_args)
     PixMapHandle src;
     Rect srcRect;
     Handle data;
-    long dataSize;
+    REALLYLONG dataSize;
     short notSyncFlag;
 #ifndef SCCompressSequenceFrame
     PyMac_PRECHECK(SCCompressSequenceFrame);
@@ -14773,7 +14773,7 @@ static PyObject *Qt_SCSetCompressFlags(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     ComponentInstance ci;
-    long flags;
+    REALLYLONG flags;
 #ifndef SCSetCompressFlags
     PyMac_PRECHECK(SCSetCompressFlags);
 #endif
@@ -14793,7 +14793,7 @@ static PyObject *Qt_SCGetCompressFlags(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     ComponentInstance ci;
-    long flags;
+    REALLYLONG flags;
 #ifndef SCGetCompressFlags
     PyMac_PRECHECK(SCGetCompressFlags);
 #endif
@@ -14913,8 +14913,8 @@ static PyObject *Qt_TCSetTimeCodeFlags(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     HandlerError _rv;
     MediaHandler mh;
-    long flags;
-    long flagsMask;
+    REALLYLONG flags;
+    REALLYLONG flagsMask;
 #ifndef TCSetTimeCodeFlags
     PyMac_PRECHECK(TCSetTimeCodeFlags);
 #endif
@@ -14936,7 +14936,7 @@ static PyObject *Qt_TCGetTimeCodeFlags(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     HandlerError _rv;
     MediaHandler mh;
-    long flags;
+    REALLYLONG flags;
 #ifndef TCGetTimeCodeFlags
     PyMac_PRECHECK(TCGetTimeCodeFlags);
 #endif
@@ -14962,8 +14962,8 @@ static PyObject *Qt_MovieImportHandle(PyObject *_self, PyObject *_args)
     Track usedTrack;
     TimeValue atTime;
     TimeValue addedDuration;
-    long inFlags;
-    long outFlags;
+    REALLYLONG inFlags;
+    REALLYLONG outFlags;
 #ifndef MovieImportHandle
     PyMac_PRECHECK(MovieImportHandle);
 #endif
@@ -15003,8 +15003,8 @@ static PyObject *Qt_MovieImportFile(PyObject *_self, PyObject *_args)
     Track usedTrack;
     TimeValue atTime;
     TimeValue addedDuration;
-    long inFlags;
-    long outFlags;
+    REALLYLONG inFlags;
+    REALLYLONG outFlags;
 #ifndef MovieImportFile
     PyMac_PRECHECK(MovieImportFile);
 #endif
@@ -15127,7 +15127,7 @@ static PyObject *Qt_MovieImportSetChunkSize(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     MovieImportComponent ci;
-    long chunkSize;
+    REALLYLONG chunkSize;
 #ifndef MovieImportSetChunkSize
     PyMac_PRECHECK(MovieImportSetChunkSize);
 #endif
@@ -15309,8 +15309,8 @@ static PyObject *Qt_MovieImportDataRef(PyObject *_self, PyObject *_args)
     Track usedTrack;
     TimeValue atTime;
     TimeValue addedDuration;
-    long inFlags;
-    long outFlags;
+    REALLYLONG inFlags;
+    REALLYLONG outFlags;
 #ifndef MovieImportDataRef
     PyMac_PRECHECK(MovieImportDataRef);
 #endif
@@ -15369,8 +15369,8 @@ static PyObject *Qt_MovieImportSetOffsetAndLimit(PyObject *_self, PyObject *_arg
     PyObject *_res = NULL;
     ComponentResult _rv;
     MovieImportComponent ci;
-    unsigned long offset;
-    unsigned long limit;
+    unsigned REALLYLONG offset;
+    unsigned REALLYLONG limit;
 #ifndef MovieImportSetOffsetAndLimit
     PyMac_PRECHECK(MovieImportSetOffsetAndLimit);
 #endif
@@ -15415,8 +15415,8 @@ static PyObject *Qt_MovieImportIdle(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     MovieImportComponent ci;
-    long inFlags;
-    long outFlags;
+    REALLYLONG inFlags;
+    REALLYLONG outFlags;
 #ifndef MovieImportIdle
     PyMac_PRECHECK(MovieImportIdle);
 #endif
@@ -15464,7 +15464,7 @@ static PyObject *Qt_MovieImportGetLoadState(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     MovieImportComponent ci;
-    long importerLoadState;
+    REALLYLONG importerLoadState;
 #ifndef MovieImportGetLoadState
     PyMac_PRECHECK(MovieImportGetLoadState);
 #endif
@@ -15584,7 +15584,7 @@ static PyObject *Qt_MovieImportSetNewMovieFlags(PyObject *_self, PyObject *_args
     PyObject *_res = NULL;
     ComponentResult _rv;
     MovieImportComponent ci;
-    long newMovieFlags;
+    REALLYLONG newMovieFlags;
 #ifndef MovieImportSetNewMovieFlags
     PyMac_PRECHECK(MovieImportSetNewMovieFlags);
 #endif
@@ -15930,7 +15930,7 @@ static PyObject *Qt_TextExportGetTimeFraction(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     TextExportComponent ci;
-    long movieTimeFraction;
+    REALLYLONG movieTimeFraction;
 #ifndef TextExportGetTimeFraction
     PyMac_PRECHECK(TextExportGetTimeFraction);
 #endif
@@ -15950,7 +15950,7 @@ static PyObject *Qt_TextExportSetTimeFraction(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     TextExportComponent ci;
-    long movieTimeFraction;
+    REALLYLONG movieTimeFraction;
 #ifndef TextExportSetTimeFraction
     PyMac_PRECHECK(TextExportSetTimeFraction);
 #endif
@@ -15970,7 +15970,7 @@ static PyObject *Qt_TextExportGetSettings(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     TextExportComponent ci;
-    long setting;
+    REALLYLONG setting;
 #ifndef TextExportGetSettings
     PyMac_PRECHECK(TextExportGetSettings);
 #endif
@@ -15990,7 +15990,7 @@ static PyObject *Qt_TextExportSetSettings(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     TextExportComponent ci;
-    long setting;
+    REALLYLONG setting;
 #ifndef TextExportSetSettings
     PyMac_PRECHECK(TextExportSetSettings);
 #endif
@@ -16010,7 +16010,7 @@ static PyObject *Qt_MIDIImportGetSettings(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     TextExportComponent ci;
-    long setting;
+    REALLYLONG setting;
 #ifndef MIDIImportGetSettings
     PyMac_PRECHECK(MIDIImportGetSettings);
 #endif
@@ -16030,7 +16030,7 @@ static PyObject *Qt_MIDIImportSetSettings(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     TextExportComponent ci;
-    long setting;
+    REALLYLONG setting;
 #ifndef MIDIImportSetSettings
     PyMac_PRECHECK(MIDIImportSetSettings);
 #endif
@@ -16252,7 +16252,7 @@ static PyObject *Qt_DataCodecBeginInterruptSafe(PyObject *_self, PyObject *_args
     PyObject *_res = NULL;
     ComponentResult _rv;
     DataCodecComponent dc;
-    unsigned long maxSrcSize;
+    unsigned REALLYLONG maxSrcSize;
 #ifndef DataCodecBeginInterruptSafe
     PyMac_PRECHECK(DataCodecBeginInterruptSafe);
 #endif
@@ -16290,9 +16290,9 @@ static PyObject *Qt_DataHGetData(PyObject *_self, PyObject *_args)
     ComponentResult _rv;
     DataHandler dh;
     Handle h;
-    long hOffset;
-    long offset;
-    long size;
+    REALLYLONG hOffset;
+    REALLYLONG offset;
+    REALLYLONG size;
 #ifndef DataHGetData
     PyMac_PRECHECK(DataHGetData);
 #endif
@@ -16319,9 +16319,9 @@ static PyObject *Qt_DataHPutData(PyObject *_self, PyObject *_args)
     ComponentResult _rv;
     DataHandler dh;
     Handle h;
-    long hOffset;
-    long offset;
-    long size;
+    REALLYLONG hOffset;
+    REALLYLONG offset;
+    REALLYLONG size;
 #ifndef DataHPutData
     PyMac_PRECHECK(DataHPutData);
 #endif
@@ -16578,7 +16578,7 @@ static PyObject *Qt_DataHGetFileSize(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     DataHandler dh;
-    long fileSize;
+    REALLYLONG fileSize;
 #ifndef DataHGetFileSize
     PyMac_PRECHECK(DataHGetFileSize);
 #endif
@@ -16599,7 +16599,7 @@ static PyObject *Qt_DataHCanUseDataRef(PyObject *_self, PyObject *_args)
     ComponentResult _rv;
     DataHandler dh;
     Handle dataRef;
-    long useFlags;
+    REALLYLONG useFlags;
 #ifndef DataHCanUseDataRef
     PyMac_PRECHECK(DataHCanUseDataRef);
 #endif
@@ -16621,8 +16621,8 @@ static PyObject *Qt_DataHPreextend(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     DataHandler dh;
-    unsigned long maxToAdd;
-    unsigned long spaceAdded;
+    unsigned REALLYLONG maxToAdd;
+    unsigned REALLYLONG spaceAdded;
 #ifndef DataHPreextend
     PyMac_PRECHECK(DataHPreextend);
 #endif
@@ -16644,7 +16644,7 @@ static PyObject *Qt_DataHSetFileSize(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     DataHandler dh;
-    long fileSize;
+    REALLYLONG fileSize;
 #ifndef DataHSetFileSize
     PyMac_PRECHECK(DataHSetFileSize);
 #endif
@@ -16664,7 +16664,7 @@ static PyObject *Qt_DataHGetFreeSpace(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     DataHandler dh;
-    unsigned long freeSize;
+    unsigned REALLYLONG freeSize;
 #ifndef DataHGetFreeSpace
     PyMac_PRECHECK(DataHGetFreeSpace);
 #endif
@@ -16707,7 +16707,7 @@ static PyObject *Qt_DataHGetPreferredBlockSize(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     DataHandler dh;
-    long blockSize;
+    REALLYLONG blockSize;
 #ifndef DataHGetPreferredBlockSize
     PyMac_PRECHECK(DataHGetPreferredBlockSize);
 #endif
@@ -16727,7 +16727,7 @@ static PyObject *Qt_DataHGetDeviceIndex(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     DataHandler dh;
-    long deviceIndex;
+    REALLYLONG deviceIndex;
 #ifndef DataHGetDeviceIndex
     PyMac_PRECHECK(DataHGetDeviceIndex);
 #endif
@@ -16767,8 +16767,8 @@ static PyObject *Qt_DataHGetDataInBuffer(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     DataHandler dh;
-    long startOffset;
-    long size;
+    REALLYLONG startOffset;
+    REALLYLONG size;
 #ifndef DataHGetDataInBuffer
     PyMac_PRECHECK(DataHGetDataInBuffer);
 #endif
@@ -16790,7 +16790,7 @@ static PyObject *Qt_DataHGetScheduleAheadTime(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     DataHandler dh;
-    long millisecs;
+    REALLYLONG millisecs;
 #ifndef DataHGetScheduleAheadTime
     PyMac_PRECHECK(DataHGetScheduleAheadTime);
 #endif
@@ -16962,7 +16962,7 @@ static PyObject *Qt_DataHGetAvailableFileSize(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     DataHandler dh;
-    long fileSize;
+    REALLYLONG fileSize;
 #ifndef DataHGetAvailableFileSize
     PyMac_PRECHECK(DataHGetAvailableFileSize);
 #endif
@@ -17219,7 +17219,7 @@ static PyObject *Qt_DataHAppend64(PyObject *_self, PyObject *_args)
     DataHandler dh;
     void * data;
     wide fileOffset;
-    unsigned long size;
+    unsigned REALLYLONG size;
 #ifndef DataHAppend64
     PyMac_PRECHECK(DataHAppend64);
 #endif
@@ -17266,10 +17266,10 @@ static PyObject *Qt_DataHGetDataAvailability(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     DataHandler dh;
-    long offset;
-    long len;
-    long missing_offset;
-    long missing_len;
+    REALLYLONG offset;
+    REALLYLONG len;
+    REALLYLONG missing_offset;
+    REALLYLONG missing_len;
 #ifndef DataHGetDataAvailability
     PyMac_PRECHECK(DataHGetDataAvailability);
 #endif
@@ -17496,7 +17496,7 @@ static PyObject *Qt_DataHSetMovieUsageFlags(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     DataHandler dh;
-    long flags;
+    REALLYLONG flags;
 #ifndef DataHSetMovieUsageFlags
     PyMac_PRECHECK(DataHSetMovieUsageFlags);
 #endif
@@ -17516,7 +17516,7 @@ static PyObject *Qt_DataHUseTemporaryDataRef(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     DataHandler dh;
-    long inFlags;
+    REALLYLONG inFlags;
 #ifndef DataHUseTemporaryDataRef
     PyMac_PRECHECK(DataHUseTemporaryDataRef);
 #endif
@@ -17536,7 +17536,7 @@ static PyObject *Qt_DataHGetTemporaryDataRefCapabilities(PyObject *_self, PyObje
     PyObject *_res = NULL;
     ComponentResult _rv;
     DataHandler dh;
-    long outUnderstoodFlags;
+    REALLYLONG outUnderstoodFlags;
 #ifndef DataHGetTemporaryDataRefCapabilities
     PyMac_PRECHECK(DataHGetTemporaryDataRefCapabilities);
 #endif
@@ -17576,10 +17576,10 @@ static PyObject *Qt_DataHPlaybackHints(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     DataHandler dh;
-    long flags;
-    unsigned long minFileOffset;
-    unsigned long maxFileOffset;
-    long bytesPerSecond;
+    REALLYLONG flags;
+    unsigned REALLYLONG minFileOffset;
+    unsigned REALLYLONG maxFileOffset;
+    REALLYLONG bytesPerSecond;
 #ifndef DataHPlaybackHints
     PyMac_PRECHECK(DataHPlaybackHints);
 #endif
@@ -17605,10 +17605,10 @@ static PyObject *Qt_DataHPlaybackHints64(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     DataHandler dh;
-    long flags;
+    REALLYLONG flags;
     wide minFileOffset;
     wide maxFileOffset;
-    long bytesPerSecond;
+    REALLYLONG bytesPerSecond;
 #ifndef DataHPlaybackHints64
     PyMac_PRECHECK(DataHPlaybackHints64);
 #endif
@@ -17634,8 +17634,8 @@ static PyObject *Qt_DataHGetDataRate(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     DataHandler dh;
-    long flags;
-    long bytesPerSecond;
+    REALLYLONG flags;
+    REALLYLONG bytesPerSecond;
 #ifndef DataHGetDataRate
     PyMac_PRECHECK(DataHGetDataRate);
 #endif
@@ -17657,8 +17657,8 @@ static PyObject *Qt_DataHSetTimeHints(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     DataHandler dh;
-    long flags;
-    long bandwidthPriority;
+    REALLYLONG flags;
+    REALLYLONG bandwidthPriority;
     TimeScale scale;
     TimeValue minTime;
     TimeValue maxTime;
@@ -18130,8 +18130,8 @@ static PyObject *Qt_VDGetCurrentFlags(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     VideoDigitizerComponent ci;
-    long inputCurrentFlag;
-    long outputCurrentFlag;
+    REALLYLONG inputCurrentFlag;
+    REALLYLONG outputCurrentFlag;
 #ifndef VDGetCurrentFlags
     PyMac_PRECHECK(VDGetCurrentFlags);
 #endif
@@ -18153,7 +18153,7 @@ static PyObject *Qt_VDSetKeyColor(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     VideoDigitizerComponent ci;
-    long index;
+    REALLYLONG index;
 #ifndef VDSetKeyColor
     PyMac_PRECHECK(VDSetKeyColor);
 #endif
@@ -18173,7 +18173,7 @@ static PyObject *Qt_VDGetKeyColor(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     VideoDigitizerComponent ci;
-    long index;
+    REALLYLONG index;
 #ifndef VDGetKeyColor
     PyMac_PRECHECK(VDGetKeyColor);
 #endif
@@ -18193,7 +18193,7 @@ static PyObject *Qt_VDAddKeyColor(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     VideoDigitizerComponent ci;
-    long index;
+    REALLYLONG index;
 #ifndef VDAddKeyColor
     PyMac_PRECHECK(VDAddKeyColor);
 #endif
@@ -18213,7 +18213,7 @@ static PyObject *Qt_VDGetNextKeyColor(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     VideoDigitizerComponent ci;
-    long index;
+    REALLYLONG index;
 #ifndef VDGetNextKeyColor
     PyMac_PRECHECK(VDGetNextKeyColor);
 #endif
@@ -18460,8 +18460,8 @@ static PyObject *Qt_VDGetMaskandValue(PyObject *_self, PyObject *_args)
     ComponentResult _rv;
     VideoDigitizerComponent ci;
     unsigned short blendLevel;
-    long mask;
-    long value;
+    REALLYLONG mask;
+    REALLYLONG value;
 #ifndef VDGetMaskandValue
     PyMac_PRECHECK(VDGetMaskandValue);
 #endif
@@ -18897,7 +18897,7 @@ static PyObject *Qt_VDSetCompression(PyObject *_self, PyObject *_args)
     Rect bounds;
     CodecQ spatialQuality;
     CodecQ temporalQuality;
-    long keyFrameRate;
+    REALLYLONG keyFrameRate;
 #ifndef VDSetCompression
     PyMac_PRECHECK(VDSetCompression);
 #endif
@@ -19061,9 +19061,9 @@ static PyObject *Qt_VDGetDataRate(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     VideoDigitizerComponent ci;
-    long milliSecPerFrame;
+    REALLYLONG milliSecPerFrame;
     Fixed framesPerSecond;
-    long bytesPerSecond;
+    REALLYLONG bytesPerSecond;
 #ifndef VDGetDataRate
     PyMac_PRECHECK(VDGetDataRate);
 #endif
@@ -19107,8 +19107,8 @@ static PyObject *Qt_VDGetDMADepths(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     VideoDigitizerComponent ci;
-    long depthArray;
-    long preferredDepth;
+    REALLYLONG depthArray;
+    REALLYLONG preferredDepth;
 #ifndef VDGetDMADepths
     PyMac_PRECHECK(VDGetDMADepths);
 #endif
@@ -19167,7 +19167,7 @@ static PyObject *Qt_VDSetDataRate(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     VideoDigitizerComponent ci;
-    long bytesPerSecond;
+    REALLYLONG bytesPerSecond;
 #ifndef VDSetDataRate
     PyMac_PRECHECK(VDSetDataRate);
 #endif
@@ -19233,8 +19233,8 @@ static PyObject *Qt_VDGetSoundInputSource(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     VideoDigitizerComponent ci;
-    long videoInput;
-    long soundInput;
+    REALLYLONG videoInput;
+    REALLYLONG soundInput;
 #ifndef VDGetSoundInputSource
     PyMac_PRECHECK(VDGetSoundInputSource);
 #endif
@@ -19261,7 +19261,7 @@ static PyObject *Qt_VDGetCompressionTime(PyObject *_self, PyObject *_args)
     Rect srcRect;
     CodecQ spatialQuality;
     CodecQ temporalQuality;
-    unsigned long compressTime;
+    unsigned REALLYLONG compressTime;
 #ifndef VDGetCompressionTime
     PyMac_PRECHECK(VDGetCompressionTime);
 #endif
@@ -19291,7 +19291,7 @@ static PyObject *Qt_VDSetPreferredPacketSize(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     VideoDigitizerComponent ci;
-    long preferredPacketSizeInBytes;
+    REALLYLONG preferredPacketSizeInBytes;
 #ifndef VDSetPreferredPacketSize
     PyMac_PRECHECK(VDSetPreferredPacketSize);
 #endif
@@ -19311,8 +19311,8 @@ static PyObject *Qt_VDSetPreferredImageDimensions(PyObject *_self, PyObject *_ar
     PyObject *_res = NULL;
     ComponentResult _rv;
     VideoDigitizerComponent ci;
-    long width;
-    long height;
+    REALLYLONG width;
+    REALLYLONG height;
 #ifndef VDSetPreferredImageDimensions
     PyMac_PRECHECK(VDSetPreferredImageDimensions);
 #endif
@@ -19334,8 +19334,8 @@ static PyObject *Qt_VDGetPreferredImageDimensions(PyObject *_self, PyObject *_ar
     PyObject *_res = NULL;
     ComponentResult _rv;
     VideoDigitizerComponent ci;
-    long width;
-    long height;
+    REALLYLONG width;
+    REALLYLONG height;
 #ifndef VDGetPreferredImageDimensions
     PyMac_PRECHECK(VDGetPreferredImageDimensions);
 #endif
@@ -19357,7 +19357,7 @@ static PyObject *Qt_VDGetInputName(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     VideoDigitizerComponent ci;
-    long videoInput;
+    REALLYLONG videoInput;
     Str255 name;
 #ifndef VDGetInputName
     PyMac_PRECHECK(VDGetInputName);
@@ -19443,7 +19443,7 @@ static PyObject *Qt_XMLParseGetDetailedParseError(PyObject *_self, PyObject *_ar
     PyObject *_res = NULL;
     ComponentResult _rv;
     ComponentInstance aParser;
-    long errorLine;
+    REALLYLONG errorLine;
     StringPtr errDesc;
 #ifndef XMLParseGetDetailedParseError
     PyMac_PRECHECK(XMLParseGetDetailedParseError);
@@ -19469,7 +19469,7 @@ static PyObject *Qt_XMLParseAddElement(PyObject *_self, PyObject *_args)
     char elementName;
     UInt32 nameSpaceID;
     UInt32 elementID;
-    long elementFlags;
+    REALLYLONG elementFlags;
 #ifndef XMLParseAddElement
     PyMac_PRECHECK(XMLParseAddElement);
 #endif
@@ -19663,7 +19663,7 @@ static PyObject *Qt_XMLParseSetEventParseRefCon(PyObject *_self, PyObject *_args
     PyObject *_res = NULL;
     ComponentResult _rv;
     ComponentInstance aParser;
-    long refcon;
+    REALLYLONG refcon;
 #ifndef XMLParseSetEventParseRefCon
     PyMac_PRECHECK(XMLParseSetEventParseRefCon);
 #endif
@@ -19701,7 +19701,7 @@ static PyObject *Qt_SGSetDataOutput(PyObject *_self, PyObject *_args)
     ComponentResult _rv;
     SeqGrabComponent s;
     FSSpec movieFile;
-    long whereFlags;
+    REALLYLONG whereFlags;
 #ifndef SGSetDataOutput
     PyMac_PRECHECK(SGSetDataOutput);
 #endif
@@ -19724,7 +19724,7 @@ static PyObject *Qt_SGGetDataOutput(PyObject *_self, PyObject *_args)
     ComponentResult _rv;
     SeqGrabComponent s;
     FSSpec movieFile;
-    long whereFlags;
+    REALLYLONG whereFlags;
 #ifndef SGGetDataOutput
     PyMac_PRECHECK(SGGetDataOutput);
 #endif
@@ -19980,7 +19980,7 @@ static PyObject *Qt_SGSetMaximumRecordTime(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     SeqGrabComponent s;
-    unsigned long ticks;
+    unsigned REALLYLONG ticks;
 #ifndef SGSetMaximumRecordTime
     PyMac_PRECHECK(SGSetMaximumRecordTime);
 #endif
@@ -20000,7 +20000,7 @@ static PyObject *Qt_SGGetMaximumRecordTime(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     SeqGrabComponent s;
-    unsigned long ticks;
+    unsigned REALLYLONG ticks;
 #ifndef SGGetMaximumRecordTime
     PyMac_PRECHECK(SGGetMaximumRecordTime);
 #endif
@@ -20020,7 +20020,7 @@ static PyObject *Qt_SGGetStorageSpaceRemaining(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     SeqGrabComponent s;
-    unsigned long bytes;
+    unsigned REALLYLONG bytes;
 #ifndef SGGetStorageSpaceRemaining
     PyMac_PRECHECK(SGGetStorageSpaceRemaining);
 #endif
@@ -20040,7 +20040,7 @@ static PyObject *Qt_SGGetTimeRemaining(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     SeqGrabComponent s;
-    long ticksLeft;
+    REALLYLONG ticksLeft;
 #ifndef SGGetTimeRemaining
     PyMac_PRECHECK(SGGetTimeRemaining);
 #endif
@@ -20063,7 +20063,7 @@ static PyObject *Qt_SGGrabPict(PyObject *_self, PyObject *_args)
     PicHandle p;
     Rect bounds;
     short offscreenDepth;
-    long grabPictFlags;
+    REALLYLONG grabPictFlags;
 #ifndef SGGrabPict
     PyMac_PRECHECK(SGGrabPict);
 #endif
@@ -20109,7 +20109,7 @@ static PyObject *Qt_SGSetFlags(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     SeqGrabComponent s;
-    long sgFlags;
+    REALLYLONG sgFlags;
 #ifndef SGSetFlags
     PyMac_PRECHECK(SGSetFlags);
 #endif
@@ -20129,7 +20129,7 @@ static PyObject *Qt_SGGetFlags(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     SeqGrabComponent s;
-    long sgFlags;
+    REALLYLONG sgFlags;
 #ifndef SGGetFlags
     PyMac_PRECHECK(SGGetFlags);
 #endif
@@ -20173,7 +20173,7 @@ static PyObject *Qt_SGSetSettings(PyObject *_self, PyObject *_args)
     ComponentResult _rv;
     SeqGrabComponent s;
     UserData ud;
-    long flags;
+    REALLYLONG flags;
 #ifndef SGSetSettings
     PyMac_PRECHECK(SGSetSettings);
 #endif
@@ -20196,7 +20196,7 @@ static PyObject *Qt_SGGetSettings(PyObject *_self, PyObject *_args)
     ComponentResult _rv;
     SeqGrabComponent s;
     UserData ud;
-    long flags;
+    REALLYLONG flags;
 #ifndef SGGetSettings
     PyMac_PRECHECK(SGGetSettings);
 #endif
@@ -20286,7 +20286,7 @@ static PyObject *Qt_SGSetChannelSettings(PyObject *_self, PyObject *_args)
     SeqGrabComponent s;
     SGChannel c;
     UserData ud;
-    long flags;
+    REALLYLONG flags;
 #ifndef SGSetChannelSettings
     PyMac_PRECHECK(SGSetChannelSettings);
 #endif
@@ -20312,7 +20312,7 @@ static PyObject *Qt_SGGetChannelSettings(PyObject *_self, PyObject *_args)
     SeqGrabComponent s;
     SGChannel c;
     UserData ud;
-    long flags;
+    REALLYLONG flags;
 #ifndef SGGetChannelSettings
     PyMac_PRECHECK(SGGetChannelSettings);
 #endif
@@ -20361,7 +20361,7 @@ static PyObject *Qt_SGSetDataRef(PyObject *_self, PyObject *_args)
     SeqGrabComponent s;
     Handle dataRef;
     OSType dataRefType;
-    long whereFlags;
+    REALLYLONG whereFlags;
 #ifndef SGSetDataRef
     PyMac_PRECHECK(SGSetDataRef);
 #endif
@@ -20387,7 +20387,7 @@ static PyObject *Qt_SGGetDataRef(PyObject *_self, PyObject *_args)
     SeqGrabComponent s;
     Handle dataRef;
     OSType dataRefType;
-    long whereFlags;
+    REALLYLONG whereFlags;
 #ifndef SGGetDataRef
     PyMac_PRECHECK(SGGetDataRef);
 #endif
@@ -20413,7 +20413,7 @@ static PyObject *Qt_SGNewOutput(PyObject *_self, PyObject *_args)
     SeqGrabComponent s;
     Handle dataRef;
     OSType dataRefType;
-    long whereFlags;
+    REALLYLONG whereFlags;
     SGOutput sgOut;
 #ifndef SGNewOutput
     PyMac_PRECHECK(SGNewOutput);
@@ -20461,7 +20461,7 @@ static PyObject *Qt_SGSetOutputFlags(PyObject *_self, PyObject *_args)
     ComponentResult _rv;
     SeqGrabComponent s;
     SGOutput sgOut;
-    long whereFlags;
+    REALLYLONG whereFlags;
 #ifndef SGSetOutputFlags
     PyMac_PRECHECK(SGSetOutputFlags);
 #endif
@@ -20507,7 +20507,7 @@ static PyObject *Qt_SGGetDataOutputStorageSpaceRemaining(PyObject *_self, PyObje
     ComponentResult _rv;
     SeqGrabComponent s;
     SGOutput sgOut;
-    unsigned long space;
+    unsigned REALLYLONG space;
 #ifndef SGGetDataOutputStorageSpaceRemaining
     PyMac_PRECHECK(SGGetDataOutputStorageSpaceRemaining);
 #endif
@@ -20672,7 +20672,7 @@ static PyObject *Qt_SGWriteExtendedMovieData(PyObject *_self, PyObject *_args)
     SeqGrabComponent s;
     SGChannel c;
     Ptr p;
-    long len;
+    REALLYLONG len;
     wide offset;
     SGOutput sgOut;
 #ifndef SGWriteExtendedMovieData
@@ -20747,8 +20747,8 @@ static PyObject *Qt_SGWriteMovieData(PyObject *_self, PyObject *_args)
     SeqGrabComponent s;
     SGChannel c;
     Ptr p;
-    long len;
-    long offset;
+    REALLYLONG len;
+    REALLYLONG offset;
 #ifndef SGWriteMovieData
     PyMac_PRECHECK(SGWriteMovieData);
 #endif
@@ -20796,9 +20796,9 @@ static PyObject *Qt_SGAddMovieData(PyObject *_self, PyObject *_args)
     SeqGrabComponent s;
     SGChannel c;
     Ptr p;
-    long len;
-    long offset;
-    long chRefCon;
+    REALLYLONG len;
+    REALLYLONG offset;
+    REALLYLONG chRefCon;
     TimeValue time;
     short writeType;
 #ifndef SGAddMovieData
@@ -20854,9 +20854,9 @@ static PyObject *Qt_SGAddExtendedMovieData(PyObject *_self, PyObject *_args)
     SeqGrabComponent s;
     SGChannel c;
     Ptr p;
-    long len;
+    REALLYLONG len;
     wide offset;
-    long chRefCon;
+    REALLYLONG chRefCon;
     TimeValue time;
     short writeType;
     SGOutput whichOutput;
@@ -20939,7 +20939,7 @@ static PyObject *Qt_SGSetChannelUsage(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     SGChannel c;
-    long usage;
+    REALLYLONG usage;
 #ifndef SGSetChannelUsage
     PyMac_PRECHECK(SGSetChannelUsage);
 #endif
@@ -20959,7 +20959,7 @@ static PyObject *Qt_SGGetChannelUsage(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     SGChannel c;
-    long usage;
+    REALLYLONG usage;
 #ifndef SGGetChannelUsage
     PyMac_PRECHECK(SGGetChannelUsage);
 #endif
@@ -21059,7 +21059,7 @@ static PyObject *Qt_SGGetChannelInfo(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     SGChannel c;
-    long channelInfo;
+    REALLYLONG channelInfo;
 #ifndef SGGetChannelInfo
     PyMac_PRECHECK(SGGetChannelInfo);
 #endif
@@ -21079,7 +21079,7 @@ static PyObject *Qt_SGSetChannelPlayFlags(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     SGChannel c;
-    long playFlags;
+    REALLYLONG playFlags;
 #ifndef SGSetChannelPlayFlags
     PyMac_PRECHECK(SGSetChannelPlayFlags);
 #endif
@@ -21099,7 +21099,7 @@ static PyObject *Qt_SGGetChannelPlayFlags(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     SGChannel c;
-    long playFlags;
+    REALLYLONG playFlags;
 #ifndef SGGetChannelPlayFlags
     PyMac_PRECHECK(SGGetChannelPlayFlags);
 #endif
@@ -21119,7 +21119,7 @@ static PyObject *Qt_SGSetChannelMaxFrames(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     SGChannel c;
-    long frameCount;
+    REALLYLONG frameCount;
 #ifndef SGSetChannelMaxFrames
     PyMac_PRECHECK(SGSetChannelMaxFrames);
 #endif
@@ -21139,7 +21139,7 @@ static PyObject *Qt_SGGetChannelMaxFrames(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     SGChannel c;
-    long frameCount;
+    REALLYLONG frameCount;
 #ifndef SGGetChannelMaxFrames
     PyMac_PRECHECK(SGGetChannelMaxFrames);
 #endif
@@ -21159,7 +21159,7 @@ static PyObject *Qt_SGSetChannelRefCon(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     SGChannel c;
-    long refCon;
+    REALLYLONG refCon;
 #ifndef SGSetChannelRefCon
     PyMac_PRECHECK(SGSetChannelRefCon);
 #endif
@@ -21296,7 +21296,7 @@ static PyObject *Qt_SGChannelSetRequestedDataRate(PyObject *_self, PyObject *_ar
     PyObject *_res = NULL;
     ComponentResult _rv;
     SGChannel c;
-    long bytesPerSecond;
+    REALLYLONG bytesPerSecond;
 #ifndef SGChannelSetRequestedDataRate
     PyMac_PRECHECK(SGChannelSetRequestedDataRate);
 #endif
@@ -21316,7 +21316,7 @@ static PyObject *Qt_SGChannelGetRequestedDataRate(PyObject *_self, PyObject *_ar
     PyObject *_res = NULL;
     ComponentResult _rv;
     SGChannel c;
-    long bytesPerSecond;
+    REALLYLONG bytesPerSecond;
 #ifndef SGChannelGetRequestedDataRate
     PyMac_PRECHECK(SGChannelGetRequestedDataRate);
 #endif
@@ -21442,7 +21442,7 @@ static PyObject *Qt_SGGetChannelRefCon(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     SGChannel c;
-    long refCon;
+    REALLYLONG refCon;
 #ifndef SGGetChannelRefCon
     PyMac_PRECHECK(SGGetChannelRefCon);
 #endif
@@ -21571,7 +21571,7 @@ static PyObject *Qt_SGGetDataRate(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     SGChannel c;
-    long bytesPerSecond;
+    REALLYLONG bytesPerSecond;
 #ifndef SGGetDataRate
     PyMac_PRECHECK(SGGetDataRate);
 #endif
@@ -21829,7 +21829,7 @@ static PyObject *Qt_SGPanelGetSettings(PyObject *_self, PyObject *_args)
     SeqGrabComponent s;
     SGChannel c;
     UserData ud;
-    long flags;
+    REALLYLONG flags;
 #ifndef SGPanelGetSettings
     PyMac_PRECHECK(SGPanelGetSettings);
 #endif
@@ -21855,7 +21855,7 @@ static PyObject *Qt_SGPanelSetSettings(PyObject *_self, PyObject *_args)
     SeqGrabComponent s;
     SGChannel c;
     UserData ud;
-    long flags;
+    REALLYLONG flags;
 #ifndef SGPanelSetSettings
     PyMac_PRECHECK(SGPanelSetSettings);
 #endif
@@ -22026,7 +22026,7 @@ static PyObject *Qt_SGSetVideoCompressor(PyObject *_self, PyObject *_args)
     CompressorComponent compressor;
     CodecQ spatialQuality;
     CodecQ temporalQuality;
-    long keyFrameRate;
+    REALLYLONG keyFrameRate;
 #ifndef SGSetVideoCompressor
     PyMac_PRECHECK(SGSetVideoCompressor);
 #endif
@@ -22058,7 +22058,7 @@ static PyObject *Qt_SGGetVideoCompressor(PyObject *_self, PyObject *_args)
     CompressorComponent compressor;
     CodecQ spatialQuality;
     CodecQ temporalQuality;
-    long keyFrameRate;
+    REALLYLONG keyFrameRate;
 #ifndef SGGetVideoCompressor
     PyMac_PRECHECK(SGGetVideoCompressor);
 #endif
@@ -22361,7 +22361,7 @@ static PyObject *Qt_SGSetPreferredPacketSize(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     SGChannel c;
-    long preferredPacketSizeInBytes;
+    REALLYLONG preferredPacketSizeInBytes;
 #ifndef SGSetPreferredPacketSize
     PyMac_PRECHECK(SGSetPreferredPacketSize);
 #endif
@@ -22381,7 +22381,7 @@ static PyObject *Qt_SGGetPreferredPacketSize(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     SGChannel c;
-    long preferredPacketSizeInBytes;
+    REALLYLONG preferredPacketSizeInBytes;
 #ifndef SGGetPreferredPacketSize
     PyMac_PRECHECK(SGGetPreferredPacketSize);
 #endif
@@ -22459,7 +22459,7 @@ static PyObject *Qt_SGSetSoundInputDriver(PyObject *_self, PyObject *_args)
 static PyObject *Qt_SGGetSoundInputDriver(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long _rv;
+    REALLYLONG _rv;
     SGChannel c;
 #ifndef SGGetSoundInputDriver
     PyMac_PRECHECK(SGGetSoundInputDriver);
@@ -22495,7 +22495,7 @@ static PyObject *Qt_SGSetSoundRecordChunkSize(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     SGChannel c;
-    long seconds;
+    REALLYLONG seconds;
 #ifndef SGSetSoundRecordChunkSize
     PyMac_PRECHECK(SGSetSoundRecordChunkSize);
 #endif
@@ -22513,7 +22513,7 @@ static PyObject *Qt_SGSetSoundRecordChunkSize(PyObject *_self, PyObject *_args)
 static PyObject *Qt_SGGetSoundRecordChunkSize(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long _rv;
+    REALLYLONG _rv;
     SGChannel c;
 #ifndef SGGetSoundRecordChunkSize
     PyMac_PRECHECK(SGGetSoundRecordChunkSize);
@@ -22895,7 +22895,7 @@ static PyObject *Qt_QTVideoOutputSetDisplayMode(PyObject *_self, PyObject *_args
     PyObject *_res = NULL;
     ComponentResult _rv;
     QTVideoOutputComponent vo;
-    long displayModeID;
+    REALLYLONG displayModeID;
 #ifndef QTVideoOutputSetDisplayMode
     PyMac_PRECHECK(QTVideoOutputSetDisplayMode);
 #endif
@@ -22915,7 +22915,7 @@ static PyObject *Qt_QTVideoOutputGetDisplayMode(PyObject *_self, PyObject *_args
     PyObject *_res = NULL;
     ComponentResult _rv;
     QTVideoOutputComponent vo;
-    long displayModeID;
+    REALLYLONG displayModeID;
 #ifndef QTVideoOutputGetDisplayMode
     PyMac_PRECHECK(QTVideoOutputGetDisplayMode);
 #endif
@@ -22955,7 +22955,7 @@ static PyObject *Qt_QTVideoOutputGetIndSoundOutput(PyObject *_self, PyObject *_a
     PyObject *_res = NULL;
     ComponentResult _rv;
     QTVideoOutputComponent vo;
-    long index;
+    REALLYLONG index;
     Component outputComponent;
 #ifndef QTVideoOutputGetIndSoundOutput
     PyMac_PRECHECK(QTVideoOutputGetIndSoundOutput);
@@ -23018,7 +23018,7 @@ static PyObject *Qt_QTVideoOutputGetIndImageDecompressor(PyObject *_self, PyObje
     PyObject *_res = NULL;
     ComponentResult _rv;
     QTVideoOutputComponent vo;
-    long index;
+    REALLYLONG index;
     Component codec;
 #ifndef QTVideoOutputGetIndImageDecompressor
     PyMac_PRECHECK(QTVideoOutputGetIndImageDecompressor);
@@ -23161,8 +23161,8 @@ static PyObject *Qt_MediaSetHandlerCapabilities(PyObject *_self, PyObject *_args
     PyObject *_res = NULL;
     ComponentResult _rv;
     MediaHandler mh;
-    long flags;
-    long flagsMask;
+    REALLYLONG flags;
+    REALLYLONG flagsMask;
 #ifndef MediaSetHandlerCapabilities
     PyMac_PRECHECK(MediaSetHandlerCapabilities);
 #endif
@@ -23185,8 +23185,8 @@ static PyObject *Qt_MediaIdle(PyObject *_self, PyObject *_args)
     ComponentResult _rv;
     MediaHandler mh;
     TimeValue atMediaTime;
-    long flagsIn;
-    long flagsOut;
+    REALLYLONG flagsIn;
+    REALLYLONG flagsOut;
     TimeRecord movieTime;
 #ifndef MediaIdle
     PyMac_PRECHECK(MediaIdle);
@@ -23456,7 +23456,7 @@ static PyObject *Qt_MediaSetGraphicsMode(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     MediaHandler mh;
-    long mode;
+    REALLYLONG mode;
     RGBColor opColor;
 #ifndef MediaSetGraphicsMode
     PyMac_PRECHECK(MediaSetGraphicsMode);
@@ -23479,7 +23479,7 @@ static PyObject *Qt_MediaGetGraphicsMode(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     MediaHandler mh;
-    long mode;
+    REALLYLONG mode;
     RGBColor opColor;
 #ifndef MediaGetGraphicsMode
     PyMac_PRECHECK(MediaGetGraphicsMode);
@@ -23628,7 +23628,7 @@ static PyObject *Qt_MediaSampleDescriptionChanged(PyObject *_self, PyObject *_ar
     PyObject *_res = NULL;
     ComponentResult _rv;
     MediaHandler mh;
-    long index;
+    REALLYLONG index;
 #ifndef MediaSampleDescriptionChanged
     PyMac_PRECHECK(MediaSampleDescriptionChanged);
 #endif
@@ -23697,7 +23697,7 @@ static PyObject *Qt_MediaSetHints(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     MediaHandler mh;
-    long hints;
+    REALLYLONG hints;
 #ifndef MediaSetHints
     PyMac_PRECHECK(MediaSetHints);
 #endif
@@ -23718,8 +23718,8 @@ static PyObject *Qt_MediaGetName(PyObject *_self, PyObject *_args)
     ComponentResult _rv;
     MediaHandler mh;
     Str255 name;
-    long requestedLanguage;
-    long actualLanguage;
+    REALLYLONG requestedLanguage;
+    REALLYLONG actualLanguage;
 #ifndef MediaGetName
     PyMac_PRECHECK(MediaGetName);
 #endif
@@ -23743,7 +23743,7 @@ static PyObject *Qt_MediaForceUpdate(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     MediaHandler mh;
-    long forceUpdateFlags;
+    REALLYLONG forceUpdateFlags;
 #ifndef MediaForceUpdate
     PyMac_PRECHECK(MediaForceUpdate);
 #endif
@@ -23855,7 +23855,7 @@ static PyObject *Qt_MediaChangedNonPrimarySource(PyObject *_self, PyObject *_arg
     PyObject *_res = NULL;
     ComponentResult _rv;
     MediaHandler mh;
-    long inputIndex;
+    REALLYLONG inputIndex;
 #ifndef MediaChangedNonPrimarySource
     PyMac_PRECHECK(MediaChangedNonPrimarySource);
 #endif
@@ -23892,7 +23892,7 @@ static PyObject *Qt_MediaReleaseSampleDataPointer(PyObject *_self, PyObject *_ar
     PyObject *_res = NULL;
     ComponentResult _rv;
     MediaHandler mh;
-    long sampleNum;
+    REALLYLONG sampleNum;
 #ifndef MediaReleaseSampleDataPointer
     PyMac_PRECHECK(MediaReleaseSampleDataPointer);
 #endif
@@ -23929,7 +23929,7 @@ static PyObject *Qt_MediaSetVideoParam(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     MediaHandler mh;
-    long whichParam;
+    REALLYLONG whichParam;
     unsigned short value;
 #ifndef MediaSetVideoParam
     PyMac_PRECHECK(MediaSetVideoParam);
@@ -23952,7 +23952,7 @@ static PyObject *Qt_MediaGetVideoParam(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     MediaHandler mh;
-    long whichParam;
+    REALLYLONG whichParam;
     unsigned short value;
 #ifndef MediaGetVideoParam
     PyMac_PRECHECK(MediaGetVideoParam);
@@ -24141,7 +24141,7 @@ static PyObject *Qt_MediaFlushNonPrimarySourceData(PyObject *_self, PyObject *_a
     PyObject *_res = NULL;
     ComponentResult _rv;
     MediaHandler mh;
-    long inputIndex;
+    REALLYLONG inputIndex;
 #ifndef MediaFlushNonPrimarySourceData
     PyMac_PRECHECK(MediaFlushNonPrimarySourceData);
 #endif
@@ -24184,9 +24184,9 @@ static PyObject *Qt_MediaHitTestForTargetRefCon(PyObject *_self, PyObject *_args
     PyObject *_res = NULL;
     ComponentResult _rv;
     MediaHandler mh;
-    long flags;
+    REALLYLONG flags;
     Point loc;
-    long targetRefCon;
+    REALLYLONG targetRefCon;
 #ifndef MediaHitTestForTargetRefCon
     PyMac_PRECHECK(MediaHitTestForTargetRefCon);
 #endif
@@ -24210,8 +24210,8 @@ static PyObject *Qt_MediaHitTestTargetRefCon(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     MediaHandler mh;
-    long targetRefCon;
-    long flags;
+    REALLYLONG targetRefCon;
+    REALLYLONG flags;
     Point loc;
     Boolean wasHit;
 #ifndef MediaHitTestTargetRefCon
@@ -24239,7 +24239,7 @@ static PyObject *Qt_MediaDisposeTargetRefCon(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     MediaHandler mh;
-    long targetRefCon;
+    REALLYLONG targetRefCon;
 #ifndef MediaDisposeTargetRefCon
     PyMac_PRECHECK(MediaDisposeTargetRefCon);
 #endif
@@ -24259,8 +24259,8 @@ static PyObject *Qt_MediaTargetRefConsEqual(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     MediaHandler mh;
-    long firstRefCon;
-    long secondRefCon;
+    REALLYLONG firstRefCon;
+    REALLYLONG secondRefCon;
     Boolean equal;
 #ifndef MediaTargetRefConsEqual
     PyMac_PRECHECK(MediaTargetRefConsEqual);
@@ -24322,7 +24322,7 @@ static PyObject *Qt_MediaCurrentMediaQueuedData(PyObject *_self, PyObject *_args
     PyObject *_res = NULL;
     ComponentResult _rv;
     MediaHandler mh;
-    long milliSecs;
+    REALLYLONG milliSecs;
 #ifndef MediaCurrentMediaQueuedData
     PyMac_PRECHECK(MediaCurrentMediaQueuedData);
 #endif
@@ -24588,7 +24588,7 @@ static PyObject *Qt_MediaGetMediaLoadState(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     MediaHandler mh;
-    long mediaLoadState;
+    REALLYLONG mediaLoadState;
 #ifndef MediaGetMediaLoadState
     PyMac_PRECHECK(MediaGetMediaLoadState);
 #endif
@@ -24628,8 +24628,8 @@ static PyObject *Qt_MediaEmptySampleCache(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     MediaHandler mh;
-    long sampleNum;
-    long sampleCount;
+    REALLYLONG sampleNum;
+    REALLYLONG sampleCount;
 #ifndef MediaEmptySampleCache
     PyMac_PRECHECK(MediaEmptySampleCache);
 #endif
@@ -24703,8 +24703,8 @@ static PyObject *Qt_MediaRefConSetProperty(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     MediaHandler mh;
-    long refCon;
-    long propertyType;
+    REALLYLONG refCon;
+    REALLYLONG propertyType;
     void * propertyValue;
 #ifndef MediaRefConSetProperty
     PyMac_PRECHECK(MediaRefConSetProperty);
@@ -24729,8 +24729,8 @@ static PyObject *Qt_MediaRefConGetProperty(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     MediaHandler mh;
-    long refCon;
-    long propertyType;
+    REALLYLONG refCon;
+    REALLYLONG propertyType;
     void * propertyValue;
 #ifndef MediaRefConGetProperty
     PyMac_PRECHECK(MediaRefConGetProperty);
@@ -24755,8 +24755,8 @@ static PyObject *Qt_MediaNavigateTargetRefCon(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     MediaHandler mh;
-    long navigation;
-    long refCon;
+    REALLYLONG navigation;
+    REALLYLONG refCon;
 #ifndef MediaNavigateTargetRefCon
     PyMac_PRECHECK(MediaNavigateTargetRefCon);
 #endif
@@ -24841,8 +24841,8 @@ static PyObject *Qt_QTMIDIUseSendPort(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     QTMIDIComponent ci;
-    long portIndex;
-    long inUse;
+    REALLYLONG portIndex;
+    REALLYLONG inUse;
 #ifndef QTMIDIUseSendPort
     PyMac_PRECHECK(QTMIDIUseSendPort);
 #endif
@@ -24864,7 +24864,7 @@ static PyObject *Qt_QTMIDISendMIDI(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     QTMIDIComponent ci;
-    long portIndex;
+    REALLYLONG portIndex;
     MusicMIDIPacket mp;
 #ifndef QTMIDISendMIDI
     PyMac_PRECHECK(QTMIDISendMIDI);
@@ -24887,9 +24887,9 @@ static PyObject *Qt_MusicGetPart(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     MusicComponent mc;
-    long part;
-    long midiChannel;
-    long polyphony;
+    REALLYLONG part;
+    REALLYLONG midiChannel;
+    REALLYLONG polyphony;
 #ifndef MusicGetPart
     PyMac_PRECHECK(MusicGetPart);
 #endif
@@ -24913,9 +24913,9 @@ static PyObject *Qt_MusicSetPart(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     MusicComponent mc;
-    long part;
-    long midiChannel;
-    long polyphony;
+    REALLYLONG part;
+    REALLYLONG midiChannel;
+    REALLYLONG polyphony;
 #ifndef MusicSetPart
     PyMac_PRECHECK(MusicSetPart);
 #endif
@@ -24939,8 +24939,8 @@ static PyObject *Qt_MusicSetPartInstrumentNumber(PyObject *_self, PyObject *_arg
     PyObject *_res = NULL;
     ComponentResult _rv;
     MusicComponent mc;
-    long part;
-    long instrumentNumber;
+    REALLYLONG part;
+    REALLYLONG instrumentNumber;
 #ifndef MusicSetPartInstrumentNumber
     PyMac_PRECHECK(MusicSetPartInstrumentNumber);
 #endif
@@ -24962,7 +24962,7 @@ static PyObject *Qt_MusicGetPartInstrumentNumber(PyObject *_self, PyObject *_arg
     PyObject *_res = NULL;
     ComponentResult _rv;
     MusicComponent mc;
-    long part;
+    REALLYLONG part;
 #ifndef MusicGetPartInstrumentNumber
     PyMac_PRECHECK(MusicGetPartInstrumentNumber);
 #endif
@@ -24982,8 +24982,8 @@ static PyObject *Qt_MusicStorePartInstrument(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     MusicComponent mc;
-    long part;
-    long instrumentNumber;
+    REALLYLONG part;
+    REALLYLONG instrumentNumber;
 #ifndef MusicStorePartInstrument
     PyMac_PRECHECK(MusicStorePartInstrument);
 #endif
@@ -25005,9 +25005,9 @@ static PyObject *Qt_MusicGetPartAtomicInstrument(PyObject *_self, PyObject *_arg
     PyObject *_res = NULL;
     ComponentResult _rv;
     MusicComponent mc;
-    long part;
+    REALLYLONG part;
     AtomicInstrument ai;
-    long flags;
+    REALLYLONG flags;
 #ifndef MusicGetPartAtomicInstrument
     PyMac_PRECHECK(MusicGetPartAtomicInstrument);
 #endif
@@ -25031,9 +25031,9 @@ static PyObject *Qt_MusicSetPartAtomicInstrument(PyObject *_self, PyObject *_arg
     PyObject *_res = NULL;
     ComponentResult _rv;
     MusicComponent mc;
-    long part;
+    REALLYLONG part;
     AtomicInstrumentPtr aiP;
-    long flags;
+    REALLYLONG flags;
 #ifndef MusicSetPartAtomicInstrument
     PyMac_PRECHECK(MusicSetPartAtomicInstrument);
 #endif
@@ -25057,8 +25057,8 @@ static PyObject *Qt_MusicGetPartKnob(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     MusicComponent mc;
-    long part;
-    long knobID;
+    REALLYLONG part;
+    REALLYLONG knobID;
 #ifndef MusicGetPartKnob
     PyMac_PRECHECK(MusicGetPartKnob);
 #endif
@@ -25080,9 +25080,9 @@ static PyObject *Qt_MusicSetPartKnob(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     MusicComponent mc;
-    long part;
-    long knobID;
-    long knobValue;
+    REALLYLONG part;
+    REALLYLONG knobID;
+    REALLYLONG knobValue;
 #ifndef MusicSetPartKnob
     PyMac_PRECHECK(MusicSetPartKnob);
 #endif
@@ -25106,7 +25106,7 @@ static PyObject *Qt_MusicGetKnob(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     MusicComponent mc;
-    long knobID;
+    REALLYLONG knobID;
 #ifndef MusicGetKnob
     PyMac_PRECHECK(MusicGetKnob);
 #endif
@@ -25126,8 +25126,8 @@ static PyObject *Qt_MusicSetKnob(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     MusicComponent mc;
-    long knobID;
-    long knobValue;
+    REALLYLONG knobID;
+    REALLYLONG knobValue;
 #ifndef MusicSetKnob
     PyMac_PRECHECK(MusicSetKnob);
 #endif
@@ -25149,7 +25149,7 @@ static PyObject *Qt_MusicGetPartName(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     MusicComponent mc;
-    long part;
+    REALLYLONG part;
     StringPtr name;
 #ifndef MusicGetPartName
     PyMac_PRECHECK(MusicGetPartName);
@@ -25172,7 +25172,7 @@ static PyObject *Qt_MusicSetPartName(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     MusicComponent mc;
-    long part;
+    REALLYLONG part;
     StringPtr name;
 #ifndef MusicSetPartName
     PyMac_PRECHECK(MusicSetPartName);
@@ -25195,9 +25195,9 @@ static PyObject *Qt_MusicPlayNote(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     MusicComponent mc;
-    long part;
-    long pitch;
-    long velocity;
+    REALLYLONG part;
+    REALLYLONG pitch;
+    REALLYLONG velocity;
 #ifndef MusicPlayNote
     PyMac_PRECHECK(MusicPlayNote);
 #endif
@@ -25221,7 +25221,7 @@ static PyObject *Qt_MusicResetPart(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     MusicComponent mc;
-    long part;
+    REALLYLONG part;
 #ifndef MusicResetPart
     PyMac_PRECHECK(MusicResetPart);
 #endif
@@ -25241,9 +25241,9 @@ static PyObject *Qt_MusicSetPartController(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     MusicComponent mc;
-    long part;
+    REALLYLONG part;
     MusicController controllerNumber;
-    long controllerValue;
+    REALLYLONG controllerValue;
 #ifndef MusicSetPartController
     PyMac_PRECHECK(MusicSetPartController);
 #endif
@@ -25267,7 +25267,7 @@ static PyObject *Qt_MusicGetPartController(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     MusicComponent mc;
-    long part;
+    REALLYLONG part;
     MusicController controllerNumber;
 #ifndef MusicGetPartController
     PyMac_PRECHECK(MusicGetPartController);
@@ -25290,7 +25290,7 @@ static PyObject *Qt_MusicGetInstrumentNames(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     MusicComponent mc;
-    long modifiableInstruments;
+    REALLYLONG modifiableInstruments;
     Handle instrumentNames;
     Handle instrumentCategoryLasts;
     Handle instrumentCategoryNames;
@@ -25319,7 +25319,7 @@ static PyObject *Qt_MusicGetDrumNames(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     MusicComponent mc;
-    long modifiableInstruments;
+    REALLYLONG modifiableInstruments;
     Handle instrumentNumbers;
     Handle instrumentNames;
 #ifndef MusicGetDrumNames
@@ -25362,7 +25362,7 @@ static PyObject *Qt_MusicSetMasterTune(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     MusicComponent mc;
-    long masterTune;
+    REALLYLONG masterTune;
 #ifndef MusicSetMasterTune
     PyMac_PRECHECK(MusicSetMasterTune);
 #endif
@@ -25382,9 +25382,9 @@ static PyObject *Qt_MusicGetDeviceConnection(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     MusicComponent mc;
-    long index;
-    long id1;
-    long id2;
+    REALLYLONG index;
+    REALLYLONG id1;
+    REALLYLONG id2;
 #ifndef MusicGetDeviceConnection
     PyMac_PRECHECK(MusicGetDeviceConnection);
 #endif
@@ -25408,8 +25408,8 @@ static PyObject *Qt_MusicUseDeviceConnection(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     MusicComponent mc;
-    long id1;
-    long id2;
+    REALLYLONG id1;
+    REALLYLONG id2;
 #ifndef MusicUseDeviceConnection
     PyMac_PRECHECK(MusicUseDeviceConnection);
 #endif
@@ -25431,8 +25431,8 @@ static PyObject *Qt_MusicGetKnobSettingStrings(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     MusicComponent mc;
-    long knobIndex;
-    long isGlobal;
+    REALLYLONG knobIndex;
+    REALLYLONG isGlobal;
     Handle settingsNames;
     Handle settingsCategoryLasts;
     Handle settingsCategoryNames;
@@ -25463,8 +25463,8 @@ static PyObject *Qt_MusicGetMIDIPorts(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     MusicComponent mc;
-    long inputPortCount;
-    long outputPortCount;
+    REALLYLONG inputPortCount;
+    REALLYLONG outputPortCount;
 #ifndef MusicGetMIDIPorts
     PyMac_PRECHECK(MusicGetMIDIPorts);
 #endif
@@ -25486,7 +25486,7 @@ static PyObject *Qt_MusicSendMIDI(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     MusicComponent mc;
-    long portIndex;
+    REALLYLONG portIndex;
     MusicMIDIPacket mp;
 #ifndef MusicSendMIDI
     PyMac_PRECHECK(MusicSendMIDI);
@@ -25509,7 +25509,7 @@ static PyObject *Qt_MusicSetOfflineTimeTo(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     MusicComponent mc;
-    long newTimeStamp;
+    REALLYLONG newTimeStamp;
 #ifndef MusicSetOfflineTimeTo
     PyMac_PRECHECK(MusicSetOfflineTimeTo);
 #endif
@@ -25529,7 +25529,7 @@ static PyObject *Qt_MusicGetInfoText(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     MusicComponent mc;
-    long selector;
+    REALLYLONG selector;
     Handle textH;
     Handle styleH;
 #ifndef MusicGetInfoText
@@ -25555,7 +25555,7 @@ static PyObject *Qt_MusicGetInstrumentInfo(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     MusicComponent mc;
-    long getInstrumentInfoFlags;
+    REALLYLONG getInstrumentInfoFlags;
     InstrumentInfoListHandle infoListH;
 #ifndef MusicGetInstrumentInfo
     PyMac_PRECHECK(MusicGetInstrumentInfo);
@@ -25595,8 +25595,8 @@ static PyObject *Qt_MusicSetPartInstrumentNumberInterruptSafe(PyObject *_self, P
     PyObject *_res = NULL;
     ComponentResult _rv;
     MusicComponent mc;
-    long part;
-    long instrumentNumber;
+    REALLYLONG part;
+    REALLYLONG instrumentNumber;
 #ifndef MusicSetPartInstrumentNumberInterruptSafe
     PyMac_PRECHECK(MusicSetPartInstrumentNumberInterruptSafe);
 #endif
@@ -25618,7 +25618,7 @@ static PyObject *Qt_MusicSetPartSoundLocalization(PyObject *_self, PyObject *_ar
     PyObject *_res = NULL;
     ComponentResult _rv;
     MusicComponent mc;
-    long part;
+    REALLYLONG part;
     Handle data;
 #ifndef MusicSetPartSoundLocalization
     PyMac_PRECHECK(MusicSetPartSoundLocalization);
@@ -25641,9 +25641,9 @@ static PyObject *Qt_MusicGenericConfigure(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     MusicComponent mc;
-    long mode;
-    long flags;
-    long baseResID;
+    REALLYLONG mode;
+    REALLYLONG flags;
+    REALLYLONG baseResID;
 #ifndef MusicGenericConfigure
     PyMac_PRECHECK(MusicGenericConfigure);
 #endif
@@ -25667,7 +25667,7 @@ static PyObject *Qt_MusicGenericGetKnobList(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     MusicComponent mc;
-    long knobType;
+    REALLYLONG knobType;
     GenericKnobDescriptionListHandle gkdlH;
 #ifndef MusicGenericGetKnobList
     PyMac_PRECHECK(MusicGenericGetKnobList);
@@ -25767,7 +25767,7 @@ static PyObject *Qt_NAUnregisterMusicDevice(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     NoteAllocator na;
-    long index;
+    REALLYLONG index;
 #ifndef NAUnregisterMusicDevice
     PyMac_PRECHECK(NAUnregisterMusicDevice);
 #endif
@@ -25844,7 +25844,7 @@ static PyObject *Qt_TuneSetHeader(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     TunePlayer tp;
-    unsigned long * header;
+    unsigned REALLYLONG * header;
 #ifndef TuneSetHeader
     PyMac_PRECHECK(TuneSetHeader);
 #endif
@@ -25924,8 +25924,8 @@ static PyObject *Qt_TuneInstant(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     TunePlayer tp;
-    unsigned long tune;
-    unsigned long tunePosition;
+    unsigned REALLYLONG tune;
+    unsigned REALLYLONG tunePosition;
 #ifndef TuneInstant
     PyMac_PRECHECK(TuneInstant);
 #endif
@@ -25947,7 +25947,7 @@ static PyObject *Qt_TuneStop(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     TunePlayer tp;
-    long stopFlags;
+    REALLYLONG stopFlags;
 #ifndef TuneStop
     PyMac_PRECHECK(TuneStop);
 #endif
@@ -26038,9 +26038,9 @@ static PyObject *Qt_TuneSetPartTranspose(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     TunePlayer tp;
-    unsigned long part;
-    long transpose;
-    long velocityShift;
+    unsigned REALLYLONG part;
+    REALLYLONG transpose;
+    REALLYLONG velocityShift;
 #ifndef TuneSetPartTranspose
     PyMac_PRECHECK(TuneSetPartTranspose);
 #endif
@@ -26081,7 +26081,7 @@ static PyObject *Qt_TuneSetSofter(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     TunePlayer tp;
-    long softer;
+    REALLYLONG softer;
 #ifndef TuneSetSofter
     PyMac_PRECHECK(TuneSetSofter);
 #endif
@@ -26118,7 +26118,7 @@ static PyObject *Qt_TuneSetBalance(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     TunePlayer tp;
-    long balance;
+    REALLYLONG balance;
 #ifndef TuneSetBalance
     PyMac_PRECHECK(TuneSetBalance);
 #endif
@@ -26158,8 +26158,8 @@ static PyObject *Qt_TuneSetHeaderWithSize(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     TunePlayer tp;
-    unsigned long * header;
-    unsigned long size;
+    unsigned REALLYLONG * header;
+    unsigned REALLYLONG size;
 #ifndef TuneSetHeaderWithSize
     PyMac_PRECHECK(TuneSetHeaderWithSize);
 #endif
@@ -26181,10 +26181,10 @@ static PyObject *Qt_TuneSetPartMix(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     TunePlayer tp;
-    unsigned long partNumber;
-    long volume;
-    long balance;
-    long mixFlags;
+    unsigned REALLYLONG partNumber;
+    REALLYLONG volume;
+    REALLYLONG balance;
+    REALLYLONG mixFlags;
 #ifndef TuneSetPartMix
     PyMac_PRECHECK(TuneSetPartMix);
 #endif
@@ -26210,10 +26210,10 @@ static PyObject *Qt_TuneGetPartMix(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     ComponentResult _rv;
     TunePlayer tp;
-    unsigned long partNumber;
-    long volumeOut;
-    long balanceOut;
-    long mixFlagsOut;
+    unsigned REALLYLONG partNumber;
+    REALLYLONG volumeOut;
+    REALLYLONG balanceOut;
+    REALLYLONG mixFlagsOut;
 #ifndef TuneGetPartMix
     PyMac_PRECHECK(TuneGetPartMix);
 #endif
@@ -26282,7 +26282,7 @@ static PyObject *Qt_DragAlignedWindow(PyObject *_self, PyObject *_args)
 static PyObject *Qt_MoviesTask(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long maxMilliSecToUse;
+    REALLYLONG maxMilliSecToUse;
 #ifndef MoviesTask
     PyMac_PRECHECK(MoviesTask);
 #endif
@@ -26318,17 +26318,17 @@ static PyMethodDef Qt_methods[] = {
     {"DisposeMatte", (PyCFunction)Qt_DisposeMatte, 1,
      PyDoc_STR("(PixMapHandle theMatte) -> None")},
     {"NewMovie", (PyCFunction)Qt_NewMovie, 1,
-     PyDoc_STR("(long flags) -> (Movie _rv)")},
+     PyDoc_STR("(REALLYLONG flags) -> (Movie _rv)")},
     {"QTGetTimeUntilNextTask", (PyCFunction)Qt_QTGetTimeUntilNextTask, 1,
-     PyDoc_STR("(long scale) -> (long duration)")},
+     PyDoc_STR("(REALLYLONG scale) -> (REALLYLONG duration)")},
     {"GetDataHandler", (PyCFunction)Qt_GetDataHandler, 1,
-     PyDoc_STR("(Handle dataRef, OSType dataHandlerSubType, long flags) -> (Component _rv)")},
+     PyDoc_STR("(Handle dataRef, OSType dataHandlerSubType, REALLYLONG flags) -> (Component _rv)")},
     {"PasteHandleIntoMovie", (PyCFunction)Qt_PasteHandleIntoMovie, 1,
-     PyDoc_STR("(Handle h, OSType handleType, Movie theMovie, long flags, ComponentInstance userComp) -> None")},
+     PyDoc_STR("(Handle h, OSType handleType, Movie theMovie, REALLYLONG flags, ComponentInstance userComp) -> None")},
     {"GetMovieImporterForDataRef", (PyCFunction)Qt_GetMovieImporterForDataRef, 1,
-     PyDoc_STR("(OSType dataRefType, Handle dataRef, long flags) -> (Component importer)")},
+     PyDoc_STR("(OSType dataRefType, Handle dataRef, REALLYLONG flags) -> (Component importer)")},
     {"QTGetMIMETypeInfo", (PyCFunction)Qt_QTGetMIMETypeInfo, 1,
-     PyDoc_STR("(char* mimeStringStart, short mimeStringLength, OSType infoSelector, void * infoDataPtr) -> (long infoDataSize)")},
+     PyDoc_STR("(char* mimeStringStart, short mimeStringLength, OSType infoSelector, void * infoDataPtr) -> (REALLYLONG infoDataSize)")},
     {"TrackTimeToMediaTime", (PyCFunction)Qt_TrackTimeToMediaTime, 1,
      PyDoc_STR("(TimeValue value, Track theTrack) -> (TimeValue _rv)")},
     {"NewUserData", (PyCFunction)Qt_NewUserData, 1,
@@ -26336,7 +26336,7 @@ static PyMethodDef Qt_methods[] = {
     {"NewUserDataFromHandle", (PyCFunction)Qt_NewUserDataFromHandle, 1,
      PyDoc_STR("(Handle h) -> (UserData theUserData)")},
     {"CreateMovieFile", (PyCFunction)Qt_CreateMovieFile, 1,
-     PyDoc_STR("(FSSpec fileSpec, OSType creator, ScriptCode scriptTag, long createMovieFileFlags) -> (short resRefNum, Movie newmovie)")},
+     PyDoc_STR("(FSSpec fileSpec, OSType creator, ScriptCode scriptTag, REALLYLONG createMovieFileFlags) -> (short resRefNum, Movie newmovie)")},
     {"OpenMovieFile", (PyCFunction)Qt_OpenMovieFile, 1,
      PyDoc_STR("(FSSpec fileSpec, SInt8 permission) -> (short resRefNum)")},
     {"CloseMovieFile", (PyCFunction)Qt_CloseMovieFile, 1,
@@ -26348,9 +26348,9 @@ static PyMethodDef Qt_methods[] = {
     {"NewMovieFromHandle", (PyCFunction)Qt_NewMovieFromHandle, 1,
      PyDoc_STR("(Handle h, short newMovieFlags) -> (Movie theMovie, Boolean dataRefWasChanged)")},
     {"NewMovieFromDataFork", (PyCFunction)Qt_NewMovieFromDataFork, 1,
-     PyDoc_STR("(short fRefNum, long fileOffset, short newMovieFlags) -> (Movie theMovie, Boolean dataRefWasChanged)")},
+     PyDoc_STR("(short fRefNum, REALLYLONG fileOffset, short newMovieFlags) -> (Movie theMovie, Boolean dataRefWasChanged)")},
     {"NewMovieFromDataFork64", (PyCFunction)Qt_NewMovieFromDataFork64, 1,
-     PyDoc_STR("(long fRefNum, wide fileOffset, short newMovieFlags) -> (Movie theMovie, Boolean dataRefWasChanged)")},
+     PyDoc_STR("(REALLYLONG fRefNum, wide fileOffset, short newMovieFlags) -> (Movie theMovie, Boolean dataRefWasChanged)")},
     {"NewMovieFromDataRef", (PyCFunction)Qt_NewMovieFromDataRef, 1,
      PyDoc_STR("(short flags, Handle dataRef, OSType dtaRefType) -> (Movie m, short id)")},
     {"NewMovieFromStorageOffset", (PyCFunction)Qt_NewMovieFromStorageOffset, 1,
@@ -26360,25 +26360,25 @@ static PyMethodDef Qt_methods[] = {
     {"RemoveMovieResource", (PyCFunction)Qt_RemoveMovieResource, 1,
      PyDoc_STR("(short resRefNum, short resId) -> None")},
     {"CreateMovieStorage", (PyCFunction)Qt_CreateMovieStorage, 1,
-     PyDoc_STR("(Handle dataRef, OSType dataRefType, OSType creator, ScriptCode scriptTag, long createMovieFileFlags) -> (DataHandler outDataHandler, Movie newmovie)")},
+     PyDoc_STR("(Handle dataRef, OSType dataRefType, OSType creator, ScriptCode scriptTag, REALLYLONG createMovieFileFlags) -> (DataHandler outDataHandler, Movie newmovie)")},
     {"OpenMovieStorage", (PyCFunction)Qt_OpenMovieStorage, 1,
-     PyDoc_STR("(Handle dataRef, OSType dataRefType, long flags) -> (DataHandler outDataHandler)")},
+     PyDoc_STR("(Handle dataRef, OSType dataRefType, REALLYLONG flags) -> (DataHandler outDataHandler)")},
     {"CloseMovieStorage", (PyCFunction)Qt_CloseMovieStorage, 1,
      PyDoc_STR("(DataHandler dh) -> None")},
     {"DeleteMovieStorage", (PyCFunction)Qt_DeleteMovieStorage, 1,
      PyDoc_STR("(Handle dataRef, OSType dataRefType) -> None")},
     {"CreateShortcutMovieFile", (PyCFunction)Qt_CreateShortcutMovieFile, 1,
-     PyDoc_STR("(FSSpec fileSpec, OSType creator, ScriptCode scriptTag, long createMovieFileFlags, Handle targetDataRef, OSType targetDataRefType) -> None")},
+     PyDoc_STR("(FSSpec fileSpec, OSType creator, ScriptCode scriptTag, REALLYLONG createMovieFileFlags, Handle targetDataRef, OSType targetDataRefType) -> None")},
     {"CanQuickTimeOpenFile", (PyCFunction)Qt_CanQuickTimeOpenFile, 1,
      PyDoc_STR("(FSSpec fileSpec, OSType fileType, OSType fileNameExtension, UInt32 inFlags) -> (Boolean outCanOpenWithGraphicsImporter, Boolean outCanOpenAsMovie, Boolean outPreferGraphicsImporter)")},
     {"CanQuickTimeOpenDataRef", (PyCFunction)Qt_CanQuickTimeOpenDataRef, 1,
      PyDoc_STR("(Handle dataRef, OSType dataRefType, UInt32 inFlags) -> (Boolean outCanOpenWithGraphicsImporter, Boolean outCanOpenAsMovie, Boolean outPreferGraphicsImporter)")},
     {"NewMovieFromScrap", (PyCFunction)Qt_NewMovieFromScrap, 1,
-     PyDoc_STR("(long newMovieFlags) -> (Movie _rv)")},
+     PyDoc_STR("(REALLYLONG newMovieFlags) -> (Movie _rv)")},
     {"QTNewAlias", (PyCFunction)Qt_QTNewAlias, 1,
      PyDoc_STR("(FSSpec fss, Boolean minimal) -> (AliasHandle alias)")},
     {"EndFullScreen", (PyCFunction)Qt_EndFullScreen, 1,
-     PyDoc_STR("(Ptr fullState, long flags) -> None")},
+     PyDoc_STR("(Ptr fullState, REALLYLONG flags) -> None")},
     {"AddSoundDescriptionExtension", (PyCFunction)Qt_AddSoundDescriptionExtension, 1,
      PyDoc_STR("(SoundDescriptionHandle desc, Handle extension, OSType idType) -> None")},
     {"GetSoundDescriptionExtension", (PyCFunction)Qt_GetSoundDescriptionExtension, 1,
@@ -26390,53 +26390,53 @@ static PyMethodDef Qt_methods[] = {
     {"QTDismissStandardParameterDialog", (PyCFunction)Qt_QTDismissStandardParameterDialog, 1,
      PyDoc_STR("(QTParameterDialog createdDialog) -> None")},
     {"QTStandardParameterDialogDoAction", (PyCFunction)Qt_QTStandardParameterDialogDoAction, 1,
-     PyDoc_STR("(QTParameterDialog createdDialog, long action, void * params) -> None")},
+     PyDoc_STR("(QTParameterDialog createdDialog, REALLYLONG action, void * params) -> None")},
     {"QTRegisterAccessKey", (PyCFunction)Qt_QTRegisterAccessKey, 1,
-     PyDoc_STR("(Str255 accessKeyType, long flags, Handle accessKey) -> None")},
+     PyDoc_STR("(Str255 accessKeyType, REALLYLONG flags, Handle accessKey) -> None")},
     {"QTUnregisterAccessKey", (PyCFunction)Qt_QTUnregisterAccessKey, 1,
-     PyDoc_STR("(Str255 accessKeyType, long flags, Handle accessKey) -> None")},
+     PyDoc_STR("(Str255 accessKeyType, REALLYLONG flags, Handle accessKey) -> None")},
     {"QTGetSupportedRestrictions", (PyCFunction)Qt_QTGetSupportedRestrictions, 1,
      PyDoc_STR("(OSType inRestrictionClass) -> (UInt32 outRestrictionIDs)")},
     {"QTTextToNativeText", (PyCFunction)Qt_QTTextToNativeText, 1,
-     PyDoc_STR("(Handle theText, long encoding, long flags) -> None")},
+     PyDoc_STR("(Handle theText, REALLYLONG encoding, REALLYLONG flags) -> None")},
     {"VideoMediaResetStatistics", (PyCFunction)Qt_VideoMediaResetStatistics, 1,
      PyDoc_STR("(MediaHandler mh) -> (ComponentResult _rv)")},
     {"VideoMediaGetStatistics", (PyCFunction)Qt_VideoMediaGetStatistics, 1,
      PyDoc_STR("(MediaHandler mh) -> (ComponentResult _rv)")},
     {"VideoMediaGetStallCount", (PyCFunction)Qt_VideoMediaGetStallCount, 1,
-     PyDoc_STR("(MediaHandler mh) -> (ComponentResult _rv, unsigned long stalls)")},
+     PyDoc_STR("(MediaHandler mh) -> (ComponentResult _rv, unsigned REALLYLONG stalls)")},
     {"VideoMediaSetCodecParameter", (PyCFunction)Qt_VideoMediaSetCodecParameter, 1,
-     PyDoc_STR("(MediaHandler mh, CodecType cType, OSType parameterID, long parameterChangeSeed, void * dataPtr, long dataSize) -> (ComponentResult _rv)")},
+     PyDoc_STR("(MediaHandler mh, CodecType cType, OSType parameterID, REALLYLONG parameterChangeSeed, void * dataPtr, REALLYLONG dataSize) -> (ComponentResult _rv)")},
     {"VideoMediaGetCodecParameter", (PyCFunction)Qt_VideoMediaGetCodecParameter, 1,
      PyDoc_STR("(MediaHandler mh, CodecType cType, OSType parameterID, Handle outParameterData) -> (ComponentResult _rv)")},
     {"TextMediaAddTextSample", (PyCFunction)Qt_TextMediaAddTextSample, 1,
-     PyDoc_STR("(MediaHandler mh, Ptr text, unsigned long size, short fontNumber, short fontSize, Style textFace, short textJustification, long displayFlags, TimeValue scrollDelay, short hiliteStart, short hiliteEnd, TimeValue duration) -> (ComponentResult _rv, RGBColor textColor, RGBColor backColor, Rect textBox, RGBColor rgbHiliteColor, TimeValue sampleTime)")},
+     PyDoc_STR("(MediaHandler mh, Ptr text, unsigned REALLYLONG size, short fontNumber, short fontSize, Style textFace, short textJustification, REALLYLONG displayFlags, TimeValue scrollDelay, short hiliteStart, short hiliteEnd, TimeValue duration) -> (ComponentResult _rv, RGBColor textColor, RGBColor backColor, Rect textBox, RGBColor rgbHiliteColor, TimeValue sampleTime)")},
     {"TextMediaAddTESample", (PyCFunction)Qt_TextMediaAddTESample, 1,
-     PyDoc_STR("(MediaHandler mh, TEHandle hTE, short textJustification, long displayFlags, TimeValue scrollDelay, short hiliteStart, short hiliteEnd, TimeValue duration) -> (ComponentResult _rv, RGBColor backColor, Rect textBox, RGBColor rgbHiliteColor, TimeValue sampleTime)")},
+     PyDoc_STR("(MediaHandler mh, TEHandle hTE, short textJustification, REALLYLONG displayFlags, TimeValue scrollDelay, short hiliteStart, short hiliteEnd, TimeValue duration) -> (ComponentResult _rv, RGBColor backColor, Rect textBox, RGBColor rgbHiliteColor, TimeValue sampleTime)")},
     {"TextMediaAddHiliteSample", (PyCFunction)Qt_TextMediaAddHiliteSample, 1,
      PyDoc_STR("(MediaHandler mh, short hiliteStart, short hiliteEnd, TimeValue duration) -> (ComponentResult _rv, RGBColor rgbHiliteColor, TimeValue sampleTime)")},
     {"TextMediaDrawRaw", (PyCFunction)Qt_TextMediaDrawRaw, 1,
-     PyDoc_STR("(MediaHandler mh, GWorldPtr gw, GDHandle gd, void * data, long dataSize, TextDescriptionHandle tdh) -> (ComponentResult _rv)")},
+     PyDoc_STR("(MediaHandler mh, GWorldPtr gw, GDHandle gd, void * data, REALLYLONG dataSize, TextDescriptionHandle tdh) -> (ComponentResult _rv)")},
     {"TextMediaSetTextProperty", (PyCFunction)Qt_TextMediaSetTextProperty, 1,
-     PyDoc_STR("(MediaHandler mh, TimeValue atMediaTime, long propertyType, void * data, long dataSize) -> (ComponentResult _rv)")},
+     PyDoc_STR("(MediaHandler mh, TimeValue atMediaTime, REALLYLONG propertyType, void * data, REALLYLONG dataSize) -> (ComponentResult _rv)")},
     {"TextMediaRawSetup", (PyCFunction)Qt_TextMediaRawSetup, 1,
-     PyDoc_STR("(MediaHandler mh, GWorldPtr gw, GDHandle gd, void * data, long dataSize, TextDescriptionHandle tdh, TimeValue sampleDuration) -> (ComponentResult _rv)")},
+     PyDoc_STR("(MediaHandler mh, GWorldPtr gw, GDHandle gd, void * data, REALLYLONG dataSize, TextDescriptionHandle tdh, TimeValue sampleDuration) -> (ComponentResult _rv)")},
     {"TextMediaRawIdle", (PyCFunction)Qt_TextMediaRawIdle, 1,
-     PyDoc_STR("(MediaHandler mh, GWorldPtr gw, GDHandle gd, TimeValue sampleTime, long flagsIn) -> (ComponentResult _rv, long flagsOut)")},
+     PyDoc_STR("(MediaHandler mh, GWorldPtr gw, GDHandle gd, TimeValue sampleTime, REALLYLONG flagsIn) -> (ComponentResult _rv, REALLYLONG flagsOut)")},
     {"TextMediaGetTextProperty", (PyCFunction)Qt_TextMediaGetTextProperty, 1,
-     PyDoc_STR("(MediaHandler mh, TimeValue atMediaTime, long propertyType, void * data, long dataSize) -> (ComponentResult _rv)")},
+     PyDoc_STR("(MediaHandler mh, TimeValue atMediaTime, REALLYLONG propertyType, void * data, REALLYLONG dataSize) -> (ComponentResult _rv)")},
     {"TextMediaFindNextText", (PyCFunction)Qt_TextMediaFindNextText, 1,
-     PyDoc_STR("(MediaHandler mh, Ptr text, long size, short findFlags, TimeValue startTime) -> (ComponentResult _rv, TimeValue foundTime, TimeValue foundDuration, long offset)")},
+     PyDoc_STR("(MediaHandler mh, Ptr text, REALLYLONG size, short findFlags, TimeValue startTime) -> (ComponentResult _rv, TimeValue foundTime, TimeValue foundDuration, REALLYLONG offset)")},
     {"TextMediaHiliteTextSample", (PyCFunction)Qt_TextMediaHiliteTextSample, 1,
      PyDoc_STR("(MediaHandler mh, TimeValue sampleTime, short hiliteStart, short hiliteEnd) -> (ComponentResult _rv, RGBColor rgbHiliteColor)")},
     {"TextMediaSetTextSampleData", (PyCFunction)Qt_TextMediaSetTextSampleData, 1,
      PyDoc_STR("(MediaHandler mh, void * data, OSType dataType) -> (ComponentResult _rv)")},
     {"SpriteMediaSetProperty", (PyCFunction)Qt_SpriteMediaSetProperty, 1,
-     PyDoc_STR("(MediaHandler mh, short spriteIndex, long propertyType, void * propertyValue) -> (ComponentResult _rv)")},
+     PyDoc_STR("(MediaHandler mh, short spriteIndex, REALLYLONG propertyType, void * propertyValue) -> (ComponentResult _rv)")},
     {"SpriteMediaGetProperty", (PyCFunction)Qt_SpriteMediaGetProperty, 1,
-     PyDoc_STR("(MediaHandler mh, short spriteIndex, long propertyType, void * propertyValue) -> (ComponentResult _rv)")},
+     PyDoc_STR("(MediaHandler mh, short spriteIndex, REALLYLONG propertyType, void * propertyValue) -> (ComponentResult _rv)")},
     {"SpriteMediaHitTestSprites", (PyCFunction)Qt_SpriteMediaHitTestSprites, 1,
-     PyDoc_STR("(MediaHandler mh, long flags, Point loc) -> (ComponentResult _rv, short spriteHitIndex)")},
+     PyDoc_STR("(MediaHandler mh, REALLYLONG flags, Point loc) -> (ComponentResult _rv, short spriteHitIndex)")},
     {"SpriteMediaCountSprites", (PyCFunction)Qt_SpriteMediaCountSprites, 1,
      PyDoc_STR("(MediaHandler mh) -> (ComponentResult _rv, short numSprites)")},
     {"SpriteMediaCountImages", (PyCFunction)Qt_SpriteMediaCountImages, 1,
@@ -26444,19 +26444,19 @@ static PyMethodDef Qt_methods[] = {
     {"SpriteMediaGetIndImageDescription", (PyCFunction)Qt_SpriteMediaGetIndImageDescription, 1,
      PyDoc_STR("(MediaHandler mh, short imageIndex, ImageDescriptionHandle imageDescription) -> (ComponentResult _rv)")},
     {"SpriteMediaGetDisplayedSampleNumber", (PyCFunction)Qt_SpriteMediaGetDisplayedSampleNumber, 1,
-     PyDoc_STR("(MediaHandler mh) -> (ComponentResult _rv, long sampleNum)")},
+     PyDoc_STR("(MediaHandler mh) -> (ComponentResult _rv, REALLYLONG sampleNum)")},
     {"SpriteMediaGetSpriteName", (PyCFunction)Qt_SpriteMediaGetSpriteName, 1,
      PyDoc_STR("(MediaHandler mh, QTAtomID spriteID, Str255 spriteName) -> (ComponentResult _rv)")},
     {"SpriteMediaGetImageName", (PyCFunction)Qt_SpriteMediaGetImageName, 1,
      PyDoc_STR("(MediaHandler mh, short imageIndex, Str255 imageName) -> (ComponentResult _rv)")},
     {"SpriteMediaSetSpriteProperty", (PyCFunction)Qt_SpriteMediaSetSpriteProperty, 1,
-     PyDoc_STR("(MediaHandler mh, QTAtomID spriteID, long propertyType, void * propertyValue) -> (ComponentResult _rv)")},
+     PyDoc_STR("(MediaHandler mh, QTAtomID spriteID, REALLYLONG propertyType, void * propertyValue) -> (ComponentResult _rv)")},
     {"SpriteMediaGetSpriteProperty", (PyCFunction)Qt_SpriteMediaGetSpriteProperty, 1,
-     PyDoc_STR("(MediaHandler mh, QTAtomID spriteID, long propertyType, void * propertyValue) -> (ComponentResult _rv)")},
+     PyDoc_STR("(MediaHandler mh, QTAtomID spriteID, REALLYLONG propertyType, void * propertyValue) -> (ComponentResult _rv)")},
     {"SpriteMediaHitTestAllSprites", (PyCFunction)Qt_SpriteMediaHitTestAllSprites, 1,
-     PyDoc_STR("(MediaHandler mh, long flags, Point loc) -> (ComponentResult _rv, QTAtomID spriteHitID)")},
+     PyDoc_STR("(MediaHandler mh, REALLYLONG flags, Point loc) -> (ComponentResult _rv, QTAtomID spriteHitID)")},
     {"SpriteMediaHitTestOneSprite", (PyCFunction)Qt_SpriteMediaHitTestOneSprite, 1,
-     PyDoc_STR("(MediaHandler mh, QTAtomID spriteID, long flags, Point loc) -> (ComponentResult _rv, Boolean wasHit)")},
+     PyDoc_STR("(MediaHandler mh, QTAtomID spriteID, REALLYLONG flags, Point loc) -> (ComponentResult _rv, Boolean wasHit)")},
     {"SpriteMediaSpriteIndexToID", (PyCFunction)Qt_SpriteMediaSpriteIndexToID, 1,
      PyDoc_STR("(MediaHandler mh, short spriteIndex) -> (ComponentResult _rv, QTAtomID spriteID)")},
     {"SpriteMediaSpriteIDToIndex", (PyCFunction)Qt_SpriteMediaSpriteIDToIndex, 1,
@@ -26484,17 +26484,17 @@ static PyMethodDef Qt_methods[] = {
     {"FlashMediaSetZoom", (PyCFunction)Qt_FlashMediaSetZoom, 1,
      PyDoc_STR("(MediaHandler mh, short factor) -> (ComponentResult _rv)")},
     {"FlashMediaSetZoomRect", (PyCFunction)Qt_FlashMediaSetZoomRect, 1,
-     PyDoc_STR("(MediaHandler mh, long left, long top, long right, long bottom) -> (ComponentResult _rv)")},
+     PyDoc_STR("(MediaHandler mh, REALLYLONG left, REALLYLONG top, REALLYLONG right, REALLYLONG bottom) -> (ComponentResult _rv)")},
     {"FlashMediaGetRefConBounds", (PyCFunction)Qt_FlashMediaGetRefConBounds, 1,
-     PyDoc_STR("(MediaHandler mh, long refCon) -> (ComponentResult _rv, long left, long top, long right, long bottom)")},
+     PyDoc_STR("(MediaHandler mh, REALLYLONG refCon) -> (ComponentResult _rv, REALLYLONG left, REALLYLONG top, REALLYLONG right, REALLYLONG bottom)")},
     {"FlashMediaGetRefConID", (PyCFunction)Qt_FlashMediaGetRefConID, 1,
-     PyDoc_STR("(MediaHandler mh, long refCon) -> (ComponentResult _rv, long refConID)")},
+     PyDoc_STR("(MediaHandler mh, REALLYLONG refCon) -> (ComponentResult _rv, REALLYLONG refConID)")},
     {"FlashMediaIDToRefCon", (PyCFunction)Qt_FlashMediaIDToRefCon, 1,
-     PyDoc_STR("(MediaHandler mh, long refConID) -> (ComponentResult _rv, long refCon)")},
+     PyDoc_STR("(MediaHandler mh, REALLYLONG refConID) -> (ComponentResult _rv, REALLYLONG refCon)")},
     {"FlashMediaGetDisplayedFrameNumber", (PyCFunction)Qt_FlashMediaGetDisplayedFrameNumber, 1,
-     PyDoc_STR("(MediaHandler mh) -> (ComponentResult _rv, long flashFrameNumber)")},
+     PyDoc_STR("(MediaHandler mh) -> (ComponentResult _rv, REALLYLONG flashFrameNumber)")},
     {"FlashMediaFrameNumberToMovieTime", (PyCFunction)Qt_FlashMediaFrameNumberToMovieTime, 1,
-     PyDoc_STR("(MediaHandler mh, long flashFrameNumber) -> (ComponentResult _rv, TimeValue movieTime)")},
+     PyDoc_STR("(MediaHandler mh, REALLYLONG flashFrameNumber) -> (ComponentResult _rv, TimeValue movieTime)")},
     {"FlashMediaFrameLabelToMovieTime", (PyCFunction)Qt_FlashMediaFrameLabelToMovieTime, 1,
      PyDoc_STR("(MediaHandler mh, Ptr theLabel) -> (ComponentResult _rv, TimeValue movieTime)")},
     {"FlashMediaGetFlashVariable", (PyCFunction)Qt_FlashMediaGetFlashVariable, 1,
@@ -26502,7 +26502,7 @@ static PyMethodDef Qt_methods[] = {
     {"FlashMediaSetFlashVariable", (PyCFunction)Qt_FlashMediaSetFlashVariable, 1,
      PyDoc_STR("(MediaHandler mh, Boolean updateFocus) -> (ComponentResult _rv, char path, char name, char value)")},
     {"FlashMediaDoButtonActions", (PyCFunction)Qt_FlashMediaDoButtonActions, 1,
-     PyDoc_STR("(MediaHandler mh, long buttonID, long transition) -> (ComponentResult _rv, char path)")},
+     PyDoc_STR("(MediaHandler mh, REALLYLONG buttonID, REALLYLONG transition) -> (ComponentResult _rv, char path)")},
     {"FlashMediaGetSupportedSwfVersion", (PyCFunction)Qt_FlashMediaGetSupportedSwfVersion, 1,
      PyDoc_STR("(MediaHandler mh) -> (ComponentResult _rv, UInt8 swfVersion)")},
     {"Media3DGetCurrentGroup", (PyCFunction)Qt_Media3DGetCurrentGroup, 1,
@@ -26536,13 +26536,13 @@ static PyMethodDef Qt_methods[] = {
     {"SubtractTime", (PyCFunction)Qt_SubtractTime, 1,
      PyDoc_STR("(TimeRecord dst, TimeRecord src) -> (TimeRecord dst)")},
     {"MusicMediaGetIndexedTunePlayer", (PyCFunction)Qt_MusicMediaGetIndexedTunePlayer, 1,
-     PyDoc_STR("(ComponentInstance ti, long sampleDescIndex) -> (ComponentResult _rv, ComponentInstance tp)")},
+     PyDoc_STR("(ComponentInstance ti, REALLYLONG sampleDescIndex) -> (ComponentResult _rv, ComponentInstance tp)")},
     {"CodecManagerVersion", (PyCFunction)Qt_CodecManagerVersion, 1,
-     PyDoc_STR("() -> (long version)")},
+     PyDoc_STR("() -> (REALLYLONG version)")},
     {"GetMaxCompressionSize", (PyCFunction)Qt_GetMaxCompressionSize, 1,
-     PyDoc_STR("(PixMapHandle src, Rect srcRect, short colorDepth, CodecQ quality, CodecType cType, CompressorComponent codec) -> (long size)")},
+     PyDoc_STR("(PixMapHandle src, Rect srcRect, short colorDepth, CodecQ quality, CodecType cType, CompressorComponent codec) -> (REALLYLONG size)")},
     {"GetCompressionTime", (PyCFunction)Qt_GetCompressionTime, 1,
-     PyDoc_STR("(PixMapHandle src, Rect srcRect, short colorDepth, CodecType cType, CompressorComponent codec) -> (CodecQ spatialQuality, CodecQ temporalQuality, unsigned long compressTime)")},
+     PyDoc_STR("(PixMapHandle src, Rect srcRect, short colorDepth, CodecType cType, CompressorComponent codec) -> (CodecQ spatialQuality, CodecQ temporalQuality, unsigned REALLYLONG compressTime)")},
     {"CompressImage", (PyCFunction)Qt_CompressImage, 1,
      PyDoc_STR("(PixMapHandle src, Rect srcRect, CodecQ quality, CodecType cType, ImageDescriptionHandle desc, Ptr data) -> None")},
     {"DecompressImage", (PyCFunction)Qt_DecompressImage, 1,
@@ -26554,15 +26554,15 @@ static PyMethodDef Qt_methods[] = {
     {"SetImageDescriptionCTable", (PyCFunction)Qt_SetImageDescriptionCTable, 1,
      PyDoc_STR("(ImageDescriptionHandle desc, CTabHandle ctable) -> None")},
     {"GetImageDescriptionExtension", (PyCFunction)Qt_GetImageDescriptionExtension, 1,
-     PyDoc_STR("(ImageDescriptionHandle desc, long idType, long index) -> (Handle extension)")},
+     PyDoc_STR("(ImageDescriptionHandle desc, REALLYLONG idType, REALLYLONG index) -> (Handle extension)")},
     {"AddImageDescriptionExtension", (PyCFunction)Qt_AddImageDescriptionExtension, 1,
-     PyDoc_STR("(ImageDescriptionHandle desc, Handle extension, long idType) -> None")},
+     PyDoc_STR("(ImageDescriptionHandle desc, Handle extension, REALLYLONG idType) -> None")},
     {"RemoveImageDescriptionExtension", (PyCFunction)Qt_RemoveImageDescriptionExtension, 1,
-     PyDoc_STR("(ImageDescriptionHandle desc, long idType, long index) -> None")},
+     PyDoc_STR("(ImageDescriptionHandle desc, REALLYLONG idType, REALLYLONG index) -> None")},
     {"CountImageDescriptionExtensionType", (PyCFunction)Qt_CountImageDescriptionExtensionType, 1,
-     PyDoc_STR("(ImageDescriptionHandle desc, long idType) -> (long count)")},
+     PyDoc_STR("(ImageDescriptionHandle desc, REALLYLONG idType) -> (REALLYLONG count)")},
     {"GetNextImageDescriptionExtensionType", (PyCFunction)Qt_GetNextImageDescriptionExtensionType, 1,
-     PyDoc_STR("(ImageDescriptionHandle desc) -> (long idType)")},
+     PyDoc_STR("(ImageDescriptionHandle desc) -> (REALLYLONG idType)")},
     {"FindCodec", (PyCFunction)Qt_FindCodec, 1,
      PyDoc_STR("(CodecType cType, CodecComponent specCodec) -> (CompressorComponent compressor, DecompressorComponent decompressor)")},
     {"CompressPicture", (PyCFunction)Qt_CompressPicture, 1,
@@ -26586,9 +26586,9 @@ static PyMethodDef Qt_methods[] = {
     {"GetGraphicsImporterForDataRef", (PyCFunction)Qt_GetGraphicsImporterForDataRef, 1,
      PyDoc_STR("(Handle dataRef, OSType dataRefType) -> (ComponentInstance gi)")},
     {"GetGraphicsImporterForFileWithFlags", (PyCFunction)Qt_GetGraphicsImporterForFileWithFlags, 1,
-     PyDoc_STR("(FSSpec theFile, long flags) -> (ComponentInstance gi)")},
+     PyDoc_STR("(FSSpec theFile, REALLYLONG flags) -> (ComponentInstance gi)")},
     {"GetGraphicsImporterForDataRefWithFlags", (PyCFunction)Qt_GetGraphicsImporterForDataRefWithFlags, 1,
-     PyDoc_STR("(Handle dataRef, OSType dataRefType, long flags) -> (ComponentInstance gi)")},
+     PyDoc_STR("(Handle dataRef, OSType dataRefType, REALLYLONG flags) -> (ComponentInstance gi)")},
     {"MakeImageDescriptionForPixMap", (PyCFunction)Qt_MakeImageDescriptionForPixMap, 1,
      PyDoc_STR("(PixMapHandle pixmap) -> (ImageDescriptionHandle idh)")},
     {"MakeImageDescriptionForEffect", (PyCFunction)Qt_MakeImageDescriptionForEffect, 1,
@@ -26598,9 +26598,9 @@ static PyMethodDef Qt_methods[] = {
     {"QTGetPixelFormatDepthForImageDescription", (PyCFunction)Qt_QTGetPixelFormatDepthForImageDescription, 1,
      PyDoc_STR("(OSType PixelFormat) -> (short _rv)")},
     {"QTGetPixMapHandleRowBytes", (PyCFunction)Qt_QTGetPixMapHandleRowBytes, 1,
-     PyDoc_STR("(PixMapHandle pm) -> (long _rv)")},
+     PyDoc_STR("(PixMapHandle pm) -> (REALLYLONG _rv)")},
     {"QTSetPixMapHandleRowBytes", (PyCFunction)Qt_QTSetPixMapHandleRowBytes, 1,
-     PyDoc_STR("(PixMapHandle pm, long rowBytes) -> None")},
+     PyDoc_STR("(PixMapHandle pm, REALLYLONG rowBytes) -> None")},
     {"QTGetPixMapHandleGammaLevel", (PyCFunction)Qt_QTGetPixMapHandleGammaLevel, 1,
      PyDoc_STR("(PixMapHandle pm) -> (Fixed _rv)")},
     {"QTSetPixMapHandleGammaLevel", (PyCFunction)Qt_QTSetPixMapHandleGammaLevel, 1,
@@ -26618,19 +26618,19 @@ static PyMethodDef Qt_methods[] = {
     {"CompShift", (PyCFunction)Qt_CompShift, 1,
      PyDoc_STR("(short shift) -> (wide src)")},
     {"CompMul", (PyCFunction)Qt_CompMul, 1,
-     PyDoc_STR("(long src1, long src2) -> (wide dst)")},
+     PyDoc_STR("(REALLYLONG src1, REALLYLONG src2) -> (wide dst)")},
     {"CompDiv", (PyCFunction)Qt_CompDiv, 1,
-     PyDoc_STR("(long denominator) -> (long _rv, wide numerator, long remainder)")},
+     PyDoc_STR("(REALLYLONG denominator) -> (REALLYLONG _rv, wide numerator, REALLYLONG remainder)")},
     {"CompFixMul", (PyCFunction)Qt_CompFixMul, 1,
      PyDoc_STR("(Fixed fixSrc) -> (wide compSrc, wide compDst)")},
     {"CompMulDiv", (PyCFunction)Qt_CompMulDiv, 1,
-     PyDoc_STR("(long mul, long divisor) -> (wide co)")},
+     PyDoc_STR("(REALLYLONG mul, REALLYLONG divisor) -> (wide co)")},
     {"CompMulDivTrunc", (PyCFunction)Qt_CompMulDivTrunc, 1,
-     PyDoc_STR("(long mul, long divisor) -> (wide co, long remainder)")},
+     PyDoc_STR("(REALLYLONG mul, REALLYLONG divisor) -> (wide co, REALLYLONG remainder)")},
     {"CompCompare", (PyCFunction)Qt_CompCompare, 1,
-     PyDoc_STR("(wide a, wide minusb) -> (long _rv)")},
+     PyDoc_STR("(wide a, wide minusb) -> (REALLYLONG _rv)")},
     {"CompSquareRoot", (PyCFunction)Qt_CompSquareRoot, 1,
-     PyDoc_STR("(wide src) -> (unsigned long _rv)")},
+     PyDoc_STR("(wide src) -> (unsigned REALLYLONG _rv)")},
     {"FixMulDiv", (PyCFunction)Qt_FixMulDiv, 1,
      PyDoc_STR("(Fixed src, Fixed mul, Fixed divisor) -> (Fixed _rv)")},
     {"UnsignedFixMulDiv", (PyCFunction)Qt_UnsignedFixMulDiv, 1,
@@ -26656,9 +26656,9 @@ static PyMethodDef Qt_methods[] = {
     {"GraphicsImportGetImageDescription", (PyCFunction)Qt_GraphicsImportGetImageDescription, 1,
      PyDoc_STR("(GraphicsImportComponent ci) -> (ComponentResult _rv, ImageDescriptionHandle desc)")},
     {"GraphicsImportGetDataOffsetAndSize", (PyCFunction)Qt_GraphicsImportGetDataOffsetAndSize, 1,
-     PyDoc_STR("(GraphicsImportComponent ci) -> (ComponentResult _rv, unsigned long offset, unsigned long size)")},
+     PyDoc_STR("(GraphicsImportComponent ci) -> (ComponentResult _rv, unsigned REALLYLONG offset, unsigned REALLYLONG size)")},
     {"GraphicsImportReadData", (PyCFunction)Qt_GraphicsImportReadData, 1,
-     PyDoc_STR("(GraphicsImportComponent ci, void * dataPtr, unsigned long dataOffset, unsigned long dataSize) -> (ComponentResult _rv)")},
+     PyDoc_STR("(GraphicsImportComponent ci, void * dataPtr, unsigned REALLYLONG dataOffset, unsigned REALLYLONG dataSize) -> (ComponentResult _rv)")},
     {"GraphicsImportSetClip", (PyCFunction)Qt_GraphicsImportSetClip, 1,
      PyDoc_STR("(GraphicsImportComponent ci, RgnHandle clipRgn) -> (ComponentResult _rv)")},
     {"GraphicsImportGetClip", (PyCFunction)Qt_GraphicsImportGetClip, 1,
@@ -26682,9 +26682,9 @@ static PyMethodDef Qt_methods[] = {
     {"GraphicsImportSaveAsPicture", (PyCFunction)Qt_GraphicsImportSaveAsPicture, 1,
      PyDoc_STR("(GraphicsImportComponent ci, FSSpec fss, ScriptCode scriptTag) -> (ComponentResult _rv)")},
     {"GraphicsImportSetGraphicsMode", (PyCFunction)Qt_GraphicsImportSetGraphicsMode, 1,
-     PyDoc_STR("(GraphicsImportComponent ci, long graphicsMode, RGBColor opColor) -> (ComponentResult _rv)")},
+     PyDoc_STR("(GraphicsImportComponent ci, REALLYLONG graphicsMode, RGBColor opColor) -> (ComponentResult _rv)")},
     {"GraphicsImportGetGraphicsMode", (PyCFunction)Qt_GraphicsImportGetGraphicsMode, 1,
-     PyDoc_STR("(GraphicsImportComponent ci) -> (ComponentResult _rv, long graphicsMode, RGBColor opColor)")},
+     PyDoc_STR("(GraphicsImportComponent ci) -> (ComponentResult _rv, REALLYLONG graphicsMode, RGBColor opColor)")},
     {"GraphicsImportSetQuality", (PyCFunction)Qt_GraphicsImportSetQuality, 1,
      PyDoc_STR("(GraphicsImportComponent ci, CodecQ quality) -> (ComponentResult _rv)")},
     {"GraphicsImportGetQuality", (PyCFunction)Qt_GraphicsImportGetQuality, 1,
@@ -26692,9 +26692,9 @@ static PyMethodDef Qt_methods[] = {
     {"GraphicsImportSaveAsQuickTimeImageFile", (PyCFunction)Qt_GraphicsImportSaveAsQuickTimeImageFile, 1,
      PyDoc_STR("(GraphicsImportComponent ci, FSSpec fss, ScriptCode scriptTag) -> (ComponentResult _rv)")},
     {"GraphicsImportSetDataReferenceOffsetAndLimit", (PyCFunction)Qt_GraphicsImportSetDataReferenceOffsetAndLimit, 1,
-     PyDoc_STR("(GraphicsImportComponent ci, unsigned long offset, unsigned long limit) -> (ComponentResult _rv)")},
+     PyDoc_STR("(GraphicsImportComponent ci, unsigned REALLYLONG offset, unsigned REALLYLONG limit) -> (ComponentResult _rv)")},
     {"GraphicsImportGetDataReferenceOffsetAndLimit", (PyCFunction)Qt_GraphicsImportGetDataReferenceOffsetAndLimit, 1,
-     PyDoc_STR("(GraphicsImportComponent ci) -> (ComponentResult _rv, unsigned long offset, unsigned long limit)")},
+     PyDoc_STR("(GraphicsImportComponent ci) -> (ComponentResult _rv, unsigned REALLYLONG offset, unsigned REALLYLONG limit)")},
     {"GraphicsImportGetAliasedDataReference", (PyCFunction)Qt_GraphicsImportGetAliasedDataReference, 1,
      PyDoc_STR("(GraphicsImportComponent ci) -> (ComponentResult _rv, Handle dataRef, OSType dataRefType)")},
     {"GraphicsImportValidate", (PyCFunction)Qt_GraphicsImportValidate, 1,
@@ -26716,15 +26716,15 @@ static PyMethodDef Qt_methods[] = {
     {"GraphicsImportSetExportSettingsFromAtomContainer", (PyCFunction)Qt_GraphicsImportSetExportSettingsFromAtomContainer, 1,
      PyDoc_STR("(GraphicsImportComponent ci, void * qtAtomContainer) -> (ComponentResult _rv)")},
     {"GraphicsImportGetImageCount", (PyCFunction)Qt_GraphicsImportGetImageCount, 1,
-     PyDoc_STR("(GraphicsImportComponent ci) -> (ComponentResult _rv, unsigned long imageCount)")},
+     PyDoc_STR("(GraphicsImportComponent ci) -> (ComponentResult _rv, unsigned REALLYLONG imageCount)")},
     {"GraphicsImportSetImageIndex", (PyCFunction)Qt_GraphicsImportSetImageIndex, 1,
-     PyDoc_STR("(GraphicsImportComponent ci, unsigned long imageIndex) -> (ComponentResult _rv)")},
+     PyDoc_STR("(GraphicsImportComponent ci, unsigned REALLYLONG imageIndex) -> (ComponentResult _rv)")},
     {"GraphicsImportGetImageIndex", (PyCFunction)Qt_GraphicsImportGetImageIndex, 1,
-     PyDoc_STR("(GraphicsImportComponent ci) -> (ComponentResult _rv, unsigned long imageIndex)")},
+     PyDoc_STR("(GraphicsImportComponent ci) -> (ComponentResult _rv, unsigned REALLYLONG imageIndex)")},
     {"GraphicsImportGetDataOffsetAndSize64", (PyCFunction)Qt_GraphicsImportGetDataOffsetAndSize64, 1,
      PyDoc_STR("(GraphicsImportComponent ci) -> (ComponentResult _rv, wide offset, wide size)")},
     {"GraphicsImportReadData64", (PyCFunction)Qt_GraphicsImportReadData64, 1,
-     PyDoc_STR("(GraphicsImportComponent ci, void * dataPtr, wide dataOffset, unsigned long dataSize) -> (ComponentResult _rv)")},
+     PyDoc_STR("(GraphicsImportComponent ci, void * dataPtr, wide dataOffset, unsigned REALLYLONG dataSize) -> (ComponentResult _rv)")},
     {"GraphicsImportSetDataReferenceOffsetAndLimit64", (PyCFunction)Qt_GraphicsImportSetDataReferenceOffsetAndLimit64, 1,
      PyDoc_STR("(GraphicsImportComponent ci, wide offset, wide limit) -> (ComponentResult _rv)")},
     {"GraphicsImportGetDataReferenceOffsetAndLimit64", (PyCFunction)Qt_GraphicsImportGetDataReferenceOffsetAndLimit64, 1,
@@ -26732,7 +26732,7 @@ static PyMethodDef Qt_methods[] = {
     {"GraphicsImportGetDefaultClip", (PyCFunction)Qt_GraphicsImportGetDefaultClip, 1,
      PyDoc_STR("(GraphicsImportComponent ci) -> (ComponentResult _rv, RgnHandle defaultRgn)")},
     {"GraphicsImportGetDefaultGraphicsMode", (PyCFunction)Qt_GraphicsImportGetDefaultGraphicsMode, 1,
-     PyDoc_STR("(GraphicsImportComponent ci) -> (ComponentResult _rv, long defaultGraphicsMode, RGBColor defaultOpColor)")},
+     PyDoc_STR("(GraphicsImportComponent ci) -> (ComponentResult _rv, REALLYLONG defaultGraphicsMode, RGBColor defaultOpColor)")},
     {"GraphicsImportGetDefaultSourceRect", (PyCFunction)Qt_GraphicsImportGetDefaultSourceRect, 1,
      PyDoc_STR("(GraphicsImportComponent ci) -> (ComponentResult _rv, Rect defaultSourceRect)")},
     {"GraphicsImportGetColorSyncProfile", (PyCFunction)Qt_GraphicsImportGetColorSyncProfile, 1,
@@ -26742,15 +26742,15 @@ static PyMethodDef Qt_methods[] = {
     {"GraphicsImportGetDestRect", (PyCFunction)Qt_GraphicsImportGetDestRect, 1,
      PyDoc_STR("(GraphicsImportComponent ci) -> (ComponentResult _rv, Rect destRect)")},
     {"GraphicsImportSetFlags", (PyCFunction)Qt_GraphicsImportSetFlags, 1,
-     PyDoc_STR("(GraphicsImportComponent ci, long flags) -> (ComponentResult _rv)")},
+     PyDoc_STR("(GraphicsImportComponent ci, REALLYLONG flags) -> (ComponentResult _rv)")},
     {"GraphicsImportGetFlags", (PyCFunction)Qt_GraphicsImportGetFlags, 1,
-     PyDoc_STR("(GraphicsImportComponent ci) -> (ComponentResult _rv, long flags)")},
+     PyDoc_STR("(GraphicsImportComponent ci) -> (ComponentResult _rv, REALLYLONG flags)")},
     {"GraphicsImportGetBaseDataOffsetAndSize64", (PyCFunction)Qt_GraphicsImportGetBaseDataOffsetAndSize64, 1,
      PyDoc_STR("(GraphicsImportComponent ci) -> (ComponentResult _rv, wide offset, wide size)")},
     {"GraphicsImportSetImageIndexToThumbnail", (PyCFunction)Qt_GraphicsImportSetImageIndexToThumbnail, 1,
      PyDoc_STR("(GraphicsImportComponent ci) -> (ComponentResult _rv)")},
     {"GraphicsExportDoExport", (PyCFunction)Qt_GraphicsExportDoExport, 1,
-     PyDoc_STR("(GraphicsExportComponent ci) -> (ComponentResult _rv, unsigned long actualSizeWritten)")},
+     PyDoc_STR("(GraphicsExportComponent ci) -> (ComponentResult _rv, unsigned REALLYLONG actualSizeWritten)")},
     {"GraphicsExportCanTranscode", (PyCFunction)Qt_GraphicsExportCanTranscode, 1,
      PyDoc_STR("(GraphicsExportComponent ci) -> (ComponentResult _rv, Boolean canTranscode)")},
     {"GraphicsExportDoTranscode", (PyCFunction)Qt_GraphicsExportDoTranscode, 1,
@@ -26778,21 +26778,21 @@ static PyMethodDef Qt_methods[] = {
     {"GraphicsExportGetDontRecompress", (PyCFunction)Qt_GraphicsExportGetDontRecompress, 1,
      PyDoc_STR("(GraphicsExportComponent ci) -> (ComponentResult _rv, Boolean dontRecompress)")},
     {"GraphicsExportSetInterlaceStyle", (PyCFunction)Qt_GraphicsExportSetInterlaceStyle, 1,
-     PyDoc_STR("(GraphicsExportComponent ci, unsigned long interlaceStyle) -> (ComponentResult _rv)")},
+     PyDoc_STR("(GraphicsExportComponent ci, unsigned REALLYLONG interlaceStyle) -> (ComponentResult _rv)")},
     {"GraphicsExportGetInterlaceStyle", (PyCFunction)Qt_GraphicsExportGetInterlaceStyle, 1,
-     PyDoc_STR("(GraphicsExportComponent ci) -> (ComponentResult _rv, unsigned long interlaceStyle)")},
+     PyDoc_STR("(GraphicsExportComponent ci) -> (ComponentResult _rv, unsigned REALLYLONG interlaceStyle)")},
     {"GraphicsExportSetMetaData", (PyCFunction)Qt_GraphicsExportSetMetaData, 1,
      PyDoc_STR("(GraphicsExportComponent ci, void * userData) -> (ComponentResult _rv)")},
     {"GraphicsExportGetMetaData", (PyCFunction)Qt_GraphicsExportGetMetaData, 1,
      PyDoc_STR("(GraphicsExportComponent ci, void * userData) -> (ComponentResult _rv)")},
     {"GraphicsExportSetTargetDataSize", (PyCFunction)Qt_GraphicsExportSetTargetDataSize, 1,
-     PyDoc_STR("(GraphicsExportComponent ci, unsigned long targetDataSize) -> (ComponentResult _rv)")},
+     PyDoc_STR("(GraphicsExportComponent ci, unsigned REALLYLONG targetDataSize) -> (ComponentResult _rv)")},
     {"GraphicsExportGetTargetDataSize", (PyCFunction)Qt_GraphicsExportGetTargetDataSize, 1,
-     PyDoc_STR("(GraphicsExportComponent ci) -> (ComponentResult _rv, unsigned long targetDataSize)")},
+     PyDoc_STR("(GraphicsExportComponent ci) -> (ComponentResult _rv, unsigned REALLYLONG targetDataSize)")},
     {"GraphicsExportSetCompressionMethod", (PyCFunction)Qt_GraphicsExportSetCompressionMethod, 1,
-     PyDoc_STR("(GraphicsExportComponent ci, long compressionMethod) -> (ComponentResult _rv)")},
+     PyDoc_STR("(GraphicsExportComponent ci, REALLYLONG compressionMethod) -> (ComponentResult _rv)")},
     {"GraphicsExportGetCompressionMethod", (PyCFunction)Qt_GraphicsExportGetCompressionMethod, 1,
-     PyDoc_STR("(GraphicsExportComponent ci) -> (ComponentResult _rv, long compressionMethod)")},
+     PyDoc_STR("(GraphicsExportComponent ci) -> (ComponentResult _rv, REALLYLONG compressionMethod)")},
     {"GraphicsExportSetCompressionQuality", (PyCFunction)Qt_GraphicsExportSetCompressionQuality, 1,
      PyDoc_STR("(GraphicsExportComponent ci, CodecQ spatialQuality) -> (ComponentResult _rv)")},
     {"GraphicsExportGetCompressionQuality", (PyCFunction)Qt_GraphicsExportGetCompressionQuality, 1,
@@ -26802,9 +26802,9 @@ static PyMethodDef Qt_methods[] = {
     {"GraphicsExportGetResolution", (PyCFunction)Qt_GraphicsExportGetResolution, 1,
      PyDoc_STR("(GraphicsExportComponent ci) -> (ComponentResult _rv, Fixed horizontalResolution, Fixed verticalResolution)")},
     {"GraphicsExportSetDepth", (PyCFunction)Qt_GraphicsExportSetDepth, 1,
-     PyDoc_STR("(GraphicsExportComponent ci, long depth) -> (ComponentResult _rv)")},
+     PyDoc_STR("(GraphicsExportComponent ci, REALLYLONG depth) -> (ComponentResult _rv)")},
     {"GraphicsExportGetDepth", (PyCFunction)Qt_GraphicsExportGetDepth, 1,
-     PyDoc_STR("(GraphicsExportComponent ci) -> (ComponentResult _rv, long depth)")},
+     PyDoc_STR("(GraphicsExportComponent ci) -> (ComponentResult _rv, REALLYLONG depth)")},
     {"GraphicsExportSetColorSyncProfile", (PyCFunction)Qt_GraphicsExportSetColorSyncProfile, 1,
      PyDoc_STR("(GraphicsExportComponent ci, Handle colorSyncProfile) -> (ComponentResult _rv)")},
     {"GraphicsExportGetColorSyncProfile", (PyCFunction)Qt_GraphicsExportGetColorSyncProfile, 1,
@@ -26822,7 +26822,7 @@ static PyMethodDef Qt_methods[] = {
     {"GraphicsExportGetInputHandle", (PyCFunction)Qt_GraphicsExportGetInputHandle, 1,
      PyDoc_STR("(GraphicsExportComponent ci) -> (ComponentResult _rv, Handle h)")},
     {"GraphicsExportSetInputPtr", (PyCFunction)Qt_GraphicsExportSetInputPtr, 1,
-     PyDoc_STR("(GraphicsExportComponent ci, Ptr p, unsigned long size, ImageDescriptionHandle desc) -> (ComponentResult _rv)")},
+     PyDoc_STR("(GraphicsExportComponent ci, Ptr p, unsigned REALLYLONG size, ImageDescriptionHandle desc) -> (ComponentResult _rv)")},
     {"GraphicsExportSetInputGraphicsImporter", (PyCFunction)Qt_GraphicsExportSetInputGraphicsImporter, 1,
      PyDoc_STR("(GraphicsExportComponent ci, GraphicsImportComponent grip) -> (ComponentResult _rv)")},
     {"GraphicsExportGetInputGraphicsImporter", (PyCFunction)Qt_GraphicsExportGetInputGraphicsImporter, 1,
@@ -26840,21 +26840,21 @@ static PyMethodDef Qt_methods[] = {
     {"GraphicsExportGetInputPixmap", (PyCFunction)Qt_GraphicsExportGetInputPixmap, 1,
      PyDoc_STR("(GraphicsExportComponent ci) -> (ComponentResult _rv, PixMapHandle pixmap)")},
     {"GraphicsExportSetInputOffsetAndLimit", (PyCFunction)Qt_GraphicsExportSetInputOffsetAndLimit, 1,
-     PyDoc_STR("(GraphicsExportComponent ci, unsigned long offset, unsigned long limit) -> (ComponentResult _rv)")},
+     PyDoc_STR("(GraphicsExportComponent ci, unsigned REALLYLONG offset, unsigned REALLYLONG limit) -> (ComponentResult _rv)")},
     {"GraphicsExportGetInputOffsetAndLimit", (PyCFunction)Qt_GraphicsExportGetInputOffsetAndLimit, 1,
-     PyDoc_STR("(GraphicsExportComponent ci) -> (ComponentResult _rv, unsigned long offset, unsigned long limit)")},
+     PyDoc_STR("(GraphicsExportComponent ci) -> (ComponentResult _rv, unsigned REALLYLONG offset, unsigned REALLYLONG limit)")},
     {"GraphicsExportMayExporterReadInputData", (PyCFunction)Qt_GraphicsExportMayExporterReadInputData, 1,
      PyDoc_STR("(GraphicsExportComponent ci) -> (ComponentResult _rv, Boolean mayReadInputData)")},
     {"GraphicsExportGetInputDataSize", (PyCFunction)Qt_GraphicsExportGetInputDataSize, 1,
-     PyDoc_STR("(GraphicsExportComponent ci) -> (ComponentResult _rv, unsigned long size)")},
+     PyDoc_STR("(GraphicsExportComponent ci) -> (ComponentResult _rv, unsigned REALLYLONG size)")},
     {"GraphicsExportReadInputData", (PyCFunction)Qt_GraphicsExportReadInputData, 1,
-     PyDoc_STR("(GraphicsExportComponent ci, void * dataPtr, unsigned long dataOffset, unsigned long dataSize) -> (ComponentResult _rv)")},
+     PyDoc_STR("(GraphicsExportComponent ci, void * dataPtr, unsigned REALLYLONG dataOffset, unsigned REALLYLONG dataSize) -> (ComponentResult _rv)")},
     {"GraphicsExportGetInputImageDescription", (PyCFunction)Qt_GraphicsExportGetInputImageDescription, 1,
      PyDoc_STR("(GraphicsExportComponent ci) -> (ComponentResult _rv, ImageDescriptionHandle desc)")},
     {"GraphicsExportGetInputImageDimensions", (PyCFunction)Qt_GraphicsExportGetInputImageDimensions, 1,
      PyDoc_STR("(GraphicsExportComponent ci) -> (ComponentResult _rv, Rect dimensions)")},
     {"GraphicsExportGetInputImageDepth", (PyCFunction)Qt_GraphicsExportGetInputImageDepth, 1,
-     PyDoc_STR("(GraphicsExportComponent ci) -> (ComponentResult _rv, long inputDepth)")},
+     PyDoc_STR("(GraphicsExportComponent ci) -> (ComponentResult _rv, REALLYLONG inputDepth)")},
     {"GraphicsExportDrawInputImage", (PyCFunction)Qt_GraphicsExportDrawInputImage, 1,
      PyDoc_STR("(GraphicsExportComponent ci, CGrafPtr gw, GDHandle gd, Rect srcRect, Rect dstRect) -> (ComponentResult _rv)")},
     {"GraphicsExportSetOutputDataReference", (PyCFunction)Qt_GraphicsExportSetOutputDataReference, 1,
@@ -26870,29 +26870,29 @@ static PyMethodDef Qt_methods[] = {
     {"GraphicsExportGetOutputHandle", (PyCFunction)Qt_GraphicsExportGetOutputHandle, 1,
      PyDoc_STR("(GraphicsExportComponent ci) -> (ComponentResult _rv, Handle h)")},
     {"GraphicsExportSetOutputOffsetAndMaxSize", (PyCFunction)Qt_GraphicsExportSetOutputOffsetAndMaxSize, 1,
-     PyDoc_STR("(GraphicsExportComponent ci, unsigned long offset, unsigned long maxSize, Boolean truncateFile) -> (ComponentResult _rv)")},
+     PyDoc_STR("(GraphicsExportComponent ci, unsigned REALLYLONG offset, unsigned REALLYLONG maxSize, Boolean truncateFile) -> (ComponentResult _rv)")},
     {"GraphicsExportGetOutputOffsetAndMaxSize", (PyCFunction)Qt_GraphicsExportGetOutputOffsetAndMaxSize, 1,
-     PyDoc_STR("(GraphicsExportComponent ci) -> (ComponentResult _rv, unsigned long offset, unsigned long maxSize, Boolean truncateFile)")},
+     PyDoc_STR("(GraphicsExportComponent ci) -> (ComponentResult _rv, unsigned REALLYLONG offset, unsigned REALLYLONG maxSize, Boolean truncateFile)")},
     {"GraphicsExportSetOutputFileTypeAndCreator", (PyCFunction)Qt_GraphicsExportSetOutputFileTypeAndCreator, 1,
      PyDoc_STR("(GraphicsExportComponent ci, OSType fileType, OSType fileCreator) -> (ComponentResult _rv)")},
     {"GraphicsExportGetOutputFileTypeAndCreator", (PyCFunction)Qt_GraphicsExportGetOutputFileTypeAndCreator, 1,
      PyDoc_STR("(GraphicsExportComponent ci) -> (ComponentResult _rv, OSType fileType, OSType fileCreator)")},
     {"GraphicsExportSetOutputMark", (PyCFunction)Qt_GraphicsExportSetOutputMark, 1,
-     PyDoc_STR("(GraphicsExportComponent ci, unsigned long mark) -> (ComponentResult _rv)")},
+     PyDoc_STR("(GraphicsExportComponent ci, unsigned REALLYLONG mark) -> (ComponentResult _rv)")},
     {"GraphicsExportGetOutputMark", (PyCFunction)Qt_GraphicsExportGetOutputMark, 1,
-     PyDoc_STR("(GraphicsExportComponent ci) -> (ComponentResult _rv, unsigned long mark)")},
+     PyDoc_STR("(GraphicsExportComponent ci) -> (ComponentResult _rv, unsigned REALLYLONG mark)")},
     {"GraphicsExportReadOutputData", (PyCFunction)Qt_GraphicsExportReadOutputData, 1,
-     PyDoc_STR("(GraphicsExportComponent ci, void * dataPtr, unsigned long dataOffset, unsigned long dataSize) -> (ComponentResult _rv)")},
+     PyDoc_STR("(GraphicsExportComponent ci, void * dataPtr, unsigned REALLYLONG dataOffset, unsigned REALLYLONG dataSize) -> (ComponentResult _rv)")},
     {"GraphicsExportSetThumbnailEnabled", (PyCFunction)Qt_GraphicsExportSetThumbnailEnabled, 1,
-     PyDoc_STR("(GraphicsExportComponent ci, Boolean enableThumbnail, long maxThumbnailWidth, long maxThumbnailHeight) -> (ComponentResult _rv)")},
+     PyDoc_STR("(GraphicsExportComponent ci, Boolean enableThumbnail, REALLYLONG maxThumbnailWidth, REALLYLONG maxThumbnailHeight) -> (ComponentResult _rv)")},
     {"GraphicsExportGetThumbnailEnabled", (PyCFunction)Qt_GraphicsExportGetThumbnailEnabled, 1,
-     PyDoc_STR("(GraphicsExportComponent ci) -> (ComponentResult _rv, Boolean thumbnailEnabled, long maxThumbnailWidth, long maxThumbnailHeight)")},
+     PyDoc_STR("(GraphicsExportComponent ci) -> (ComponentResult _rv, Boolean thumbnailEnabled, REALLYLONG maxThumbnailWidth, REALLYLONG maxThumbnailHeight)")},
     {"GraphicsExportSetExifEnabled", (PyCFunction)Qt_GraphicsExportSetExifEnabled, 1,
      PyDoc_STR("(GraphicsExportComponent ci, Boolean enableExif) -> (ComponentResult _rv)")},
     {"GraphicsExportGetExifEnabled", (PyCFunction)Qt_GraphicsExportGetExifEnabled, 1,
      PyDoc_STR("(GraphicsExportComponent ci) -> (ComponentResult _rv, Boolean exifEnabled)")},
     {"ImageTranscoderBeginSequence", (PyCFunction)Qt_ImageTranscoderBeginSequence, 1,
-     PyDoc_STR("(ImageTranscoderComponent itc, ImageDescriptionHandle srcDesc, void * data, long dataSize) -> (ComponentResult _rv, ImageDescriptionHandle dstDesc)")},
+     PyDoc_STR("(ImageTranscoderComponent itc, ImageDescriptionHandle srcDesc, void * data, REALLYLONG dataSize) -> (ComponentResult _rv, ImageDescriptionHandle dstDesc)")},
     {"ImageTranscoderDisposeData", (PyCFunction)Qt_ImageTranscoderDisposeData, 1,
      PyDoc_STR("(ImageTranscoderComponent itc, void * dstData) -> (ComponentResult _rv)")},
     {"ImageTranscoderEndSequence", (PyCFunction)Qt_ImageTranscoderEndSequence, 1,
@@ -26928,7 +26928,7 @@ static PyMethodDef Qt_methods[] = {
     {"SCCompressSequenceBegin", (PyCFunction)Qt_SCCompressSequenceBegin, 1,
      PyDoc_STR("(ComponentInstance ci, PixMapHandle src, Rect srcRect) -> (ComponentResult _rv, ImageDescriptionHandle desc)")},
     {"SCCompressSequenceFrame", (PyCFunction)Qt_SCCompressSequenceFrame, 1,
-     PyDoc_STR("(ComponentInstance ci, PixMapHandle src, Rect srcRect) -> (ComponentResult _rv, Handle data, long dataSize, short notSyncFlag)")},
+     PyDoc_STR("(ComponentInstance ci, PixMapHandle src, Rect srcRect) -> (ComponentResult _rv, Handle data, REALLYLONG dataSize, short notSyncFlag)")},
     {"SCCompressSequenceEnd", (PyCFunction)Qt_SCCompressSequenceEnd, 1,
      PyDoc_STR("(ComponentInstance ci) -> (ComponentResult _rv)")},
     {"SCDefaultPictHandleSettings", (PyCFunction)Qt_SCDefaultPictHandleSettings, 1,
@@ -26942,9 +26942,9 @@ static PyMethodDef Qt_methods[] = {
     {"SCSetInfo", (PyCFunction)Qt_SCSetInfo, 1,
      PyDoc_STR("(ComponentInstance ci, OSType infoType, void * info) -> (ComponentResult _rv)")},
     {"SCSetCompressFlags", (PyCFunction)Qt_SCSetCompressFlags, 1,
-     PyDoc_STR("(ComponentInstance ci, long flags) -> (ComponentResult _rv)")},
+     PyDoc_STR("(ComponentInstance ci, REALLYLONG flags) -> (ComponentResult _rv)")},
     {"SCGetCompressFlags", (PyCFunction)Qt_SCGetCompressFlags, 1,
-     PyDoc_STR("(ComponentInstance ci) -> (ComponentResult _rv, long flags)")},
+     PyDoc_STR("(ComponentInstance ci) -> (ComponentResult _rv, REALLYLONG flags)")},
     {"SCGetSettingsAsText", (PyCFunction)Qt_SCGetSettingsAsText, 1,
      PyDoc_STR("(ComponentInstance ci) -> (ComponentResult _rv, Handle text)")},
     {"SCAsyncIdle", (PyCFunction)Qt_SCAsyncIdle, 1,
@@ -26956,13 +26956,13 @@ static PyMethodDef Qt_methods[] = {
     {"TCSetSourceRef", (PyCFunction)Qt_TCSetSourceRef, 1,
      PyDoc_STR("(MediaHandler mh, TimeCodeDescriptionHandle tcdH, UserData srefH) -> (HandlerError _rv)")},
     {"TCSetTimeCodeFlags", (PyCFunction)Qt_TCSetTimeCodeFlags, 1,
-     PyDoc_STR("(MediaHandler mh, long flags, long flagsMask) -> (HandlerError _rv)")},
+     PyDoc_STR("(MediaHandler mh, REALLYLONG flags, REALLYLONG flagsMask) -> (HandlerError _rv)")},
     {"TCGetTimeCodeFlags", (PyCFunction)Qt_TCGetTimeCodeFlags, 1,
-     PyDoc_STR("(MediaHandler mh) -> (HandlerError _rv, long flags)")},
+     PyDoc_STR("(MediaHandler mh) -> (HandlerError _rv, REALLYLONG flags)")},
     {"MovieImportHandle", (PyCFunction)Qt_MovieImportHandle, 1,
-     PyDoc_STR("(MovieImportComponent ci, Handle dataH, Movie theMovie, Track targetTrack, TimeValue atTime, long inFlags) -> (ComponentResult _rv, Track usedTrack, TimeValue addedDuration, long outFlags)")},
+     PyDoc_STR("(MovieImportComponent ci, Handle dataH, Movie theMovie, Track targetTrack, TimeValue atTime, REALLYLONG inFlags) -> (ComponentResult _rv, Track usedTrack, TimeValue addedDuration, REALLYLONG outFlags)")},
     {"MovieImportFile", (PyCFunction)Qt_MovieImportFile, 1,
-     PyDoc_STR("(MovieImportComponent ci, FSSpec theFile, Movie theMovie, Track targetTrack, TimeValue atTime, long inFlags) -> (ComponentResult _rv, Track usedTrack, TimeValue addedDuration, long outFlags)")},
+     PyDoc_STR("(MovieImportComponent ci, FSSpec theFile, Movie theMovie, Track targetTrack, TimeValue atTime, REALLYLONG inFlags) -> (ComponentResult _rv, Track usedTrack, TimeValue addedDuration, REALLYLONG outFlags)")},
     {"MovieImportSetSampleDuration", (PyCFunction)Qt_MovieImportSetSampleDuration, 1,
      PyDoc_STR("(MovieImportComponent ci, TimeValue duration, TimeScale scale) -> (ComponentResult _rv)")},
     {"MovieImportSetSampleDescription", (PyCFunction)Qt_MovieImportSetSampleDescription, 1,
@@ -26972,7 +26972,7 @@ static PyMethodDef Qt_methods[] = {
     {"MovieImportSetDimensions", (PyCFunction)Qt_MovieImportSetDimensions, 1,
      PyDoc_STR("(MovieImportComponent ci, Fixed width, Fixed height) -> (ComponentResult _rv)")},
     {"MovieImportSetChunkSize", (PyCFunction)Qt_MovieImportSetChunkSize, 1,
-     PyDoc_STR("(MovieImportComponent ci, long chunkSize) -> (ComponentResult _rv)")},
+     PyDoc_STR("(MovieImportComponent ci, REALLYLONG chunkSize) -> (ComponentResult _rv)")},
     {"MovieImportSetAuxiliaryData", (PyCFunction)Qt_MovieImportSetAuxiliaryData, 1,
      PyDoc_STR("(MovieImportComponent ci, Handle data, OSType handleType) -> (ComponentResult _rv)")},
     {"MovieImportSetFromScrap", (PyCFunction)Qt_MovieImportSetFromScrap, 1,
@@ -26988,19 +26988,19 @@ static PyMethodDef Qt_methods[] = {
     {"MovieImportGetFileType", (PyCFunction)Qt_MovieImportGetFileType, 1,
      PyDoc_STR("(MovieImportComponent ci) -> (ComponentResult _rv, OSType fileType)")},
     {"MovieImportDataRef", (PyCFunction)Qt_MovieImportDataRef, 1,
-     PyDoc_STR("(MovieImportComponent ci, Handle dataRef, OSType dataRefType, Movie theMovie, Track targetTrack, TimeValue atTime, long inFlags) -> (ComponentResult _rv, Track usedTrack, TimeValue addedDuration, long outFlags)")},
+     PyDoc_STR("(MovieImportComponent ci, Handle dataRef, OSType dataRefType, Movie theMovie, Track targetTrack, TimeValue atTime, REALLYLONG inFlags) -> (ComponentResult _rv, Track usedTrack, TimeValue addedDuration, REALLYLONG outFlags)")},
     {"MovieImportGetSampleDescription", (PyCFunction)Qt_MovieImportGetSampleDescription, 1,
      PyDoc_STR("(MovieImportComponent ci) -> (ComponentResult _rv, SampleDescriptionHandle desc, OSType mediaType)")},
     {"MovieImportSetOffsetAndLimit", (PyCFunction)Qt_MovieImportSetOffsetAndLimit, 1,
-     PyDoc_STR("(MovieImportComponent ci, unsigned long offset, unsigned long limit) -> (ComponentResult _rv)")},
+     PyDoc_STR("(MovieImportComponent ci, unsigned REALLYLONG offset, unsigned REALLYLONG limit) -> (ComponentResult _rv)")},
     {"MovieImportSetOffsetAndLimit64", (PyCFunction)Qt_MovieImportSetOffsetAndLimit64, 1,
      PyDoc_STR("(MovieImportComponent ci, wide offset, wide limit) -> (ComponentResult _rv)")},
     {"MovieImportIdle", (PyCFunction)Qt_MovieImportIdle, 1,
-     PyDoc_STR("(MovieImportComponent ci, long inFlags) -> (ComponentResult _rv, long outFlags)")},
+     PyDoc_STR("(MovieImportComponent ci, REALLYLONG inFlags) -> (ComponentResult _rv, REALLYLONG outFlags)")},
     {"MovieImportValidateDataRef", (PyCFunction)Qt_MovieImportValidateDataRef, 1,
      PyDoc_STR("(MovieImportComponent ci, Handle dataRef, OSType dataRefType) -> (ComponentResult _rv, UInt8 valid)")},
     {"MovieImportGetLoadState", (PyCFunction)Qt_MovieImportGetLoadState, 1,
-     PyDoc_STR("(MovieImportComponent ci) -> (ComponentResult _rv, long importerLoadState)")},
+     PyDoc_STR("(MovieImportComponent ci) -> (ComponentResult _rv, REALLYLONG importerLoadState)")},
     {"MovieImportGetMaxLoadedTime", (PyCFunction)Qt_MovieImportGetMaxLoadedTime, 1,
      PyDoc_STR("(MovieImportComponent ci) -> (ComponentResult _rv, TimeValue time)")},
     {"MovieImportEstimateCompletionTime", (PyCFunction)Qt_MovieImportEstimateCompletionTime, 1,
@@ -27012,7 +27012,7 @@ static PyMethodDef Qt_methods[] = {
     {"MovieImportSetIdleManager", (PyCFunction)Qt_MovieImportSetIdleManager, 1,
      PyDoc_STR("(MovieImportComponent ci, IdleManager im) -> (ComponentResult _rv)")},
     {"MovieImportSetNewMovieFlags", (PyCFunction)Qt_MovieImportSetNewMovieFlags, 1,
-     PyDoc_STR("(MovieImportComponent ci, long newMovieFlags) -> (ComponentResult _rv)")},
+     PyDoc_STR("(MovieImportComponent ci, REALLYLONG newMovieFlags) -> (ComponentResult _rv)")},
     {"MovieImportGetDestinationMediaType", (PyCFunction)Qt_MovieImportGetDestinationMediaType, 1,
      PyDoc_STR("(MovieImportComponent ci) -> (ComponentResult _rv, OSType mediaType)")},
     {"MovieExportToHandle", (PyCFunction)Qt_MovieExportToHandle, 1,
@@ -27040,17 +27040,17 @@ static PyMethodDef Qt_methods[] = {
     {"MovieExportGetSourceMediaType", (PyCFunction)Qt_MovieExportGetSourceMediaType, 1,
      PyDoc_STR("(MovieExportComponent ci) -> (ComponentResult _rv, OSType mediaType)")},
     {"TextExportGetTimeFraction", (PyCFunction)Qt_TextExportGetTimeFraction, 1,
-     PyDoc_STR("(TextExportComponent ci) -> (ComponentResult _rv, long movieTimeFraction)")},
+     PyDoc_STR("(TextExportComponent ci) -> (ComponentResult _rv, REALLYLONG movieTimeFraction)")},
     {"TextExportSetTimeFraction", (PyCFunction)Qt_TextExportSetTimeFraction, 1,
-     PyDoc_STR("(TextExportComponent ci, long movieTimeFraction) -> (ComponentResult _rv)")},
+     PyDoc_STR("(TextExportComponent ci, REALLYLONG movieTimeFraction) -> (ComponentResult _rv)")},
     {"TextExportGetSettings", (PyCFunction)Qt_TextExportGetSettings, 1,
-     PyDoc_STR("(TextExportComponent ci) -> (ComponentResult _rv, long setting)")},
+     PyDoc_STR("(TextExportComponent ci) -> (ComponentResult _rv, REALLYLONG setting)")},
     {"TextExportSetSettings", (PyCFunction)Qt_TextExportSetSettings, 1,
-     PyDoc_STR("(TextExportComponent ci, long setting) -> (ComponentResult _rv)")},
+     PyDoc_STR("(TextExportComponent ci, REALLYLONG setting) -> (ComponentResult _rv)")},
     {"MIDIImportGetSettings", (PyCFunction)Qt_MIDIImportGetSettings, 1,
-     PyDoc_STR("(TextExportComponent ci) -> (ComponentResult _rv, long setting)")},
+     PyDoc_STR("(TextExportComponent ci) -> (ComponentResult _rv, REALLYLONG setting)")},
     {"MIDIImportSetSettings", (PyCFunction)Qt_MIDIImportSetSettings, 1,
-     PyDoc_STR("(TextExportComponent ci, long setting) -> (ComponentResult _rv)")},
+     PyDoc_STR("(TextExportComponent ci, REALLYLONG setting) -> (ComponentResult _rv)")},
     {"GraphicsImageImportSetSequenceEnabled", (PyCFunction)Qt_GraphicsImageImportSetSequenceEnabled, 1,
      PyDoc_STR("(GraphicImageMovieImportComponent ci, Boolean enable) -> (ComponentResult _rv)")},
     {"GraphicsImageImportGetSequenceEnabled", (PyCFunction)Qt_GraphicsImageImportGetSequenceEnabled, 1,
@@ -27068,13 +27068,13 @@ static PyMethodDef Qt_methods[] = {
     {"DataCodecCompress", (PyCFunction)Qt_DataCodecCompress, 1,
      PyDoc_STR("(DataCodecComponent dc, void * srcData, UInt32 srcSize, void * dstData, UInt32 dstBufferSize) -> (ComponentResult _rv, UInt32 actualDstSize, UInt32 decompressSlop)")},
     {"DataCodecBeginInterruptSafe", (PyCFunction)Qt_DataCodecBeginInterruptSafe, 1,
-     PyDoc_STR("(DataCodecComponent dc, unsigned long maxSrcSize) -> (ComponentResult _rv)")},
+     PyDoc_STR("(DataCodecComponent dc, unsigned REALLYLONG maxSrcSize) -> (ComponentResult _rv)")},
     {"DataCodecEndInterruptSafe", (PyCFunction)Qt_DataCodecEndInterruptSafe, 1,
      PyDoc_STR("(DataCodecComponent dc) -> (ComponentResult _rv)")},
     {"DataHGetData", (PyCFunction)Qt_DataHGetData, 1,
-     PyDoc_STR("(DataHandler dh, Handle h, long hOffset, long offset, long size) -> (ComponentResult _rv)")},
+     PyDoc_STR("(DataHandler dh, Handle h, REALLYLONG hOffset, REALLYLONG offset, REALLYLONG size) -> (ComponentResult _rv)")},
     {"DataHPutData", (PyCFunction)Qt_DataHPutData, 1,
-     PyDoc_STR("(DataHandler dh, Handle h, long hOffset, long size) -> (ComponentResult _rv, long offset)")},
+     PyDoc_STR("(DataHandler dh, Handle h, REALLYLONG hOffset, REALLYLONG size) -> (ComponentResult _rv, REALLYLONG offset)")},
     {"DataHFlushData", (PyCFunction)Qt_DataHFlushData, 1,
      PyDoc_STR("(DataHandler dh) -> (ComponentResult _rv)")},
     {"DataHOpenForWrite", (PyCFunction)Qt_DataHOpenForWrite, 1,
@@ -27100,27 +27100,27 @@ static PyMethodDef Qt_methods[] = {
     {"DataHResolveDataRef", (PyCFunction)Qt_DataHResolveDataRef, 1,
      PyDoc_STR("(DataHandler dh, Handle theDataRef, Boolean userInterfaceAllowed) -> (ComponentResult _rv, Boolean wasChanged)")},
     {"DataHGetFileSize", (PyCFunction)Qt_DataHGetFileSize, 1,
-     PyDoc_STR("(DataHandler dh) -> (ComponentResult _rv, long fileSize)")},
+     PyDoc_STR("(DataHandler dh) -> (ComponentResult _rv, REALLYLONG fileSize)")},
     {"DataHCanUseDataRef", (PyCFunction)Qt_DataHCanUseDataRef, 1,
-     PyDoc_STR("(DataHandler dh, Handle dataRef) -> (ComponentResult _rv, long useFlags)")},
+     PyDoc_STR("(DataHandler dh, Handle dataRef) -> (ComponentResult _rv, REALLYLONG useFlags)")},
     {"DataHPreextend", (PyCFunction)Qt_DataHPreextend, 1,
-     PyDoc_STR("(DataHandler dh, unsigned long maxToAdd) -> (ComponentResult _rv, unsigned long spaceAdded)")},
+     PyDoc_STR("(DataHandler dh, unsigned REALLYLONG maxToAdd) -> (ComponentResult _rv, unsigned REALLYLONG spaceAdded)")},
     {"DataHSetFileSize", (PyCFunction)Qt_DataHSetFileSize, 1,
-     PyDoc_STR("(DataHandler dh, long fileSize) -> (ComponentResult _rv)")},
+     PyDoc_STR("(DataHandler dh, REALLYLONG fileSize) -> (ComponentResult _rv)")},
     {"DataHGetFreeSpace", (PyCFunction)Qt_DataHGetFreeSpace, 1,
-     PyDoc_STR("(DataHandler dh) -> (ComponentResult _rv, unsigned long freeSize)")},
+     PyDoc_STR("(DataHandler dh) -> (ComponentResult _rv, unsigned REALLYLONG freeSize)")},
     {"DataHCreateFile", (PyCFunction)Qt_DataHCreateFile, 1,
      PyDoc_STR("(DataHandler dh, OSType creator, Boolean deleteExisting) -> (ComponentResult _rv)")},
     {"DataHGetPreferredBlockSize", (PyCFunction)Qt_DataHGetPreferredBlockSize, 1,
-     PyDoc_STR("(DataHandler dh) -> (ComponentResult _rv, long blockSize)")},
+     PyDoc_STR("(DataHandler dh) -> (ComponentResult _rv, REALLYLONG blockSize)")},
     {"DataHGetDeviceIndex", (PyCFunction)Qt_DataHGetDeviceIndex, 1,
-     PyDoc_STR("(DataHandler dh) -> (ComponentResult _rv, long deviceIndex)")},
+     PyDoc_STR("(DataHandler dh) -> (ComponentResult _rv, REALLYLONG deviceIndex)")},
     {"DataHIsStreamingDataHandler", (PyCFunction)Qt_DataHIsStreamingDataHandler, 1,
      PyDoc_STR("(DataHandler dh) -> (ComponentResult _rv, Boolean yes)")},
     {"DataHGetDataInBuffer", (PyCFunction)Qt_DataHGetDataInBuffer, 1,
-     PyDoc_STR("(DataHandler dh, long startOffset) -> (ComponentResult _rv, long size)")},
+     PyDoc_STR("(DataHandler dh, REALLYLONG startOffset) -> (ComponentResult _rv, REALLYLONG size)")},
     {"DataHGetScheduleAheadTime", (PyCFunction)Qt_DataHGetScheduleAheadTime, 1,
-     PyDoc_STR("(DataHandler dh) -> (ComponentResult _rv, long millisecs)")},
+     PyDoc_STR("(DataHandler dh) -> (ComponentResult _rv, REALLYLONG millisecs)")},
     {"DataHSetCacheSizeLimit", (PyCFunction)Qt_DataHSetCacheSizeLimit, 1,
      PyDoc_STR("(DataHandler dh, Size cacheSizeLimit) -> (ComponentResult _rv)")},
     {"DataHGetCacheSizeLimit", (PyCFunction)Qt_DataHGetCacheSizeLimit, 1,
@@ -27136,7 +27136,7 @@ static PyMethodDef Qt_methods[] = {
     {"DataHGetFileName", (PyCFunction)Qt_DataHGetFileName, 1,
      PyDoc_STR("(DataHandler dh, Str255 str) -> (ComponentResult _rv)")},
     {"DataHGetAvailableFileSize", (PyCFunction)Qt_DataHGetAvailableFileSize, 1,
-     PyDoc_STR("(DataHandler dh) -> (ComponentResult _rv, long fileSize)")},
+     PyDoc_STR("(DataHandler dh) -> (ComponentResult _rv, REALLYLONG fileSize)")},
     {"DataHGetMacOSFileType", (PyCFunction)Qt_DataHGetMacOSFileType, 1,
      PyDoc_STR("(DataHandler dh) -> (ComponentResult _rv, OSType fileType)")},
     {"DataHGetMIMEType", (PyCFunction)Qt_DataHGetMIMEType, 1,
@@ -27160,11 +27160,11 @@ static PyMethodDef Qt_methods[] = {
     {"DataHGetFreeSpace64", (PyCFunction)Qt_DataHGetFreeSpace64, 1,
      PyDoc_STR("(DataHandler dh) -> (ComponentResult _rv, wide freeSize)")},
     {"DataHAppend64", (PyCFunction)Qt_DataHAppend64, 1,
-     PyDoc_STR("(DataHandler dh, void * data, unsigned long size) -> (ComponentResult _rv, wide fileOffset)")},
+     PyDoc_STR("(DataHandler dh, void * data, unsigned REALLYLONG size) -> (ComponentResult _rv, wide fileOffset)")},
     {"DataHPollRead", (PyCFunction)Qt_DataHPollRead, 1,
      PyDoc_STR("(DataHandler dh, void * dataPtr) -> (ComponentResult _rv, UInt32 dataSizeSoFar)")},
     {"DataHGetDataAvailability", (PyCFunction)Qt_DataHGetDataAvailability, 1,
-     PyDoc_STR("(DataHandler dh, long offset, long len) -> (ComponentResult _rv, long missing_offset, long missing_len)")},
+     PyDoc_STR("(DataHandler dh, REALLYLONG offset, REALLYLONG len) -> (ComponentResult _rv, REALLYLONG missing_offset, REALLYLONG missing_len)")},
     {"DataHGetDataRefAsType", (PyCFunction)Qt_DataHGetDataRefAsType, 1,
      PyDoc_STR("(DataHandler dh, OSType requestedType) -> (ComponentResult _rv, Handle dataRef)")},
     {"DataHSetDataRefExtension", (PyCFunction)Qt_DataHSetDataRefExtension, 1,
@@ -27184,21 +27184,21 @@ static PyMethodDef Qt_methods[] = {
     {"DataHDeleteFile", (PyCFunction)Qt_DataHDeleteFile, 1,
      PyDoc_STR("(DataHandler dh) -> (ComponentResult _rv)")},
     {"DataHSetMovieUsageFlags", (PyCFunction)Qt_DataHSetMovieUsageFlags, 1,
-     PyDoc_STR("(DataHandler dh, long flags) -> (ComponentResult _rv)")},
+     PyDoc_STR("(DataHandler dh, REALLYLONG flags) -> (ComponentResult _rv)")},
     {"DataHUseTemporaryDataRef", (PyCFunction)Qt_DataHUseTemporaryDataRef, 1,
-     PyDoc_STR("(DataHandler dh, long inFlags) -> (ComponentResult _rv)")},
+     PyDoc_STR("(DataHandler dh, REALLYLONG inFlags) -> (ComponentResult _rv)")},
     {"DataHGetTemporaryDataRefCapabilities", (PyCFunction)Qt_DataHGetTemporaryDataRefCapabilities, 1,
-     PyDoc_STR("(DataHandler dh) -> (ComponentResult _rv, long outUnderstoodFlags)")},
+     PyDoc_STR("(DataHandler dh) -> (ComponentResult _rv, REALLYLONG outUnderstoodFlags)")},
     {"DataHRenameFile", (PyCFunction)Qt_DataHRenameFile, 1,
      PyDoc_STR("(DataHandler dh, Handle newDataRef) -> (ComponentResult _rv)")},
     {"DataHPlaybackHints", (PyCFunction)Qt_DataHPlaybackHints, 1,
-     PyDoc_STR("(DataHandler dh, long flags, unsigned long minFileOffset, unsigned long maxFileOffset, long bytesPerSecond) -> (ComponentResult _rv)")},
+     PyDoc_STR("(DataHandler dh, REALLYLONG flags, unsigned REALLYLONG minFileOffset, unsigned REALLYLONG maxFileOffset, REALLYLONG bytesPerSecond) -> (ComponentResult _rv)")},
     {"DataHPlaybackHints64", (PyCFunction)Qt_DataHPlaybackHints64, 1,
-     PyDoc_STR("(DataHandler dh, long flags, wide minFileOffset, wide maxFileOffset, long bytesPerSecond) -> (ComponentResult _rv)")},
+     PyDoc_STR("(DataHandler dh, REALLYLONG flags, wide minFileOffset, wide maxFileOffset, REALLYLONG bytesPerSecond) -> (ComponentResult _rv)")},
     {"DataHGetDataRate", (PyCFunction)Qt_DataHGetDataRate, 1,
-     PyDoc_STR("(DataHandler dh, long flags) -> (ComponentResult _rv, long bytesPerSecond)")},
+     PyDoc_STR("(DataHandler dh, REALLYLONG flags) -> (ComponentResult _rv, REALLYLONG bytesPerSecond)")},
     {"DataHSetTimeHints", (PyCFunction)Qt_DataHSetTimeHints, 1,
-     PyDoc_STR("(DataHandler dh, long flags, long bandwidthPriority, TimeScale scale, TimeValue minTime, TimeValue maxTime) -> (ComponentResult _rv)")},
+     PyDoc_STR("(DataHandler dh, REALLYLONG flags, REALLYLONG bandwidthPriority, TimeScale scale, TimeValue minTime, TimeValue maxTime) -> (ComponentResult _rv)")},
     {"VDGetMaxSrcRect", (PyCFunction)Qt_VDGetMaxSrcRect, 1,
      PyDoc_STR("(VideoDigitizerComponent ci, short inputStd) -> (ComponentResult _rv, Rect maxSrcRect)")},
     {"VDGetActiveSrcRect", (PyCFunction)Qt_VDGetActiveSrcRect, 1,
@@ -27242,15 +27242,15 @@ static PyMethodDef Qt_methods[] = {
     {"VDGetMaxAuxBuffer", (PyCFunction)Qt_VDGetMaxAuxBuffer, 1,
      PyDoc_STR("(VideoDigitizerComponent ci) -> (ComponentResult _rv, PixMapHandle pm, Rect r)")},
     {"VDGetCurrentFlags", (PyCFunction)Qt_VDGetCurrentFlags, 1,
-     PyDoc_STR("(VideoDigitizerComponent ci) -> (ComponentResult _rv, long inputCurrentFlag, long outputCurrentFlag)")},
+     PyDoc_STR("(VideoDigitizerComponent ci) -> (ComponentResult _rv, REALLYLONG inputCurrentFlag, REALLYLONG outputCurrentFlag)")},
     {"VDSetKeyColor", (PyCFunction)Qt_VDSetKeyColor, 1,
-     PyDoc_STR("(VideoDigitizerComponent ci, long index) -> (ComponentResult _rv)")},
+     PyDoc_STR("(VideoDigitizerComponent ci, REALLYLONG index) -> (ComponentResult _rv)")},
     {"VDGetKeyColor", (PyCFunction)Qt_VDGetKeyColor, 1,
-     PyDoc_STR("(VideoDigitizerComponent ci) -> (ComponentResult _rv, long index)")},
+     PyDoc_STR("(VideoDigitizerComponent ci) -> (ComponentResult _rv, REALLYLONG index)")},
     {"VDAddKeyColor", (PyCFunction)Qt_VDAddKeyColor, 1,
-     PyDoc_STR("(VideoDigitizerComponent ci) -> (ComponentResult _rv, long index)")},
+     PyDoc_STR("(VideoDigitizerComponent ci) -> (ComponentResult _rv, REALLYLONG index)")},
     {"VDGetNextKeyColor", (PyCFunction)Qt_VDGetNextKeyColor, 1,
-     PyDoc_STR("(VideoDigitizerComponent ci, long index) -> (ComponentResult _rv)")},
+     PyDoc_STR("(VideoDigitizerComponent ci, REALLYLONG index) -> (ComponentResult _rv)")},
     {"VDSetKeyColorRange", (PyCFunction)Qt_VDSetKeyColorRange, 1,
      PyDoc_STR("(VideoDigitizerComponent ci) -> (ComponentResult _rv, RGBColor minRGB, RGBColor maxRGB)")},
     {"VDGetKeyColorRange", (PyCFunction)Qt_VDGetKeyColorRange, 1,
@@ -27274,7 +27274,7 @@ static PyMethodDef Qt_methods[] = {
     {"VDGetPLLFilterType", (PyCFunction)Qt_VDGetPLLFilterType, 1,
      PyDoc_STR("(VideoDigitizerComponent ci) -> (ComponentResult _rv, short pllType)")},
     {"VDGetMaskandValue", (PyCFunction)Qt_VDGetMaskandValue, 1,
-     PyDoc_STR("(VideoDigitizerComponent ci, unsigned short blendLevel) -> (ComponentResult _rv, long mask, long value)")},
+     PyDoc_STR("(VideoDigitizerComponent ci, unsigned short blendLevel) -> (ComponentResult _rv, REALLYLONG mask, REALLYLONG value)")},
     {"VDSetMasterBlendLevel", (PyCFunction)Qt_VDSetMasterBlendLevel, 1,
      PyDoc_STR("(VideoDigitizerComponent ci) -> (ComponentResult _rv, unsigned short blendLevel)")},
     {"VDSetPlayThruOnOff", (PyCFunction)Qt_VDSetPlayThruOnOff, 1,
@@ -27314,7 +27314,7 @@ static PyMethodDef Qt_methods[] = {
     {"VDDone", (PyCFunction)Qt_VDDone, 1,
      PyDoc_STR("(VideoDigitizerComponent ci, short buffer) -> (ComponentResult _rv)")},
     {"VDSetCompression", (PyCFunction)Qt_VDSetCompression, 1,
-     PyDoc_STR("(VideoDigitizerComponent ci, OSType compressType, short depth, CodecQ spatialQuality, CodecQ temporalQuality, long keyFrameRate) -> (ComponentResult _rv, Rect bounds)")},
+     PyDoc_STR("(VideoDigitizerComponent ci, OSType compressType, short depth, CodecQ spatialQuality, CodecQ temporalQuality, REALLYLONG keyFrameRate) -> (ComponentResult _rv, Rect bounds)")},
     {"VDCompressOneFrameAsync", (PyCFunction)Qt_VDCompressOneFrameAsync, 1,
      PyDoc_STR("(VideoDigitizerComponent ci) -> (ComponentResult _rv)")},
     {"VDGetImageDescription", (PyCFunction)Qt_VDGetImageDescription, 1,
@@ -27330,33 +27330,33 @@ static PyMethodDef Qt_methods[] = {
     {"VDSetFrameRate", (PyCFunction)Qt_VDSetFrameRate, 1,
      PyDoc_STR("(VideoDigitizerComponent ci, Fixed framesPerSecond) -> (ComponentResult _rv)")},
     {"VDGetDataRate", (PyCFunction)Qt_VDGetDataRate, 1,
-     PyDoc_STR("(VideoDigitizerComponent ci) -> (ComponentResult _rv, long milliSecPerFrame, Fixed framesPerSecond, long bytesPerSecond)")},
+     PyDoc_STR("(VideoDigitizerComponent ci) -> (ComponentResult _rv, REALLYLONG milliSecPerFrame, Fixed framesPerSecond, REALLYLONG bytesPerSecond)")},
     {"VDGetSoundInputDriver", (PyCFunction)Qt_VDGetSoundInputDriver, 1,
      PyDoc_STR("(VideoDigitizerComponent ci, Str255 soundDriverName) -> (ComponentResult _rv)")},
     {"VDGetDMADepths", (PyCFunction)Qt_VDGetDMADepths, 1,
-     PyDoc_STR("(VideoDigitizerComponent ci) -> (ComponentResult _rv, long depthArray, long preferredDepth)")},
+     PyDoc_STR("(VideoDigitizerComponent ci) -> (ComponentResult _rv, REALLYLONG depthArray, REALLYLONG preferredDepth)")},
     {"VDGetPreferredTimeScale", (PyCFunction)Qt_VDGetPreferredTimeScale, 1,
      PyDoc_STR("(VideoDigitizerComponent ci) -> (ComponentResult _rv, TimeScale preferred)")},
     {"VDReleaseAsyncBuffers", (PyCFunction)Qt_VDReleaseAsyncBuffers, 1,
      PyDoc_STR("(VideoDigitizerComponent ci) -> (ComponentResult _rv)")},
     {"VDSetDataRate", (PyCFunction)Qt_VDSetDataRate, 1,
-     PyDoc_STR("(VideoDigitizerComponent ci, long bytesPerSecond) -> (ComponentResult _rv)")},
+     PyDoc_STR("(VideoDigitizerComponent ci, REALLYLONG bytesPerSecond) -> (ComponentResult _rv)")},
     {"VDGetTimeCode", (PyCFunction)Qt_VDGetTimeCode, 1,
      PyDoc_STR("(VideoDigitizerComponent ci, void * timeCodeFormat, void * timeCodeTime) -> (ComponentResult _rv, TimeRecord atTime)")},
     {"VDUseSafeBuffers", (PyCFunction)Qt_VDUseSafeBuffers, 1,
      PyDoc_STR("(VideoDigitizerComponent ci, Boolean useSafeBuffers) -> (ComponentResult _rv)")},
     {"VDGetSoundInputSource", (PyCFunction)Qt_VDGetSoundInputSource, 1,
-     PyDoc_STR("(VideoDigitizerComponent ci, long videoInput) -> (ComponentResult _rv, long soundInput)")},
+     PyDoc_STR("(VideoDigitizerComponent ci, REALLYLONG videoInput) -> (ComponentResult _rv, REALLYLONG soundInput)")},
     {"VDGetCompressionTime", (PyCFunction)Qt_VDGetCompressionTime, 1,
-     PyDoc_STR("(VideoDigitizerComponent ci, OSType compressionType, short depth) -> (ComponentResult _rv, Rect srcRect, CodecQ spatialQuality, CodecQ temporalQuality, unsigned long compressTime)")},
+     PyDoc_STR("(VideoDigitizerComponent ci, OSType compressionType, short depth) -> (ComponentResult _rv, Rect srcRect, CodecQ spatialQuality, CodecQ temporalQuality, unsigned REALLYLONG compressTime)")},
     {"VDSetPreferredPacketSize", (PyCFunction)Qt_VDSetPreferredPacketSize, 1,
-     PyDoc_STR("(VideoDigitizerComponent ci, long preferredPacketSizeInBytes) -> (ComponentResult _rv)")},
+     PyDoc_STR("(VideoDigitizerComponent ci, REALLYLONG preferredPacketSizeInBytes) -> (ComponentResult _rv)")},
     {"VDSetPreferredImageDimensions", (PyCFunction)Qt_VDSetPreferredImageDimensions, 1,
-     PyDoc_STR("(VideoDigitizerComponent ci, long width, long height) -> (ComponentResult _rv)")},
+     PyDoc_STR("(VideoDigitizerComponent ci, REALLYLONG width, REALLYLONG height) -> (ComponentResult _rv)")},
     {"VDGetPreferredImageDimensions", (PyCFunction)Qt_VDGetPreferredImageDimensions, 1,
-     PyDoc_STR("(VideoDigitizerComponent ci) -> (ComponentResult _rv, long width, long height)")},
+     PyDoc_STR("(VideoDigitizerComponent ci) -> (ComponentResult _rv, REALLYLONG width, REALLYLONG height)")},
     {"VDGetInputName", (PyCFunction)Qt_VDGetInputName, 1,
-     PyDoc_STR("(VideoDigitizerComponent ci, long videoInput, Str255 name) -> (ComponentResult _rv)")},
+     PyDoc_STR("(VideoDigitizerComponent ci, REALLYLONG videoInput, Str255 name) -> (ComponentResult _rv)")},
     {"VDSetDestinationPort", (PyCFunction)Qt_VDSetDestinationPort, 1,
      PyDoc_STR("(VideoDigitizerComponent ci, CGrafPtr destPort) -> (ComponentResult _rv)")},
     {"VDGetDeviceNameAndFlags", (PyCFunction)Qt_VDGetDeviceNameAndFlags, 1,
@@ -27364,9 +27364,9 @@ static PyMethodDef Qt_methods[] = {
     {"VDCaptureStateChanging", (PyCFunction)Qt_VDCaptureStateChanging, 1,
      PyDoc_STR("(VideoDigitizerComponent ci, UInt32 inStateFlags) -> (ComponentResult _rv)")},
     {"XMLParseGetDetailedParseError", (PyCFunction)Qt_XMLParseGetDetailedParseError, 1,
-     PyDoc_STR("(ComponentInstance aParser, StringPtr errDesc) -> (ComponentResult _rv, long errorLine)")},
+     PyDoc_STR("(ComponentInstance aParser, StringPtr errDesc) -> (ComponentResult _rv, REALLYLONG errorLine)")},
     {"XMLParseAddElement", (PyCFunction)Qt_XMLParseAddElement, 1,
-     PyDoc_STR("(ComponentInstance aParser, UInt32 nameSpaceID, long elementFlags) -> (ComponentResult _rv, char elementName, UInt32 elementID)")},
+     PyDoc_STR("(ComponentInstance aParser, UInt32 nameSpaceID, REALLYLONG elementFlags) -> (ComponentResult _rv, char elementName, UInt32 elementID)")},
     {"XMLParseAddAttribute", (PyCFunction)Qt_XMLParseAddAttribute, 1,
      PyDoc_STR("(ComponentInstance aParser, UInt32 elementID, UInt32 nameSpaceID) -> (ComponentResult _rv, char attributeName, UInt32 attributeID)")},
     {"XMLParseAddMultipleAttributes", (PyCFunction)Qt_XMLParseAddMultipleAttributes, 1,
@@ -27380,13 +27380,13 @@ static PyMethodDef Qt_methods[] = {
     {"XMLParseSetOffsetAndLimit", (PyCFunction)Qt_XMLParseSetOffsetAndLimit, 1,
      PyDoc_STR("(ComponentInstance aParser, UInt32 offset, UInt32 limit) -> (ComponentResult _rv)")},
     {"XMLParseSetEventParseRefCon", (PyCFunction)Qt_XMLParseSetEventParseRefCon, 1,
-     PyDoc_STR("(ComponentInstance aParser, long refcon) -> (ComponentResult _rv)")},
+     PyDoc_STR("(ComponentInstance aParser, REALLYLONG refcon) -> (ComponentResult _rv)")},
     {"SGInitialize", (PyCFunction)Qt_SGInitialize, 1,
      PyDoc_STR("(SeqGrabComponent s) -> (ComponentResult _rv)")},
     {"SGSetDataOutput", (PyCFunction)Qt_SGSetDataOutput, 1,
-     PyDoc_STR("(SeqGrabComponent s, FSSpec movieFile, long whereFlags) -> (ComponentResult _rv)")},
+     PyDoc_STR("(SeqGrabComponent s, FSSpec movieFile, REALLYLONG whereFlags) -> (ComponentResult _rv)")},
     {"SGGetDataOutput", (PyCFunction)Qt_SGGetDataOutput, 1,
-     PyDoc_STR("(SeqGrabComponent s, FSSpec movieFile) -> (ComponentResult _rv, long whereFlags)")},
+     PyDoc_STR("(SeqGrabComponent s, FSSpec movieFile) -> (ComponentResult _rv, REALLYLONG whereFlags)")},
     {"SGSetGWorld", (PyCFunction)Qt_SGSetGWorld, 1,
      PyDoc_STR("(SeqGrabComponent s, CGrafPtr gp, GDHandle gd) -> (ComponentResult _rv)")},
     {"SGGetGWorld", (PyCFunction)Qt_SGGetGWorld, 1,
@@ -27412,27 +27412,27 @@ static PyMethodDef Qt_methods[] = {
     {"SGGetMovie", (PyCFunction)Qt_SGGetMovie, 1,
      PyDoc_STR("(SeqGrabComponent s) -> (Movie _rv)")},
     {"SGSetMaximumRecordTime", (PyCFunction)Qt_SGSetMaximumRecordTime, 1,
-     PyDoc_STR("(SeqGrabComponent s, unsigned long ticks) -> (ComponentResult _rv)")},
+     PyDoc_STR("(SeqGrabComponent s, unsigned REALLYLONG ticks) -> (ComponentResult _rv)")},
     {"SGGetMaximumRecordTime", (PyCFunction)Qt_SGGetMaximumRecordTime, 1,
-     PyDoc_STR("(SeqGrabComponent s) -> (ComponentResult _rv, unsigned long ticks)")},
+     PyDoc_STR("(SeqGrabComponent s) -> (ComponentResult _rv, unsigned REALLYLONG ticks)")},
     {"SGGetStorageSpaceRemaining", (PyCFunction)Qt_SGGetStorageSpaceRemaining, 1,
-     PyDoc_STR("(SeqGrabComponent s) -> (ComponentResult _rv, unsigned long bytes)")},
+     PyDoc_STR("(SeqGrabComponent s) -> (ComponentResult _rv, unsigned REALLYLONG bytes)")},
     {"SGGetTimeRemaining", (PyCFunction)Qt_SGGetTimeRemaining, 1,
-     PyDoc_STR("(SeqGrabComponent s) -> (ComponentResult _rv, long ticksLeft)")},
+     PyDoc_STR("(SeqGrabComponent s) -> (ComponentResult _rv, REALLYLONG ticksLeft)")},
     {"SGGrabPict", (PyCFunction)Qt_SGGrabPict, 1,
-     PyDoc_STR("(SeqGrabComponent s, Rect bounds, short offscreenDepth, long grabPictFlags) -> (ComponentResult _rv, PicHandle p)")},
+     PyDoc_STR("(SeqGrabComponent s, Rect bounds, short offscreenDepth, REALLYLONG grabPictFlags) -> (ComponentResult _rv, PicHandle p)")},
     {"SGGetLastMovieResID", (PyCFunction)Qt_SGGetLastMovieResID, 1,
      PyDoc_STR("(SeqGrabComponent s) -> (ComponentResult _rv, short resID)")},
     {"SGSetFlags", (PyCFunction)Qt_SGSetFlags, 1,
-     PyDoc_STR("(SeqGrabComponent s, long sgFlags) -> (ComponentResult _rv)")},
+     PyDoc_STR("(SeqGrabComponent s, REALLYLONG sgFlags) -> (ComponentResult _rv)")},
     {"SGGetFlags", (PyCFunction)Qt_SGGetFlags, 1,
-     PyDoc_STR("(SeqGrabComponent s) -> (ComponentResult _rv, long sgFlags)")},
+     PyDoc_STR("(SeqGrabComponent s) -> (ComponentResult _rv, REALLYLONG sgFlags)")},
     {"SGNewChannelFromComponent", (PyCFunction)Qt_SGNewChannelFromComponent, 1,
      PyDoc_STR("(SeqGrabComponent s, Component sgChannelComponent) -> (ComponentResult _rv, SGChannel newChannel)")},
     {"SGSetSettings", (PyCFunction)Qt_SGSetSettings, 1,
-     PyDoc_STR("(SeqGrabComponent s, UserData ud, long flags) -> (ComponentResult _rv)")},
+     PyDoc_STR("(SeqGrabComponent s, UserData ud, REALLYLONG flags) -> (ComponentResult _rv)")},
     {"SGGetSettings", (PyCFunction)Qt_SGGetSettings, 1,
-     PyDoc_STR("(SeqGrabComponent s, long flags) -> (ComponentResult _rv, UserData ud)")},
+     PyDoc_STR("(SeqGrabComponent s, REALLYLONG flags) -> (ComponentResult _rv, UserData ud)")},
     {"SGGetIndChannel", (PyCFunction)Qt_SGGetIndChannel, 1,
      PyDoc_STR("(SeqGrabComponent s, short index) -> (ComponentResult _rv, SGChannel ref, OSType chanType)")},
     {"SGUpdate", (PyCFunction)Qt_SGUpdate, 1,
@@ -27440,25 +27440,25 @@ static PyMethodDef Qt_methods[] = {
     {"SGGetPause", (PyCFunction)Qt_SGGetPause, 1,
      PyDoc_STR("(SeqGrabComponent s) -> (ComponentResult _rv, Boolean paused)")},
     {"SGSetChannelSettings", (PyCFunction)Qt_SGSetChannelSettings, 1,
-     PyDoc_STR("(SeqGrabComponent s, SGChannel c, UserData ud, long flags) -> (ComponentResult _rv)")},
+     PyDoc_STR("(SeqGrabComponent s, SGChannel c, UserData ud, REALLYLONG flags) -> (ComponentResult _rv)")},
     {"SGGetChannelSettings", (PyCFunction)Qt_SGGetChannelSettings, 1,
-     PyDoc_STR("(SeqGrabComponent s, SGChannel c, long flags) -> (ComponentResult _rv, UserData ud)")},
+     PyDoc_STR("(SeqGrabComponent s, SGChannel c, REALLYLONG flags) -> (ComponentResult _rv, UserData ud)")},
     {"SGGetMode", (PyCFunction)Qt_SGGetMode, 1,
      PyDoc_STR("(SeqGrabComponent s) -> (ComponentResult _rv, Boolean previewMode, Boolean recordMode)")},
     {"SGSetDataRef", (PyCFunction)Qt_SGSetDataRef, 1,
-     PyDoc_STR("(SeqGrabComponent s, Handle dataRef, OSType dataRefType, long whereFlags) -> (ComponentResult _rv)")},
+     PyDoc_STR("(SeqGrabComponent s, Handle dataRef, OSType dataRefType, REALLYLONG whereFlags) -> (ComponentResult _rv)")},
     {"SGGetDataRef", (PyCFunction)Qt_SGGetDataRef, 1,
-     PyDoc_STR("(SeqGrabComponent s) -> (ComponentResult _rv, Handle dataRef, OSType dataRefType, long whereFlags)")},
+     PyDoc_STR("(SeqGrabComponent s) -> (ComponentResult _rv, Handle dataRef, OSType dataRefType, REALLYLONG whereFlags)")},
     {"SGNewOutput", (PyCFunction)Qt_SGNewOutput, 1,
-     PyDoc_STR("(SeqGrabComponent s, Handle dataRef, OSType dataRefType, long whereFlags) -> (ComponentResult _rv, SGOutput sgOut)")},
+     PyDoc_STR("(SeqGrabComponent s, Handle dataRef, OSType dataRefType, REALLYLONG whereFlags) -> (ComponentResult _rv, SGOutput sgOut)")},
     {"SGDisposeOutput", (PyCFunction)Qt_SGDisposeOutput, 1,
      PyDoc_STR("(SeqGrabComponent s, SGOutput sgOut) -> (ComponentResult _rv)")},
     {"SGSetOutputFlags", (PyCFunction)Qt_SGSetOutputFlags, 1,
-     PyDoc_STR("(SeqGrabComponent s, SGOutput sgOut, long whereFlags) -> (ComponentResult _rv)")},
+     PyDoc_STR("(SeqGrabComponent s, SGOutput sgOut, REALLYLONG whereFlags) -> (ComponentResult _rv)")},
     {"SGSetChannelOutput", (PyCFunction)Qt_SGSetChannelOutput, 1,
      PyDoc_STR("(SeqGrabComponent s, SGChannel c, SGOutput sgOut) -> (ComponentResult _rv)")},
     {"SGGetDataOutputStorageSpaceRemaining", (PyCFunction)Qt_SGGetDataOutputStorageSpaceRemaining, 1,
-     PyDoc_STR("(SeqGrabComponent s, SGOutput sgOut) -> (ComponentResult _rv, unsigned long space)")},
+     PyDoc_STR("(SeqGrabComponent s, SGOutput sgOut) -> (ComponentResult _rv, unsigned REALLYLONG space)")},
     {"SGHandleUpdateEvent", (PyCFunction)Qt_SGHandleUpdateEvent, 1,
      PyDoc_STR("(SeqGrabComponent s, EventRecord event) -> (ComponentResult _rv, Boolean handled)")},
     {"SGSetOutputNextOutput", (PyCFunction)Qt_SGSetOutputNextOutput, 1,
@@ -27472,29 +27472,29 @@ static PyMethodDef Qt_methods[] = {
     {"SGGetOutputDataReference", (PyCFunction)Qt_SGGetOutputDataReference, 1,
      PyDoc_STR("(SeqGrabComponent s, SGOutput sgOut) -> (ComponentResult _rv, Handle dataRef, OSType dataRefType)")},
     {"SGWriteExtendedMovieData", (PyCFunction)Qt_SGWriteExtendedMovieData, 1,
-     PyDoc_STR("(SeqGrabComponent s, SGChannel c, Ptr p, long len) -> (ComponentResult _rv, wide offset, SGOutput sgOut)")},
+     PyDoc_STR("(SeqGrabComponent s, SGChannel c, Ptr p, REALLYLONG len) -> (ComponentResult _rv, wide offset, SGOutput sgOut)")},
     {"SGGetStorageSpaceRemaining64", (PyCFunction)Qt_SGGetStorageSpaceRemaining64, 1,
      PyDoc_STR("(SeqGrabComponent s) -> (ComponentResult _rv, wide bytes)")},
     {"SGGetDataOutputStorageSpaceRemaining64", (PyCFunction)Qt_SGGetDataOutputStorageSpaceRemaining64, 1,
      PyDoc_STR("(SeqGrabComponent s, SGOutput sgOut) -> (ComponentResult _rv, wide space)")},
     {"SGWriteMovieData", (PyCFunction)Qt_SGWriteMovieData, 1,
-     PyDoc_STR("(SeqGrabComponent s, SGChannel c, Ptr p, long len) -> (ComponentResult _rv, long offset)")},
+     PyDoc_STR("(SeqGrabComponent s, SGChannel c, Ptr p, REALLYLONG len) -> (ComponentResult _rv, REALLYLONG offset)")},
     {"SGGetTimeBase", (PyCFunction)Qt_SGGetTimeBase, 1,
      PyDoc_STR("(SeqGrabComponent s) -> (ComponentResult _rv, TimeBase tb)")},
     {"SGAddMovieData", (PyCFunction)Qt_SGAddMovieData, 1,
-     PyDoc_STR("(SeqGrabComponent s, SGChannel c, Ptr p, long len, long chRefCon, TimeValue time, short writeType) -> (ComponentResult _rv, long offset)")},
+     PyDoc_STR("(SeqGrabComponent s, SGChannel c, Ptr p, REALLYLONG len, REALLYLONG chRefCon, TimeValue time, short writeType) -> (ComponentResult _rv, REALLYLONG offset)")},
     {"SGChangedSource", (PyCFunction)Qt_SGChangedSource, 1,
      PyDoc_STR("(SeqGrabComponent s, SGChannel c) -> (ComponentResult _rv)")},
     {"SGAddExtendedMovieData", (PyCFunction)Qt_SGAddExtendedMovieData, 1,
-     PyDoc_STR("(SeqGrabComponent s, SGChannel c, Ptr p, long len, long chRefCon, TimeValue time, short writeType) -> (ComponentResult _rv, wide offset, SGOutput whichOutput)")},
+     PyDoc_STR("(SeqGrabComponent s, SGChannel c, Ptr p, REALLYLONG len, REALLYLONG chRefCon, TimeValue time, short writeType) -> (ComponentResult _rv, wide offset, SGOutput whichOutput)")},
     {"SGAddOutputDataRefToMedia", (PyCFunction)Qt_SGAddOutputDataRefToMedia, 1,
      PyDoc_STR("(SeqGrabComponent s, SGOutput sgOut, Media theMedia, SampleDescriptionHandle desc) -> (ComponentResult _rv)")},
     {"SGSetSettingsSummary", (PyCFunction)Qt_SGSetSettingsSummary, 1,
      PyDoc_STR("(SeqGrabComponent s, Handle summaryText) -> (ComponentResult _rv)")},
     {"SGSetChannelUsage", (PyCFunction)Qt_SGSetChannelUsage, 1,
-     PyDoc_STR("(SGChannel c, long usage) -> (ComponentResult _rv)")},
+     PyDoc_STR("(SGChannel c, REALLYLONG usage) -> (ComponentResult _rv)")},
     {"SGGetChannelUsage", (PyCFunction)Qt_SGGetChannelUsage, 1,
-     PyDoc_STR("(SGChannel c) -> (ComponentResult _rv, long usage)")},
+     PyDoc_STR("(SGChannel c) -> (ComponentResult _rv, REALLYLONG usage)")},
     {"SGSetChannelBounds", (PyCFunction)Qt_SGSetChannelBounds, 1,
      PyDoc_STR("(SGChannel c, Rect bounds) -> (ComponentResult _rv)")},
     {"SGGetChannelBounds", (PyCFunction)Qt_SGGetChannelBounds, 1,
@@ -27504,17 +27504,17 @@ static PyMethodDef Qt_methods[] = {
     {"SGGetChannelVolume", (PyCFunction)Qt_SGGetChannelVolume, 1,
      PyDoc_STR("(SGChannel c) -> (ComponentResult _rv, short volume)")},
     {"SGGetChannelInfo", (PyCFunction)Qt_SGGetChannelInfo, 1,
-     PyDoc_STR("(SGChannel c) -> (ComponentResult _rv, long channelInfo)")},
+     PyDoc_STR("(SGChannel c) -> (ComponentResult _rv, REALLYLONG channelInfo)")},
     {"SGSetChannelPlayFlags", (PyCFunction)Qt_SGSetChannelPlayFlags, 1,
-     PyDoc_STR("(SGChannel c, long playFlags) -> (ComponentResult _rv)")},
+     PyDoc_STR("(SGChannel c, REALLYLONG playFlags) -> (ComponentResult _rv)")},
     {"SGGetChannelPlayFlags", (PyCFunction)Qt_SGGetChannelPlayFlags, 1,
-     PyDoc_STR("(SGChannel c) -> (ComponentResult _rv, long playFlags)")},
+     PyDoc_STR("(SGChannel c) -> (ComponentResult _rv, REALLYLONG playFlags)")},
     {"SGSetChannelMaxFrames", (PyCFunction)Qt_SGSetChannelMaxFrames, 1,
-     PyDoc_STR("(SGChannel c, long frameCount) -> (ComponentResult _rv)")},
+     PyDoc_STR("(SGChannel c, REALLYLONG frameCount) -> (ComponentResult _rv)")},
     {"SGGetChannelMaxFrames", (PyCFunction)Qt_SGGetChannelMaxFrames, 1,
-     PyDoc_STR("(SGChannel c) -> (ComponentResult _rv, long frameCount)")},
+     PyDoc_STR("(SGChannel c) -> (ComponentResult _rv, REALLYLONG frameCount)")},
     {"SGSetChannelRefCon", (PyCFunction)Qt_SGSetChannelRefCon, 1,
-     PyDoc_STR("(SGChannel c, long refCon) -> (ComponentResult _rv)")},
+     PyDoc_STR("(SGChannel c, REALLYLONG refCon) -> (ComponentResult _rv)")},
     {"SGSetChannelClip", (PyCFunction)Qt_SGSetChannelClip, 1,
      PyDoc_STR("(SGChannel c, RgnHandle theClip) -> (ComponentResult _rv)")},
     {"SGGetChannelClip", (PyCFunction)Qt_SGGetChannelClip, 1,
@@ -27528,9 +27528,9 @@ static PyMethodDef Qt_methods[] = {
     {"SGChannelPutPicture", (PyCFunction)Qt_SGChannelPutPicture, 1,
      PyDoc_STR("(SGChannel c) -> (ComponentResult _rv)")},
     {"SGChannelSetRequestedDataRate", (PyCFunction)Qt_SGChannelSetRequestedDataRate, 1,
-     PyDoc_STR("(SGChannel c, long bytesPerSecond) -> (ComponentResult _rv)")},
+     PyDoc_STR("(SGChannel c, REALLYLONG bytesPerSecond) -> (ComponentResult _rv)")},
     {"SGChannelGetRequestedDataRate", (PyCFunction)Qt_SGChannelGetRequestedDataRate, 1,
-     PyDoc_STR("(SGChannel c) -> (ComponentResult _rv, long bytesPerSecond)")},
+     PyDoc_STR("(SGChannel c) -> (ComponentResult _rv, REALLYLONG bytesPerSecond)")},
     {"SGChannelSetDataSourceName", (PyCFunction)Qt_SGChannelSetDataSourceName, 1,
      PyDoc_STR("(SGChannel c, Str255 name, ScriptCode scriptTag) -> (ComponentResult _rv)")},
     {"SGChannelGetDataSourceName", (PyCFunction)Qt_SGChannelGetDataSourceName, 1,
@@ -27542,7 +27542,7 @@ static PyMethodDef Qt_methods[] = {
     {"SGGetChannelTimeBase", (PyCFunction)Qt_SGGetChannelTimeBase, 1,
      PyDoc_STR("(SGChannel c) -> (ComponentResult _rv, TimeBase tb)")},
     {"SGGetChannelRefCon", (PyCFunction)Qt_SGGetChannelRefCon, 1,
-     PyDoc_STR("(SGChannel c) -> (ComponentResult _rv, long refCon)")},
+     PyDoc_STR("(SGChannel c) -> (ComponentResult _rv, REALLYLONG refCon)")},
     {"SGGetChannelDeviceAndInputNames", (PyCFunction)Qt_SGGetChannelDeviceAndInputNames, 1,
      PyDoc_STR("(SGChannel c, Str255 outDeviceName, Str255 outInputName) -> (ComponentResult _rv, short outInputNumber)")},
     {"SGSetChannelDeviceInput", (PyCFunction)Qt_SGSetChannelDeviceInput, 1,
@@ -27554,7 +27554,7 @@ static PyMethodDef Qt_methods[] = {
     {"SGWriteSamples", (PyCFunction)Qt_SGWriteSamples, 1,
      PyDoc_STR("(SGChannel c, Movie m, AliasHandle theFile) -> (ComponentResult _rv)")},
     {"SGGetDataRate", (PyCFunction)Qt_SGGetDataRate, 1,
-     PyDoc_STR("(SGChannel c) -> (ComponentResult _rv, long bytesPerSecond)")},
+     PyDoc_STR("(SGChannel c) -> (ComponentResult _rv, REALLYLONG bytesPerSecond)")},
     {"SGAlignChannelRect", (PyCFunction)Qt_SGAlignChannelRect, 1,
      PyDoc_STR("(SGChannel c) -> (ComponentResult _rv, Rect r)")},
     {"SGPanelGetDitl", (PyCFunction)Qt_SGPanelGetDitl, 1,
@@ -27576,9 +27576,9 @@ static PyMethodDef Qt_methods[] = {
     {"SGPanelSetResFile", (PyCFunction)Qt_SGPanelSetResFile, 1,
      PyDoc_STR("(SeqGrabComponent s, short resRef) -> (ComponentResult _rv)")},
     {"SGPanelGetSettings", (PyCFunction)Qt_SGPanelGetSettings, 1,
-     PyDoc_STR("(SeqGrabComponent s, SGChannel c, long flags) -> (ComponentResult _rv, UserData ud)")},
+     PyDoc_STR("(SeqGrabComponent s, SGChannel c, REALLYLONG flags) -> (ComponentResult _rv, UserData ud)")},
     {"SGPanelSetSettings", (PyCFunction)Qt_SGPanelSetSettings, 1,
-     PyDoc_STR("(SeqGrabComponent s, SGChannel c, UserData ud, long flags) -> (ComponentResult _rv)")},
+     PyDoc_STR("(SeqGrabComponent s, SGChannel c, UserData ud, REALLYLONG flags) -> (ComponentResult _rv)")},
     {"SGPanelValidateInput", (PyCFunction)Qt_SGPanelValidateInput, 1,
      PyDoc_STR("(SeqGrabComponent s) -> (ComponentResult _rv, Boolean ok)")},
     {"SGPanelGetDITLForSize", (PyCFunction)Qt_SGPanelGetDITLForSize, 1,
@@ -27594,9 +27594,9 @@ static PyMethodDef Qt_methods[] = {
     {"SGSetVideoCompressorType", (PyCFunction)Qt_SGSetVideoCompressorType, 1,
      PyDoc_STR("(SGChannel c, OSType compressorType) -> (ComponentResult _rv)")},
     {"SGSetVideoCompressor", (PyCFunction)Qt_SGSetVideoCompressor, 1,
-     PyDoc_STR("(SGChannel c, short depth, CompressorComponent compressor, CodecQ spatialQuality, CodecQ temporalQuality, long keyFrameRate) -> (ComponentResult _rv)")},
+     PyDoc_STR("(SGChannel c, short depth, CompressorComponent compressor, CodecQ spatialQuality, CodecQ temporalQuality, REALLYLONG keyFrameRate) -> (ComponentResult _rv)")},
     {"SGGetVideoCompressor", (PyCFunction)Qt_SGGetVideoCompressor, 1,
-     PyDoc_STR("(SGChannel c) -> (ComponentResult _rv, short depth, CompressorComponent compressor, CodecQ spatialQuality, CodecQ temporalQuality, long keyFrameRate)")},
+     PyDoc_STR("(SGChannel c) -> (ComponentResult _rv, short depth, CompressorComponent compressor, CodecQ spatialQuality, CodecQ temporalQuality, REALLYLONG keyFrameRate)")},
     {"SGGetVideoDigitizerComponent", (PyCFunction)Qt_SGGetVideoDigitizerComponent, 1,
      PyDoc_STR("(SGChannel c) -> (ComponentInstance _rv)")},
     {"SGSetVideoDigitizerComponent", (PyCFunction)Qt_SGSetVideoDigitizerComponent, 1,
@@ -27624,9 +27624,9 @@ static PyMethodDef Qt_methods[] = {
     {"SGGetFrameRate", (PyCFunction)Qt_SGGetFrameRate, 1,
      PyDoc_STR("(SGChannel c) -> (ComponentResult _rv, Fixed frameRate)")},
     {"SGSetPreferredPacketSize", (PyCFunction)Qt_SGSetPreferredPacketSize, 1,
-     PyDoc_STR("(SGChannel c, long preferredPacketSizeInBytes) -> (ComponentResult _rv)")},
+     PyDoc_STR("(SGChannel c, REALLYLONG preferredPacketSizeInBytes) -> (ComponentResult _rv)")},
     {"SGGetPreferredPacketSize", (PyCFunction)Qt_SGGetPreferredPacketSize, 1,
-     PyDoc_STR("(SGChannel c) -> (ComponentResult _rv, long preferredPacketSizeInBytes)")},
+     PyDoc_STR("(SGChannel c) -> (ComponentResult _rv, REALLYLONG preferredPacketSizeInBytes)")},
     {"SGSetUserVideoCompressorList", (PyCFunction)Qt_SGSetUserVideoCompressorList, 1,
      PyDoc_STR("(SGChannel c, Handle compressorTypes) -> (ComponentResult _rv)")},
     {"SGGetUserVideoCompressorList", (PyCFunction)Qt_SGGetUserVideoCompressorList, 1,
@@ -27634,13 +27634,13 @@ static PyMethodDef Qt_methods[] = {
     {"SGSetSoundInputDriver", (PyCFunction)Qt_SGSetSoundInputDriver, 1,
      PyDoc_STR("(SGChannel c, Str255 driverName) -> (ComponentResult _rv)")},
     {"SGGetSoundInputDriver", (PyCFunction)Qt_SGGetSoundInputDriver, 1,
-     PyDoc_STR("(SGChannel c) -> (long _rv)")},
+     PyDoc_STR("(SGChannel c) -> (REALLYLONG _rv)")},
     {"SGSoundInputDriverChanged", (PyCFunction)Qt_SGSoundInputDriverChanged, 1,
      PyDoc_STR("(SGChannel c) -> (ComponentResult _rv)")},
     {"SGSetSoundRecordChunkSize", (PyCFunction)Qt_SGSetSoundRecordChunkSize, 1,
-     PyDoc_STR("(SGChannel c, long seconds) -> (ComponentResult _rv)")},
+     PyDoc_STR("(SGChannel c, REALLYLONG seconds) -> (ComponentResult _rv)")},
     {"SGGetSoundRecordChunkSize", (PyCFunction)Qt_SGGetSoundRecordChunkSize, 1,
-     PyDoc_STR("(SGChannel c) -> (long _rv)")},
+     PyDoc_STR("(SGChannel c) -> (REALLYLONG _rv)")},
     {"SGSetSoundInputRate", (PyCFunction)Qt_SGSetSoundInputRate, 1,
      PyDoc_STR("(SGChannel c, Fixed rate) -> (ComponentResult _rv)")},
     {"SGGetSoundInputRate", (PyCFunction)Qt_SGGetSoundInputRate, 1,
@@ -27678,19 +27678,19 @@ static PyMethodDef Qt_methods[] = {
     {"QTVideoOutputEnd", (PyCFunction)Qt_QTVideoOutputEnd, 1,
      PyDoc_STR("(QTVideoOutputComponent vo) -> (ComponentResult _rv)")},
     {"QTVideoOutputSetDisplayMode", (PyCFunction)Qt_QTVideoOutputSetDisplayMode, 1,
-     PyDoc_STR("(QTVideoOutputComponent vo, long displayModeID) -> (ComponentResult _rv)")},
+     PyDoc_STR("(QTVideoOutputComponent vo, REALLYLONG displayModeID) -> (ComponentResult _rv)")},
     {"QTVideoOutputGetDisplayMode", (PyCFunction)Qt_QTVideoOutputGetDisplayMode, 1,
-     PyDoc_STR("(QTVideoOutputComponent vo) -> (ComponentResult _rv, long displayModeID)")},
+     PyDoc_STR("(QTVideoOutputComponent vo) -> (ComponentResult _rv, REALLYLONG displayModeID)")},
     {"QTVideoOutputGetGWorld", (PyCFunction)Qt_QTVideoOutputGetGWorld, 1,
      PyDoc_STR("(QTVideoOutputComponent vo) -> (ComponentResult _rv, GWorldPtr gw)")},
     {"QTVideoOutputGetIndSoundOutput", (PyCFunction)Qt_QTVideoOutputGetIndSoundOutput, 1,
-     PyDoc_STR("(QTVideoOutputComponent vo, long index) -> (ComponentResult _rv, Component outputComponent)")},
+     PyDoc_STR("(QTVideoOutputComponent vo, REALLYLONG index) -> (ComponentResult _rv, Component outputComponent)")},
     {"QTVideoOutputGetClock", (PyCFunction)Qt_QTVideoOutputGetClock, 1,
      PyDoc_STR("(QTVideoOutputComponent vo) -> (ComponentResult _rv, ComponentInstance clock)")},
     {"QTVideoOutputSetEchoPort", (PyCFunction)Qt_QTVideoOutputSetEchoPort, 1,
      PyDoc_STR("(QTVideoOutputComponent vo, CGrafPtr echoPort) -> (ComponentResult _rv)")},
     {"QTVideoOutputGetIndImageDecompressor", (PyCFunction)Qt_QTVideoOutputGetIndImageDecompressor, 1,
-     PyDoc_STR("(QTVideoOutputComponent vo, long index) -> (ComponentResult _rv, Component codec)")},
+     PyDoc_STR("(QTVideoOutputComponent vo, REALLYLONG index) -> (ComponentResult _rv, Component codec)")},
     {"QTVideoOutputBaseSetEchoPort", (PyCFunction)Qt_QTVideoOutputBaseSetEchoPort, 1,
      PyDoc_STR("(QTVideoOutputComponent vo, CGrafPtr echoPort) -> (ComponentResult _rv)")},
     {"MediaSetChunkManagementFlags", (PyCFunction)Qt_MediaSetChunkManagementFlags, 1,
@@ -27704,9 +27704,9 @@ static PyMethodDef Qt_methods[] = {
     {"MediaEmptyAllPurgeableChunks", (PyCFunction)Qt_MediaEmptyAllPurgeableChunks, 1,
      PyDoc_STR("(MediaHandler mh) -> (ComponentResult _rv)")},
     {"MediaSetHandlerCapabilities", (PyCFunction)Qt_MediaSetHandlerCapabilities, 1,
-     PyDoc_STR("(MediaHandler mh, long flags, long flagsMask) -> (ComponentResult _rv)")},
+     PyDoc_STR("(MediaHandler mh, REALLYLONG flags, REALLYLONG flagsMask) -> (ComponentResult _rv)")},
     {"MediaIdle", (PyCFunction)Qt_MediaIdle, 1,
-     PyDoc_STR("(MediaHandler mh, TimeValue atMediaTime, long flagsIn, TimeRecord movieTime) -> (ComponentResult _rv, long flagsOut)")},
+     PyDoc_STR("(MediaHandler mh, TimeValue atMediaTime, REALLYLONG flagsIn, TimeRecord movieTime) -> (ComponentResult _rv, REALLYLONG flagsOut)")},
     {"MediaGetMediaInfo", (PyCFunction)Qt_MediaGetMediaInfo, 1,
      PyDoc_STR("(MediaHandler mh, Handle h) -> (ComponentResult _rv)")},
     {"MediaPutMediaInfo", (PyCFunction)Qt_MediaPutMediaInfo, 1,
@@ -27732,9 +27732,9 @@ static PyMethodDef Qt_methods[] = {
     {"MediaGetTrackOpaque", (PyCFunction)Qt_MediaGetTrackOpaque, 1,
      PyDoc_STR("(MediaHandler mh) -> (ComponentResult _rv, Boolean trackIsOpaque)")},
     {"MediaSetGraphicsMode", (PyCFunction)Qt_MediaSetGraphicsMode, 1,
-     PyDoc_STR("(MediaHandler mh, long mode, RGBColor opColor) -> (ComponentResult _rv)")},
+     PyDoc_STR("(MediaHandler mh, REALLYLONG mode, RGBColor opColor) -> (ComponentResult _rv)")},
     {"MediaGetGraphicsMode", (PyCFunction)Qt_MediaGetGraphicsMode, 1,
-     PyDoc_STR("(MediaHandler mh) -> (ComponentResult _rv, long mode, RGBColor opColor)")},
+     PyDoc_STR("(MediaHandler mh) -> (ComponentResult _rv, REALLYLONG mode, RGBColor opColor)")},
     {"MediaGSetVolume", (PyCFunction)Qt_MediaGSetVolume, 1,
      PyDoc_STR("(MediaHandler mh, short volume) -> (ComponentResult _rv)")},
     {"MediaSetSoundBalance", (PyCFunction)Qt_MediaSetSoundBalance, 1,
@@ -27748,17 +27748,17 @@ static PyMethodDef Qt_methods[] = {
     {"MediaPreroll", (PyCFunction)Qt_MediaPreroll, 1,
      PyDoc_STR("(MediaHandler mh, TimeValue time, Fixed rate) -> (ComponentResult _rv)")},
     {"MediaSampleDescriptionChanged", (PyCFunction)Qt_MediaSampleDescriptionChanged, 1,
-     PyDoc_STR("(MediaHandler mh, long index) -> (ComponentResult _rv)")},
+     PyDoc_STR("(MediaHandler mh, REALLYLONG index) -> (ComponentResult _rv)")},
     {"MediaHasCharacteristic", (PyCFunction)Qt_MediaHasCharacteristic, 1,
      PyDoc_STR("(MediaHandler mh, OSType characteristic) -> (ComponentResult _rv, Boolean hasIt)")},
     {"MediaGetOffscreenBufferSize", (PyCFunction)Qt_MediaGetOffscreenBufferSize, 1,
      PyDoc_STR("(MediaHandler mh, short depth, CTabHandle ctab) -> (ComponentResult _rv, Rect bounds)")},
     {"MediaSetHints", (PyCFunction)Qt_MediaSetHints, 1,
-     PyDoc_STR("(MediaHandler mh, long hints) -> (ComponentResult _rv)")},
+     PyDoc_STR("(MediaHandler mh, REALLYLONG hints) -> (ComponentResult _rv)")},
     {"MediaGetName", (PyCFunction)Qt_MediaGetName, 1,
-     PyDoc_STR("(MediaHandler mh, Str255 name, long requestedLanguage) -> (ComponentResult _rv, long actualLanguage)")},
+     PyDoc_STR("(MediaHandler mh, Str255 name, REALLYLONG requestedLanguage) -> (ComponentResult _rv, REALLYLONG actualLanguage)")},
     {"MediaForceUpdate", (PyCFunction)Qt_MediaForceUpdate, 1,
-     PyDoc_STR("(MediaHandler mh, long forceUpdateFlags) -> (ComponentResult _rv)")},
+     PyDoc_STR("(MediaHandler mh, REALLYLONG forceUpdateFlags) -> (ComponentResult _rv)")},
     {"MediaGetDrawingRgn", (PyCFunction)Qt_MediaGetDrawingRgn, 1,
      PyDoc_STR("(MediaHandler mh) -> (ComponentResult _rv, RgnHandle partialRgn)")},
     {"MediaGSetActiveSegment", (PyCFunction)Qt_MediaGSetActiveSegment, 1,
@@ -27768,17 +27768,17 @@ static PyMethodDef Qt_methods[] = {
     {"MediaGetNextStepTime", (PyCFunction)Qt_MediaGetNextStepTime, 1,
      PyDoc_STR("(MediaHandler mh, short flags, TimeValue mediaTimeIn, Fixed rate) -> (ComponentResult _rv, TimeValue mediaTimeOut)")},
     {"MediaChangedNonPrimarySource", (PyCFunction)Qt_MediaChangedNonPrimarySource, 1,
-     PyDoc_STR("(MediaHandler mh, long inputIndex) -> (ComponentResult _rv)")},
+     PyDoc_STR("(MediaHandler mh, REALLYLONG inputIndex) -> (ComponentResult _rv)")},
     {"MediaTrackReferencesChanged", (PyCFunction)Qt_MediaTrackReferencesChanged, 1,
      PyDoc_STR("(MediaHandler mh) -> (ComponentResult _rv)")},
     {"MediaReleaseSampleDataPointer", (PyCFunction)Qt_MediaReleaseSampleDataPointer, 1,
-     PyDoc_STR("(MediaHandler mh, long sampleNum) -> (ComponentResult _rv)")},
+     PyDoc_STR("(MediaHandler mh, REALLYLONG sampleNum) -> (ComponentResult _rv)")},
     {"MediaTrackPropertyAtomChanged", (PyCFunction)Qt_MediaTrackPropertyAtomChanged, 1,
      PyDoc_STR("(MediaHandler mh) -> (ComponentResult _rv)")},
     {"MediaSetVideoParam", (PyCFunction)Qt_MediaSetVideoParam, 1,
-     PyDoc_STR("(MediaHandler mh, long whichParam) -> (ComponentResult _rv, unsigned short value)")},
+     PyDoc_STR("(MediaHandler mh, REALLYLONG whichParam) -> (ComponentResult _rv, unsigned short value)")},
     {"MediaGetVideoParam", (PyCFunction)Qt_MediaGetVideoParam, 1,
-     PyDoc_STR("(MediaHandler mh, long whichParam) -> (ComponentResult _rv, unsigned short value)")},
+     PyDoc_STR("(MediaHandler mh, REALLYLONG whichParam) -> (ComponentResult _rv, unsigned short value)")},
     {"MediaCompare", (PyCFunction)Qt_MediaCompare, 1,
      PyDoc_STR("(MediaHandler mh, Media srcMedia, ComponentInstance srcMediaComponent) -> (ComponentResult _rv, Boolean isOK)")},
     {"MediaGetClock", (PyCFunction)Qt_MediaGetClock, 1,
@@ -27796,23 +27796,23 @@ static PyMethodDef Qt_methods[] = {
     {"MediaSampleDescriptionN2B", (PyCFunction)Qt_MediaSampleDescriptionN2B, 1,
      PyDoc_STR("(MediaHandler mh, SampleDescriptionHandle sampleDescriptionH) -> (ComponentResult _rv)")},
     {"MediaFlushNonPrimarySourceData", (PyCFunction)Qt_MediaFlushNonPrimarySourceData, 1,
-     PyDoc_STR("(MediaHandler mh, long inputIndex) -> (ComponentResult _rv)")},
+     PyDoc_STR("(MediaHandler mh, REALLYLONG inputIndex) -> (ComponentResult _rv)")},
     {"MediaGetURLLink", (PyCFunction)Qt_MediaGetURLLink, 1,
      PyDoc_STR("(MediaHandler mh, Point displayWhere) -> (ComponentResult _rv, Handle urlLink)")},
     {"MediaHitTestForTargetRefCon", (PyCFunction)Qt_MediaHitTestForTargetRefCon, 1,
-     PyDoc_STR("(MediaHandler mh, long flags, Point loc) -> (ComponentResult _rv, long targetRefCon)")},
+     PyDoc_STR("(MediaHandler mh, REALLYLONG flags, Point loc) -> (ComponentResult _rv, REALLYLONG targetRefCon)")},
     {"MediaHitTestTargetRefCon", (PyCFunction)Qt_MediaHitTestTargetRefCon, 1,
-     PyDoc_STR("(MediaHandler mh, long targetRefCon, long flags, Point loc) -> (ComponentResult _rv, Boolean wasHit)")},
+     PyDoc_STR("(MediaHandler mh, REALLYLONG targetRefCon, REALLYLONG flags, Point loc) -> (ComponentResult _rv, Boolean wasHit)")},
     {"MediaDisposeTargetRefCon", (PyCFunction)Qt_MediaDisposeTargetRefCon, 1,
-     PyDoc_STR("(MediaHandler mh, long targetRefCon) -> (ComponentResult _rv)")},
+     PyDoc_STR("(MediaHandler mh, REALLYLONG targetRefCon) -> (ComponentResult _rv)")},
     {"MediaTargetRefConsEqual", (PyCFunction)Qt_MediaTargetRefConsEqual, 1,
-     PyDoc_STR("(MediaHandler mh, long firstRefCon, long secondRefCon) -> (ComponentResult _rv, Boolean equal)")},
+     PyDoc_STR("(MediaHandler mh, REALLYLONG firstRefCon, REALLYLONG secondRefCon) -> (ComponentResult _rv, Boolean equal)")},
     {"MediaPrePrerollCancel", (PyCFunction)Qt_MediaPrePrerollCancel, 1,
      PyDoc_STR("(MediaHandler mh, void * refcon) -> (ComponentResult _rv)")},
     {"MediaEnterEmptyEdit", (PyCFunction)Qt_MediaEnterEmptyEdit, 1,
      PyDoc_STR("(MediaHandler mh) -> (ComponentResult _rv)")},
     {"MediaCurrentMediaQueuedData", (PyCFunction)Qt_MediaCurrentMediaQueuedData, 1,
-     PyDoc_STR("(MediaHandler mh) -> (ComponentResult _rv, long milliSecs)")},
+     PyDoc_STR("(MediaHandler mh) -> (ComponentResult _rv, REALLYLONG milliSecs)")},
     {"MediaGetEffectiveVolume", (PyCFunction)Qt_MediaGetEffectiveVolume, 1,
      PyDoc_STR("(MediaHandler mh) -> (ComponentResult _rv, short volume)")},
     {"MediaGetSoundLevelMeteringEnabled", (PyCFunction)Qt_MediaGetSoundLevelMeteringEnabled, 1,
@@ -27838,21 +27838,21 @@ static PyMethodDef Qt_methods[] = {
     {"MediaMCIsPlayerEvent", (PyCFunction)Qt_MediaMCIsPlayerEvent, 1,
      PyDoc_STR("(MediaHandler mh, EventRecord e) -> (ComponentResult _rv, Boolean handledIt)")},
     {"MediaGetMediaLoadState", (PyCFunction)Qt_MediaGetMediaLoadState, 1,
-     PyDoc_STR("(MediaHandler mh) -> (ComponentResult _rv, long mediaLoadState)")},
+     PyDoc_STR("(MediaHandler mh) -> (ComponentResult _rv, REALLYLONG mediaLoadState)")},
     {"MediaVideoOutputChanged", (PyCFunction)Qt_MediaVideoOutputChanged, 1,
      PyDoc_STR("(MediaHandler mh, ComponentInstance vout) -> (ComponentResult _rv)")},
     {"MediaEmptySampleCache", (PyCFunction)Qt_MediaEmptySampleCache, 1,
-     PyDoc_STR("(MediaHandler mh, long sampleNum, long sampleCount) -> (ComponentResult _rv)")},
+     PyDoc_STR("(MediaHandler mh, REALLYLONG sampleNum, REALLYLONG sampleCount) -> (ComponentResult _rv)")},
     {"MediaGetPublicInfo", (PyCFunction)Qt_MediaGetPublicInfo, 1,
      PyDoc_STR("(MediaHandler mh, OSType infoSelector, void * infoDataPtr) -> (ComponentResult _rv, Size ioDataSize)")},
     {"MediaSetPublicInfo", (PyCFunction)Qt_MediaSetPublicInfo, 1,
      PyDoc_STR("(MediaHandler mh, OSType infoSelector, void * infoDataPtr, Size dataSize) -> (ComponentResult _rv)")},
     {"MediaRefConSetProperty", (PyCFunction)Qt_MediaRefConSetProperty, 1,
-     PyDoc_STR("(MediaHandler mh, long refCon, long propertyType, void * propertyValue) -> (ComponentResult _rv)")},
+     PyDoc_STR("(MediaHandler mh, REALLYLONG refCon, REALLYLONG propertyType, void * propertyValue) -> (ComponentResult _rv)")},
     {"MediaRefConGetProperty", (PyCFunction)Qt_MediaRefConGetProperty, 1,
-     PyDoc_STR("(MediaHandler mh, long refCon, long propertyType, void * propertyValue) -> (ComponentResult _rv)")},
+     PyDoc_STR("(MediaHandler mh, REALLYLONG refCon, REALLYLONG propertyType, void * propertyValue) -> (ComponentResult _rv)")},
     {"MediaNavigateTargetRefCon", (PyCFunction)Qt_MediaNavigateTargetRefCon, 1,
-     PyDoc_STR("(MediaHandler mh, long navigation) -> (ComponentResult _rv, long refCon)")},
+     PyDoc_STR("(MediaHandler mh, REALLYLONG navigation) -> (ComponentResult _rv, REALLYLONG refCon)")},
     {"MediaGGetIdleManager", (PyCFunction)Qt_MediaGGetIdleManager, 1,
      PyDoc_STR("(MediaHandler mh) -> (ComponentResult _rv, IdleManager pim)")},
     {"MediaGSetIdleManager", (PyCFunction)Qt_MediaGSetIdleManager, 1,
@@ -27860,77 +27860,77 @@ static PyMethodDef Qt_methods[] = {
     {"QTMIDIGetMIDIPorts", (PyCFunction)Qt_QTMIDIGetMIDIPorts, 1,
      PyDoc_STR("(QTMIDIComponent ci) -> (ComponentResult _rv, QTMIDIPortListHandle inputPorts, QTMIDIPortListHandle outputPorts)")},
     {"QTMIDIUseSendPort", (PyCFunction)Qt_QTMIDIUseSendPort, 1,
-     PyDoc_STR("(QTMIDIComponent ci, long portIndex, long inUse) -> (ComponentResult _rv)")},
+     PyDoc_STR("(QTMIDIComponent ci, REALLYLONG portIndex, REALLYLONG inUse) -> (ComponentResult _rv)")},
     {"QTMIDISendMIDI", (PyCFunction)Qt_QTMIDISendMIDI, 1,
-     PyDoc_STR("(QTMIDIComponent ci, long portIndex, MusicMIDIPacket mp) -> (ComponentResult _rv)")},
+     PyDoc_STR("(QTMIDIComponent ci, REALLYLONG portIndex, MusicMIDIPacket mp) -> (ComponentResult _rv)")},
     {"MusicGetPart", (PyCFunction)Qt_MusicGetPart, 1,
-     PyDoc_STR("(MusicComponent mc, long part) -> (ComponentResult _rv, long midiChannel, long polyphony)")},
+     PyDoc_STR("(MusicComponent mc, REALLYLONG part) -> (ComponentResult _rv, REALLYLONG midiChannel, REALLYLONG polyphony)")},
     {"MusicSetPart", (PyCFunction)Qt_MusicSetPart, 1,
-     PyDoc_STR("(MusicComponent mc, long part, long midiChannel, long polyphony) -> (ComponentResult _rv)")},
+     PyDoc_STR("(MusicComponent mc, REALLYLONG part, REALLYLONG midiChannel, REALLYLONG polyphony) -> (ComponentResult _rv)")},
     {"MusicSetPartInstrumentNumber", (PyCFunction)Qt_MusicSetPartInstrumentNumber, 1,
-     PyDoc_STR("(MusicComponent mc, long part, long instrumentNumber) -> (ComponentResult _rv)")},
+     PyDoc_STR("(MusicComponent mc, REALLYLONG part, REALLYLONG instrumentNumber) -> (ComponentResult _rv)")},
     {"MusicGetPartInstrumentNumber", (PyCFunction)Qt_MusicGetPartInstrumentNumber, 1,
-     PyDoc_STR("(MusicComponent mc, long part) -> (ComponentResult _rv)")},
+     PyDoc_STR("(MusicComponent mc, REALLYLONG part) -> (ComponentResult _rv)")},
     {"MusicStorePartInstrument", (PyCFunction)Qt_MusicStorePartInstrument, 1,
-     PyDoc_STR("(MusicComponent mc, long part, long instrumentNumber) -> (ComponentResult _rv)")},
+     PyDoc_STR("(MusicComponent mc, REALLYLONG part, REALLYLONG instrumentNumber) -> (ComponentResult _rv)")},
     {"MusicGetPartAtomicInstrument", (PyCFunction)Qt_MusicGetPartAtomicInstrument, 1,
-     PyDoc_STR("(MusicComponent mc, long part, long flags) -> (ComponentResult _rv, AtomicInstrument ai)")},
+     PyDoc_STR("(MusicComponent mc, REALLYLONG part, REALLYLONG flags) -> (ComponentResult _rv, AtomicInstrument ai)")},
     {"MusicSetPartAtomicInstrument", (PyCFunction)Qt_MusicSetPartAtomicInstrument, 1,
-     PyDoc_STR("(MusicComponent mc, long part, AtomicInstrumentPtr aiP, long flags) -> (ComponentResult _rv)")},
+     PyDoc_STR("(MusicComponent mc, REALLYLONG part, AtomicInstrumentPtr aiP, REALLYLONG flags) -> (ComponentResult _rv)")},
     {"MusicGetPartKnob", (PyCFunction)Qt_MusicGetPartKnob, 1,
-     PyDoc_STR("(MusicComponent mc, long part, long knobID) -> (ComponentResult _rv)")},
+     PyDoc_STR("(MusicComponent mc, REALLYLONG part, REALLYLONG knobID) -> (ComponentResult _rv)")},
     {"MusicSetPartKnob", (PyCFunction)Qt_MusicSetPartKnob, 1,
-     PyDoc_STR("(MusicComponent mc, long part, long knobID, long knobValue) -> (ComponentResult _rv)")},
+     PyDoc_STR("(MusicComponent mc, REALLYLONG part, REALLYLONG knobID, REALLYLONG knobValue) -> (ComponentResult _rv)")},
     {"MusicGetKnob", (PyCFunction)Qt_MusicGetKnob, 1,
-     PyDoc_STR("(MusicComponent mc, long knobID) -> (ComponentResult _rv)")},
+     PyDoc_STR("(MusicComponent mc, REALLYLONG knobID) -> (ComponentResult _rv)")},
     {"MusicSetKnob", (PyCFunction)Qt_MusicSetKnob, 1,
-     PyDoc_STR("(MusicComponent mc, long knobID, long knobValue) -> (ComponentResult _rv)")},
+     PyDoc_STR("(MusicComponent mc, REALLYLONG knobID, REALLYLONG knobValue) -> (ComponentResult _rv)")},
     {"MusicGetPartName", (PyCFunction)Qt_MusicGetPartName, 1,
-     PyDoc_STR("(MusicComponent mc, long part, StringPtr name) -> (ComponentResult _rv)")},
+     PyDoc_STR("(MusicComponent mc, REALLYLONG part, StringPtr name) -> (ComponentResult _rv)")},
     {"MusicSetPartName", (PyCFunction)Qt_MusicSetPartName, 1,
-     PyDoc_STR("(MusicComponent mc, long part, StringPtr name) -> (ComponentResult _rv)")},
+     PyDoc_STR("(MusicComponent mc, REALLYLONG part, StringPtr name) -> (ComponentResult _rv)")},
     {"MusicPlayNote", (PyCFunction)Qt_MusicPlayNote, 1,
-     PyDoc_STR("(MusicComponent mc, long part, long pitch, long velocity) -> (ComponentResult _rv)")},
+     PyDoc_STR("(MusicComponent mc, REALLYLONG part, REALLYLONG pitch, REALLYLONG velocity) -> (ComponentResult _rv)")},
     {"MusicResetPart", (PyCFunction)Qt_MusicResetPart, 1,
-     PyDoc_STR("(MusicComponent mc, long part) -> (ComponentResult _rv)")},
+     PyDoc_STR("(MusicComponent mc, REALLYLONG part) -> (ComponentResult _rv)")},
     {"MusicSetPartController", (PyCFunction)Qt_MusicSetPartController, 1,
-     PyDoc_STR("(MusicComponent mc, long part, MusicController controllerNumber, long controllerValue) -> (ComponentResult _rv)")},
+     PyDoc_STR("(MusicComponent mc, REALLYLONG part, MusicController controllerNumber, REALLYLONG controllerValue) -> (ComponentResult _rv)")},
     {"MusicGetPartController", (PyCFunction)Qt_MusicGetPartController, 1,
-     PyDoc_STR("(MusicComponent mc, long part, MusicController controllerNumber) -> (ComponentResult _rv)")},
+     PyDoc_STR("(MusicComponent mc, REALLYLONG part, MusicController controllerNumber) -> (ComponentResult _rv)")},
     {"MusicGetInstrumentNames", (PyCFunction)Qt_MusicGetInstrumentNames, 1,
-     PyDoc_STR("(MusicComponent mc, long modifiableInstruments) -> (ComponentResult _rv, Handle instrumentNames, Handle instrumentCategoryLasts, Handle instrumentCategoryNames)")},
+     PyDoc_STR("(MusicComponent mc, REALLYLONG modifiableInstruments) -> (ComponentResult _rv, Handle instrumentNames, Handle instrumentCategoryLasts, Handle instrumentCategoryNames)")},
     {"MusicGetDrumNames", (PyCFunction)Qt_MusicGetDrumNames, 1,
-     PyDoc_STR("(MusicComponent mc, long modifiableInstruments) -> (ComponentResult _rv, Handle instrumentNumbers, Handle instrumentNames)")},
+     PyDoc_STR("(MusicComponent mc, REALLYLONG modifiableInstruments) -> (ComponentResult _rv, Handle instrumentNumbers, Handle instrumentNames)")},
     {"MusicGetMasterTune", (PyCFunction)Qt_MusicGetMasterTune, 1,
      PyDoc_STR("(MusicComponent mc) -> (ComponentResult _rv)")},
     {"MusicSetMasterTune", (PyCFunction)Qt_MusicSetMasterTune, 1,
-     PyDoc_STR("(MusicComponent mc, long masterTune) -> (ComponentResult _rv)")},
+     PyDoc_STR("(MusicComponent mc, REALLYLONG masterTune) -> (ComponentResult _rv)")},
     {"MusicGetDeviceConnection", (PyCFunction)Qt_MusicGetDeviceConnection, 1,
-     PyDoc_STR("(MusicComponent mc, long index) -> (ComponentResult _rv, long id1, long id2)")},
+     PyDoc_STR("(MusicComponent mc, REALLYLONG index) -> (ComponentResult _rv, REALLYLONG id1, REALLYLONG id2)")},
     {"MusicUseDeviceConnection", (PyCFunction)Qt_MusicUseDeviceConnection, 1,
-     PyDoc_STR("(MusicComponent mc, long id1, long id2) -> (ComponentResult _rv)")},
+     PyDoc_STR("(MusicComponent mc, REALLYLONG id1, REALLYLONG id2) -> (ComponentResult _rv)")},
     {"MusicGetKnobSettingStrings", (PyCFunction)Qt_MusicGetKnobSettingStrings, 1,
-     PyDoc_STR("(MusicComponent mc, long knobIndex, long isGlobal) -> (ComponentResult _rv, Handle settingsNames, Handle settingsCategoryLasts, Handle settingsCategoryNames)")},
+     PyDoc_STR("(MusicComponent mc, REALLYLONG knobIndex, REALLYLONG isGlobal) -> (ComponentResult _rv, Handle settingsNames, Handle settingsCategoryLasts, Handle settingsCategoryNames)")},
     {"MusicGetMIDIPorts", (PyCFunction)Qt_MusicGetMIDIPorts, 1,
-     PyDoc_STR("(MusicComponent mc) -> (ComponentResult _rv, long inputPortCount, long outputPortCount)")},
+     PyDoc_STR("(MusicComponent mc) -> (ComponentResult _rv, REALLYLONG inputPortCount, REALLYLONG outputPortCount)")},
     {"MusicSendMIDI", (PyCFunction)Qt_MusicSendMIDI, 1,
-     PyDoc_STR("(MusicComponent mc, long portIndex, MusicMIDIPacket mp) -> (ComponentResult _rv)")},
+     PyDoc_STR("(MusicComponent mc, REALLYLONG portIndex, MusicMIDIPacket mp) -> (ComponentResult _rv)")},
     {"MusicSetOfflineTimeTo", (PyCFunction)Qt_MusicSetOfflineTimeTo, 1,
-     PyDoc_STR("(MusicComponent mc, long newTimeStamp) -> (ComponentResult _rv)")},
+     PyDoc_STR("(MusicComponent mc, REALLYLONG newTimeStamp) -> (ComponentResult _rv)")},
     {"MusicGetInfoText", (PyCFunction)Qt_MusicGetInfoText, 1,
-     PyDoc_STR("(MusicComponent mc, long selector) -> (ComponentResult _rv, Handle textH, Handle styleH)")},
+     PyDoc_STR("(MusicComponent mc, REALLYLONG selector) -> (ComponentResult _rv, Handle textH, Handle styleH)")},
     {"MusicGetInstrumentInfo", (PyCFunction)Qt_MusicGetInstrumentInfo, 1,
-     PyDoc_STR("(MusicComponent mc, long getInstrumentInfoFlags) -> (ComponentResult _rv, InstrumentInfoListHandle infoListH)")},
+     PyDoc_STR("(MusicComponent mc, REALLYLONG getInstrumentInfoFlags) -> (ComponentResult _rv, InstrumentInfoListHandle infoListH)")},
     {"MusicTask", (PyCFunction)Qt_MusicTask, 1,
      PyDoc_STR("(MusicComponent mc) -> (ComponentResult _rv)")},
     {"MusicSetPartInstrumentNumberInterruptSafe", (PyCFunction)Qt_MusicSetPartInstrumentNumberInterruptSafe, 1,
-     PyDoc_STR("(MusicComponent mc, long part, long instrumentNumber) -> (ComponentResult _rv)")},
+     PyDoc_STR("(MusicComponent mc, REALLYLONG part, REALLYLONG instrumentNumber) -> (ComponentResult _rv)")},
     {"MusicSetPartSoundLocalization", (PyCFunction)Qt_MusicSetPartSoundLocalization, 1,
-     PyDoc_STR("(MusicComponent mc, long part, Handle data) -> (ComponentResult _rv)")},
+     PyDoc_STR("(MusicComponent mc, REALLYLONG part, Handle data) -> (ComponentResult _rv)")},
     {"MusicGenericConfigure", (PyCFunction)Qt_MusicGenericConfigure, 1,
-     PyDoc_STR("(MusicComponent mc, long mode, long flags, long baseResID) -> (ComponentResult _rv)")},
+     PyDoc_STR("(MusicComponent mc, REALLYLONG mode, REALLYLONG flags, REALLYLONG baseResID) -> (ComponentResult _rv)")},
     {"MusicGenericGetKnobList", (PyCFunction)Qt_MusicGenericGetKnobList, 1,
-     PyDoc_STR("(MusicComponent mc, long knobType) -> (ComponentResult _rv, GenericKnobDescriptionListHandle gkdlH)")},
+     PyDoc_STR("(MusicComponent mc, REALLYLONG knobType) -> (ComponentResult _rv, GenericKnobDescriptionListHandle gkdlH)")},
     {"MusicGenericSetResourceNumbers", (PyCFunction)Qt_MusicGenericSetResourceNumbers, 1,
      PyDoc_STR("(MusicComponent mc, Handle resourceIDH) -> (ComponentResult _rv)")},
     {"MusicDerivedMIDISend", (PyCFunction)Qt_MusicDerivedMIDISend, 1,
@@ -27940,7 +27940,7 @@ static PyMethodDef Qt_methods[] = {
     {"MusicDerivedCloseResFile", (PyCFunction)Qt_MusicDerivedCloseResFile, 1,
      PyDoc_STR("(MusicComponent mc, short resRefNum) -> (ComponentResult _rv)")},
     {"NAUnregisterMusicDevice", (PyCFunction)Qt_NAUnregisterMusicDevice, 1,
-     PyDoc_STR("(NoteAllocator na, long index) -> (ComponentResult _rv)")},
+     PyDoc_STR("(NoteAllocator na, REALLYLONG index) -> (ComponentResult _rv)")},
     {"NASaveMusicConfiguration", (PyCFunction)Qt_NASaveMusicConfiguration, 1,
      PyDoc_STR("(NoteAllocator na) -> (ComponentResult _rv)")},
     {"NAGetMIDIPorts", (PyCFunction)Qt_NAGetMIDIPorts, 1,
@@ -27948,7 +27948,7 @@ static PyMethodDef Qt_methods[] = {
     {"NATask", (PyCFunction)Qt_NATask, 1,
      PyDoc_STR("(NoteAllocator na) -> (ComponentResult _rv)")},
     {"TuneSetHeader", (PyCFunction)Qt_TuneSetHeader, 1,
-     PyDoc_STR("(TunePlayer tp, unsigned long * header) -> (ComponentResult _rv)")},
+     PyDoc_STR("(TunePlayer tp, unsigned REALLYLONG * header) -> (ComponentResult _rv)")},
     {"TuneGetTimeBase", (PyCFunction)Qt_TuneGetTimeBase, 1,
      PyDoc_STR("(TunePlayer tp) -> (ComponentResult _rv, TimeBase tb)")},
     {"TuneSetTimeScale", (PyCFunction)Qt_TuneSetTimeScale, 1,
@@ -27956,9 +27956,9 @@ static PyMethodDef Qt_methods[] = {
     {"TuneGetTimeScale", (PyCFunction)Qt_TuneGetTimeScale, 1,
      PyDoc_STR("(TunePlayer tp) -> (ComponentResult _rv, TimeScale scale)")},
     {"TuneInstant", (PyCFunction)Qt_TuneInstant, 1,
-     PyDoc_STR("(TunePlayer tp, unsigned long tunePosition) -> (ComponentResult _rv, unsigned long tune)")},
+     PyDoc_STR("(TunePlayer tp, unsigned REALLYLONG tunePosition) -> (ComponentResult _rv, unsigned REALLYLONG tune)")},
     {"TuneStop", (PyCFunction)Qt_TuneStop, 1,
-     PyDoc_STR("(TunePlayer tp, long stopFlags) -> (ComponentResult _rv)")},
+     PyDoc_STR("(TunePlayer tp, REALLYLONG stopFlags) -> (ComponentResult _rv)")},
     {"TuneSetVolume", (PyCFunction)Qt_TuneSetVolume, 1,
      PyDoc_STR("(TunePlayer tp, Fixed volume) -> (ComponentResult _rv)")},
     {"TuneGetVolume", (PyCFunction)Qt_TuneGetVolume, 1,
@@ -27968,29 +27968,29 @@ static PyMethodDef Qt_methods[] = {
     {"TuneUnroll", (PyCFunction)Qt_TuneUnroll, 1,
      PyDoc_STR("(TunePlayer tp) -> (ComponentResult _rv)")},
     {"TuneSetPartTranspose", (PyCFunction)Qt_TuneSetPartTranspose, 1,
-     PyDoc_STR("(TunePlayer tp, unsigned long part, long transpose, long velocityShift) -> (ComponentResult _rv)")},
+     PyDoc_STR("(TunePlayer tp, unsigned REALLYLONG part, REALLYLONG transpose, REALLYLONG velocityShift) -> (ComponentResult _rv)")},
     {"TuneGetNoteAllocator", (PyCFunction)Qt_TuneGetNoteAllocator, 1,
      PyDoc_STR("(TunePlayer tp) -> (NoteAllocator _rv)")},
     {"TuneSetSofter", (PyCFunction)Qt_TuneSetSofter, 1,
-     PyDoc_STR("(TunePlayer tp, long softer) -> (ComponentResult _rv)")},
+     PyDoc_STR("(TunePlayer tp, REALLYLONG softer) -> (ComponentResult _rv)")},
     {"TuneTask", (PyCFunction)Qt_TuneTask, 1,
      PyDoc_STR("(TunePlayer tp) -> (ComponentResult _rv)")},
     {"TuneSetBalance", (PyCFunction)Qt_TuneSetBalance, 1,
-     PyDoc_STR("(TunePlayer tp, long balance) -> (ComponentResult _rv)")},
+     PyDoc_STR("(TunePlayer tp, REALLYLONG balance) -> (ComponentResult _rv)")},
     {"TuneSetSoundLocalization", (PyCFunction)Qt_TuneSetSoundLocalization, 1,
      PyDoc_STR("(TunePlayer tp, Handle data) -> (ComponentResult _rv)")},
     {"TuneSetHeaderWithSize", (PyCFunction)Qt_TuneSetHeaderWithSize, 1,
-     PyDoc_STR("(TunePlayer tp, unsigned long * header, unsigned long size) -> (ComponentResult _rv)")},
+     PyDoc_STR("(TunePlayer tp, unsigned REALLYLONG * header, unsigned REALLYLONG size) -> (ComponentResult _rv)")},
     {"TuneSetPartMix", (PyCFunction)Qt_TuneSetPartMix, 1,
-     PyDoc_STR("(TunePlayer tp, unsigned long partNumber, long volume, long balance, long mixFlags) -> (ComponentResult _rv)")},
+     PyDoc_STR("(TunePlayer tp, unsigned REALLYLONG partNumber, REALLYLONG volume, REALLYLONG balance, REALLYLONG mixFlags) -> (ComponentResult _rv)")},
     {"TuneGetPartMix", (PyCFunction)Qt_TuneGetPartMix, 1,
-     PyDoc_STR("(TunePlayer tp, unsigned long partNumber) -> (ComponentResult _rv, long volumeOut, long balanceOut, long mixFlagsOut)")},
+     PyDoc_STR("(TunePlayer tp, unsigned REALLYLONG partNumber) -> (ComponentResult _rv, REALLYLONG volumeOut, REALLYLONG balanceOut, REALLYLONG mixFlagsOut)")},
     {"AlignWindow", (PyCFunction)Qt_AlignWindow, 1,
      PyDoc_STR("(WindowPtr wp, Boolean front) -> None")},
     {"DragAlignedWindow", (PyCFunction)Qt_DragAlignedWindow, 1,
      PyDoc_STR("(WindowPtr wp, Point startPt, Rect boundsRect) -> None")},
     {"MoviesTask", (PyCFunction)Qt_MoviesTask, 1,
-     PyDoc_STR("(long maxMilliSecToUse) -> None")},
+     PyDoc_STR("(REALLYLONG maxMilliSecToUse) -> None")},
 #endif /* __LP64__ */
     {NULL, NULL, 0}
 };

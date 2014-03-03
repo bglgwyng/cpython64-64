@@ -2686,9 +2686,9 @@ _compile(PyObject* self_, PyObject* args)
 
     for (i = 0; i < n; i++) {
         PyObject *o = PyList_GET_ITEM(code, i);
-        unsigned long value = PyInt_Check(o) ? (unsigned long)PyInt_AsLong(o)
+        UREALLYLONG value = PyInt_Check(o) ? (UREALLYLONG)PyInt_AsLong(o)
                                               : PyLong_AsUnsignedLong(o);
-        if (value == (unsigned long)-1 && PyErr_Occurred()) {
+        if (value == (UREALLYLONG)-1 && PyErr_Occurred()) {
             if (PyErr_ExceptionMatches(PyExc_OverflowError)) {
                 PyErr_SetString(PyExc_OverflowError,
                                 "regular expression code size limit exceeded");
@@ -2696,7 +2696,7 @@ _compile(PyObject* self_, PyObject* args)
             break;
         }
         self->code[i] = (SRE_CODE) value;
-        if ((unsigned long) self->code[i] != value) {
+        if ((UREALLYLONG) self->code[i] != value) {
             PyErr_SetString(PyExc_OverflowError,
                             "regular expression code size limit exceeded");
             break;
@@ -2776,14 +2776,14 @@ _compile(PyObject* self_, PyObject* args)
         VTRACE(("%p: ", code));                         \
         if (code >= end) FAIL;                          \
         op = *code++;                                   \
-        VTRACE(("%lu (op)\n", (unsigned long)op));      \
+        VTRACE(("%lu (op)\n", (UREALLYLONG)op));      \
     } while (0)
 #define GET_ARG                                         \
     do {                                                \
         VTRACE(("%p= ", code));                         \
         if (code >= end) FAIL;                          \
         arg = *code++;                                  \
-        VTRACE(("%lu (arg)\n", (unsigned long)arg));    \
+        VTRACE(("%lu (arg)\n", (UREALLYLONG)arg));    \
     } while (0)
 #define GET_SKIP_ADJ(adj)                               \
     do {                                                \
@@ -2791,7 +2791,7 @@ _compile(PyObject* self_, PyObject* args)
         if (code >= end) FAIL;                          \
         skip = *code;                                   \
         VTRACE(("%lu (skip to %p)\n",                   \
-               (unsigned long)skip, code+skip));        \
+               (UREALLYLONG)skip, code+skip));        \
         if (skip-adj > end-code)                        \
             FAIL;                                       \
         code++;                                         \

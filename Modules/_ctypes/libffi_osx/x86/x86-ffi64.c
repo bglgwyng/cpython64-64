@@ -43,7 +43,7 @@ typedef struct RegisterArgs {
 extern void
 ffi_call_unix64(
 	void*			args,
-	unsigned long	bytes,
+	unsigned REALLYLONG	bytes,
 	unsigned		flags,
 	void*			raddr,
 	void			(*fnaddr)(),
@@ -401,7 +401,7 @@ ffi_prep_cif_machdep(
 			|| gprcount + ngpr > MAX_GPR_REGS
 			|| ssecount + nsse > MAX_SSE_REGS)
 		{
-			long align = cif->arg_types[i]->alignment;
+			REALLYLONG align = cif->arg_types[i]->alignment;
 
 			if (align < 8)
 				align = 8;
@@ -463,7 +463,7 @@ ffi_call(
 	/*	If the return value is passed in memory, add the pointer as the
 		first integer argument.  */
 	if (ret_in_memory)
-		reg_args->gpr[gprcount++] = (long) rvalue;
+		reg_args->gpr[gprcount++] = (REALLYLONG) rvalue;
 
 	avn = cif->nargs;
 	arg_types = cif->arg_types;
@@ -479,7 +479,7 @@ ffi_call(
 			|| gprcount + ngpr > MAX_GPR_REGS
 			|| ssecount + nsse > MAX_SSE_REGS)
 		{
-			long align = arg_types[i]->alignment;
+			REALLYLONG align = arg_types[i]->alignment;
 
 			/* Stack arguments are *always* at least 8 byte aligned.  */
 			if (align < 8)
@@ -625,7 +625,7 @@ ffi_closure_unix64_inner(
 	ffi_cif*	cif = closure->cif;
 	void**		avalue = alloca(cif->nargs * sizeof(void *));
 	ffi_type**	arg_types;
-	long		i, avn;
+	REALLYLONG		i, avn;
 	int			gprcount = 0;
 	int			ssecount = 0;
 	int			ngpr, nsse;
@@ -674,7 +674,7 @@ ffi_closure_unix64_inner(
 			|| gprcount + ngpr > MAX_GPR_REGS
 			|| ssecount + nsse > MAX_SSE_REGS)
 		{
-			long align = arg_types[i]->alignment;
+			REALLYLONG align = arg_types[i]->alignment;
 
 			/* Stack arguments are *always* at least 8 byte aligned.  */
 			if (align < 8)

@@ -38,12 +38,12 @@ used for special methods; variants without leading and trailing\n\
   return Py_None; }
 
 #define spami(OP,AOP) static PyObject *OP(PyObject *s, PyObject *a1) { \
-  long r; \
+  REALLYLONG r; \
   if(-1 == (r=AOP(a1))) return NULL; \
   return PyBool_FromLong(r); }
 
 #define spami2(OP,AOP) static PyObject *OP(PyObject *s, PyObject *a) { \
-  PyObject *a1, *a2; long r; \
+  PyObject *a1, *a2; REALLYLONG r; \
   if(! PyArg_UnpackTuple(a,#OP,2,2,&a1,&a2)) return NULL; \
   if(-1 == (r=AOP(a1,a2))) return NULL; \
   return PyInt_FromLong(r); }
@@ -55,7 +55,7 @@ used for special methods; variants without leading and trailing\n\
   return PyInt_FromSsize_t(r); }
 
 #define spami2b(OP,AOP) static PyObject *OP(PyObject *s, PyObject *a) { \
-  PyObject *a1, *a2; long r; \
+  PyObject *a1, *a2; REALLYLONG r; \
   if(! PyArg_UnpackTuple(a,#OP,2,2,&a1,&a2)) return NULL; \
   if(-1 == (r=AOP(a1,a2))) return NULL; \
   return PyBool_FromLong(r); }

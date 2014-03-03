@@ -102,7 +102,7 @@ typedef struct {
     Py_ssize_t leftindex;       /* in range(BLOCKLEN) */
     Py_ssize_t rightindex;      /* in range(BLOCKLEN) */
     Py_ssize_t len;
-    long state;         /* incremented whenever the indices move */
+    REALLYLONG state;         /* incremented whenever the indices move */
     Py_ssize_t maxlen;
     PyObject *weakreflist; /* List of weak references */
 } dequeobject;
@@ -568,7 +568,7 @@ deque_count(dequeobject *deque, PyObject *v)
     Py_ssize_t i;
     Py_ssize_t count = 0;
     PyObject *item;
-    long start_state = deque->state;
+    REALLYLONG start_state = deque->state;
     int cmp;
 
     for (i=0 ; i<n ; i++) {
@@ -1181,7 +1181,7 @@ typedef struct {
     Py_ssize_t index;
     block *b;
     dequeobject *deque;
-    long state;         /* state when the iterator is created */
+    REALLYLONG state;         /* state when the iterator is created */
     Py_ssize_t counter;    /* number of items remaining for iteration */
 } dequeiterobject;
 

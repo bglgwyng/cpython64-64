@@ -55,7 +55,7 @@ msvcrt_locking(PyObject *self, PyObject *args)
 {
     int fd;
     int mode;
-    long nbytes;
+    REALLYLONG nbytes;
     int err;
 
     if (!PyArg_ParseTuple(args, "iil:locking", &fd, &mode, &nbytes))
@@ -109,7 +109,7 @@ os.O_BINARY.");
 static PyObject *
 msvcrt_open_osfhandle(PyObject *self, PyObject *args)
 {
-    long handle;
+    REALLYLONG handle;
     int flags;
     int fd;
 
@@ -361,7 +361,7 @@ Wide char variant of ungetch(), accepting a Unicode value.");
 static void
 insertint(PyObject *d, char *name, int value)
 {
-    PyObject *v = PyInt_FromLong((long) value);
+    PyObject *v = PyInt_FromLong((REALLYLONG) value);
     if (v == NULL) {
         /* Don't bother reporting this error */
         PyErr_Clear();

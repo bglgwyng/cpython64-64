@@ -34,7 +34,7 @@ functions should be applied to nil objects.
 
 typedef struct {
     PyObject_VAR_HEAD
-    long ob_shash;
+    REALLYLONG ob_shash;
     int ob_sstate;
     char ob_sval[1];
 

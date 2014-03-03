@@ -667,7 +667,7 @@ ffi_prep_closure_loc (ffi_closure* closure,
 		   "nop\n\t"
 		   "nop\n"
 		   :
-		   : "r"((unsigned long)tramp & ~31),
+		   : "r"((unsigned REALLYLONG)tramp & ~31),
 		     "r"(32 /* stride */)
 		   : "memory");
 #endif
@@ -704,8 +704,8 @@ ffi_prep_closure_loc (ffi_closure* closure,
 		   "nop\n\t"
 		   "nop\n\t"
 		   "nop\n"
-		   : "=&r" ((unsigned long)tmp)
-		   : "r" ((unsigned long)tramp & ~31),
+		   : "=&r" ((unsigned REALLYLONG)tmp)
+		   : "r" ((unsigned REALLYLONG)tramp & ~31),
 		     "r" (32/* stride */)
 		   : "memory");
 #endif

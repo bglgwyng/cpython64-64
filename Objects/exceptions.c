@@ -862,8 +862,8 @@ static int
 WindowsError_init(PyWindowsErrorObject *self, PyObject *args, PyObject *kwds)
 {
     PyObject *o_errcode = NULL;
-    long errcode;
-    long posix_errno;
+    REALLYLONG errcode;
+    REALLYLONG posix_errno;
 
     if (EnvironmentError_init((PyEnvironmentErrorObject *)self, args, kwds)
             == -1)

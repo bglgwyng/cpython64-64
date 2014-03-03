@@ -27,7 +27,7 @@ struct _PyWeakReference {
     /* A cache for wr_object's hash code.  As usual for hashes, this is -1
      * if the hash code isn't known yet.
      */
-    long hash;
+    REALLYLONG hash;
 
     /* If wr_object is weakly referenced, wr_object has a doubly-linked NULL-
      * terminated list of weak references to it.  These are the list pointers.
@@ -64,8 +64,8 @@ PyAPI_FUNC(Py_ssize_t) _PyWeakref_GetWeakrefCount(PyWeakReference *head);
 PyAPI_FUNC(void) _PyWeakref_ClearRef(PyWeakReference *self);
 
 /* Explanation for the Py_REFCNT() check: when a weakref's target is part
-   of a long chain of deallocations which triggers the trashcan mechanism,
-   clearing the weakrefs can be delayed long after the target's refcount
+   of a REALLYLONG chain of deallocations which triggers the trashcan mechanism,
+   clearing the weakrefs can be delayed REALLYLONG after the target's refcount
    has dropped to zero.  In the meantime, code accessing the weakref will
    be able to "see" the target object even though it is supposed to be
    unreachable.  See issue #16602. */

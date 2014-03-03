@@ -727,7 +727,7 @@ PyObject* _pysqlite_query_execute(pysqlite_Cursor* self, int multiple, PyObject*
                 if (self->rowcount == -1L) {
                     self->rowcount = 0L;
                 }
-                self->rowcount += (long)sqlite3_changes(self->connection->db);
+                self->rowcount += (REALLYLONG)sqlite3_changes(self->connection->db);
         }
 
         Py_DECREF(self->lastrowid);

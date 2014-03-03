@@ -1501,7 +1501,7 @@ PyNumber_Index(PyObject *item)
         if (result &&
             !PyInt_Check(result) && !PyLong_Check(result)) {
             PyErr_Format(PyExc_TypeError,
-                         "__index__ returned non-(int,long) " \
+                         "__index__ returned non-(int,REALLYLONG) " \
                          "(type %.200s)",
                          result->ob_type->tp_name);
             Py_DECREF(result);
@@ -1710,13 +1710,13 @@ PyNumber_Long(PyObject *o)
     if (o == NULL)
         return null_error();
     m = o->ob_type->tp_as_number;
-    if (m && m->nb_long) { /* This should include subclasses of long */
+    if (m && m->nb_long) { /* This should include subclasses of REALLYLONG */
         /* Classic classes always take this branch. */
         PyObject *res = m->nb_long(o);
         if (res == NULL)
             return NULL;
         if (PyInt_Check(res)) {
-            long value = PyInt_AS_LONG(res);
+            REALLYLONG value = PyInt_AS_LONG(res);
             Py_DECREF(res);
             return PyLong_FromLong(value);
         }
@@ -1729,7 +1729,7 @@ PyNumber_Long(PyObject *o)
         }
         return res;
     }
-    if (PyLong_Check(o)) /* A long subclass without nb_long */
+    if (PyLong_Check(o)) /* A REALLYLONG subclass without nb_long */
         return _PyLong_Copy((PyLongObject *)o);
     trunc_func = PyObject_GetAttr(o, trunc_name);
     if (trunc_func) {
@@ -1742,8 +1742,8 @@ PyNumber_Long(PyObject *o)
             truncated,
             "__trunc__ returned non-Integral (type %.200s)");
         if (int_instance && PyInt_Check(int_instance)) {
-            /* Make sure that long() returns a long instance. */
-            long value = PyInt_AS_LONG(int_instance);
+            /* Make sure that long() returns a REALLYLONG instance. */
+            REALLYLONG value = PyInt_AS_LONG(int_instance);
             Py_DECREF(int_instance);
             return PyLong_FromLong(value);
         }

@@ -38,7 +38,7 @@ PyAPI_FUNC(int) PyArg_VaParseTupleAndKeywords(PyObject *, PyObject *,
 PyAPI_FUNC(PyObject *) Py_VaBuildValue(const char *, va_list);
 
 PyAPI_FUNC(int) PyModule_AddObject(PyObject *, const char *, PyObject *);
-PyAPI_FUNC(int) PyModule_AddIntConstant(PyObject *, const char *, long);
+PyAPI_FUNC(int) PyModule_AddIntConstant(PyObject *, const char *, REALLYLONG);
 PyAPI_FUNC(int) PyModule_AddStringConstant(PyObject *, const char *, const char *);
 #define PyModule_AddIntMacro(m, c) PyModule_AddIntConstant(m, #c, c)
 #define PyModule_AddStringMacro(m, c) PyModule_AddStringConstant(m, #c, c)
@@ -58,7 +58,7 @@ PyAPI_FUNC(int) PyModule_AddStringConstant(PyObject *, const char *, const char 
    Please add a line or two to the top of this log for each API
    version change:
 
-   22-Feb-2006  MvL	1013	PEP 353 - long indices for sequence lengths
+   22-Feb-2006  MvL	1013	PEP 353 - REALLYLONG indices for sequence lengths
 
    19-Aug-2002  GvR	1012	Changes to string object struct for
    				interning changes, saving 3 bytes.

@@ -77,7 +77,7 @@
 #ifdef WITH_THREAD
 #include <sys/types.h> /* For pid_t */
 #include "pythread.h"
-static long main_thread;
+static REALLYLONG main_thread;
 static pid_t main_pid;
 #endif
 
@@ -229,7 +229,7 @@ signal_alarm(PyObject *self, PyObject *args)
     if (!PyArg_ParseTuple(args, "i:alarm", &t))
         return NULL;
     /* alarm() returns the number of seconds remaining */
-    return PyInt_FromLong((long)alarm(t));
+    return PyInt_FromLong((REALLYLONG)alarm(t));
 }
 
 PyDoc_STRVAR(alarm_doc,
@@ -595,7 +595,7 @@ initsignal(void)
     if (!x || PyDict_SetItemString(d, "SIG_IGN", x) < 0)
         goto finally;
 
-    x = PyInt_FromLong((long)NSIG);
+    x = PyInt_FromLong((REALLYLONG)NSIG);
     if (!x || PyDict_SetItemString(d, "NSIG", x) < 0)
         goto finally;
     Py_DECREF(x);

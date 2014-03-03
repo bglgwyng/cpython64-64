@@ -293,7 +293,7 @@ extern const int ffi_cris_trampoline_closure_offset
    put at the appropriate place in CLOSURE which is then executed and
    the return value is passed back to the caller.  */
 
-static unsigned long long
+static unsigned REALLYLONG
 ffi_prep_closure_inner (void **params, ffi_closure* closure)
 {
   char *register_args = (char *) params;
@@ -307,7 +307,7 @@ ffi_prep_closure_inner (void **params, ffi_closure* closure)
   void **avalue = alloca (closure->cif->nargs * sizeof(void *));
   int i;
   int doing_regs;
-  long long llret = 0;
+  REALLYLONG llret = 0;
 
   /* Find the address of each argument.  */
   for (i = 0, doing_regs = 1; i < cif->nargs; i++)

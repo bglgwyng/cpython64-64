@@ -79,12 +79,12 @@ typedef unsigned short mode_t;
        Python 2.7a0  62211 (introduce MAP_ADD and SET_ADD)
 .
 */
-#define MAGIC (62211 | ((long)'\r'<<16) | ((long)'\n'<<24))
+#define MAGIC (62211 | ((REALLYLONG)'\r'<<16) | ((REALLYLONG)'\n'<<24))
 
 /* Magic word as global; note that _PyImport_Init() can change the
    value of this global to accommodate for alterations of how the
    compiler works which are enabled by command line switches. */
-static long pyc_magic = MAGIC;
+static REALLYLONG pyc_magic = MAGIC;
 
 /* See _PyImport_FixupExtension() below */
 static PyObject *extensions = NULL;
@@ -285,13 +285,13 @@ _PyImport_Fini(void)
 #include "pythread.h"
 
 static PyThread_type_lock import_lock = 0;
-static long import_lock_thread = -1;
+static REALLYLONG import_lock_thread = -1;
 static int import_lock_level = 0;
 
 void
 _PyImport_AcquireLock(void)
 {
-    long me = PyThread_get_thread_ident();
+    REALLYLONG me = PyThread_get_thread_ident();
     if (me == -1)
         return; /* Too bad */
     if (import_lock == NULL) {
@@ -316,7 +316,7 @@ _PyImport_AcquireLock(void)
 int
 _PyImport_ReleaseLock(void)
 {
-    long me = PyThread_get_thread_ident();
+    REALLYLONG me = PyThread_get_thread_ident();
     if (me == -1 || import_lock == NULL)
         return 0; /* Too bad */
     if (import_lock_thread != me)
@@ -554,7 +554,7 @@ PyImport_Cleanup(void)
 
 /* Helper for pythonrun.c -- return magic number */
 
-long
+REALLYLONG
 PyImport_GetMagicNumber(void)
 {
     return pyc_magic;
@@ -765,8 +765,8 @@ static FILE *
 check_compiled_module(char *pathname, time_t mtime, char *cpathname)
 {
     FILE *fp;
-    long magic;
-    long pyc_mtime;
+    REALLYLONG magic;
+    REALLYLONG pyc_mtime;
 
     fp = fopen(cpathname, "rb");
     if (fp == NULL)
@@ -817,7 +817,7 @@ read_compiled_module(char *cpathname, FILE *fp)
 static PyObject *
 load_compiled_module(char *name, char *cpathname, FILE *fp)
 {
-    long magic;
+    REALLYLONG magic;
     PyCodeObject *co;
     PyObject *m;
 
@@ -941,7 +941,7 @@ write_compiled_module(PyCodeObject *co, char *cpathname, struct stat *srcstat, t
     /* Now write the true mtime (as a 32-bit field) */
     fseek(fp, 4L, 0);
     assert(mtime <= 0xFFFFFFFF);
-    PyMarshal_WriteLongToFile((long)mtime, fp, Py_MARSHAL_VERSION);
+    PyMarshal_WriteLongToFile((REALLYLONG)mtime, fp, Py_MARSHAL_VERSION);
     fflush(fp);
     fclose(fp);
     if (Py_VerboseFlag)
@@ -2146,7 +2146,7 @@ PyImport_ImportModuleNoBlock(const char *name)
     PyObject *result;
     PyObject *modules;
 #ifdef WITH_THREAD
-    long me;
+    REALLYLONG me;
 #endif
 
     /* Try to get the module from sys.modules[name] */
@@ -3054,7 +3054,7 @@ imp_is_frozen(PyObject *self, PyObject *args)
     if (!PyArg_ParseTuple(args, "s:is_frozen", &name))
         return NULL;
     p = find_frozen(name);
-    return PyBool_FromLong((long) (p == NULL ? 0 : p->size));
+    return PyBool_FromLong((REALLYLONG) (p == NULL ? 0 : p->size));
 }
 
 static FILE *
@@ -3293,7 +3293,7 @@ setint(PyObject *d, char *name, int value)
     PyObject *v;
     int err;
 
-    v = PyInt_FromLong((long)value);
+    v = PyInt_FromLong((REALLYLONG)value);
     err = PyDict_SetItemString(d, name, v);
     Py_XDECREF(v);
     return err;

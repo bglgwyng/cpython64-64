@@ -350,9 +350,9 @@ PyTypeObject PyCField_Type = {
    if it isn't one */
 
 static int
-get_long(PyObject *v, long *p)
+get_long(PyObject *v, REALLYLONG *p)
 {
-    long x;
+    REALLYLONG x;
     if (PyFloat_Check(v)) {
         PyErr_SetString(PyExc_TypeError,
                         "int expected instead of float");
@@ -365,19 +365,19 @@ get_long(PyObject *v, long *p)
     return 0;
 }
 
-/* Same, but handling unsigned long */
+/* Same, but handling UREALLYLONG */
 
 static int
-get_ulong(PyObject *v, unsigned long *p)
+get_ulong(PyObject *v, UREALLYLONG *p)
 {
-    unsigned long x;
+    UREALLYLONG x;
     if (PyFloat_Check(v)) {
         PyErr_SetString(PyExc_TypeError,
                         "int expected instead of float");
         return -1;
     }
     x = PyInt_AsUnsignedLongMask(v);
-    if (x == (unsigned long)-1 && PyErr_Occurred())
+    if (x == (UREALLYLONG)-1 && PyErr_Occurred())
         return -1;
     *p = x;
     return 0;
@@ -385,7 +385,7 @@ get_ulong(PyObject *v, unsigned long *p)
 
 #ifdef HAVE_LONG_LONG
 
-/* Same, but handling native long long. */
+/* Same, but handling native REALLYLONG. */
 
 static int
 get_longlong(PyObject *v, PY_LONG_LONG *p)
@@ -403,7 +403,7 @@ get_longlong(PyObject *v, PY_LONG_LONG *p)
     return 0;
 }
 
-/* Same, but handling native unsigned long long. */
+/* Same, but handling native UREALLYLONG. */
 
 static int
 get_ulonglong(PyObject *v, unsigned PY_LONG_LONG *p)
@@ -460,17 +460,6 @@ get_ulonglong(PyObject *v, unsigned PY_LONG_LONG *p)
       ( (v & 0x00FF0000) >>  8 ) |  \
       ( ((v >> 24) & 0xFF)) )
 
-#ifdef _MSC_VER
-#define SWAP_8(v)                               \
-    ( ( (v & 0x00000000000000FFL) << 56 ) |  \
-      ( (v & 0x000000000000FF00L) << 40 ) |  \
-      ( (v & 0x0000000000FF0000L) << 24 ) |  \
-      ( (v & 0x00000000FF000000L) <<  8 ) |  \
-      ( (v & 0x000000FF00000000L) >>  8 ) |  \
-      ( (v & 0x0000FF0000000000L) >> 24 ) |  \
-      ( (v & 0x00FF000000000000L) >> 40 ) |  \
-      ( ((v >> 56) & 0xFF)) )
-#else
 #define SWAP_8(v)                               \
     ( ( (v & 0x00000000000000FFLL) << 56 ) |  \
       ( (v & 0x000000000000FF00LL) << 40 ) |  \
@@ -480,7 +469,6 @@ get_ulonglong(PyObject *v, unsigned PY_LONG_LONG *p)
       ( (v & 0x0000FF0000000000LL) >> 24 ) |  \
       ( (v & 0x00FF000000000000LL) >> 40 ) |  \
       ( ((v >> 56) & 0xFF)) )
-#endif
 
 #define SWAP_INT SWAP_4
 
@@ -489,6 +477,7 @@ get_ulonglong(PyObject *v, unsigned PY_LONG_LONG *p)
 #elif SIZEOF_LONG == 8
 # define SWAP_LONG SWAP_8
 #endif
+
 /*****************************************************************
  * The setter methods return an object which must be kept alive, to keep the
  * data valid which has been stored in the memory block.  The ctypes object
@@ -516,7 +505,7 @@ get_ulonglong(PyObject *v, unsigned PY_LONG_LONG *p)
 static PyObject *
 b_set(void *ptr, PyObject *value, Py_ssize_t size)
 {
-    long val;
+    REALLYLONG val;
     if (get_long(value, &val) < 0)
         return NULL;
     *(signed char *)ptr = SET(signed char, *(signed char *)ptr, val, size);
@@ -535,7 +524,7 @@ b_get(void *ptr, Py_ssize_t size)
 static PyObject *
 B_set(void *ptr, PyObject *value, Py_ssize_t size)
 {
-    unsigned long val;
+    UREALLYLONG val;
     if (get_ulong(value, &val) < 0)
         return NULL;
     *(unsigned char *)ptr = SET(unsigned char, *(unsigned char*)ptr, val, size);
@@ -554,7 +543,7 @@ B_get(void *ptr, Py_ssize_t size)
 static PyObject *
 h_set(void *ptr, PyObject *value, Py_ssize_t size)
 {
-    long val;
+    REALLYLONG val;
     short x;
     if (get_long(value, &val) < 0)
         return NULL;
@@ -568,7 +557,7 @@ h_set(void *ptr, PyObject *value, Py_ssize_t size)
 static PyObject *
 h_set_sw(void *ptr, PyObject *value, Py_ssize_t size)
 {
-    long val;
+    REALLYLONG val;
     short field;
     if (get_long(value, &val) < 0)
         return NULL;
@@ -586,7 +575,7 @@ h_get(void *ptr, Py_ssize_t size)
     short val;
     memcpy(&val, ptr, sizeof(val));
     GET_BITFIELD(val, size);
-    return PyInt_FromLong((long)val);
+    return PyInt_FromLong((REALLYLONG)val);
 }
 
 static PyObject *
@@ -602,7 +591,7 @@ h_get_sw(void *ptr, Py_ssize_t size)
 static PyObject *
 H_set(void *ptr, PyObject *value, Py_ssize_t size)
 {
-    unsigned long val;
+    UREALLYLONG val;
     unsigned short x;
     if (get_ulong(value, &val) < 0)
         return NULL;
@@ -615,7 +604,7 @@ H_set(void *ptr, PyObject *value, Py_ssize_t size)
 static PyObject *
 H_set_sw(void *ptr, PyObject *value, Py_ssize_t size)
 {
-    unsigned long val;
+    UREALLYLONG val;
     unsigned short field;
     if (get_ulong(value, &val) < 0)
         return NULL;
@@ -650,7 +639,7 @@ H_get_sw(void *ptr, Py_ssize_t size)
 static PyObject *
 i_set(void *ptr, PyObject *value, Py_ssize_t size)
 {
-    long val;
+    REALLYLONG val;
     int x;
     if (get_long(value, &val) < 0)
         return NULL;
@@ -663,7 +652,7 @@ i_set(void *ptr, PyObject *value, Py_ssize_t size)
 static PyObject *
 i_set_sw(void *ptr, PyObject *value, Py_ssize_t size)
 {
-    long val;
+    REALLYLONG val;
     int field;
     if (get_long(value, &val) < 0)
         return NULL;
@@ -715,7 +704,7 @@ vBOOL_set(void *ptr, PyObject *value, Py_ssize_t size)
 static PyObject *
 vBOOL_get(void *ptr, Py_ssize_t size)
 {
-    return PyBool_FromLong((long)*(short int *)ptr);
+    return PyBool_FromLong((REALLYLONG)*(short int *)ptr);
 }
 #endif
 
@@ -745,13 +734,13 @@ bool_set(void *ptr, PyObject *value, Py_ssize_t size)
 static PyObject *
 bool_get(void *ptr, Py_ssize_t size)
 {
-    return PyBool_FromLong((long)*(BOOL_TYPE *)ptr);
+    return PyBool_FromLong((REALLYLONG)*(BOOL_TYPE *)ptr);
 }
 
 static PyObject *
 I_set(void *ptr, PyObject *value, Py_ssize_t size)
 {
-    unsigned long val;
+    UREALLYLONG val;
     unsigned int x;
     if (get_ulong(value, &val) < 0)
         return  NULL;
@@ -764,7 +753,7 @@ I_set(void *ptr, PyObject *value, Py_ssize_t size)
 static PyObject *
 I_set_sw(void *ptr, PyObject *value, Py_ssize_t size)
 {
-    unsigned long val;
+    UREALLYLONG val;
     unsigned int field;
     if (get_ulong(value, &val) < 0)
         return  NULL;
@@ -798,12 +787,12 @@ I_get_sw(void *ptr, Py_ssize_t size)
 static PyObject *
 l_set(void *ptr, PyObject *value, Py_ssize_t size)
 {
-    long val;
-    long x;
+    REALLYLONG val;
+    REALLYLONG x;
     if (get_long(value, &val) < 0)
         return NULL;
     memcpy(&x, ptr, sizeof(x));
-    x = SET(long, x, val, size);
+    x = SET(REALLYLONG, x, val, size);
     memcpy(ptr, &x, sizeof(x));
     _RET(value);
 }
@@ -811,13 +800,13 @@ l_set(void *ptr, PyObject *value, Py_ssize_t size)
 static PyObject *
 l_set_sw(void *ptr, PyObject *value, Py_ssize_t size)
 {
-    long val;
-    long field;
+    REALLYLONG val;
+    REALLYLONG field;
     if (get_long(value, &val) < 0)
         return NULL;
     memcpy(&field, ptr, sizeof(field));
     field = SWAP_LONG(field);
-    field = SET(long, field, val, size);
+    field = SET(REALLYLONG, field, val, size);
     field = SWAP_LONG(field);
     memcpy(ptr, &field, sizeof(field));
     _RET(value);
@@ -827,7 +816,7 @@ l_set_sw(void *ptr, PyObject *value, Py_ssize_t size)
 static PyObject *
 l_get(void *ptr, Py_ssize_t size)
 {
-    long val;
+    REALLYLONG val;
     memcpy(&val, ptr, sizeof(val));
     GET_BITFIELD(val, size);
     return PyInt_FromLong(val);
@@ -836,7 +825,7 @@ l_get(void *ptr, Py_ssize_t size)
 static PyObject *
 l_get_sw(void *ptr, Py_ssize_t size)
 {
-    long val;
+    REALLYLONG val;
     memcpy(&val, ptr, sizeof(val));
     val = SWAP_LONG(val);
     GET_BITFIELD(val, size);
@@ -846,12 +835,12 @@ l_get_sw(void *ptr, Py_ssize_t size)
 static PyObject *
 L_set(void *ptr, PyObject *value, Py_ssize_t size)
 {
-    unsigned long val;
-    unsigned long x;
+    UREALLYLONG val;
+    UREALLYLONG x;
     if (get_ulong(value, &val) < 0)
         return  NULL;
     memcpy(&x, ptr, sizeof(x));
-    x = SET(unsigned long, x, val, size);
+    x = SET(UREALLYLONG, x, val, size);
     memcpy(ptr, &x, sizeof(x));
     _RET(value);
 }
@@ -859,13 +848,13 @@ L_set(void *ptr, PyObject *value, Py_ssize_t size)
 static PyObject *
 L_set_sw(void *ptr, PyObject *value, Py_ssize_t size)
 {
-    unsigned long val;
-    unsigned long field;
+    UREALLYLONG val;
+    UREALLYLONG field;
     if (get_ulong(value, &val) < 0)
         return  NULL;
     memcpy(&field, ptr, sizeof(field));
     field = SWAP_LONG(field);
-    field = SET(unsigned long, field, val, size);
+    field = SET(UREALLYLONG, field, val, size);
     field = SWAP_LONG(field);
     memcpy(ptr, &field, sizeof(field));
     _RET(value);
@@ -875,7 +864,7 @@ L_set_sw(void *ptr, PyObject *value, Py_ssize_t size)
 static PyObject *
 L_get(void *ptr, Py_ssize_t size)
 {
-    unsigned long val;
+    UREALLYLONG val;
     memcpy(&val, ptr, sizeof(val));
     GET_BITFIELD(val, size);
     return PyLong_FromUnsignedLong(val);
@@ -884,7 +873,7 @@ L_get(void *ptr, Py_ssize_t size)
 static PyObject *
 L_get_sw(void *ptr, Py_ssize_t size)
 {
-    unsigned long val;
+    UREALLYLONG val;
     memcpy(&val, ptr, sizeof(val));
     val = SWAP_LONG(val);
     GET_BITFIELD(val, size);
@@ -1563,7 +1552,7 @@ P_set(void *ptr, PyObject *value, Py_ssize_t size)
     v = (void *)PyInt_AsUnsignedLongMask(value);
 #else
 #ifndef HAVE_LONG_LONG
-#   error "PyLong_AsVoidPtr: sizeof(void*) > sizeof(long), but no long long"
+#   error "PyLong_AsVoidPtr: sizeof(void*) > sizeof(REALLYLONG), but no REALLYLONG"
 #elif SIZEOF_LONG_LONG < SIZEOF_VOID_P
 #   error "PyLong_AsVoidPtr: sizeof(PY_LONG_LONG) < sizeof(void*)"
 #endif
@@ -1599,7 +1588,7 @@ static struct fielddesc formattable[] = {
     { 'H', H_set, H_get, &ffi_type_ushort, H_set_sw, H_get_sw},
     { 'i', i_set, i_get, &ffi_type_sint, i_set_sw, i_get_sw},
     { 'I', I_set, I_get, &ffi_type_uint, I_set_sw, I_get_sw},
-/* XXX Hm, sizeof(int) == sizeof(long) doesn't hold on every platform */
+/* XXX Hm, sizeof(int) == sizeof(REALLYLONG) doesn't hold on every platform */
 /* As soon as we can get rid of the type codes, this is no longer a problem */
 #if SIZEOF_LONG == 4
     { 'l', l_set, l_get, &ffi_type_sint32, l_set_sw, l_get_sw},
@@ -1662,7 +1651,7 @@ _ctypes_get_fielddesc(char *fmt)
             _ctypes_get_fielddesc("u")->pffi_type = &ffi_type_sshort;
         else if (sizeof(wchar_t) == sizeof(int))
             _ctypes_get_fielddesc("u")->pffi_type = &ffi_type_sint;
-        else if (sizeof(wchar_t) == sizeof(long))
+        else if (sizeof(wchar_t) == sizeof(REALLYLONG))
             _ctypes_get_fielddesc("u")->pffi_type = &ffi_type_slong;
 #endif
     }
@@ -1677,7 +1666,7 @@ _ctypes_get_fielddesc(char *fmt)
 typedef struct { char c; char x; } s_char;
 typedef struct { char c; short x; } s_short;
 typedef struct { char c; int x; } s_int;
-typedef struct { char c; long x; } s_long;
+typedef struct { char c; REALLYLONG x; } s_long;
 typedef struct { char c; float x; } s_float;
 typedef struct { char c; double x; } s_double;
 typedef struct { char c; long double x; } s_long_double;
@@ -1688,7 +1677,7 @@ typedef struct { char c; void *x; } s_void_p;
 #define CHAR_ALIGN (sizeof(s_char) - sizeof(char))
 #define SHORT_ALIGN (sizeof(s_short) - sizeof(short))
 #define INT_ALIGN (sizeof(s_int) - sizeof(int))
-#define LONG_ALIGN (sizeof(s_long) - sizeof(long))
+#define LONG_ALIGN (sizeof(s_REALLYLONG) - sizeof(REALLYLONG))
 */
 #define FLOAT_ALIGN (sizeof(s_float) - sizeof(float))
 #define DOUBLE_ALIGN (sizeof(s_double) - sizeof(double))

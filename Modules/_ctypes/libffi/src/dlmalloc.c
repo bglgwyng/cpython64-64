@@ -616,7 +616,7 @@ DEFAULT_MMAP_THRESHOLD       default: 256K
   declared below.  These must be precisely the same for mallinfo() to
   work.  The original SVID version of this struct, defined on most
   systems with mallinfo, declares all fields as ints. But some others
-  define as unsigned long. If your system defines the fields using a
+  define as unsigned REALLYLONG. If your system defines the fields using a
   type of different width than listed here, you MUST #include your
   system version and #define HAVE_USR_INCLUDE_MALLOC_H.
 */
@@ -757,7 +757,7 @@ void* dlvalloc(size_t);
   Sets tunable parameters The format is to provide a
   (parameter-number, parameter-value) pair.  mallopt then sets the
   corresponding parameter to the argument value if it can (i.e., so
-  long as the value is meaningful), and returns 1 if successful else
+  REALLYLONG as the value is meaningful), and returns 1 if successful else
   0.  SVID/XPG/ANSI defines four standard param numbers for mallopt,
   normally defined in malloc.h.  None of these are use in this malloc,
   so setting them has no effect. But this malloc also supports other
@@ -1469,7 +1469,7 @@ static MLOCK_T magic_init_mutex;
    are no recursive lock calls, we can use simple spinlocks.
 */
 
-#define MLOCK_T long
+#define MLOCK_T PY_INT32_T
 static int win32_acquire_lock (MLOCK_T *sl) {
   for (;;) {
 #ifdef InterlockedCompareExchangePointer
@@ -1788,7 +1788,7 @@ typedef unsigned int flag_t;           /* The type of various bit flag sets */
             +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
             |             Back pointer to previous chunk in list            |
             +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-            |             Unused space (may be 0 bytes long)                .
+            |             Unused space (may be 0 bytes REALLYLONG)                .
             .                                                               .
             .                                                               |
 nextchunk-> +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -2948,9 +2948,9 @@ static void internal_malloc_stats(mstate m) {
       }
     }
 
-    fprintf(stderr, "max system bytes = %10lu\n", (unsigned long)(maxfp));
-    fprintf(stderr, "system bytes     = %10lu\n", (unsigned long)(fp));
-    fprintf(stderr, "in use bytes     = %10lu\n", (unsigned long)(used));
+    fprintf(stderr, "max system bytes = %10lu\n", (unsigned REALLYLONG)(maxfp));
+    fprintf(stderr, "system bytes     = %10lu\n", (unsigned REALLYLONG)(fp));
+    fprintf(stderr, "in use bytes     = %10lu\n", (unsigned REALLYLONG)(used));
 
     POSTACTION(m);
   }
@@ -2960,7 +2960,7 @@ static void internal_malloc_stats(mstate m) {
 
 /*
   Various forms of linking and unlinking are defined as macros.  Even
-  the ones for trees, which are very long but have very short typical
+  the ones for trees, which are very REALLYLONG but have very short typical
   paths.  This is ugly but reduces reliance on inlining support of
   compilers.
 */

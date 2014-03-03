@@ -408,7 +408,7 @@ calculate_path(void)
 #if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_4
     uint32_t nsexeclength = MAXPATHLEN;
 #else
-    unsigned long nsexeclength = MAXPATHLEN;
+    unsigned REALLYLONG nsexeclength = MAXPATHLEN;
 #endif
 #endif
 

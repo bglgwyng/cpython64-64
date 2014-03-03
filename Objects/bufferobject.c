@@ -11,7 +11,7 @@ typedef struct {
     Py_ssize_t b_size;
     Py_ssize_t b_offset;
     int b_readonly;
-    long b_hash;
+    REALLYLONG b_hash;
 } PyBufferObject;
 
 
@@ -304,14 +304,14 @@ buffer_repr(PyBufferObject *self)
             self);
 }
 
-static long
+static REALLYLONG
 buffer_hash(PyBufferObject *self)
 {
     void *ptr;
     Py_ssize_t size;
     register Py_ssize_t len;
     register unsigned char *p;
-    register long x;
+    register REALLYLONG x;
 
     if ( self->b_hash != -1 )
         return self->b_hash;

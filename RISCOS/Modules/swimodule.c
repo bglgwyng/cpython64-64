@@ -74,7 +74,7 @@ static PyObject *PyBlock_New(PyObject *self,PyObject *args)
     }
     else
     { int n,k;
-      long *p=(long*)b->block;
+      REALLYLONG *p=(REALLYLONG*)b->block;
       if(!PyList_Check(init)) goto fail;
       n=PyList_Size(init);
       if (n>size) n=size;
@@ -225,12 +225,12 @@ static PyObject *block_item(PyBlockObject *b,Py_ssize_t i)
   { PyErr_SetString(PyExc_IndexError,"block index out of range");
     return NULL;
   }
-  return PyInt_FromLong(((long*)(b->block))[i]);
+  return PyInt_FromLong(((REALLYLONG*)(b->block))[i]);
 }
 
 static PyObject *block_slice(PyBlockObject *b,Py_ssize_t i,Py_ssize_t j)
 { Py_ssize_t n,k;
-  long *p=b->block;
+  REALLYLONG *p=b->block;
   PyObject *result;
   if(j>b->length/4) j=b->length/4;
   if(i<0||i>j)
@@ -252,13 +252,13 @@ static int block_ass_item(PyBlockObject *b,Py_ssize_t i,PyObject *v)
   { PyErr_SetString(PyExc_TypeError,"block item must be integer");
     return -1;
   }
-  ((long*)(b->block))[i]=PyInt_AsLong(v);
+  ((REALLYLONG*)(b->block))[i]=PyInt_AsLong(v);
   return 0;
 }
 
 static int block_ass_slice(PyBlockObject *b,Py_ssize_t i,Py_ssize_t j,PyObject *v)
 { Py_ssize_t n,k;
-  long *p=b->block;
+  REALLYLONG *p=b->block;
   if(j>b->length/4) j=b->length/4;
   if(i<0||i>j)
   { PyErr_SetString(PyExc_IndexError,"block index out of range");
@@ -290,9 +290,9 @@ static PySequenceMethods block_as_sequence=
 
 static PyObject *PyBlock_GetAttr(PyBlockObject *s,char *name)
 {
-  if (!strcmp(name, "length")) return PyInt_FromLong((long)s->length);
-  if (!strcmp(name, "start")) return PyInt_FromLong((long)s->block);
-  if (!strcmp(name,"end")) return PyInt_FromLong(((long)(s->block)+s->length));
+  if (!strcmp(name, "length")) return PyInt_FromLong((REALLYLONG)s->length);
+  if (!strcmp(name, "start")) return PyInt_FromLong((REALLYLONG)s->block);
+  if (!strcmp(name,"end")) return PyInt_FromLong(((REALLYLONG)(s->block)+s->length));
   if (!strcmp(name, "__members__"))
   { PyObject *list = PyList_New(3);
     if (list)
@@ -401,10 +401,10 @@ static PyObject *swi_swi(PyObject *self,PyObject *args)
   rno=0;j=0;
   for(;*fmt;fmt++)
   {  switch(*fmt)
-    { case 'i':v=PyInt_FromLong((long)r.r[rno++]); break;
+    { case 'i':v=PyInt_FromLong((REALLYLONG)r.r[rno++]); break;
       case 's':v=PyString_FromString((char*)(r.r[rno++])); break;
       case '.':rno++; continue;
-      case '*':v=PyInt_FromLong((long)carry); break;
+      case '*':v=PyInt_FromLong((REALLYLONG)carry); break;
     }
     if(!v) goto fail;
     if(n==1) return v;
@@ -451,7 +451,7 @@ static PyObject *swi_integers(PyObject *self, PyObject *arg)
   result=PyList_New(0);
   if (result) {
     while ( c>0 || (c==-1 && *i) ) {
-      result1 = PyInt_FromLong((long)*i);
+      result1 = PyInt_FromLong((REALLYLONG)*i);
       if (!result1) {
         Py_DECREF(result);
         return NULL;
@@ -494,7 +494,7 @@ static PyObject *swi_tuples(PyObject *self, PyObject *arg)
       for(j=0;j<l;j++) {
         if (zero && *i)
           zero = 0;   /* non-zero found */
-        result11 = PyInt_FromLong((long)(*i));
+        result11 = PyInt_FromLong((REALLYLONG)(*i));
         if (!result11) {
           Py_DECREF(result);
           return NULL;
@@ -536,7 +536,7 @@ static PyObject *swi_tuple(PyObject *self, PyObject *arg)
   if (!result)
     return NULL;
   for(j=0;j<c;j++) {
-    result1 = PyInt_FromLong((long)(i[j]));
+    result1 = PyInt_FromLong((REALLYLONG)(i[j]));
     if (!result1) {
       Py_DECREF(result);
       return NULL;

@@ -71,7 +71,7 @@ long PyThread_get_thread_ident(void)
         PyThread_init_thread();
     /* Jump through some hoops for Alpha OSF/1 */
     threadid = pth_self();
-    return (long) *(long *) &threadid;
+    return (REALLYLONG) *(REALLYLONG *) &threadid;
 }
 
 void PyThread_exit_thread(void)

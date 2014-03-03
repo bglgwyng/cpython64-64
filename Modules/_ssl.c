@@ -193,7 +193,7 @@ PySSL_SetError(PySSLObject *obj, int ret, char *filename, int lineno)
             break;
         case SSL_ERROR_SYSCALL:
         {
-            unsigned long e = ERR_get_error();
+            UREALLYLONG e = ERR_get_error();
             if (e == 0) {
                 if (ret == 0 || !obj->Socket) {
                     p = PY_SSL_ERROR_EOF;
@@ -215,7 +215,7 @@ PySSL_SetError(PySSLObject *obj, int ret, char *filename, int lineno)
         }
         case SSL_ERROR_SSL:
         {
-            unsigned long e = ERR_get_error();
+            UREALLYLONG e = ERR_get_error();
             p = PY_SSL_ERROR_SSL;
             if (e != 0)
                 /* XXX Protected by global interpreter lock */
@@ -1659,11 +1659,11 @@ static void
 _ssl_threadid_callback(CRYPTO_THREADID *id)
 {
     CRYPTO_THREADID_set_numeric(id,
-                                (unsigned long)PyThread_get_thread_ident());
+                                (UREALLYLONG)PyThread_get_thread_ident());
 }
 #else
 /* deprecated CRYPTO_set_id_callback() API. */
-static unsigned long
+static UREALLYLONG
 _ssl_thread_id_function (void) {
     return PyThread_get_thread_ident();
 }
@@ -1737,7 +1737,7 @@ PyMODINIT_FUNC
 init_ssl(void)
 {
     PyObject *m, *d, *r;
-    unsigned long libver;
+    UREALLYLONG libver;
     unsigned int major, minor, fix, patch, status;
 
     Py_TYPE(&PySSL_Type) = &PyType_Type;

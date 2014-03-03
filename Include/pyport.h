@@ -66,7 +66,7 @@ Used in:  PY_LONG_LONG
 
 #ifdef HAVE_LONG_LONG
 #ifndef PY_LONG_LONG
-#define PY_LONG_LONG long long
+#define PY_LONG_LONG REALLYLONG
 #if defined(LLONG_MAX)
 /* If LLONG_MAX is defined in limits.h, use that. */
 #define PY_LLONG_MIN LLONG_MIN
@@ -80,7 +80,7 @@ Used in:  PY_LONG_LONG
 #else
 /* Otherwise, rely on two's complement. */
 #define PY_ULLONG_MAX (~0ULL)
-#define PY_LLONG_MAX  ((long long)(PY_ULLONG_MAX>>1))
+#define PY_LLONG_MAX  ((REALLYLONG)(PY_ULLONG_MAX>>1))
 #define PY_LLONG_MIN (-PY_LLONG_MAX-1)
 #endif /* LLONG_MAX */
 #endif
@@ -88,7 +88,7 @@ Used in:  PY_LONG_LONG
 
 /* a build with 30-bit digits for Python long integers needs an exact-width
  * 32-bit unsigned integer type to store those digits.  (We could just use
- * type 'unsigned long', but that would be wasteful on a system where longs
+ * type 'UREALLYLONG', but that would be wasteful on a system where longs
  * are 64-bits.)  On Unix systems, the autoconf macro AC_TYPE_UINT32_T defines
  * uint32_t to be such a type unless stdint.h or inttypes.h defines uint32_t.
  * However, it doesn't set HAVE_UINT32_T, so we do that here.
@@ -164,8 +164,8 @@ typedef unsigned int    Py_uintptr_t;
 typedef int             Py_intptr_t;
 
 #elif SIZEOF_VOID_P <= SIZEOF_LONG
-typedef unsigned long   Py_uintptr_t;
-typedef long            Py_intptr_t;
+typedef UREALLYLONG   Py_uintptr_t;
+typedef REALLYLONG            Py_intptr_t;
 
 #elif defined(HAVE_LONG_LONG) && (SIZEOF_VOID_P <= SIZEOF_LONG_LONG)
 typedef unsigned PY_LONG_LONG   Py_uintptr_t;
@@ -204,7 +204,7 @@ typedef Py_intptr_t     Py_ssize_t;
 #define PY_SSIZE_T_MIN (-PY_SSIZE_T_MAX-1)
 
 #if SIZEOF_PID_T > SIZEOF_LONG
-#   error "Python doesn't support sizeof(pid_t) > sizeof(long)"
+#   error "Python doesn't support sizeof(pid_t) > sizeof(REALLYLONG)"
 #endif
 
 /* PY_FORMAT_SIZE_T is a platform-specific modifier for use in a printf
@@ -243,7 +243,7 @@ typedef Py_intptr_t     Py_ssize_t;
 #endif
 
 /* PY_FORMAT_LONG_LONG is analogous to PY_FORMAT_SIZE_T above, but for
- * the long long type instead of the size_t type.  It's only available
+ * the REALLYLONG type instead of the size_t type.  It's only available
  * when HAVE_LONG_LONG is defined. The "high level" Python format
  * functions listed above will interpret "lld" or "llu" correctly on
  * all platforms.
@@ -595,7 +595,7 @@ extern "C" {
 
 /* If we can't guarantee 53-bit precision, don't use the code
    in Python/dtoa.c, but fall back to standard code.  This
-   means that repr of a float will be long (17 sig digits).
+   means that repr of a float will be REALLYLONG (17 sig digits).
 
    Realistically, there are two things that could go wrong:
 
@@ -832,7 +832,7 @@ extern int fdatasync(int);
 
 #ifndef FD_SET
 
-typedef long fd_mask;
+typedef REALLYLONG fd_mask;
 
 #define NFDBITS (sizeof(fd_mask) * NBBY)        /* bits per mask */
 #ifndef howmany
@@ -859,20 +859,23 @@ typedef struct fd_set {
 #define INT_MAX 2147483647
 #endif
 
+#undef LONG_MAX
 #ifndef LONG_MAX
 #if SIZEOF_LONG == 4
 #define LONG_MAX 0X7FFFFFFFL
 #elif SIZEOF_LONG == 8
-#define LONG_MAX 0X7FFFFFFFFFFFFFFFL
+#define LONG_MAX 0X7FFFFFFFFFFFFFFFLL
 #else
 #error "could not set LONG_MAX in pyport.h"
 #endif
 #endif
 
+#undef LONG_MIN
 #ifndef LONG_MIN
 #define LONG_MIN (-LONG_MAX-1)
 #endif
 
+#undef LONG_BIT
 #ifndef LONG_BIT
 #define LONG_BIT (8 * SIZEOF_LONG)
 #endif
@@ -927,7 +930,7 @@ typedef struct fd_set {
 #endif
 
 /*
- * Older Microsoft compilers don't support the C99 long long literal suffixes,
+ * Older Microsoft compilers don't support the C99 REALLYLONG literal suffixes,
  * so these will be defined in PC/pyconfig.h for those compilers.
  */
 #ifndef Py_LL

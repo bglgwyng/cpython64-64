@@ -1,5 +1,5 @@
 /* Area:	closure_call
-   Purpose:	Test anonymous unsigned long argument.
+   Purpose:	Test anonymous unsigned REALLYLONG argument.
    Limitations:	none.
    PR:		none.
    Originator:	ARM Ltd. */
@@ -8,7 +8,7 @@
 
 #include "ffitest.h"
 
-typedef unsigned long T;
+typedef unsigned REALLYLONG T;
 
 static void cls_ret_T_fn(ffi_cif* cif __UNUSED__, void* resp, void** args,
 			 void* userdata __UNUSED__)

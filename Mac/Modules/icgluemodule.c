@@ -62,7 +62,7 @@ static PyObject *
 ici_ICGetSeed(iciobject *self, PyObject *args)
 {
     OSStatus err;
-    long seed;
+    REALLYLONG seed;
 
     if (!PyArg_ParseTuple(args, ""))
         return NULL;
@@ -128,7 +128,7 @@ ici_ICSetPref(iciobject *self, PyObject *args)
                                     &data, &datalen))
         return NULL;
     if ((err=ICSetPref(self->inst, key, (ICAttr)attr, (Ptr)data,
-                    (long)datalen)) != 0)
+                    (REALLYLONG)datalen)) != 0)
         return PyMac_Error(err);
     Py_INCREF(Py_None);
     return Py_None;
@@ -143,7 +143,7 @@ static PyObject *
 ici_ICCountPref(iciobject *self, PyObject *args)
 {
     OSStatus err;
-    long count;
+    REALLYLONG count;
 
     if (!PyArg_ParseTuple(args, ""))
         return NULL;
@@ -161,7 +161,7 @@ static PyObject *
 ici_ICGetIndPref(iciobject *self, PyObject *args)
 {
     OSStatus err;
-    long num;
+    REALLYLONG num;
     Str255 key;
 
     if (!PyArg_ParseTuple(args, "l", &num))
@@ -239,13 +239,13 @@ ici_ICParseURL(iciobject *self, PyObject *args)
     Str255 hint;
     char *data;
     int datalen;
-    long selStart, selEnd;
+    REALLYLONG selStart, selEnd;
     Handle h;
 
     if (!PyArg_ParseTuple(args, "O&s#llO&", PyMac_GetStr255, hint, &data, &datalen,
                             &selStart, &selEnd, ResObj_Convert, &h))
         return NULL;
-    if ((err=ICParseURL(self->inst, hint, (Ptr)data, (long)datalen,
+    if ((err=ICParseURL(self->inst, hint, (Ptr)data, (REALLYLONG)datalen,
                             &selStart, &selEnd, h)) != 0 )
         return PyMac_Error(err);
     return Py_BuildValue("ii", (int)selStart, (int)selEnd);
@@ -263,12 +263,12 @@ ici_ICLaunchURL(iciobject *self, PyObject *args)
     Str255 hint;
     char *data;
     int datalen;
-    long selStart, selEnd;
+    REALLYLONG selStart, selEnd;
 
     if (!PyArg_ParseTuple(args, "O&s#ll", PyMac_GetStr255, hint, &data, &datalen,
                             &selStart, &selEnd))
         return NULL;
-    if ((err=ICLaunchURL(self->inst, hint, (Ptr)data, (long)datalen,
+    if ((err=ICLaunchURL(self->inst, hint, (Ptr)data, (REALLYLONG)datalen,
                             &selStart, &selEnd)) != 0 )
         return PyMac_Error(err);
     return Py_BuildValue("ii", (int)selStart, (int)selEnd);

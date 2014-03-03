@@ -59,7 +59,7 @@ PyObject *ListObj_New(ListHandle itself)
     it->ob_itself = itself;
     it->ob_ldef_func = NULL;
     it->ob_must_be_disposed = 1;
-    SetListRefCon(itself, (long)it);
+    SetListRefCon(itself, (REALLYLONG)it);
     return (PyObject *)it;
 }
 
@@ -78,7 +78,7 @@ static void ListObj_dealloc(ListObject *self)
 {
     Py_XDECREF(self->ob_ldef_func);
     self->ob_ldef_func = NULL;
-    SetListRefCon(self->ob_itself, (long)0);
+    SetListRefCon(self->ob_itself, (REALLYLONG)0);
     if (self->ob_must_be_disposed && self->ob_itself) LDispose(self->ob_itself);
     self->ob_type->tp_free((PyObject *)self);
 }
@@ -692,7 +692,7 @@ static PyMethodDef ListObj_methods[] = {
 
 static PyObject *ListObj_get_listFlags(ListObject *self, void *closure)
 {
-    return Py_BuildValue("l", (long)GetListFlags(self->ob_itself) & 0xff);
+    return Py_BuildValue("l", (REALLYLONG)GetListFlags(self->ob_itself) & 0xff);
 }
 
 static int ListObj_set_listFlags(ListObject *self, PyObject *v, void *closure)
@@ -703,7 +703,7 @@ static int ListObj_set_listFlags(ListObject *self, PyObject *v, void *closure)
 
 static PyObject *ListObj_get_selFlags(ListObject *self, void *closure)
 {
-    return Py_BuildValue("l", (long)GetListSelectionFlags(self->ob_itself) & 0xff);
+    return Py_BuildValue("l", (REALLYLONG)GetListSelectionFlags(self->ob_itself) & 0xff);
 }
 
 static int ListObj_set_selFlags(ListObject *self, PyObject *v, void *closure)

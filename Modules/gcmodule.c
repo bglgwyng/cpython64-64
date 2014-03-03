@@ -64,7 +64,7 @@ static PyObject *gc_str = NULL;
 static PyObject *delstr = NULL;
 
 /* This is the number of objects who survived the last full collection. It
-   approximates the number of long lived objects tracked by the GC.
+   approximates the number of REALLYLONG lived objects tracked by the GC.
 
    (by "full collection", we mean a collection of the oldest generation).
 */
@@ -1088,7 +1088,7 @@ PyDoc_STRVAR(gc_isenabled__doc__,
 static PyObject *
 gc_isenabled(PyObject *self, PyObject *noargs)
 {
-    return PyBool_FromLong((long)enabled);
+    return PyBool_FromLong((REALLYLONG)enabled);
 }
 
 PyDoc_STRVAR(gc_collect__doc__,

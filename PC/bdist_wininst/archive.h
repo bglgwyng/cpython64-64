@@ -13,47 +13,60 @@
  * See: http://www.pkware.com/appnote.html
  */
 
+#ifndef REALLYLONG
+typedef long long REALLYLONG;
+#endif
+#ifndef UREALLYLONG
+typedef unsigned long long UREALLYLONG;
+#endif
+#ifndef NATIVELONG
+typedef long NATIVELONG;
+#endif
+#ifndef UNATIVELONG
+typedef unsigned long UNATIVELONG;
+#endif
+
 struct eof_cdir {
-    long tag;           /* must be 0x06054b50 */
+    NATIVELONG tag;           /* must be 0x06054b50 */
     short disknum;
     short firstdisk;
     short nTotalCDirThis;
     short nTotalCDir;
-    long nBytesCDir;
-    long ofsCDir;
+    NATIVELONG nBytesCDir;
+    NATIVELONG ofsCDir;
     short commentlen;
 };
 
 struct cdir {
-    long tag;           /* must be 0x02014b50 */
+    NATIVELONG tag;           /* must be 0x02014b50 */
     short version_made;
     short version_extract;
     short gp_bitflag;
     short comp_method;
     short last_mod_file_time;
     short last_mod_file_date;
-    long crc32;
-    long comp_size;
-    long uncomp_size;
+    NATIVELONG crc32;
+    NATIVELONG comp_size;
+    NATIVELONG uncomp_size;
     short fname_length;
     short extra_length;
     short comment_length;
     short disknum_start;
     short int_file_attr;
-    long ext_file_attr;
-    long ofs_local_header;
+    NATIVELONG ext_file_attr;
+    NATIVELONG ofs_local_header;
 };
 
 struct fhdr {
-    long tag;           /* must be 0x04034b50 */
+    NATIVELONG tag;           /* must be 0x04034b50 */
     short version_needed;
     short flags;
     short method;
     short last_mod_file_time;
     short last_mod_file_date;
-    long crc32;
-    long comp_size;
-    long uncomp_size;
+    NATIVELONG crc32;
+    NATIVELONG comp_size;
+    NATIVELONG uncomp_size;
     short fname_length;
     short extra_length;
 };

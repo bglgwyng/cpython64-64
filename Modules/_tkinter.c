@@ -1932,7 +1932,7 @@ Tkapp_ExprLong(PyObject *self, PyObject *args)
     char *s;
     PyObject *res = NULL;
     int retval;
-    long v;
+    REALLYLONG v;
 
     if (!PyArg_ParseTuple(args, "s:exprlong", &s))
         return NULL;
@@ -2395,7 +2395,7 @@ FileHandler(ClientData clientData, int mask)
     func = data->func;
     file = data->file;
 
-    arg = Py_BuildValue("(Oi)", file, (long) mask);
+    arg = Py_BuildValue("(Oi)", file, (REALLYLONG) mask);
     res = PyEval_CallObject(func, arg);
     Py_DECREF(arg);
 
@@ -3275,7 +3275,7 @@ DisableEventHook(void)
 
 /* all errors will be checked in one fell swoop in init_tkinter() */
 static void
-ins_long(PyObject *d, char *name, long val)
+ins_long(PyObject *d, char *name, REALLYLONG val)
 {
     PyObject *v = PyInt_FromLong(val);
     if (v) {

@@ -10,7 +10,7 @@
 #include "ffitest.h"
 
 typedef struct A {
-  unsigned long long a;
+  unsigned REALLYLONG a;
   unsigned char b;
 } A;
 

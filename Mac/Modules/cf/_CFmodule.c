@@ -84,13 +84,13 @@ extern int _OptionalCFURLRefObj_Convert(PyObject *, CFURLRef *);
 PyObject *CFRange_New(CFRange *itself)
 {
 
-    return Py_BuildValue("ll", (long)itself->location, (long)itself->length);
+    return Py_BuildValue("ll", (REALLYLONG)itself->location, (REALLYLONG)itself->length);
 }
 
 int
 CFRange_Convert(PyObject *v, CFRange *p_itself)
 {
-    long location, length;
+    REALLYLONG location, length;
 
     if( !PyArg_ParseTuple(v, "ll", &location, &length) )
         return 0;
@@ -1617,7 +1617,7 @@ static PyObject *CFMutableDataRefObj_CFDataAppendBytes(CFMutableDataRefObject *_
 {
     PyObject *_res = NULL;
     unsigned char *bytes__in__;
-    long bytes__len__;
+    REALLYLONG bytes__len__;
     int bytes__in_len__;
 #ifndef CFDataAppendBytes
     PyMac_PRECHECK(CFDataAppendBytes);
@@ -1638,7 +1638,7 @@ static PyObject *CFMutableDataRefObj_CFDataReplaceBytes(CFMutableDataRefObject *
     PyObject *_res = NULL;
     CFRange range;
     unsigned char *newBytes__in__;
-    long newBytes__len__;
+    REALLYLONG newBytes__len__;
     int newBytes__in_len__;
 #ifndef CFDataReplaceBytes
     PyMac_PRECHECK(CFDataReplaceBytes);
@@ -3722,7 +3722,7 @@ static PyObject *CF_CFDataCreate(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     CFDataRef _rv;
     unsigned char *bytes__in__;
-    long bytes__len__;
+    REALLYLONG bytes__len__;
     int bytes__in_len__;
 #ifndef CFDataCreate
     PyMac_PRECHECK(CFDataCreate);
@@ -3743,7 +3743,7 @@ static PyObject *CF_CFDataCreateWithBytesNoCopy(PyObject *_self, PyObject *_args
     PyObject *_res = NULL;
     CFDataRef _rv;
     unsigned char *bytes__in__;
-    long bytes__len__;
+    REALLYLONG bytes__len__;
     int bytes__in_len__;
 #ifndef CFDataCreateWithBytesNoCopy
     PyMac_PRECHECK(CFDataCreateWithBytesNoCopy);
@@ -4360,7 +4360,7 @@ static PyObject *CF_CFStringCreateWithBytes(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     CFStringRef _rv;
     unsigned char *bytes__in__;
-    long bytes__len__;
+    REALLYLONG bytes__len__;
     int bytes__in_len__;
     CFStringEncoding encoding;
     Boolean isExternalRepresentation;
@@ -4590,7 +4590,7 @@ static PyObject *CF_CFURLCreateWithBytes(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     CFURLRef _rv;
     unsigned char *URLBytes__in__;
-    long URLBytes__len__;
+    REALLYLONG URLBytes__len__;
     int URLBytes__in_len__;
     CFStringEncoding encoding;
     CFURLRef baseURL;
@@ -4617,7 +4617,7 @@ static PyObject *CF_CFURLCreateFromFileSystemRepresentation(PyObject *_self, PyO
     PyObject *_res = NULL;
     CFURLRef _rv;
     unsigned char *buffer__in__;
-    long buffer__len__;
+    REALLYLONG buffer__len__;
     int buffer__in_len__;
     Boolean isDirectory;
 #ifndef CFURLCreateFromFileSystemRepresentation
@@ -4641,7 +4641,7 @@ static PyObject *CF_CFURLCreateFromFileSystemRepresentationRelativeToBase(PyObje
     PyObject *_res = NULL;
     CFURLRef _rv;
     unsigned char *buffer__in__;
-    long buffer__len__;
+    REALLYLONG buffer__len__;
     int buffer__in_len__;
     Boolean isDirectory;
     CFURLRef baseURL;

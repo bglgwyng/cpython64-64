@@ -378,7 +378,7 @@ connection_fileno(ConnectionObject* self)
         PyErr_SetString(PyExc_IOError, "handle is invalid");
         return NULL;
     }
-    return PyInt_FromLong((long)self->handle);
+    return PyInt_FromLong((REALLYLONG)self->handle);
 }
 
 static PyObject *
@@ -412,19 +412,19 @@ connection_repr(ConnectionObject *self)
 static PyObject *
 connection_closed(ConnectionObject *self, void *closure)
 {
-    return PyBool_FromLong((long)(self->handle == INVALID_HANDLE_VALUE));
+    return PyBool_FromLong((REALLYLONG)(self->handle == INVALID_HANDLE_VALUE));
 }
 
 static PyObject *
 connection_readable(ConnectionObject *self, void *closure)
 {
-    return PyBool_FromLong((long)(self->flags & READABLE));
+    return PyBool_FromLong((REALLYLONG)(self->flags & READABLE));
 }
 
 static PyObject *
 connection_writable(ConnectionObject *self, void *closure)
 {
-    return PyBool_FromLong((long)(self->flags & WRITABLE));
+    return PyBool_FromLong((REALLYLONG)(self->flags & WRITABLE));
 }
 
 /*

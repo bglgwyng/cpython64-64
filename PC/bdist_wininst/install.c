@@ -1702,7 +1702,7 @@ static BOOL OpenLogfile(char *dir)
     char buffer[_MAX_PATH+1];
     time_t ltime;
     struct tm *now;
-    long result;
+    REALLYLONG result;
     HKEY hKey, hSubkey;
     char subkey_name[256];
     static char KeyName[] =
@@ -2326,7 +2326,7 @@ void DeleteRegistryKey(char *string)
     char *subkeyname;
     char *delim;
     HKEY hKey;
-    long result;
+    REALLYLONG result;
     char *line;
 
     line = strdup(string); /* so we can change it */
@@ -2367,7 +2367,7 @@ void DeleteRegistryValue(char *string)
     char *valuename;
     char *value;
     HKEY hKey;
-    long result;
+    REALLYLONG result;
     char *line;
 
     line = strdup(string); /* so we can change it */

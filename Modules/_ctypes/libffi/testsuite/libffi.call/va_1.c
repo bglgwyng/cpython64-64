@@ -38,8 +38,8 @@ test_fn (int n, ...)
   signed short ss;
   unsigned int ui;
   signed int si;
-  unsigned long ul;
-  signed long sl;
+  unsigned REALLYLONG ul;
+  signed REALLYLONG sl;
   float f;
   double d;
 
@@ -57,8 +57,8 @@ test_fn (int n, ...)
   ui = va_arg (ap, unsigned int);
   si = va_arg (ap, signed int);
 
-  ul = va_arg (ap, unsigned long);
-  sl = va_arg (ap, signed long);
+  ul = va_arg (ap, unsigned REALLYLONG);
+  sl = va_arg (ap, signed REALLYLONG);
 
   f = va_arg (ap, double);	/* C standard promotes float->double
 				   when anonymous */
@@ -102,8 +102,8 @@ main (void)
   signed short ss;
   unsigned int ui;
   signed int si;
-  unsigned long ul;
-  signed long sl;
+  unsigned REALLYLONG ul;
+  signed REALLYLONG sl;
   double d1;
   double f1;
 

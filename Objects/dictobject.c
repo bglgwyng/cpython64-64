@@ -124,9 +124,9 @@ polynomial.  In Tim's experiments the current scheme ran faster, produced
 equally good collision statistics, needed less code & used less memory.
 
 Theoretical Python 2.5 headache:  hash codes are only C "long", but
-sizeof(Py_ssize_t) > sizeof(long) may be possible.  In that case, and if a
+sizeof(Py_ssize_t) > sizeof(REALLYLONG) may be possible.  In that case, and if a
 dict is genuinely huge, then only the slots directly reachable via indexing
-by a C long can be the first slot in a probe sequence.  The probe sequence
+by a C REALLYLONG can be the first slot in a probe sequence.  The probe sequence
 will still eventually reach every slot in the table, but the collision rate
 on initial probes may be much higher than this scheme was designed for.
 Getting a hash code as fat as Py_ssize_t is the only real cure.  But in
@@ -147,11 +147,11 @@ _PyDict_Dummy(void)
 
 /* forward declarations */
 static PyDictEntry *
-lookdict_string(PyDictObject *mp, PyObject *key, long hash);
+lookdict_string(PyDictObject *mp, PyObject *key, REALLYLONG hash);
 
 #ifdef SHOW_CONVERSION_COUNTS
-static long created = 0L;
-static long converted = 0L;
+static REALLYLONG created = 0L;
+static REALLYLONG converted = 0L;
 
 static void
 show_counts(void)
@@ -317,7 +317,7 @@ the caller can (if it wishes) add the <key, value> pair to the returned
 PyDictEntry*.
 */
 static PyDictEntry *
-lookdict(PyDictObject *mp, PyObject *key, register long hash)
+lookdict(PyDictObject *mp, PyObject *key, register REALLYLONG hash)
 {
     register size_t i;
     register size_t perturb;
@@ -405,7 +405,7 @@ lookdict(PyDictObject *mp, PyObject *key, register long hash)
  * This is valuable because dicts with only string keys are very common.
  */
 static PyDictEntry *
-lookdict_string(PyDictObject *mp, PyObject *key, register long hash)
+lookdict_string(PyDictObject *mp, PyObject *key, register REALLYLONG hash)
 {
     register size_t i;
     register size_t perturb;
@@ -507,7 +507,7 @@ Internal routine to insert a new item into the table when you have entry object.
 Used by insertdict.
 */
 static int
-insertdict_by_entry(register PyDictObject *mp, PyObject *key, long hash,
+insertdict_by_entry(register PyDictObject *mp, PyObject *key, REALLYLONG hash,
                     PyDictEntry *ep, PyObject *value)
 {
     PyObject *old_value;
@@ -542,7 +542,7 @@ Eats a reference to key and one to value.
 Returns -1 if an error occurred, or 0 on success.
 */
 static int
-insertdict(register PyDictObject *mp, PyObject *key, long hash, PyObject *value)
+insertdict(register PyDictObject *mp, PyObject *key, REALLYLONG hash, PyObject *value)
 {
     register PyDictEntry *ep;
 
@@ -565,7 +565,7 @@ Note that no refcounts are changed by this routine; if needed, the caller
 is responsible for incref'ing `key` and `value`.
 */
 static void
-insertdict_clean(register PyDictObject *mp, PyObject *key, long hash,
+insertdict_clean(register PyDictObject *mp, PyObject *key, REALLYLONG hash,
                  PyObject *value)
 {
     register size_t i;
@@ -661,7 +661,7 @@ dictresize(PyDictObject *mp, Py_ssize_t minused)
     for (ep = oldtable; i > 0; ep++) {
         if (ep->me_value != NULL) {             /* active entry */
             --i;
-            insertdict_clean(mp, ep->me_key, (long)ep->me_hash,
+            insertdict_clean(mp, ep->me_key, (REALLYLONG)ep->me_hash,
                              ep->me_value);
         }
         else if (ep->me_key != NULL) {          /* dummy entry */
@@ -707,7 +707,7 @@ _PyDict_NewPresized(Py_ssize_t minused)
 PyObject *
 PyDict_GetItem(PyObject *op, PyObject *key)
 {
-    long hash;
+    REALLYLONG hash;
     PyDictObject *mp = (PyDictObject *)op;
     PyDictEntry *ep;
     PyThreadState *tstate;
@@ -751,7 +751,7 @@ PyDict_GetItem(PyObject *op, PyObject *key)
 
 static int
 dict_set_item_by_hash_or_entry(register PyObject *op, PyObject *key,
-                               long hash, PyDictEntry *ep, PyObject *value)
+                               REALLYLONG hash, PyDictEntry *ep, PyObject *value)
 {
     register PyDictObject *mp;
     register Py_ssize_t n_used;
@@ -797,7 +797,7 @@ dict_set_item_by_hash_or_entry(register PyObject *op, PyObject *key,
 int
 PyDict_SetItem(register PyObject *op, PyObject *key, PyObject *value)
 {
-    register long hash;
+    register REALLYLONG hash;
 
     if (!PyDict_Check(op)) {
         PyErr_BadInternalCall();
@@ -822,7 +822,7 @@ int
 PyDict_DelItem(PyObject *op, PyObject *key)
 {
     register PyDictObject *mp;
-    register long hash;
+    register REALLYLONG hash;
     register PyDictEntry *ep;
     PyObject *old_value, *old_key;
 
@@ -968,7 +968,7 @@ PyDict_Next(PyObject *op, Py_ssize_t *ppos, PyObject **pkey, PyObject **pvalue)
 
 /* Internal version of PyDict_Next that returns a hash value in addition to the key and value.*/
 int
-_PyDict_Next(PyObject *op, Py_ssize_t *ppos, PyObject **pkey, PyObject **pvalue, long *phash)
+_PyDict_Next(PyObject *op, Py_ssize_t *ppos, PyObject **pkey, PyObject **pvalue, REALLYLONG *phash)
 {
     register Py_ssize_t i;
     register Py_ssize_t mask;
@@ -986,7 +986,7 @@ _PyDict_Next(PyObject *op, Py_ssize_t *ppos, PyObject **pkey, PyObject **pvalue,
     *ppos = i+1;
     if (i > mask)
         return 0;
-    *phash = (long)(ep[i].me_hash);
+    *phash = (REALLYLONG)(ep[i].me_hash);
     if (pkey)
         *pkey = ep[i].me_key;
     if (pvalue)
@@ -1164,7 +1164,7 @@ static PyObject *
 dict_subscript(PyDictObject *mp, register PyObject *key)
 {
     PyObject *v;
-    long hash;
+    REALLYLONG hash;
     PyDictEntry *ep;
     assert(mp->ma_table != NULL);
     if (!PyString_CheckExact(key) ||
@@ -1359,7 +1359,7 @@ dict_fromkeys(PyObject *cls, PyObject *args)
             PyObject *oldvalue;
             Py_ssize_t pos = 0;
             PyObject *key;
-            long hash;
+            REALLYLONG hash;
 
             if (dictresize(mp, Py_SIZE(seq))) {
                 Py_DECREF(d);
@@ -1380,7 +1380,7 @@ dict_fromkeys(PyObject *cls, PyObject *args)
             PyDictObject *mp = (PyDictObject *)d;
             Py_ssize_t pos = 0;
             PyObject *key;
-            long hash;
+            REALLYLONG hash;
 
             if (dictresize(mp, PySet_GET_SIZE(seq))) {
                 Py_DECREF(d);
@@ -1590,7 +1590,7 @@ PyDict_Merge(PyObject *a, PyObject *b, int override)
                 Py_INCREF(entry->me_key);
                 Py_INCREF(entry->me_value);
                 if (insertdict(mp, entry->me_key,
-                               (long)entry->me_hash,
+                               (REALLYLONG)entry->me_hash,
                                entry->me_value) != 0)
                     return -1;
             }
@@ -1907,7 +1907,7 @@ dict_richcompare(PyObject *v, PyObject *w, int op)
 static PyObject *
 dict_contains(register PyDictObject *mp, PyObject *key)
 {
-    long hash;
+    REALLYLONG hash;
     PyDictEntry *ep;
 
     if (!PyString_CheckExact(key) ||
@@ -1937,7 +1937,7 @@ dict_get(register PyDictObject *mp, PyObject *args)
     PyObject *key;
     PyObject *failobj = Py_None;
     PyObject *val = NULL;
-    long hash;
+    REALLYLONG hash;
     PyDictEntry *ep;
 
     if (!PyArg_UnpackTuple(args, "get", 1, 2, &key, &failobj))
@@ -1966,7 +1966,7 @@ dict_setdefault(register PyDictObject *mp, PyObject *args)
     PyObject *key;
     PyObject *failobj = Py_None;
     PyObject *val = NULL;
-    long hash;
+    REALLYLONG hash;
     PyDictEntry *ep;
 
     if (!PyArg_UnpackTuple(args, "setdefault", 1, 2, &key, &failobj))
@@ -2002,7 +2002,7 @@ dict_clear(register PyDictObject *mp)
 static PyObject *
 dict_pop(PyDictObject *mp, PyObject *args)
 {
-    long hash;
+    REALLYLONG hash;
     PyDictEntry *ep;
     PyObject *old_value, *old_key;
     PyObject *key, *deflt = NULL;
@@ -2279,7 +2279,7 @@ static PyMethodDef mapp_methods[] = {
 int
 PyDict_Contains(PyObject *op, PyObject *key)
 {
-    long hash;
+    REALLYLONG hash;
     PyDictObject *mp = (PyDictObject *)op;
     PyDictEntry *ep;
 
@@ -2295,7 +2295,7 @@ PyDict_Contains(PyObject *op, PyObject *key)
 
 /* Internal version of PyDict_Contains used when the hash value is already known */
 int
-_PyDict_Contains(PyObject *op, PyObject *key, long hash)
+_PyDict_Contains(PyObject *op, PyObject *key, REALLYLONG hash)
 {
     PyDictObject *mp = (PyDictObject *)op;
     PyDictEntry *ep;

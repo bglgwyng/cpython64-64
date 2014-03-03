@@ -7,7 +7,7 @@
 
 static PyObject *int_int(PyIntObject *v);
 
-long
+REALLYLONG
 PyInt_GetMax(void)
 {
     return LONG_MAX;            /* To initialize sys.maxint */
@@ -84,7 +84,7 @@ Py_ssize_t quick_neg_int_allocs;
 #endif
 
 PyObject *
-PyInt_FromLong(long ival)
+PyInt_FromLong(REALLYLONG ival)
 {
     register PyIntObject *v;
 #if NSMALLNEGINTS + NSMALLPOSINTS > 0
@@ -116,7 +116,7 @@ PyObject *
 PyInt_FromSize_t(size_t ival)
 {
     if (ival <= LONG_MAX)
-        return PyInt_FromLong((long)ival);
+        return PyInt_FromLong((REALLYLONG)ival);
     return _PyLong_FromSize_t(ival);
 }
 
@@ -124,7 +124,7 @@ PyObject *
 PyInt_FromSsize_t(Py_ssize_t ival)
 {
     if (ival >= LONG_MIN && ival <= LONG_MAX)
-        return PyInt_FromLong((long)ival);
+        return PyInt_FromLong((REALLYLONG)ival);
     return _PyLong_FromSsize_t(ival);
 }
 
@@ -146,12 +146,12 @@ int_free(PyIntObject *v)
     free_list = v;
 }
 
-long
+REALLYLONG
 PyInt_AsLong(register PyObject *op)
 {
     PyNumberMethods *nb;
     PyIntObject *io;
-    long val;
+    REALLYLONG val;
 
     if (op && PyInt_Check(op))
         return PyInt_AS_LONG((PyIntObject*) op);
@@ -192,7 +192,7 @@ PyInt_AsLong(register PyObject *op)
 int
 _PyInt_AsInt(PyObject *obj)
 {
-    long result = PyInt_AsLong(obj);
+    REALLYLONG result = PyInt_AsLong(obj);
     if (result == -1 && PyErr_Occurred())
         return -1;
     if (result > INT_MAX || result < INT_MIN) {
@@ -232,7 +232,7 @@ PyInt_AsSsize_t(register PyObject *op)
     }
 
     if (nb->nb_long != 0)
-        io = (PyIntObject*) (*nb->nb_long) (op);
+        io = (PyIntObject*) (*nb->nb_REALLYLONG) (op);
     else
         io = (PyIntObject*) (*nb->nb_int) (op);
     if (io == NULL)
@@ -262,12 +262,12 @@ PyInt_AsSsize_t(register PyObject *op)
 #endif
 }
 
-unsigned long
+UREALLYLONG
 PyInt_AsUnsignedLongMask(register PyObject *op)
 {
     PyNumberMethods *nb;
     PyIntObject *io;
-    unsigned long val;
+    UREALLYLONG val;
 
     if (op && PyInt_Check(op))
         return PyInt_AS_LONG((PyIntObject*) op);
@@ -277,18 +277,18 @@ PyInt_AsUnsignedLongMask(register PyObject *op)
     if (op == NULL || (nb = Py_TYPE(op)->tp_as_number) == NULL ||
         nb->nb_int == NULL) {
         PyErr_SetString(PyExc_TypeError, "an integer is required");
-        return (unsigned long)-1;
+        return (UREALLYLONG)-1;
     }
 
     io = (PyIntObject*) (*nb->nb_int) (op);
     if (io == NULL)
-        return (unsigned long)-1;
+        return (UREALLYLONG)-1;
     if (!PyInt_Check(io)) {
         if (PyLong_Check(io)) {
             val = PyLong_AsUnsignedLongMask((PyObject *)io);
             Py_DECREF(io);
             if (PyErr_Occurred())
-                return (unsigned long)-1;
+                return (UREALLYLONG)-1;
             return val;
         }
         else
@@ -296,7 +296,7 @@ PyInt_AsUnsignedLongMask(register PyObject *op)
             Py_DECREF(io);
             PyErr_SetString(PyExc_TypeError,
                         "__int__ method should return an integer");
-            return (unsigned long)-1;
+            return (UREALLYLONG)-1;
         }
     }
 
@@ -356,7 +356,7 @@ PyObject *
 PyInt_FromString(char *s, char **pend, int base)
 {
     char *end;
-    long x;
+    REALLYLONG x;
     Py_ssize_t slen;
     PyObject *sobj, *srepr;
 
@@ -370,7 +370,7 @@ PyInt_FromString(char *s, char **pend, int base)
         s++;
     errno = 0;
     if (base == 0 && s[0] == '0') {
-        x = (long) PyOS_strtoul(s, &end, base);
+        x = (REALLYLONG) PyOS_strtoul(s, &end, base);
         if (x < 0)
             return PyLong_FromString(s, pend, base);
     }
@@ -443,9 +443,9 @@ static int
 int_print(PyIntObject *v, FILE *fp, int flags)
      /* flags -- not used but required by interface */
 {
-    long int_val = v->ob_ival;
+    REALLYLONG int_val = v->ob_ival;
     Py_BEGIN_ALLOW_THREADS
-    fprintf(fp, "%ld", int_val);
+    fprintf(fp, "%lld", int_val);
     Py_END_ALLOW_THREADS
     return 0;
 }
@@ -453,17 +453,17 @@ int_print(PyIntObject *v, FILE *fp, int flags)
 static int
 int_compare(PyIntObject *v, PyIntObject *w)
 {
-    register long i = v->ob_ival;
-    register long j = w->ob_ival;
+    register REALLYLONG i = v->ob_ival;
+    register REALLYLONG j = w->ob_ival;
     return (i < j) ? -1 : (i > j) ? 1 : 0;
 }
 
-static long
+static REALLYLONG
 int_hash(PyIntObject *v)
 {
     /* XXX If this is changed, you also need to change the way
        Python's long, float and complex types are hashed. */
-    long x = v -> ob_ival;
+    REALLYLONG x = v -> ob_ival;
     if (x == -1)
         x = -2;
     return x;
@@ -472,11 +472,11 @@ int_hash(PyIntObject *v)
 static PyObject *
 int_add(PyIntObject *v, PyIntObject *w)
 {
-    register long a, b, x;
+    register REALLYLONG a, b, x;
     CONVERT_TO_LONG(v, a);
     CONVERT_TO_LONG(w, b);
     /* casts in the line below avoid undefined behaviour on overflow */
-    x = (long)((unsigned long)a + b);
+    x = (REALLYLONG)((UREALLYLONG)a + b);
     if ((x^a) >= 0 || (x^b) >= 0)
         return PyInt_FromLong(x);
     return PyLong_Type.tp_as_number->nb_add((PyObject *)v, (PyObject *)w);
@@ -485,11 +485,11 @@ int_add(PyIntObject *v, PyIntObject *w)
 static PyObject *
 int_sub(PyIntObject *v, PyIntObject *w)
 {
-    register long a, b, x;
+    register REALLYLONG a, b, x;
     CONVERT_TO_LONG(v, a);
     CONVERT_TO_LONG(w, b);
     /* casts in the line below avoid undefined behaviour on overflow */
-    x = (long)((unsigned long)a - b);
+    x = (REALLYLONG)((UREALLYLONG)a - b);
     if ((x^a) >= 0 || (x^~b) >= 0)
         return PyInt_FromLong(x);
     return PyLong_Type.tp_as_number->nb_subtract((PyObject *)v,
@@ -503,21 +503,21 @@ they didn't work on all platforms, or failed in endcases (a product of
 
 Here's another way:
 
-The native long product x*y is either exactly right or *way* off, being
+The native REALLYLONG product x*y is either exactly right or *way* off, being
 just the last n bits of the true product, where n is the number of bits
-in a long (the delivered product is the true product plus i*2**n for
+in a REALLYLONG (the delivered product is the true product plus i*2**n for
 some integer i).
 
 The native double product (double)x * (double)y is subject to three
-rounding errors:  on a sizeof(long)==8 box, each cast to double can lose
-info, and even on a sizeof(long)==4 box, the multiplication can lose info.
-But, unlike the native long product, it's not in *range* trouble:  even
-if sizeof(long)==32 (256-bit longs), the product easily fits in the
+rounding errors:  on a sizeof(REALLYLONG)==8 box, each cast to double can lose
+info, and even on a sizeof(REALLYLONG)==4 box, the multiplication can lose info.
+But, unlike the native REALLYLONG product, it's not in *range* trouble:  even
+if sizeof(REALLYLONG)==32 (256-bit longs), the product easily fits in the
 dynamic range of a double.  So the leading 50 (or so) bits of the double
 product are correct.
 
 We check these two ways against each other, and declare victory if they're
-approximately the same.  Else, because the native long product is the only
+approximately the same.  Else, because the native REALLYLONG product is the only
 one that can lose catastrophic amounts of information, it's the native long
 product that must have overflowed.
 */
@@ -525,15 +525,15 @@ product that must have overflowed.
 static PyObject *
 int_mul(PyObject *v, PyObject *w)
 {
-    long a, b;
-    long longprod;                      /* a*b in native long arithmetic */
+    REALLYLONG a, b;
+    REALLYLONG longprod;                /* a*b in native long arithmetic */
     double doubled_longprod;            /* (double)longprod */
     double doubleprod;                  /* (double)a * (double)b */
 
     CONVERT_TO_LONG(v, a);
     CONVERT_TO_LONG(w, b);
     /* casts in the next line avoid undefined behaviour on overflow */
-    longprod = (long)((unsigned long)a * b);
+    longprod = (REALLYLONG)((UREALLYLONG)a * b);
     doubleprod = (double)a * (double)b;
     doubled_longprod = (double)longprod;
 
@@ -564,13 +564,13 @@ int_mul(PyObject *v, PyObject *w)
 /* Integer overflow checking for unary negation: on a 2's-complement
  * box, -x overflows iff x is the most negative long.  In this case we
  * get -x == x.  However, -x is undefined (by C) if x /is/ the most
- * negative long (it's a signed overflow case), and some compilers care.
- * So we cast x to unsigned long first.  However, then other compilers
+ * negative REALLYLONG (it's a signed overflow case), and some compilers care.
+ * So we cast x to UREALLYLONG first.  However, then other compilers
  * warn about applying unary minus to an unsigned operand.  Hence the
  * weird "0-".
  */
 #define UNARY_NEG_WOULD_OVERFLOW(x)     \
-    ((x) < 0 && (unsigned long)(x) == 0-(unsigned long)(x))
+    ((x) < 0 && (UREALLYLONG)(x) == 0-(UREALLYLONG)(x))
 
 /* Return type of i_divmod */
 enum divmod_result {
@@ -580,10 +580,10 @@ enum divmod_result {
 };
 
 static enum divmod_result
-i_divmod(register long x, register long y,
-         long *p_xdivy, long *p_xmody)
+i_divmod(register REALLYLONG x, register REALLYLONG y,
+         REALLYLONG *p_xdivy, REALLYLONG *p_xmody)
 {
-    long xdivy, xmody;
+    REALLYLONG xdivy, xmody;
 
     if (y == 0) {
         PyErr_SetString(PyExc_ZeroDivisionError,
@@ -599,11 +599,11 @@ i_divmod(register long x, register long y,
      * behaviour, and C99 prohibits it, but it's allowed by C89;
      * for an example of overflow, take x = LONG_MIN, y = 5 or x =
      * LONG_MAX, y = -5.)  However, x - xdivy*y is always
-     * representable as a long, since it lies strictly between
+     * representable as a REALLYLONG, since it lies strictly between
      * -abs(y) and abs(y).  We add casts to avoid intermediate
      * overflow.
      */
-    xmody = (long)(x - (unsigned long)xdivy * y);
+    xmody = (REALLYLONG)(x - (UREALLYLONG)xdivy * y);
     /* If the signs of x and y differ, and the remainder is non-0,
      * C89 doesn't define whether xdivy is now the floor or the
      * ceiling of the infinitely precise quotient.  We want the floor,
@@ -622,8 +622,8 @@ i_divmod(register long x, register long y,
 static PyObject *
 int_div(PyIntObject *x, PyIntObject *y)
 {
-    long xi, yi;
-    long d, m;
+    REALLYLONG xi, yi;
+    REALLYLONG d, m;
     CONVERT_TO_LONG(x, xi);
     CONVERT_TO_LONG(y, yi);
     switch (i_divmod(xi, yi, &d, &m)) {
@@ -640,8 +640,8 @@ int_div(PyIntObject *x, PyIntObject *y)
 static PyObject *
 int_classic_div(PyIntObject *x, PyIntObject *y)
 {
-    long xi, yi;
-    long d, m;
+    REALLYLONG xi, yi;
+    REALLYLONG d, m;
     CONVERT_TO_LONG(x, xi);
     CONVERT_TO_LONG(y, yi);
     if (Py_DivisionWarningFlag &&
@@ -661,10 +661,10 @@ int_classic_div(PyIntObject *x, PyIntObject *y)
 static PyObject *
 int_true_divide(PyIntObject *x, PyIntObject *y)
 {
-    long xi, yi;
+    REALLYLONG xi, yi;
     /* If they aren't both ints, give someone else a chance.  In
        particular, this lets int/long get handled by longs, which
-       underflows to 0 gracefully if the long is too big to convert
+       underflows to 0 gracefully if the REALLYLONG is too big to convert
        to float. */
     CONVERT_TO_LONG(x, xi);
     CONVERT_TO_LONG(y, yi);
@@ -680,7 +680,7 @@ int_true_divide(PyIntObject *x, PyIntObject *y)
 #if DBL_MANT_DIG < WIDTH_OF_ULONG
     if ((xi >= 0 ? 0UL + xi : 0UL - xi) >> DBL_MANT_DIG ||
         (yi >= 0 ? 0UL + yi : 0UL - yi) >> DBL_MANT_DIG)
-        /* Large x or y.  Use long integer arithmetic. */
+        /* Large x or y.  Use REALLYLONG integer arithmetic. */
         return PyLong_Type.tp_as_number->nb_true_divide(
             (PyObject *)x, (PyObject *)y);
     else
@@ -693,8 +693,8 @@ int_true_divide(PyIntObject *x, PyIntObject *y)
 static PyObject *
 int_mod(PyIntObject *x, PyIntObject *y)
 {
-    long xi, yi;
-    long d, m;
+    REALLYLONG xi, yi;
+    REALLYLONG d, m;
     CONVERT_TO_LONG(x, xi);
     CONVERT_TO_LONG(y, yi);
     switch (i_divmod(xi, yi, &d, &m)) {
@@ -711,8 +711,8 @@ int_mod(PyIntObject *x, PyIntObject *y)
 static PyObject *
 int_divmod(PyIntObject *x, PyIntObject *y)
 {
-    long xi, yi;
-    long d, m;
+    REALLYLONG xi, yi;
+    REALLYLONG d, m;
     CONVERT_TO_LONG(x, xi);
     CONVERT_TO_LONG(y, yi);
     switch (i_divmod(xi, yi, &d, &m)) {
@@ -729,7 +729,7 @@ int_divmod(PyIntObject *x, PyIntObject *y)
 static PyObject *
 int_pow(PyIntObject *v, PyIntObject *w, PyIntObject *z)
 {
-    register long iv, iw, iz=0, ix, temp, prev;
+    register REALLYLONG iv, iw, iz=0, ix, temp, prev;
     CONVERT_TO_LONG(v, iv);
     CONVERT_TO_LONG(w, iw);
     if (iw < 0) {
@@ -766,12 +766,12 @@ int_pow(PyIntObject *v, PyIntObject *w, PyIntObject *z)
         prev = ix;              /* Save value for overflow check */
         if (iw & 1) {
             /*
-             * The (unsigned long) cast below ensures that the multiplication
+             * The (UREALLYLONG) cast below ensures that the multiplication
              * is interpreted as an unsigned operation rather than a signed one
              * (C99 6.3.1.8p1), thus avoiding the perils of undefined behaviour
              * from signed arithmetic overflow (C99 6.5p5).  See issue #12973.
              */
-            ix = (unsigned long)ix * temp;
+            ix = (UREALLYLONG)ix * temp;
             if (temp == 0)
                 break; /* Avoid ix / 0 */
             if (ix / temp != prev) {
@@ -784,7 +784,7 @@ int_pow(PyIntObject *v, PyIntObject *w, PyIntObject *z)
         iw >>= 1;               /* Shift exponent down by 1 bit */
         if (iw==0) break;
         prev = temp;
-        temp = (unsigned long)temp * temp;  /* Square the value of temp */
+        temp = (UREALLYLONG)temp * temp;  /* Square the value of temp */
         if (prev != 0 && temp / prev != prev) {
             return PyLong_Type.tp_as_number->nb_power(
                 (PyObject *)v, (PyObject *)w, (PyObject *)z);
@@ -796,7 +796,7 @@ int_pow(PyIntObject *v, PyIntObject *w, PyIntObject *z)
         }
     }
     if (iz) {
-        long div, mod;
+        REALLYLONG div, mod;
         switch (i_divmod(ix, iz, &div, &mod)) {
         case DIVMOD_OK:
             ix = mod;
@@ -814,7 +814,7 @@ int_pow(PyIntObject *v, PyIntObject *w, PyIntObject *z)
 static PyObject *
 int_neg(PyIntObject *v)
 {
-    register long a;
+    register REALLYLONG a;
     a = v->ob_ival;
     /* check for overflow */
     if (UNARY_NEG_WOULD_OVERFLOW(a)) {
@@ -853,7 +853,7 @@ int_invert(PyIntObject *v)
 static PyObject *
 int_lshift(PyIntObject *v, PyIntObject *w)
 {
-    long a, b, c;
+    REALLYLONG a, b, c;
     PyObject *vv, *ww, *result;
 
     CONVERT_TO_LONG(v, a);
@@ -879,7 +879,7 @@ int_lshift(PyIntObject *v, PyIntObject *w)
         return result;
     }
     c = a << b;
-    if (a != Py_ARITHMETIC_RIGHT_SHIFT(long, c, b)) {
+    if (a != Py_ARITHMETIC_RIGHT_SHIFT(REALLYLONG, c, b)) {
         vv = PyLong_FromLong(PyInt_AS_LONG(v));
         if (vv == NULL)
             return NULL;
@@ -899,7 +899,7 @@ int_lshift(PyIntObject *v, PyIntObject *w)
 static PyObject *
 int_rshift(PyIntObject *v, PyIntObject *w)
 {
-    register long a, b;
+    register REALLYLONG a, b;
     CONVERT_TO_LONG(v, a);
     CONVERT_TO_LONG(w, b);
     if (b < 0) {
@@ -915,7 +915,7 @@ int_rshift(PyIntObject *v, PyIntObject *w)
             a = 0;
     }
     else {
-        a = Py_ARITHMETIC_RIGHT_SHIFT(long, a, b);
+        a = Py_ARITHMETIC_RIGHT_SHIFT(REALLYLONG, a, b);
     }
     return PyInt_FromLong(a);
 }
@@ -923,7 +923,7 @@ int_rshift(PyIntObject *v, PyIntObject *w)
 static PyObject *
 int_and(PyIntObject *v, PyIntObject *w)
 {
-    register long a, b;
+    register REALLYLONG a, b;
     CONVERT_TO_LONG(v, a);
     CONVERT_TO_LONG(w, b);
     return PyInt_FromLong(a & b);
@@ -932,7 +932,7 @@ int_and(PyIntObject *v, PyIntObject *w)
 static PyObject *
 int_xor(PyIntObject *v, PyIntObject *w)
 {
-    register long a, b;
+    register REALLYLONG a, b;
     CONVERT_TO_LONG(v, a);
     CONVERT_TO_LONG(w, b);
     return PyInt_FromLong(a ^ b);
@@ -941,7 +941,7 @@ int_xor(PyIntObject *v, PyIntObject *w)
 static PyObject *
 int_or(PyIntObject *v, PyIntObject *w)
 {
-    register long a, b;
+    register REALLYLONG a, b;
     CONVERT_TO_LONG(v, a);
     CONVERT_TO_LONG(w, b);
     return PyInt_FromLong(a | b);
@@ -980,7 +980,7 @@ static const unsigned char BitLengthTable[32] = {
 };
 
 static int
-bits_in_ulong(unsigned long d)
+bits_in_ulong(UREALLYLONG d)
 {
     int d_bits = 0;
     while (d >= 32) {
@@ -1008,14 +1008,14 @@ int_float(PyIntObject *v)
 static PyObject *
 int_float(PyIntObject *v)
 {
-    unsigned long abs_ival, lsb;
+    UREALLYLONG abs_ival, lsb;
     int round_up;
 
     if (v->ob_ival < 0)
-        abs_ival = 0U-(unsigned long)v->ob_ival;
+        abs_ival = 0ULL-(UREALLYLONG)v->ob_ival;
     else
-        abs_ival = (unsigned long)v->ob_ival;
-    if (abs_ival < (1L << DBL_MANT_DIG))
+        abs_ival = (UREALLYLONG)v->ob_ival;
+    if (abs_ival < (1LL << DBL_MANT_DIG))
         /* small integer;  no need to round */
         return PyFloat_FromDouble((double)v->ob_ival);
 
@@ -1034,7 +1034,7 @@ int_float(PyIntObject *v)
 
        The condition "(1) or (2)" equates to abs_ival & 3*lsb-1 != 0. */
 
-    lsb = 1L << (bits_in_ulong(abs_ival)-DBL_MANT_DIG-1);
+    lsb = 1LL << (bits_in_ulong(abs_ival)-DBL_MANT_DIG-1);
     round_up = (abs_ival & lsb) && (abs_ival & (3*lsb-1));
     abs_ival &= -2*lsb;
     if (round_up)
@@ -1079,7 +1079,7 @@ int_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
                             "int() missing string argument");
             return NULL;
         }
-        return PyInt_FromLong(0L);
+        return PyInt_FromLong(0LL);
     }
     if (base == -909)
         return PyNumber_Int(x);
@@ -1122,7 +1122,7 @@ static PyObject *
 int_subtype_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
 {
     PyObject *tmp, *newobj;
-    long ival;
+    REALLYLONG ival;
 
     assert(PyType_IsSubtype(type, &PyInt_Type));
     tmp = int_new(&PyInt_Type, args, kwds);
@@ -1156,12 +1156,12 @@ int_getnewargs(PyIntObject *v)
 
 static PyObject *
 int_get0(PyIntObject *v, void *context) {
-    return PyInt_FromLong(0L);
+    return PyInt_FromLong(0LL);
 }
 
 static PyObject *
 int_get1(PyIntObject *v, void *context) {
-    return PyInt_FromLong(1L);
+    return PyInt_FromLong(1LL);
 }
 
 /* Convert an integer to a decimal string.  On many platforms, this
@@ -1170,11 +1170,11 @@ int_get1(PyIntObject *v, void *context) {
    opportunities offered by division by a compile-time constant. */
 static PyObject *
 int_to_decimal_string(PyIntObject *v) {
-    char buf[sizeof(long)*CHAR_BIT/3+6], *p, *bufend;
-    long n = v->ob_ival;
-    unsigned long absn;
+    char buf[sizeof(REALLYLONG)*CHAR_BIT/3+6], *p, *bufend;
+    REALLYLONG n = v->ob_ival;
+    UREALLYLONG absn;
     p = bufend = buf + sizeof(buf);
-    absn = n < 0 ? 0UL - n : n;
+    absn = n < 0 ? 0ULL - n : n;
     do {
         *--p = '0' + (char)(absn % 10);
         absn /= 10;
@@ -1193,7 +1193,7 @@ _PyInt_Format(PyIntObject *v, int base, int newstyle)
 {
     /* There are no doubt many, many ways to optimize this, using code
        similar to _PyLong_Format */
-    long n = v->ob_ival;
+    REALLYLONG n = v->ob_ival;
     int  negative = n < 0;
     int is_zero = n == 0;
 
@@ -1216,8 +1216,8 @@ _PyInt_Format(PyIntObject *v, int base, int newstyle)
         /* I'd use i_divmod, except it doesn't produce the results
            I want when n is negative.  So just duplicate the salient
            part here. */
-        long div = n / base;
-        long mod = n - div * base;
+        REALLYLONG div = n / base;
+        REALLYLONG mod = n - div * base;
 
         /* convert abs(mod) to the right character in [0-9, a-z] */
         char cdigit = (char)(mod < 0 ? -mod : mod);
@@ -1289,13 +1289,13 @@ int__format__(PyObject *self, PyObject *args)
 static PyObject *
 int_bit_length(PyIntObject *v)
 {
-    unsigned long n;
+    UREALLYLONG n;
 
     if (v->ob_ival < 0)
         /* avoid undefined behaviour when v->ob_ival == -LONG_MAX-1 */
-        n = 0U-(unsigned long)v->ob_ival;
+        n = 0U-(UREALLYLONG)v->ob_ival;
     else
-        n = (unsigned long)v->ob_ival;
+        n = (UREALLYLONG)v->ob_ival;
 
     return PyInt_FromLong(bits_in_ulong(n));
 }
@@ -1359,7 +1359,7 @@ int(x, base=10) -> int or long\n\
 \n\
 Convert a number or string to an integer, or return 0 if no arguments\n\
 are given.  If x is floating point, the conversion truncates towards zero.\n\
-If x is outside the integer range, the function returns a long instead.\n\
+If x is outside the integer range, the function returns a REALLYLONG instead.\n\
 \n\
 If x is not a number or if base is given, then x must be a string or\n\
 Unicode object representing an integer literal in the given base.  The\n\
@@ -1389,7 +1389,7 @@ static PyNumberMethods int_as_number = {
     (binaryfunc)int_or,         /*nb_or*/
     int_coerce,                 /*nb_coerce*/
     (unaryfunc)int_int,         /*nb_int*/
-    (unaryfunc)int_long,        /*nb_long*/
+    (unaryfunc)int_long,        /*nb_REALLYLONG*/
     (unaryfunc)int_float,       /*nb_float*/
     (unaryfunc)int_oct,         /*nb_oct*/
     (unaryfunc)int_hex,         /*nb_hex*/
@@ -1567,12 +1567,12 @@ PyInt_Fini(void)
                  i++, p++) {
                 if (PyInt_CheckExact(p) && p->ob_refcnt != 0)
                     /* XXX(twouters) cast refcount to
-                       long until %zd is universally
+                       REALLYLONG until %zd is universally
                        available
                      */
                     fprintf(stderr,
                 "#   <int at %p, refcnt=%ld, val=%ld>\n",
-                                p, (long)p->ob_refcnt,
+                                p, (REALLYLONG)p->ob_refcnt,
                                 p->ob_ival);
             }
             list = list->next;

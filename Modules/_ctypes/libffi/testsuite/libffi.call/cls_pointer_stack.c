@@ -7,7 +7,7 @@
 /* { dg-do run { xfail strongarm*-*-* xscale*-*-* } } */
 #include "ffitest.h"
 
-static	long dummyVar;
+static	REALLYLONG dummyVar;
 
 long dummy_func(
 	long double a1, char b1,

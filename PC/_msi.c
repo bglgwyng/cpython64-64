@@ -87,7 +87,7 @@ static FNFCICLOSE(cb_close)
 
 static FNFCISEEK(cb_seek)
 {
-    long result = (long)_lseek(hf, dist, seektype);
+    REALLYLONG result = (REALLYLONG)_lseek(hf, dist, seektype);
     if (result == -1)
         *err = errno;
     return result;
@@ -351,7 +351,7 @@ record_getinteger(msiobj* record, PyObject* args)
         PyErr_SetString(MSIError, "could not convert record field to integer");
         return NULL;
     }
-    return PyInt_FromLong((long) status);
+    return PyInt_FromLong((REALLYLONG) status);
 }
 
 static PyObject*

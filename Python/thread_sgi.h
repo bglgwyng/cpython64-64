@@ -30,7 +30,7 @@ static int maxpidindex;         /* # of PIDs in pidlist */
 static void PyThread__init_thread(void)
 {
 #ifdef USE_DL
-    long addr, size;
+    REALLYLONG addr, size;
 #endif /* USE_DL */
 
 
@@ -39,7 +39,7 @@ static void PyThread__init_thread(void)
         perror("usconfig - CONF_INITSIZE (check)");
     if (usconfig(CONF_INITSIZE, size) < 0)
         perror("usconfig - CONF_INITSIZE (reset)");
-    addr = (long) dl_getrange(size + HDR_SIZE);
+    addr = (REALLYLONG) dl_getrange(size + HDR_SIZE);
     dprintf(("trying to use addr %p-%p for shared arena\n", addr, addr+size));
     errno = 0;
     if ((addr = usconfig(CONF_ATTACHADDR, addr)) < 0 && errno != 0)
@@ -68,7 +68,7 @@ static void PyThread__init_thread(void)
     (void) usinitlock(count_lock);
     if ((wait_lock = usnewlock(shared_arena)) == NULL)
         perror("usnewlock (wait_lock)");
-    dprintf(("arena start: %p, arena size: %ld\n",  shared_arena, (long) usconfig(CONF_GETSIZE, shared_arena)));
+    dprintf(("arena start: %p, arena size: %ld\n",  shared_arena, (REALLYLONG) usconfig(CONF_GETSIZE, shared_arena)));
 }
 
 /*
@@ -112,7 +112,7 @@ static void clean_threads(void)
 long PyThread_start_new_thread(void (*func)(void *), void *arg)
 {
 #ifdef USE_DL
-    long addr, size;
+    REALLYLONG addr, size;
     static int local_initialized = 0;
 #endif /* USE_DL */
     int success = 0;            /* init not needed when SOLARIS_THREADS and */
@@ -134,7 +134,7 @@ long PyThread_start_new_thread(void (*func)(void *), void *arg)
                 perror("usconfig - CONF_INITSIZE (check)");
             if (usconfig(CONF_INITSIZE, size) < 0)
                 perror("usconfig - CONF_INITSIZE (reset)");
-            addr = (long) dl_getrange(size + HDR_SIZE);
+            addr = (REALLYLONG) dl_getrange(size + HDR_SIZE);
             dprintf(("trying to use addr %p-%p for sproc\n",
                      addr, addr+size));
             errno = 0;

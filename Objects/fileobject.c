@@ -459,7 +459,7 @@ close_the_file(PyFileObject *f)
             if (sts == EOF)
                 return PyErr_SetFromErrno(PyExc_IOError);
             if (sts != 0)
-                return PyInt_FromLong((long)sts);
+                return PyInt_FromLong((REALLYLONG)sts);
         }
     }
     Py_RETURN_NONE;
@@ -958,7 +958,7 @@ file_fileno(PyFileObject *f)
 {
     if (f->f_fp == NULL)
         return err_closed();
-    return PyInt_FromLong((long) fileno(f->f_fp));
+    return PyInt_FromLong((REALLYLONG) fileno(f->f_fp));
 }
 
 static PyObject *
@@ -984,7 +984,7 @@ file_flush(PyFileObject *f)
 static PyObject *
 file_isatty(PyFileObject *f)
 {
-    long res;
+    REALLYLONG res;
     if (f->f_fp == NULL)
         return err_closed();
     FILE_BEGIN_ALLOW_THREADS(f)
@@ -1051,7 +1051,7 @@ new_buffersize(PyFileObject *f, size_t currentsize)
 static PyObject *
 file_read(PyFileObject *f, PyObject *args)
 {
-    long bytesrequested = -1;
+    REALLYLONG bytesrequested = -1;
     size_t bytesread, buffersize, chunksize;
     PyObject *v;
 
@@ -1661,7 +1661,7 @@ file_readline(PyFileObject *f, PyObject *args)
 static PyObject *
 file_readlines(PyFileObject *f, PyObject *args)
 {
-    long sizehint = 0;
+    REALLYLONG sizehint = 0;
     PyObject *list = NULL;
     PyObject *line;
     char small_buffer[SMALLCHUNK];
@@ -2065,7 +2065,7 @@ PyDoc_STRVAR(truncate_doc,
 #endif
 
 PyDoc_STRVAR(tell_doc,
-"tell() -> current file position, an integer (may be a long integer).");
+"tell() -> current file position, an integer (may be a REALLYLONG integer).");
 
 PyDoc_STRVAR(readinto_doc,
 "readinto() -> Undocumented.  Don't use this; it may go away.");
@@ -2149,7 +2149,7 @@ static PyMemberDef file_memberlist[] = {
 static PyObject *
 get_closed(PyFileObject *f, void *closure)
 {
-    return PyBool_FromLong((long)(f->f_fp == 0));
+    return PyBool_FromLong((REALLYLONG)(f->f_fp == 0));
 }
 static PyObject *
 get_newlines(PyFileObject *f, void *closure)
@@ -2507,7 +2507,7 @@ PyTypeObject PyFile_Type = {
 int
 PyFile_SoftSpace(PyObject *f, int newflag)
 {
-    long oldflag = 0;
+    REALLYLONG oldflag = 0;
     if (f == NULL) {
         /* Do nothing */
     }
@@ -2526,7 +2526,7 @@ PyFile_SoftSpace(PyObject *f, int newflag)
             assert(oldflag < INT_MAX);
             Py_DECREF(v);
         }
-        v = PyInt_FromLong((long)newflag);
+        v = PyInt_FromLong((REALLYLONG)newflag);
         if (v == NULL)
             PyErr_Clear();
         else {
@@ -2647,9 +2647,9 @@ PyFile_WriteString(const char *s, PyObject *f)
 }
 
 /* Try to get a file-descriptor from a Python object.  If the object
-   is an integer or long integer, its value is returned.  If not, the
+   is an integer or REALLYLONG integer, its value is returned.  If not, the
    object's fileno() method is called if it exists; the method must return
-   an integer or long integer, which is returned as the file descriptor value.
+   an integer or REALLYLONG integer, which is returned as the file descriptor value.
    -1 is returned on failure.
 */
 

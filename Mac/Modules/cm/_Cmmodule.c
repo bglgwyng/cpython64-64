@@ -182,7 +182,7 @@ static PyObject *CmpInstObj_SetComponentInstanceStorage(ComponentInstanceObject 
 static PyObject *CmpInstObj_ComponentFunctionImplemented(ComponentInstanceObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long _rv;
+    REALLYLONG _rv;
     short ftnNumber;
 #ifndef ComponentFunctionImplemented
     PyMac_PRECHECK(ComponentFunctionImplemented);
@@ -200,7 +200,7 @@ static PyObject *CmpInstObj_ComponentFunctionImplemented(ComponentInstanceObject
 static PyObject *CmpInstObj_GetComponentVersion(ComponentInstanceObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long _rv;
+    REALLYLONG _rv;
 #ifndef GetComponentVersion
     PyMac_PRECHECK(GetComponentVersion);
 #endif
@@ -215,7 +215,7 @@ static PyObject *CmpInstObj_GetComponentVersion(ComponentInstanceObject *_self, 
 static PyObject *CmpInstObj_ComponentSetTarget(ComponentInstanceObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long _rv;
+    REALLYLONG _rv;
     ComponentInstance target;
 #ifndef ComponentSetTarget
     PyMac_PRECHECK(ComponentSetTarget);
@@ -244,11 +244,11 @@ static PyMethodDef CmpInstObj_methods[] = {
      PyDoc_STR("(Handle theStorage) -> None")},
 #ifndef __LP64__
     {"ComponentFunctionImplemented", (PyCFunction)CmpInstObj_ComponentFunctionImplemented, 1,
-     PyDoc_STR("(short ftnNumber) -> (long _rv)")},
+     PyDoc_STR("(short ftnNumber) -> (REALLYLONG _rv)")},
     {"GetComponentVersion", (PyCFunction)CmpInstObj_GetComponentVersion, 1,
-     PyDoc_STR("() -> (long _rv)")},
+     PyDoc_STR("() -> (REALLYLONG _rv)")},
     {"ComponentSetTarget", (PyCFunction)CmpInstObj_ComponentSetTarget, 1,
-     PyDoc_STR("(ComponentInstance target) -> (long _rv)")},
+     PyDoc_STR("(ComponentInstance target) -> (REALLYLONG _rv)")},
 #endif /* !__LP64__ */
     {NULL, NULL, 0}
 };
@@ -474,7 +474,7 @@ static PyObject *CmpObj_GetComponentPublicIndString(ComponentObject *_self, PyOb
 static PyObject *CmpObj_GetComponentRefcon(ComponentObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long _rv;
+    REALLYLONG _rv;
 #ifndef GetComponentRefcon
     PyMac_PRECHECK(GetComponentRefcon);
 #endif
@@ -489,7 +489,7 @@ static PyObject *CmpObj_GetComponentRefcon(ComponentObject *_self, PyObject *_ar
 static PyObject *CmpObj_SetComponentRefcon(ComponentObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long theRefcon;
+    REALLYLONG theRefcon;
 #ifndef SetComponentRefcon
     PyMac_PRECHECK(SetComponentRefcon);
 #endif
@@ -570,7 +570,7 @@ static PyObject *CmpObj_GetComponentIndString(ComponentObject *_self, PyObject *
 static PyObject *CmpObj_CountComponentInstances(ComponentObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long _rv;
+    REALLYLONG _rv;
 #ifndef CountComponentInstances
     PyMac_PRECHECK(CountComponentInstances);
 #endif
@@ -667,9 +667,9 @@ static PyMethodDef CmpObj_methods[] = {
     {"GetComponentPublicIndString", (PyCFunction)CmpObj_GetComponentPublicIndString, 1,
      PyDoc_STR("(Str255 theString, short strListID, short index) -> None")},
     {"GetComponentRefcon", (PyCFunction)CmpObj_GetComponentRefcon, 1,
-     PyDoc_STR("() -> (long _rv)")},
+     PyDoc_STR("() -> (REALLYLONG _rv)")},
     {"SetComponentRefcon", (PyCFunction)CmpObj_SetComponentRefcon, 1,
-     PyDoc_STR("(long theRefcon) -> None")},
+     PyDoc_STR("(REALLYLONG theRefcon) -> None")},
     {"OpenComponentResFile", (PyCFunction)CmpObj_OpenComponentResFile, 1,
      PyDoc_STR("() -> (short _rv)")},
     {"GetComponentResource", (PyCFunction)CmpObj_GetComponentResource, 1,
@@ -677,7 +677,7 @@ static PyMethodDef CmpObj_methods[] = {
     {"GetComponentIndString", (PyCFunction)CmpObj_GetComponentIndString, 1,
      PyDoc_STR("(Str255 theString, short strListID, short index) -> None")},
     {"CountComponentInstances", (PyCFunction)CmpObj_CountComponentInstances, 1,
-     PyDoc_STR("() -> (long _rv)")},
+     PyDoc_STR("() -> (REALLYLONG _rv)")},
     {"SetDefaultComponent", (PyCFunction)CmpObj_SetDefaultComponent, 1,
      PyDoc_STR("(short flags) -> None")},
     {"CaptureComponent", (PyCFunction)CmpObj_CaptureComponent, 1,
@@ -808,7 +808,7 @@ static PyObject *Cm_FindNextComponent(PyObject *_self, PyObject *_args)
 static PyObject *Cm_CountComponents(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long _rv;
+    REALLYLONG _rv;
     ComponentDescription looking;
 #ifndef CountComponents
     PyMac_PRECHECK(CountComponents);
@@ -825,7 +825,7 @@ static PyObject *Cm_CountComponents(PyObject *_self, PyObject *_args)
 static PyObject *Cm_GetComponentListModSeed(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long _rv;
+    REALLYLONG _rv;
 #ifndef GetComponentListModSeed
     PyMac_PRECHECK(GetComponentListModSeed);
 #endif
@@ -878,7 +878,7 @@ static PyObject *Cm_OpenDefaultComponent(PyObject *_self, PyObject *_args)
 static PyObject *Cm_RegisterComponentResourceFile(PyObject *_self, PyObject *_args)
 {
     PyObject *_res = NULL;
-    long _rv;
+    REALLYLONG _rv;
     short resRefNum;
     short global;
 #ifndef RegisterComponentResourceFile
@@ -901,15 +901,15 @@ static PyMethodDef Cm_methods[] = {
     {"FindNextComponent", (PyCFunction)Cm_FindNextComponent, 1,
      PyDoc_STR("(Component aComponent, ComponentDescription looking) -> (Component _rv)")},
     {"CountComponents", (PyCFunction)Cm_CountComponents, 1,
-     PyDoc_STR("(ComponentDescription looking) -> (long _rv)")},
+     PyDoc_STR("(ComponentDescription looking) -> (REALLYLONG _rv)")},
     {"GetComponentListModSeed", (PyCFunction)Cm_GetComponentListModSeed, 1,
-     PyDoc_STR("() -> (long _rv)")},
+     PyDoc_STR("() -> (REALLYLONG _rv)")},
     {"CloseComponentResFile", (PyCFunction)Cm_CloseComponentResFile, 1,
      PyDoc_STR("(short refnum) -> None")},
     {"OpenDefaultComponent", (PyCFunction)Cm_OpenDefaultComponent, 1,
      PyDoc_STR("(OSType componentType, OSType componentSubType) -> (ComponentInstance _rv)")},
     {"RegisterComponentResourceFile", (PyCFunction)Cm_RegisterComponentResourceFile, 1,
-     PyDoc_STR("(short resRefNum, short global) -> (long _rv)")},
+     PyDoc_STR("(short resRefNum, short global) -> (REALLYLONG _rv)")},
     {NULL, NULL, 0}
 };
 

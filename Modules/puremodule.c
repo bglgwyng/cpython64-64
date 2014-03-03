@@ -132,7 +132,7 @@ call_printfish_function(PrintfishFunc func, PyObject *self, PyObject *args)
 static PyObject*
 call_intasaddr_function(StringArgFunc func, PyObject *self, PyObject *args)
 {
-    long memrep;
+    REALLYLONG memrep;
     int id;
 
     if (!PyArg_ParseTuple(args, "l", &memrep))
@@ -146,7 +146,7 @@ static PyObject*
 call_stringandint_function(StringIntArgFunc func, PyObject *self,
                            PyObject *args)
 {
-    long srcrep;
+    REALLYLONG srcrep;
     int size;
     int status;
 
@@ -281,7 +281,7 @@ pure_purify_printf_with_call_chain(PyObject *self, PyObject *args)
 static PyObject*
 pure_purify_set_pool_id(PyObject *self, PyObject *args)
 {
-    long memrep;
+    REALLYLONG memrep;
     int id;
 
     if (!PyArg_ParseTuple(args, "li:purify_set_pool_id", &memrep, &id))
@@ -299,8 +299,8 @@ pure_purify_get_pool_id(PyObject *self, PyObject *args)
 static PyObject*
 pure_purify_set_user_data(PyObject *self, PyObject *args)
 {
-    long memrep;
-    long datarep;
+    REALLYLONG memrep;
+    REALLYLONG datarep;
 
     if (!PyArg_ParseTuple(args, "ll:purify_set_user_data", &memrep, &datarep))
         return NULL;
@@ -315,14 +315,14 @@ pure_purify_get_user_data(PyObject *self, PyObject *args)
     /* can't use call_intasaddr_function() since purify_get_user_data()
      * returns a void*
      */
-    long memrep;
+    REALLYLONG memrep;
     void* data;
 
     if (!PyArg_ParseTuple(args, "l:purify_get_user_data", &memrep))
         return NULL;
 
     data = purify_get_user_data((char*)memrep);
-    return Py_BuildValue("l", (long)data);
+    return Py_BuildValue("l", (REALLYLONG)data);
 }
 
 
@@ -341,8 +341,8 @@ static PyObject* MapCallable = NULL;
 static void
 map_pool_callback(char* mem, int user_size, void *user_aux_data)
 {
-    long memrep = (long)mem;
-    long user_aux_data_rep = (long)user_aux_data;
+    REALLYLONG memrep = (REALLYLONG)mem;
+    REALLYLONG user_aux_data_rep = (REALLYLONG)user_aux_data;
     PyObject* result;
     PyObject* memobj = Py_BuildValue("lil", memrep, user_size,
                                      user_aux_data_rep);
@@ -558,7 +558,7 @@ pure_purify_watch_rw_8(PyObject *self, PyObject *args)
 static PyObject*
 pure_purify_watch_n(PyObject *self, PyObject *args)
 {
-    long addrrep;
+    REALLYLONG addrrep;
     unsigned int size;
     char* type;
     int status;
@@ -597,20 +597,20 @@ pure_purify_watch_remove_all(PyObject *self, PyObject *args)
 static PyObject*
 pure_purify_describe(PyObject *self, PyObject *args)
 {
-    long addrrep;
+    REALLYLONG addrrep;
     char* rtn;
 
     if (!PyArg_ParseTuple(args, "l:purify_describe", &addrrep))
         return NULL;
 
     rtn = purify_describe((char*)addrrep);
-    return Py_BuildValue("l", (long)rtn);
+    return Py_BuildValue("l", (REALLYLONG)rtn);
 }
 
 static PyObject*
 pure_purify_what_colors(PyObject *self, PyObject *args)
 {
-    long addrrep;
+    REALLYLONG addrrep;
     unsigned int size;
     int status;
 
@@ -936,7 +936,7 @@ static void
 ins(d, name, val)
     PyObject *d;
     char* name;
-    long val;
+    REALLYLONG val;
 {
     PyObject *v = PyInt_FromLong(val);
     if (v) {

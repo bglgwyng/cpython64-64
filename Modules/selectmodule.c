@@ -203,7 +203,7 @@ select_select(PyObject *self, PyObject *args)
     fd_set ifdset, ofdset, efdset;
     double timeout;
     struct timeval tv, *tvp;
-    long seconds;
+    REALLYLONG seconds;
     int imax, omax, emax, max;
     int n;
 
@@ -228,10 +228,10 @@ select_select(PyObject *self, PyObject *args)
                             "timeout period too long");
             return NULL;
         }
-        seconds = (long)timeout;
+        seconds = (REALLYLONG)timeout;
         timeout = timeout - (double)seconds;
         tv.tv_sec = seconds;
-        tv.tv_usec = (long)(timeout * 1E6);
+        tv.tv_usec = (REALLYLONG)(timeout * 1E6);
         tvp = &tv;
     }
 
@@ -1343,7 +1343,7 @@ kqueue_event_richcompare(kqueue_event_Object *s, kqueue_event_Object *o,
         result = (result > 0);
         break;
     }
-    return PyBool_FromLong((long)result);
+    return PyBool_FromLong((REALLYLONG)result);
 }
 
 static PyTypeObject kqueue_event_Type = {
@@ -1546,7 +1546,7 @@ kqueue_queue_control(kqueue_queue_Object *self, PyObject *args)
     }
     else if (PyNumber_Check(otimeout)) {
         double timeout;
-        long seconds;
+        REALLYLONG seconds;
 
         timeout = PyFloat_AsDouble(otimeout);
         if (timeout == -1 && PyErr_Occurred())
@@ -1562,10 +1562,10 @@ kqueue_queue_control(kqueue_queue_Object *self, PyObject *args)
             return NULL;
         }
 
-        seconds = (long)timeout;
+        seconds = (REALLYLONG)timeout;
         timeout = timeout - (double)seconds;
         timeoutspec.tv_sec = seconds;
-        timeoutspec.tv_nsec = (long)(timeout * 1E9);
+        timeoutspec.tv_nsec = (REALLYLONG)(timeout * 1E9);
         ptimeoutspec = &timeoutspec;
     }
     else {

@@ -70,17 +70,17 @@ dl_sym(dlobject *xp, PyObject *args)
         Py_INCREF(Py_None);
         return Py_None;
     }
-    return PyInt_FromLong((long)func);
+    return PyInt_FromLong((REALLYLONG)func);
 }
 
 static PyObject *
 dl_call(dlobject *xp, PyObject *args)
 {
     PyObject *name;
-    long (*func)(long, long, long, long, long,
-                 long, long, long, long, long);
-    long alist[10];
-    long res;
+    REALLYLONG (*func)(REALLYLONG, REALLYLONG, REALLYLONG, REALLYLONG, REALLYLONG,
+                 REALLYLONG, REALLYLONG, REALLYLONG, REALLYLONG, REALLYLONG);
+    REALLYLONG alist[10];
+    REALLYLONG res;
     Py_ssize_t i;
     Py_ssize_t n = PyTuple_Size(args);
     if (n < 1) {
@@ -93,8 +93,8 @@ dl_call(dlobject *xp, PyObject *args)
                         "function name must be a string");
         return NULL;
     }
-    func = (long (*)(long, long, long, long, long,
-                     long, long, long, long, long))
+    func = (REALLYLONG (*)(REALLYLONG, REALLYLONG, REALLYLONG, REALLYLONG, REALLYLONG,
+                     REALLYLONG, REALLYLONG, REALLYLONG, REALLYLONG, REALLYLONG))
       dlsym(xp->dl_handle, PyString_AsString(name));
     if (func == NULL) {
         PyErr_SetString(PyExc_ValueError, dlerror());
@@ -110,9 +110,9 @@ dl_call(dlobject *xp, PyObject *args)
         if (PyInt_Check(v))
             alist[i-1] = PyInt_AsLong(v);
         else if (PyString_Check(v))
-            alist[i-1] = (long)PyString_AsString(v);
+            alist[i-1] = (REALLYLONG)PyString_AsString(v);
         else if (v == Py_None)
-            alist[i-1] = (long) ((char *)NULL);
+            alist[i-1] = (REALLYLONG) ((char *)NULL);
         else {
             PyErr_SetString(PyExc_TypeError,
                        "arguments must be int, string or None");
@@ -164,10 +164,10 @@ dl_open(PyObject *self, PyObject *args)
     char *name;
     int mode;
     PyUnivPtr *handle;
-    if (sizeof(int) != sizeof(long) ||
-        sizeof(long) != sizeof(char *)) {
+    if (sizeof(int) != sizeof(REALLYLONG) ||
+        sizeof(REALLYLONG) != sizeof(char *)) {
         PyErr_SetString(PyExc_SystemError,
- "module dl requires sizeof(int) == sizeof(long) == sizeof(char*)");
+ "module dl requires sizeof(int) == sizeof(REALLYLONG) == sizeof(char*)");
                 return NULL;
     }
 
@@ -226,7 +226,7 @@ static PyMethodDef dl_methods[] = {
 static void
 insint(PyObject *d, char *name, int value)
 {
-    PyObject *v = PyInt_FromLong((long) value);
+    PyObject *v = PyInt_FromLong((REALLYLONG) value);
     if (!v || PyDict_SetItemString(d, name, v))
         PyErr_Clear();
 
@@ -254,7 +254,7 @@ initdl(void)
     d = PyModule_GetDict(m);
     Dlerror = x = PyErr_NewException("dl.error", NULL, NULL);
     PyDict_SetItemString(d, "error", x);
-    x = PyInt_FromLong((long)RTLD_LAZY);
+    x = PyInt_FromLong((REALLYLONG)RTLD_LAZY);
     PyDict_SetItemString(d, "RTLD_LAZY", x);
 #define INSINT(X)    insint(d,#X,X)
 #ifdef RTLD_NOW

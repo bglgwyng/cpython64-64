@@ -311,10 +311,10 @@ static PyObject *FSCatalogInfo_get_permissions(FSCatalogInfoObject *self, void *
 
 static int FSCatalogInfo_set_permissions(FSCatalogInfoObject *self, PyObject *v, void *closure)
 {
-    long userID;
-    long groupID;
-    long userAccess;
-    long mode;
+    REALLYLONG userID;
+    REALLYLONG groupID;
+    REALLYLONG userAccess;
+    REALLYLONG mode;
     int r;
 
     FSPermissionInfo* info = (FSPermissionInfo*)&(self->ob_itself.permissions);
@@ -820,7 +820,7 @@ static PyObject *Alias_ResolveAliasWithMountFlags(AliasObject *_self, PyObject *
     FSSpec *fromFile = &fromFile__buf__;
     FSSpec target;
     Boolean wasChanged;
-    unsigned long mountFlags;
+    unsigned REALLYLONG mountFlags;
     if (!PyArg_ParseTuple(_args, "O&l",
                           myPyMac_GetOptFSSpecPtr, &fromFile,
                           &mountFlags))
@@ -871,7 +871,7 @@ static PyObject *Alias_FSResolveAliasWithMountFlags(AliasObject *_self, PyObject
     FSRef *fromFile = &fromFile__buf__;
     FSRef target;
     Boolean wasChanged;
-    unsigned long mountFlags;
+    unsigned REALLYLONG mountFlags;
     if (!PyArg_ParseTuple(_args, "O&l",
                           myPyMac_GetOptFSRefPtr, &fromFile,
                           &mountFlags))
@@ -941,12 +941,12 @@ static PyMethodDef Alias_methods[] = {
     {"GetAliasInfo", (PyCFunction)Alias_GetAliasInfo, 1,
      PyDoc_STR("(AliasInfoType index) -> (Str63 theString)")},
     {"ResolveAliasWithMountFlags", (PyCFunction)Alias_ResolveAliasWithMountFlags, 1,
-     PyDoc_STR("(FSSpec fromFile, unsigned long mountFlags) -> (FSSpec target, Boolean wasChanged)")},
+     PyDoc_STR("(FSSpec fromFile, unsigned REALLYLONG mountFlags) -> (FSSpec target, Boolean wasChanged)")},
     {"FollowFinderAlias", (PyCFunction)Alias_FollowFinderAlias, 1,
      PyDoc_STR("(FSSpec fromFile, Boolean logon) -> (FSSpec target, Boolean wasChanged)")},
 #endif /* !__LP64__ */
     {"FSResolveAliasWithMountFlags", (PyCFunction)Alias_FSResolveAliasWithMountFlags, 1,
-     PyDoc_STR("(FSRef fromFile, unsigned long mountFlags) -> (FSRef target, Boolean wasChanged)")},
+     PyDoc_STR("(FSRef fromFile, unsigned REALLYLONG mountFlags) -> (FSRef target, Boolean wasChanged)")},
     {"FSResolveAlias", (PyCFunction)Alias_FSResolveAlias, 1,
      PyDoc_STR("(FSRef fromFile) -> (FSRef target, Boolean wasChanged)")},
     {"FSFollowFinderAlias", (PyCFunction)Alias_FSFollowFinderAlias, 1,
@@ -1169,7 +1169,7 @@ static PyObject *FSSpec_FSpDirCreate(FSSpecObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     OSErr _err;
     ScriptCode scriptTag;
-    long createdDirID;
+    REALLYLONG createdDirID;
     if (!PyArg_ParseTuple(_args, "h",
                           &scriptTag))
         return NULL;
@@ -1387,7 +1387,7 @@ static PyMethodDef FSSpec_methods[] = {
     {"FSpCreate", (PyCFunction)FSSpec_FSpCreate, 1,
      PyDoc_STR("(OSType creator, OSType fileType, ScriptCode scriptTag) -> None")},
     {"FSpDirCreate", (PyCFunction)FSSpec_FSpDirCreate, 1,
-     PyDoc_STR("(ScriptCode scriptTag) -> (long createdDirID)")},
+     PyDoc_STR("(ScriptCode scriptTag) -> (REALLYLONG createdDirID)")},
     {"FSpDelete", (PyCFunction)FSSpec_FSpDelete, 1,
      PyDoc_STR("() -> None")},
     {"FSpGetFInfo", (PyCFunction)FSSpec_FSpGetFInfo, 1,
@@ -2167,7 +2167,7 @@ static PyObject *File_HSetVol(PyObject *_self, PyObject *_args)
     OSErr _err;
     Str63 volName;
     short vRefNum;
-    long dirID;
+    REALLYLONG dirID;
     if (!PyArg_ParseTuple(_args, "O&hl",
                           PyMac_GetStr255, volName,
                           &vRefNum,
@@ -2202,7 +2202,7 @@ static PyObject *File_Allocate(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     OSErr _err;
     short refNum;
-    long count;
+    REALLYLONG count;
     if (!PyArg_ParseTuple(_args, "h",
                           &refNum))
         return NULL;
@@ -2219,7 +2219,7 @@ static PyObject *File_GetEOF(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     OSErr _err;
     short refNum;
-    long logEOF;
+    REALLYLONG logEOF;
     if (!PyArg_ParseTuple(_args, "h",
                           &refNum))
         return NULL;
@@ -2236,7 +2236,7 @@ static PyObject *File_SetEOF(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     OSErr _err;
     short refNum;
-    long logEOF;
+    REALLYLONG logEOF;
     if (!PyArg_ParseTuple(_args, "hl",
                           &refNum,
                           &logEOF))
@@ -2254,7 +2254,7 @@ static PyObject *File_GetFPos(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     OSErr _err;
     short refNum;
-    long filePos;
+    REALLYLONG filePos;
     if (!PyArg_ParseTuple(_args, "h",
                           &refNum))
         return NULL;
@@ -2272,7 +2272,7 @@ static PyObject *File_SetFPos(PyObject *_self, PyObject *_args)
     OSErr _err;
     short refNum;
     short posMode;
-    long posOff;
+    REALLYLONG posOff;
     if (!PyArg_ParseTuple(_args, "hhl",
                           &refNum,
                           &posMode,
@@ -2310,7 +2310,7 @@ static PyObject *File_HGetVol(PyObject *_self, PyObject *_args)
     OSErr _err;
     StringPtr volName;
     short vRefNum;
-    long dirID;
+    REALLYLONG dirID;
     if (!PyArg_ParseTuple(_args, "O&",
                           PyMac_GetStr255, &volName))
         return NULL;
@@ -2329,7 +2329,7 @@ static PyObject *File_HOpen(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     OSErr _err;
     short vRefNum;
-    long dirID;
+    REALLYLONG dirID;
     Str255 fileName;
     SInt8 permission;
     short refNum;
@@ -2355,7 +2355,7 @@ static PyObject *File_HOpenDF(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     OSErr _err;
     short vRefNum;
-    long dirID;
+    REALLYLONG dirID;
     Str255 fileName;
     SInt8 permission;
     short refNum;
@@ -2381,7 +2381,7 @@ static PyObject *File_HOpenRF(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     OSErr _err;
     short vRefNum;
-    long dirID;
+    REALLYLONG dirID;
     Str255 fileName;
     SInt8 permission;
     short refNum;
@@ -2407,7 +2407,7 @@ static PyObject *File_AllocContig(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     OSErr _err;
     short refNum;
-    long count;
+    REALLYLONG count;
     if (!PyArg_ParseTuple(_args, "h",
                           &refNum))
         return NULL;
@@ -2424,7 +2424,7 @@ static PyObject *File_HCreate(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     OSErr _err;
     short vRefNum;
-    long dirID;
+    REALLYLONG dirID;
     Str255 fileName;
     OSType creator;
     OSType fileType;
@@ -2451,9 +2451,9 @@ static PyObject *File_DirCreate(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     OSErr _err;
     short vRefNum;
-    long parentDirID;
+    REALLYLONG parentDirID;
     Str255 directoryName;
-    long createdDirID;
+    REALLYLONG createdDirID;
     if (!PyArg_ParseTuple(_args, "hlO&",
                           &vRefNum,
                           &parentDirID,
@@ -2474,7 +2474,7 @@ static PyObject *File_HDelete(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     OSErr _err;
     short vRefNum;
-    long dirID;
+    REALLYLONG dirID;
     Str255 fileName;
     if (!PyArg_ParseTuple(_args, "hlO&",
                           &vRefNum,
@@ -2495,7 +2495,7 @@ static PyObject *File_HGetFInfo(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     OSErr _err;
     short vRefNum;
-    long dirID;
+    REALLYLONG dirID;
     Str255 fileName;
     FInfo fndrInfo;
     if (!PyArg_ParseTuple(_args, "hlO&",
@@ -2518,7 +2518,7 @@ static PyObject *File_HSetFInfo(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     OSErr _err;
     short vRefNum;
-    long dirID;
+    REALLYLONG dirID;
     Str255 fileName;
     FInfo fndrInfo;
     if (!PyArg_ParseTuple(_args, "hlO&O&",
@@ -2542,7 +2542,7 @@ static PyObject *File_HSetFLock(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     OSErr _err;
     short vRefNum;
-    long dirID;
+    REALLYLONG dirID;
     Str255 fileName;
     if (!PyArg_ParseTuple(_args, "hlO&",
                           &vRefNum,
@@ -2563,7 +2563,7 @@ static PyObject *File_HRstFLock(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     OSErr _err;
     short vRefNum;
-    long dirID;
+    REALLYLONG dirID;
     Str255 fileName;
     if (!PyArg_ParseTuple(_args, "hlO&",
                           &vRefNum,
@@ -2584,7 +2584,7 @@ static PyObject *File_HRename(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     OSErr _err;
     short vRefNum;
-    long dirID;
+    REALLYLONG dirID;
     Str255 oldName;
     Str255 newName;
     if (!PyArg_ParseTuple(_args, "hlO&O&",
@@ -2608,9 +2608,9 @@ static PyObject *File_CatMove(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     OSErr _err;
     short vRefNum;
-    long dirID;
+    REALLYLONG dirID;
     Str255 oldName;
-    long newDirID;
+    REALLYLONG newDirID;
     Str255 newName;
     if (!PyArg_ParseTuple(_args, "hlO&lO&",
                           &vRefNum,
@@ -2635,7 +2635,7 @@ static PyObject *File_FSMakeFSSpec(PyObject *_self, PyObject *_args)
     PyObject *_res = NULL;
     OSErr _err;
     short vRefNum;
-    long dirID;
+    REALLYLONG dirID;
     Str255 fileName;
     FSSpec spec;
     if (!PyArg_ParseTuple(_args, "hlO&",
@@ -2956,7 +2956,7 @@ static PyObject *File_ResolveAliasFileWithMountFlags(PyObject *_self, PyObject *
     Boolean resolveAliasChains;
     Boolean targetIsFolder;
     Boolean wasAliased;
-    unsigned long mountFlags;
+    unsigned REALLYLONG mountFlags;
     if (!PyArg_ParseTuple(_args, "O&bl",
                           FSSpec_Convert, &theSpec,
                           &resolveAliasChains,
@@ -3007,7 +3007,7 @@ static PyObject *File_ResolveAliasFileWithMountFlagsNoUI(PyObject *_self, PyObje
     Boolean resolveAliasChains;
     Boolean targetIsFolder;
     Boolean wasAliased;
-    unsigned long mountFlags;
+    unsigned REALLYLONG mountFlags;
     if (!PyArg_ParseTuple(_args, "O&bl",
                           FSSpec_Convert, &theSpec,
                           &resolveAliasChains,
@@ -3056,7 +3056,7 @@ static PyObject *File_FSResolveAliasFileWithMountFlags(PyObject *_self, PyObject
     Boolean resolveAliasChains;
     Boolean targetIsFolder;
     Boolean wasAliased;
-    unsigned long mountFlags;
+    unsigned REALLYLONG mountFlags;
     if (!PyArg_ParseTuple(_args, "O&bl",
                           FSRef_Convert, &theRef,
                           &resolveAliasChains,
@@ -3149,51 +3149,51 @@ static PyMethodDef File_methods[] = {
     {"FlushVol", (PyCFunction)File_FlushVol, 1,
      PyDoc_STR("(Str63 volName, short vRefNum) -> None")},
     {"HSetVol", (PyCFunction)File_HSetVol, 1,
-     PyDoc_STR("(Str63 volName, short vRefNum, long dirID) -> None")},
+     PyDoc_STR("(Str63 volName, short vRefNum, REALLYLONG dirID) -> None")},
     {"FSClose", (PyCFunction)File_FSClose, 1,
      PyDoc_STR("(short refNum) -> None")},
     {"Allocate", (PyCFunction)File_Allocate, 1,
-     PyDoc_STR("(short refNum) -> (long count)")},
+     PyDoc_STR("(short refNum) -> (REALLYLONG count)")},
     {"GetEOF", (PyCFunction)File_GetEOF, 1,
-     PyDoc_STR("(short refNum) -> (long logEOF)")},
+     PyDoc_STR("(short refNum) -> (REALLYLONG logEOF)")},
     {"SetEOF", (PyCFunction)File_SetEOF, 1,
-     PyDoc_STR("(short refNum, long logEOF) -> None")},
+     PyDoc_STR("(short refNum, REALLYLONG logEOF) -> None")},
     {"GetFPos", (PyCFunction)File_GetFPos, 1,
-     PyDoc_STR("(short refNum) -> (long filePos)")},
+     PyDoc_STR("(short refNum) -> (REALLYLONG filePos)")},
     {"SetFPos", (PyCFunction)File_SetFPos, 1,
-     PyDoc_STR("(short refNum, short posMode, long posOff) -> None")},
+     PyDoc_STR("(short refNum, short posMode, REALLYLONG posOff) -> None")},
     {"GetVRefNum", (PyCFunction)File_GetVRefNum, 1,
      PyDoc_STR("(short fileRefNum) -> (short vRefNum)")},
     {"HGetVol", (PyCFunction)File_HGetVol, 1,
-     PyDoc_STR("(StringPtr volName) -> (short vRefNum, long dirID)")},
+     PyDoc_STR("(StringPtr volName) -> (short vRefNum, REALLYLONG dirID)")},
     {"HOpen", (PyCFunction)File_HOpen, 1,
-     PyDoc_STR("(short vRefNum, long dirID, Str255 fileName, SInt8 permission) -> (short refNum)")},
+     PyDoc_STR("(short vRefNum, REALLYLONG dirID, Str255 fileName, SInt8 permission) -> (short refNum)")},
     {"HOpenDF", (PyCFunction)File_HOpenDF, 1,
-     PyDoc_STR("(short vRefNum, long dirID, Str255 fileName, SInt8 permission) -> (short refNum)")},
+     PyDoc_STR("(short vRefNum, REALLYLONG dirID, Str255 fileName, SInt8 permission) -> (short refNum)")},
     {"HOpenRF", (PyCFunction)File_HOpenRF, 1,
-     PyDoc_STR("(short vRefNum, long dirID, Str255 fileName, SInt8 permission) -> (short refNum)")},
+     PyDoc_STR("(short vRefNum, REALLYLONG dirID, Str255 fileName, SInt8 permission) -> (short refNum)")},
     {"AllocContig", (PyCFunction)File_AllocContig, 1,
-     PyDoc_STR("(short refNum) -> (long count)")},
+     PyDoc_STR("(short refNum) -> (REALLYLONG count)")},
     {"HCreate", (PyCFunction)File_HCreate, 1,
-     PyDoc_STR("(short vRefNum, long dirID, Str255 fileName, OSType creator, OSType fileType) -> None")},
+     PyDoc_STR("(short vRefNum, REALLYLONG dirID, Str255 fileName, OSType creator, OSType fileType) -> None")},
     {"DirCreate", (PyCFunction)File_DirCreate, 1,
-     PyDoc_STR("(short vRefNum, long parentDirID, Str255 directoryName) -> (long createdDirID)")},
+     PyDoc_STR("(short vRefNum, REALLYLONG parentDirID, Str255 directoryName) -> (REALLYLONG createdDirID)")},
     {"HDelete", (PyCFunction)File_HDelete, 1,
-     PyDoc_STR("(short vRefNum, long dirID, Str255 fileName) -> None")},
+     PyDoc_STR("(short vRefNum, REALLYLONG dirID, Str255 fileName) -> None")},
     {"HGetFInfo", (PyCFunction)File_HGetFInfo, 1,
-     PyDoc_STR("(short vRefNum, long dirID, Str255 fileName) -> (FInfo fndrInfo)")},
+     PyDoc_STR("(short vRefNum, REALLYLONG dirID, Str255 fileName) -> (FInfo fndrInfo)")},
     {"HSetFInfo", (PyCFunction)File_HSetFInfo, 1,
-     PyDoc_STR("(short vRefNum, long dirID, Str255 fileName, FInfo fndrInfo) -> None")},
+     PyDoc_STR("(short vRefNum, REALLYLONG dirID, Str255 fileName, FInfo fndrInfo) -> None")},
     {"HSetFLock", (PyCFunction)File_HSetFLock, 1,
-     PyDoc_STR("(short vRefNum, long dirID, Str255 fileName) -> None")},
+     PyDoc_STR("(short vRefNum, REALLYLONG dirID, Str255 fileName) -> None")},
     {"HRstFLock", (PyCFunction)File_HRstFLock, 1,
-     PyDoc_STR("(short vRefNum, long dirID, Str255 fileName) -> None")},
+     PyDoc_STR("(short vRefNum, REALLYLONG dirID, Str255 fileName) -> None")},
     {"HRename", (PyCFunction)File_HRename, 1,
-     PyDoc_STR("(short vRefNum, long dirID, Str255 oldName, Str255 newName) -> None")},
+     PyDoc_STR("(short vRefNum, REALLYLONG dirID, Str255 oldName, Str255 newName) -> None")},
     {"CatMove", (PyCFunction)File_CatMove, 1,
-     PyDoc_STR("(short vRefNum, long dirID, Str255 oldName, long newDirID, Str255 newName) -> None")},
+     PyDoc_STR("(short vRefNum, REALLYLONG dirID, Str255 oldName, REALLYLONG newDirID, Str255 newName) -> None")},
     {"FSMakeFSSpec", (PyCFunction)File_FSMakeFSSpec, 1,
-     PyDoc_STR("(short vRefNum, long dirID, Str255 fileName) -> (FSSpec spec)")},
+     PyDoc_STR("(short vRefNum, REALLYLONG dirID, Str255 fileName) -> (FSSpec spec)")},
 #endif /* !__LP64__*/
     {"FSGetForkPosition", (PyCFunction)File_FSGetForkPosition, 1,
      PyDoc_STR("(SInt16 forkRefNum) -> (SInt64 position)")},
@@ -3227,16 +3227,16 @@ static PyMethodDef File_methods[] = {
     {"ResolveAliasFile", (PyCFunction)File_ResolveAliasFile, 1,
      PyDoc_STR("(FSSpec theSpec, Boolean resolveAliasChains) -> (FSSpec theSpec, Boolean targetIsFolder, Boolean wasAliased)")},
     {"ResolveAliasFileWithMountFlags", (PyCFunction)File_ResolveAliasFileWithMountFlags, 1,
-     PyDoc_STR("(FSSpec theSpec, Boolean resolveAliasChains, unsigned long mountFlags) -> (FSSpec theSpec, Boolean targetIsFolder, Boolean wasAliased)")},
+     PyDoc_STR("(FSSpec theSpec, Boolean resolveAliasChains, unsigned REALLYLONG mountFlags) -> (FSSpec theSpec, Boolean targetIsFolder, Boolean wasAliased)")},
     {"UpdateAlias", (PyCFunction)File_UpdateAlias, 1,
      PyDoc_STR("(FSSpec fromFile, FSSpec target, AliasHandle alias) -> (Boolean wasChanged)")},
     {"ResolveAliasFileWithMountFlagsNoUI", (PyCFunction)File_ResolveAliasFileWithMountFlagsNoUI, 1,
-     PyDoc_STR("(FSSpec theSpec, Boolean resolveAliasChains, unsigned long mountFlags) -> (FSSpec theSpec, Boolean targetIsFolder, Boolean wasAliased)")},
+     PyDoc_STR("(FSSpec theSpec, Boolean resolveAliasChains, unsigned REALLYLONG mountFlags) -> (FSSpec theSpec, Boolean targetIsFolder, Boolean wasAliased)")},
 #endif /* !__LP64__ */
     {"FSNewAlias", (PyCFunction)File_FSNewAlias, 1,
      PyDoc_STR("(FSRef fromFile, FSRef target) -> (AliasHandle inAlias)")},
     {"FSResolveAliasFileWithMountFlags", (PyCFunction)File_FSResolveAliasFileWithMountFlags, 1,
-     PyDoc_STR("(FSRef theRef, Boolean resolveAliasChains, unsigned long mountFlags) -> (FSRef theRef, Boolean targetIsFolder, Boolean wasAliased)")},
+     PyDoc_STR("(FSRef theRef, Boolean resolveAliasChains, unsigned REALLYLONG mountFlags) -> (FSRef theRef, Boolean targetIsFolder, Boolean wasAliased)")},
     {"FSResolveAliasFile", (PyCFunction)File_FSResolveAliasFile, 1,
      PyDoc_STR("(FSRef theRef, Boolean resolveAliasChains) -> (FSRef theRef, Boolean targetIsFolder, Boolean wasAliased)")},
     {"FSUpdateAlias", (PyCFunction)File_FSUpdateAlias, 1,
@@ -3253,7 +3253,7 @@ PyMac_GetFSSpec(PyObject *v, FSSpec *spec)
 {
     Str255 path;
     short refnum;
-    long parid;
+    REALLYLONG parid;
     OSErr err;
     FSRef fsr;
 

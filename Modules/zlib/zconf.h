@@ -8,6 +8,13 @@
 #ifndef ZCONF_H
 #define ZCONF_H
 
+#ifndef REALLYLONG
+typedef long long REALLYLONG;
+#endif
+#ifndef UREALLYLONG
+typedef unsigned long long UREALLYLONG;
+#endif
+
 /*
  * If you *really* need a unique prefix for all types and library functions,
  * compile with -DZ_PREFIX. The "standard" zlib should be compiled without it.
@@ -261,7 +268,7 @@
 typedef unsigned char  Byte;  /* 8 bits */
 #endif
 typedef unsigned int   uInt;  /* 16 bits or more */
-typedef unsigned long  uLong; /* 32 bits or more */
+typedef UREALLYLONG  uLong; /* 32 bits or more */
 
 #ifdef SMALL_MEDIUM
    /* Borland C/C++ and some old MSC versions ignore FAR inside typedef */
@@ -298,7 +305,7 @@ typedef uLong FAR uLongf;
 #  define SEEK_END        2       /* Set file pointer to EOF plus "offset" */
 #endif
 #ifndef z_off_t
-#  define z_off_t long
+#  define z_off_t REALLYLONG
 #endif
 
 #if defined(__OS400__)
