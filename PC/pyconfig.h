@@ -72,7 +72,7 @@ WIN32 is still required for the locale module.
 #define HAVE_STRFTIME
 #define DONT_HAVE_SIG_ALARM
 #define DONT_HAVE_SIG_PAUSE
-#define LONG_BIT	32
+#define LONG_BIT	64
 #define WORD_BIT 32
 #define PREFIX ""
 #define EXEC_PREFIX ""
@@ -201,6 +201,22 @@ typedef __int64 ssize_t;
 typedef _W64 int ssize_t;
 #endif
 #define HAVE_SSIZE_T 1
+
+#ifndef REALLYLONG
+typedef long long REALLYLONG;
+#endif
+#ifndef UREALLYLONG
+typedef unsigned long long UREALLYLONG;
+#endif
+#ifndef SREALLYLONG
+typedef signed long long SREALLYLONG;
+#endif
+#ifndef NATIVELONG
+typedef long NATIVELONG;
+#endif
+#ifndef UNATIVELONG
+typedef unsigned long UNATIVELONG;
+#endif
 
 #if defined(MS_WIN32) && !defined(MS_WIN64)
 #ifdef _M_IX86
@@ -373,7 +389,7 @@ Py_NO_ENABLE_SHARED to find out.  Also support MS_NO_COREDLL for b/w compat */
 
 #define SIZEOF_SHORT 2
 #define SIZEOF_INT 4
-#define SIZEOF_LONG 4
+#define SIZEOF_LONG 8
 #define SIZEOF_LONG_LONG 8
 #define SIZEOF_DOUBLE 8
 #define SIZEOF_FLOAT 4
@@ -402,7 +418,7 @@ Py_NO_ENABLE_SHARED to find out.  Also support MS_NO_COREDLL for b/w compat */
 #define PY_UINT32_T unsigned int
 #elif SIZEOF_LONG == 4
 #define HAVE_UINT32_T 1
-#define PY_UINT32_T unsigned long
+#define PY_UINT32_T unsigned NATIVELONG
 #endif
 #endif
 
@@ -419,7 +435,7 @@ Py_NO_ENABLE_SHARED to find out.  Also support MS_NO_COREDLL for b/w compat */
 #define PY_INT32_T int
 #elif SIZEOF_LONG == 4
 #define HAVE_INT32_T 1
-#define PY_INT32_T long
+#define PY_INT32_T NATIVELONG
 #endif
 #endif
 
