@@ -5,7 +5,7 @@ cmd /c Tools\buildbot\external-amd64.bat
 call "%VS100COMNTOOLS%vsvars32.bat" x86_amd64
 
 @rem build Python
-vcbuild /useenv PCbuild\pcbuild.sln "Release|x64"
+msbuild /useenv PCbuild\pcbuild.sln "Release|x64"
 
 @rem build the documentation
 bash.exe -c 'cd Doc;make PYTHON=python update htmlhelp'
