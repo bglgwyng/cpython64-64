@@ -3382,7 +3382,7 @@ count_repr(countobject *lz)
     PyObject *result = NULL;
 
     if (lz->cnt != PY_SSIZE_T_MAX)
-                return PyString_FromFormat("count(%zd)", lz->cnt);
+                return PyString_FromFormat("count(%lld)", lz->cnt);
 
     cnt_repr = PyObject_Repr(lz->long_cnt);
     if (cnt_repr == NULL)
