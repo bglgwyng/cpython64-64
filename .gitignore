@@ -1,0 +1,45 @@
+# Python files
+*.pyc
+*.pyo
+
+
+# build files
+*.obj
+*.o
+
+Doc/build/
+Doc/tools/
+Lib/lib2to3/*.pickle
+
+PCbuild/Win32-temp-*/
+PCbuild/x64-temp-*/
+PCbuild/amd64/
+PCbuild/ipch/
+PCbuild/make_buildinfo.exe
+PCbuild/make_versioninfo.exe
+
+PC/*.res
+PC/python_nt.h
+PC/pythonnt_rc.h
+PC/python_icon.exe
+
+Tools/msi/msisupport.dll
+Tools/msi/msisupport.exp
+Tools/msi/msisupport.lib
+Tools/msi/LICENSE.txt
+Tools/msi/*.msi
+Tools/msi/*.zip
+
+
+# Visual Studio cruft
+*.tmp
+*.bsc
+*.pdb
+
+*.cache
+
+PCbuild/*.filters
+PCbuild/*.user
+PCbuild/*.suo
+PCbuild/*.sdf
+PCbuild/*.opensdf
