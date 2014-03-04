@@ -30,9 +30,9 @@ get_len_of_range(REALLYLONG lo, REALLYLONG hi, REALLYLONG step)
     ---------------------------------------------------------------*/
     assert(step != 0);
     if (step > 0 && lo < hi)
-    return 1UL + (hi - 1UL - lo) / step;
+    return 1ULL + (hi - 1ULL - lo) / step;
     else if (step < 0 && lo > hi)
-    return 1UL + (lo - 1UL - hi) / (0UL - step);
+    return 1ULL + (lo - 1ULL - hi) / (0ULL - step);
     else
     return 0UL;
 }
@@ -136,16 +136,16 @@ range_repr(rangeobject *r)
     PyObject *rtn;
 
     if (r->start == 0 && r->step == 1)
-        rtn = PyString_FromFormat("xrange(%ld)",
+        rtn = PyString_FromFormat("xrange(%lld)",
                                   get_stop_for_range(r));
 
     else if (r->step == 1)
-        rtn = PyString_FromFormat("xrange(%ld, %ld)",
+        rtn = PyString_FromFormat("xrange(%lld, %lld)",
                                   r->start,
                                   get_stop_for_range(r));
 
     else
-        rtn = PyString_FromFormat("xrange(%ld, %ld, %ld)",
+        rtn = PyString_FromFormat("xrange(%lld, %lld, %lld)",
                                   r->start,
                                   get_stop_for_range(r),
                                   r->step);
@@ -341,7 +341,7 @@ range_reverse(PyObject *seq)
        calculation is also done modulo ULONG_MAX+1.
     */
     it->start = (REALLYLONG)(start + (UREALLYLONG)(len-1) * step);
-    it->step = (REALLYLONG)(0UL-step);
+    it->step = (REALLYLONG)(0ULL-step);
 
     return (PyObject *)it;
 }
