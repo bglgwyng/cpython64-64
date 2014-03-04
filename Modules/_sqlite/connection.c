@@ -1341,7 +1341,7 @@ pysqlite_collation_callback(
     PyGILState_STATE gilstate;
 #endif
     PyObject* retval = NULL;
-    REALLYLONGval;
+    REALLYLONG longval;
     int result = 0;
 #ifdef WITH_THREAD
     gilstate = PyGILState_Ensure();

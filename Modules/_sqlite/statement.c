@@ -153,7 +153,7 @@ int pysqlite_statement_bind_parameter(pysqlite_Statement* self, int pos, PyObjec
 
     switch (paramtype) {
         case TYPE_INT: {
-            REALLYLONGval = PyInt_AsLong(parameter);
+            REALLYLONG longval = PyInt_AsLong(parameter);
             rc = sqlite3_bind_int64(self->st, pos, longval);
             break;
         }
