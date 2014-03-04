@@ -26,9 +26,9 @@ full_current_version = None
 # Is Tcl available at all?
 have_tcl = True
 # path to PCbuild directory
-PCBUILD="PCbuild"
+PCBUILD="PCbuild/amd64"
 # msvcrt version
-MSVCR = "90"
+MSVCR = "100"
 # Name of certificate in default store to sign MSI with
 certname = None
 # Make a zip file containing the PDB files for this build?
@@ -852,18 +852,18 @@ def add_features(db):
                         "Python test suite (Lib/test/)", 11,
                         parent = default_feature, attributes=2|8)
 
-def extract_msvcr90():
+def extract_msvcr100():
     # Find the redistributable files
     if msilib.Win64:
-        arch = "amd64"
+        arch = "x64"
     else:
         arch = "x86"
-    dir = os.path.join(os.environ['VS90COMNTOOLS'], r"..\..\VC\redist\%s\Microsoft.VC90.CRT" % arch)
+    dir = os.path.join(os.environ['VS100COMNTOOLS'], r"..\..\VC\redist\%s\Microsoft.VC100.CRT" % arch)
 
     result = []
     installer = msilib.MakeInstaller()
-    # omit msvcm90 and msvcp90, as they aren't really needed
-    files = ["Microsoft.VC90.CRT.manifest", "msvcr90.dll"]
+    # omit msvcm100 and msvcp100, as they aren't really needed
+    files = ["msvcr100.dll", ]
     for f in files:
         path = os.path.join(dir, f)
         kw = {'src':path}
@@ -881,9 +881,8 @@ def generate_license():
     for name, pat, file in (("bzip2","bzip2-*", "LICENSE"),
                       ("Berkeley DB", "db-*", "LICENSE"),
                       ("openssl", "openssl-*", "LICENSE"),
-                      ("Tcl", "tcl8*", "license.terms"),
-                      ("Tk", "tk8*", "license.terms"),
-                      ("Tix", "tix-*", "license.terms")):
+                      ("Tcl", "tcl-8*", "license.terms"),
+                      ("Tk", "tk-8*", "license.terms")):
         out.write("\nThis copy of Python includes a copy of %s, which is licensed under the following terms:\n\n" % name)
         dirs = glob.glob(srcdir+"/../"+pat)
         if not dirs:
@@ -913,7 +912,8 @@ def add_files(db):
     default_feature.set_current()
     if not msilib.Win64:
         root.add_file("%s/w9xpopen.exe" % PCBUILD)
-    root.add_file("README.txt", src="README")
+    root.add_file("README.txt", src="README.md")
+    root.add_file("PYREADME.txt", src="README.original")
     root.add_file("NEWS.txt", src="Misc/NEWS")
     generate_license()
     root.add_file("LICENSE.txt", src=os.path.abspath("LICENSE.txt"))
@@ -944,8 +944,8 @@ def add_files(db):
     # pointing to the root directory
     root.start_component("msvcr90", feature=private_crt)
     # Results are ID,keyword pairs
-    manifest, crtdll = extract_msvcr90()
-    root.add_file(manifest[0], **manifest[1])
+    crtdll, = extract_msvcr100()
+    # root.add_file(manifest[0], **manifest[1])
     root.add_file(crtdll[0], **crtdll[1])
     # Copy the manifest
     # Actually, don't do that anymore - no DLL in DLLs should have a manifest
@@ -1325,9 +1325,9 @@ finally:
 # Merge CRT into MSI file. This requires the database to be closed.
 mod_dir = os.path.join(os.environ["ProgramFiles"], "Common Files", "Merge Modules")
 if msilib.Win64:
-    modules = ["Microsoft_VC90_CRT_x86_x64.msm", "policy_9_0_Microsoft_VC90_CRT_x86_x64.msm"]
+    modules = ["Microsoft_VC100_CRT_x86_x64.msm", "policy_10_0_Microsoft_VC100_CRT_x86_x64.msm"]
 else:
-    modules = ["Microsoft_VC90_CRT_x86.msm","policy_9_0_Microsoft_VC90_CRT_x86.msm"]
+    modules = ["Microsoft_VC100_CRT_x86.msm","policy_10_0_Microsoft_VC100_CRT_x86.msm"]
 
 for i, n in enumerate(modules):
     modules[i] = os.path.join(mod_dir, n)
@@ -1335,28 +1335,32 @@ for i, n in enumerate(modules):
 def merge(msi, feature, rootdir, modules):
     cab_and_filecount = []
     # Step 1: Merge databases, extract cabfiles
-    m = msilib.MakeMerge2()
-    m.OpenLog("merge.log")
-    m.OpenDatabase(msi)
-    for module in modules:
-        print module
-        m.OpenModule(module,0)
-        m.Merge(feature, rootdir)
-        print "Errors:"
-        for e in m.Errors:
-            print e.Type, e.ModuleTable, e.DatabaseTable
-            print "   Modkeys:",
-            for s in e.ModuleKeys: print s,
-            print
-            print "   DBKeys:",
-            for s in e.DatabaseKeys: print s,
-            print
-        cabname = tempfile.mktemp(suffix=".cab")
-        m.ExtractCAB(cabname)
-        cab_and_filecount.append((cabname, len(m.ModuleFiles)))
-        m.CloseModule()
-    m.CloseDatabase(True)
-    m.CloseLog()
+    # Skipped due to some unregistered class on my machine, also the merge
+    # modules are not available for Visual Studio 2010 Express, so this should
+    # be acceptable to all.
+    if 0:
+        m = msilib.MakeMerge2()
+        m.OpenLog("merge.log")
+        m.OpenDatabase(msi)
+        for module in modules:
+            print module
+            m.OpenModule(module,0)
+            m.Merge(feature, rootdir)
+            print "Errors:"
+            for e in m.Errors:
+                print e.Type, e.ModuleTable, e.DatabaseTable
+                print "   Modkeys:",
+                for s in e.ModuleKeys: print s,
+                print
+                print "   DBKeys:",
+                for s in e.DatabaseKeys: print s,
+                print
+            cabname = tempfile.mktemp(suffix=".cab")
+            m.ExtractCAB(cabname)
+            cab_and_filecount.append((cabname, len(m.ModuleFiles)))
+            m.CloseModule()
+        m.CloseDatabase(True)
+        m.CloseLog()
 
     # Step 2: Add CAB files
     i = msilib.MakeInstaller()
