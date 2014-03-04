@@ -27,13 +27,23 @@ same as vanilla CPython's.
 CPython64/64 currently can pass a major portion of tests, the only remaining
 ones are:
 
-    test_ctypes test_distutils test_import test_macpath
-    test_multiprocessing test_ntpath test_posixpath
+    test_codecencodings_iso2022 test_ctypes test_import test_macpath
+    test_multiprocessing test_ntpath test_posixpath test_random
 
-Of these failing tests, the three path-related tests also fail on regular
-CPython with mysterious encoding errors; `test_import` fails due to some UNC
-path handling error. Finally, `test_ctypes` and `test_distutils` failures are
-somewhat expected but unrelated to PyPy.
+Of these failing tests,
+
+*   the three path-related tests also fail on regular CPython with mysterious
+    encoding errors;
+*   `test_import` fails due to some UNC path handling error;
+*   `test_ctypes` only fails on invoking Windows API due to altered size of
+    `long`;
+*   `test_codecencodings_iso2022` only fails on the codec `iso2022-kr`, and the
+    failure is merely a mismatch of `\n` and `\r\n`, whose origin is unknown;
+*   `test_random` fails on tests of bug 1727780, which is about correctly
+    loading pickles on boxes with possibly different bitness than the box that
+    created the pickle;
+*   `test_multiprocessing` crashed with Windows error 87, but cause is unknown
+    yet.
 
 So far, CPython64/64 can run PyPy, but translation has not been attempted yet.
 Now anyone willing to contribute to PyPy on Win64 can step up and move on!
