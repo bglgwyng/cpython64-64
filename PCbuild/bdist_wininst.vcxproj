@@ -120,7 +120,7 @@
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>comctl32.lib;imagehlp.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>..\lib\distutils\command\wininst-9.0-amd64.exe</OutputFile>
+      <OutputFile>..\lib\distutils\command\wininst-10.0-amd64.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <IgnoreSpecificDefaultLibraries>LIBC;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <ProgramDatabaseFile>..\lib\distutils\command\wininst-9.0-amd64.pdb</ProgramDatabaseFile>
