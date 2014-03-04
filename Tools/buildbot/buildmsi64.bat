@@ -1,15 +1,15 @@
 @rem Used by the buildbot "buildmsi" step.
 
-cmd /c Tools\buildbot\external.bat
+cmd /c Tools\buildbot\external-amd64.bat
 @rem build release versions of things
-call "%VS100COMNTOOLS%vsvars32.bat"
+call "%VS100COMNTOOLS%vsvars32.bat" x86_amd64
 
 @rem build Python
-vcbuild /useenv PCbuild\pcbuild.sln "Release|Win32"
+vcbuild /useenv PCbuild\pcbuild.sln "Release|x64"
 
 @rem build the documentation
 bash.exe -c 'cd Doc;make PYTHON=python update htmlhelp'
-"%ProgramFiles%\HTML Help Workshop\hhc.exe" Doc\build\htmlhelp\python26a3.hhp
+"%ProgramFiles(x86)%\HTML Help Workshop\hhc.exe" Doc\build\htmlhelp\python276.hhp
 
 @rem build the MSI file
 cd PC

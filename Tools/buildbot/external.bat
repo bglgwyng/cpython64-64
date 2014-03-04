@@ -2,7 +2,7 @@
 
 @rem Assume we start inside the Python source directory
 call "Tools\buildbot\external-common.bat"
-call "%VS90COMNTOOLS%\vsvars32.bat"
+call "%VS100COMNTOOLS%\vsvars32.bat"
 
 if not exist tcltk\bin\tcl85g.dll (
     @rem all and install need to be separate invocations, otherwise nmakehlp is not found on install
