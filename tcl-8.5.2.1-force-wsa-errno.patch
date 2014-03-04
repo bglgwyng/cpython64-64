@@ -1,0 +1,263 @@
+--- a/win/tclWinPort.h	2008-06-13 00:01:20.765751000 +0800
++++ b/win/tclWinPort.h	2014-03-04 17:55:24.901305700 +0800
+@@ -78,6 +78,260 @@
+ #define INCL_WINSOCK_API_TYPEDEFS   1
+ #include <winsock2.h>
+ 
++/* VS2010 compatibility */
++#ifdef      EADDRINUSE
++#  undef    EADDRINUSE
++#  ifdef    WSAEADDRINUSE
++#    define EADDRINUSE      WSAEADDRINUSE
++#  endif
++#endif
++
++#ifdef      ECONNABORTED
++#  undef    ECONNABORTED
++#  ifdef    WSAECONNABORTED
++#    define ECONNABORTED WSAECONNABORTED
++#  endif
++#endif
++
++#ifdef      ECONNREFUSED
++#  undef    ECONNREFUSED
++#  ifdef    WSAECONNREFUSED
++#    define ECONNREFUSED WSAECONNREFUSED
++#  endif
++#endif
++
++#ifdef      ECONNRESET
++#  undef    ECONNRESET
++#  ifdef    WSAECONNRESET
++#    define ECONNRESET WSAECONNRESET
++#  endif
++#endif
++
++#ifdef      EDESTADDRREQ
++#  undef    EDESTADDRREQ
++#  ifdef    WSAEDESTADDRREQ
++#    define EDESTADDRREQ WSAEDESTADDRREQ
++#  endif
++#endif
++
++#ifdef      EHOSTUNREACH
++#  undef    EHOSTUNREACH
++#  ifdef    WSAEHOSTUNREACH
++#    define EHOSTUNREACH WSAEHOSTUNREACH
++#  endif
++#endif
++
++#ifdef      EIDRM
++#  undef    EIDRM
++#  ifdef    WSAEIDRM
++#    define EIDRM WSAEIDRM
++#  endif
++#endif
++
++#ifdef      EINPROGRESS
++#  undef    EINPROGRESS
++#  ifdef    WSAEINPROGRESS
++#    define EINPROGRESS WSAEINPROGRESS
++#  endif
++#endif
++
++#ifdef      EISCONN
++#  undef    EISCONN
++#  ifdef    WSAEISCONN
++#    define EISCONN WSAEISCONN
++#  endif
++#endif
++
++#ifdef      ELOOP
++#  undef    ELOOP
++#  ifdef    WSAELOOP
++#    define ELOOP WSAELOOP
++#  endif
++#endif
++
++#ifdef      EMSGSIZE
++#  undef    EMSGSIZE
++#  ifdef    WSAEMSGSIZE
++#    define EMSGSIZE WSAEMSGSIZE
++#  endif
++#endif
++
++#ifdef      ENETDOWN
++#  undef    ENETDOWN
++#  ifdef    WSAENETDOWN
++#    define ENETDOWN WSAENETDOWN
++#  endif
++#endif
++
++#ifdef      ENETRESET
++#  undef    ENETRESET
++#  ifdef    WSAENETRESET
++#    define ENETRESET WSAENETRESET
++#  endif
++#endif
++
++#ifdef      ENETUNREACH
++#  undef    ENETUNREACH
++#  ifdef    WSAENETUNREACH
++#    define ENETUNREACH WSAENETUNREACH
++#  endif
++#endif
++
++#ifdef      ENOBUFS
++#  undef    ENOBUFS
++#  ifdef    WSAENOBUFS
++#    define ENOBUFS WSAENOBUFS
++#  endif
++#endif
++
++#ifdef      ENODATA
++#  undef    ENODATA
++#  ifdef    WSAENODATA
++#    define ENODATA WSAENODATA
++#  endif
++#endif
++
++#ifdef      ENOLINK
++#  undef    ENOLINK
++#  ifdef    WSAENOLINK
++#    define ENOLINK WSAENOLINK
++#  endif
++#endif
++
++#ifdef      ENOMSG
++#  undef    ENOMSG
++#  ifdef    WSAENOMSG
++#    define ENOMSG WSAENOMSG
++#  endif
++#endif
++
++#ifdef      ENOPROTOOPT
++#  undef    ENOPROTOOPT
++#  ifdef    WSAENOPROTOOPT
++#    define ENOPROTOOPT WSAENOPROTOOPT
++#  endif
++#endif
++
++#ifdef      ENOSR
++#  undef    ENOSR
++#  ifdef    WSAENOSR
++#    define ENOSR WSAENOSR
++#  endif
++#endif
++
++#ifdef      ENOSTR
++#  undef    ENOSTR
++#  ifdef    WSAENOSTR
++#    define ENOSTR WSAENOSTR
++#  endif
++#endif
++
++#ifdef      ENOTCONN
++#  undef    ENOTCONN
++#  ifdef    WSAENOTCONN
++#    define ENOTCONN WSAENOTCONN
++#  endif
++#endif
++
++#ifdef      ENOTRECOVERABLE
++#  undef    ENOTRECOVERABLE
++#  ifdef    WSAENOTRECOVERABLE
++#    define ENOTRECOVERABLE WSAENOTRECOVERABLE
++#  endif
++#endif
++
++#ifdef      ENOTSOCK
++#  undef    ENOTSOCK
++#  ifdef    WSAENOTSOCK
++#    define ENOTSOCK WSAENOTSOCK
++#  endif
++#endif
++
++#ifdef      ENOTSUP
++#  undef    ENOTSUP
++#  ifdef    WSAENOTSUP
++#    define ENOTSUP WSAENOTSUP
++#  endif
++#endif
++
++#ifdef      EOPNOTSUPP
++#  undef    EOPNOTSUPP
++#  ifdef    WSAEOPNOTSUPP
++#    define EOPNOTSUPP WSAEOPNOTSUPP
++#  endif
++#endif
++
++#ifdef      EOTHER
++#  undef    EOTHER
++#  ifdef    WSAEOTHER
++#    define EOTHER WSAEOTHER
++#  endif
++#endif
++
++#ifdef      EOVERFLOW
++#  undef    EOVERFLOW
++#  ifdef    WSAEOVERFLOW
++#    define EOVERFLOW WSAEOVERFLOW
++#  endif
++#endif
++
++#ifdef      EOWNERDEAD
++#  undef    EOWNERDEAD
++#  ifdef    WSAEOWNERDEAD
++#    define EOWNERDEAD WSAEOWNERDEAD
++#  endif
++#endif
++
++#ifdef      EPROTO
++#  undef    EPROTO
++#  ifdef    WSAEPROTO
++#    define EPROTO WSAEPROTO
++#  endif
++#endif
++
++#ifdef      EPROTONOSUPPORT
++#  undef    EPROTONOSUPPORT
++#  ifdef    WSAEPROTONOSUPPORT
++#    define EPROTONOSUPPORT WSAEPROTONOSUPPORT
++#  endif
++#endif
++
++#ifdef      EPROTOTYPE
++#  undef    EPROTOTYPE
++#  ifdef    WSAEPROTOTYPE
++#    define EPROTOTYPE WSAEPROTOTYPE
++#  endif
++#endif
++
++#ifdef      ETIME
++#  undef    ETIME
++#  ifdef    WSAETIME
++#    define ETIME WSAETIME
++#  endif
++#endif
++
++#ifdef      ETIMEDOUT
++#  undef    ETIMEDOUT
++#  ifdef    WSAETIMEDOUT
++#    define ETIMEDOUT WSAETIMEDOUT
++#  endif
++#endif
++
++#ifdef      ETXTBSY
++#  undef    ETXTBSY
++#  ifdef    WSAETXTBSY
++#    define ETXTBSY WSAETXTBSY
++#  endif
++#endif
++
++#ifdef      EWOULDBLOCK
++#  undef    EWOULDBLOCK
++#  ifdef    WSAEWOULDBLOCK
++#    define EWOULDBLOCK WSAEWOULDBLOCK
++#  endif
++#endif
++
++
+ /*
+  * Define EINPROGRESS in terms of WSAEINPROGRESS.
+  */
