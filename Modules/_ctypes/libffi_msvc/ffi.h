@@ -55,6 +55,12 @@
 extern "C" {
 #endif
 
+/* long should always be 4-byte in FFI */
+#if SIZEOF_LONG == 8
+#  undef SIZEOF_LONG
+#  define SIZEOF_LONG 4
+#endif
+
 /* Specify which architecture libffi is configured for. */
 //XXX #define X86
 

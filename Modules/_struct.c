@@ -66,14 +66,14 @@ static PyObject *StructError;
 
 typedef struct { char c; short x; } st_short;
 typedef struct { char c; int x; } st_int;
-typedef struct { char c; REALLYLONG x; } st_long;
+typedef struct { char c; NATIVELONG x; } st_long;
 typedef struct { char c; float x; } st_float;
 typedef struct { char c; double x; } st_double;
 typedef struct { char c; void *x; } st_void_p;
 
 #define SHORT_ALIGN (sizeof(st_short) - sizeof(short))
 #define INT_ALIGN (sizeof(st_int) - sizeof(int))
-#define LONG_ALIGN (sizeof(st_long) - sizeof(REALLYLONG))
+#define LONG_ALIGN (sizeof(st_long) - sizeof(NATIVELONG))
 #define FLOAT_ALIGN (sizeof(st_float) - sizeof(float))
 #define DOUBLE_ALIGN (sizeof(st_double) - sizeof(double))
 #define VOID_P_ALIGN (sizeof(st_void_p) - sizeof(void *))
@@ -204,11 +204,18 @@ get_long(PyObject *v, REALLYLONG *p)
     Py_DECREF(v);
     if (x == (REALLYLONG)-1 && PyErr_Occurred())
         return -1;
+
+    /* Win64: check int32 overflow */
+    if  (x < -0x80000000LL || x > 0x7fffffffLL) {
+        PyErr_SetString(PyExc_OverflowError, "Python int too large to convert to C long");
+        return -1;
+    }
+
     *p = x;
     return 0;
 }
 
-/* Same, but handling UREALLYLONG */
+/* Same, but handling unsigned long */
 
 static int
 get_ulong(PyObject *v, UREALLYLONG *p)
@@ -223,13 +230,20 @@ get_ulong(PyObject *v, UREALLYLONG *p)
     Py_DECREF(v);
     if (x == (UREALLYLONG)-1 && PyErr_Occurred())
         return -1;
+
+    /* Win64: check uint32 overflow */
+    if  (x > 0xffffffffULL) {
+        PyErr_SetString(PyExc_OverflowError, "long int too large to convert");
+        return -1;
+    }
+
     *p = x;
     return 0;
 }
 
 #ifdef HAVE_LONG_LONG
 
-/* Same, but handling native REALLYLONG. */
+/* Same, but handling native long long. */
 
 static int
 get_longlong(PyObject *v, PY_LONG_LONG *p)
@@ -248,7 +262,7 @@ get_longlong(PyObject *v, PY_LONG_LONG *p)
     return 0;
 }
 
-/* Same, but handling native UREALLYLONG. */
+/* Same, but handling native unsigned long long. */
 
 static int
 get_ulonglong(PyObject *v, unsigned PY_LONG_LONG *p)
@@ -405,7 +419,7 @@ nu_uint(const char *p, const formatdef *f)
 static PyObject *
 nu_long(const char *p, const formatdef *f)
 {
-    REALLYLONG x;
+    NATIVELONG x;
     memcpy((char *)&x, p, sizeof x);
     return PyInt_FromLong(x);
 }
@@ -413,7 +427,7 @@ nu_long(const char *p, const formatdef *f)
 static PyObject *
 nu_ulong(const char *p, const formatdef *f)
 {
-    UREALLYLONG x;
+    UNATIVELONG x;
     memcpy((char *)&x, p, sizeof x);
     if (x <= LONG_MAX)
         return PyInt_FromLong((REALLYLONG)x);
@@ -421,7 +435,7 @@ nu_ulong(const char *p, const formatdef *f)
 }
 
 /* Native mode doesn't support q or Q unless the platform C supports
-   REALLYLONG (or, on Windows, __int64). */
+   long long (or, on Windows, __int64). */
 
 #ifdef HAVE_LONG_LONG
 
@@ -595,7 +609,7 @@ np_long(char *p, PyObject *v, const formatdef *f)
     REALLYLONG x;
     if (get_long(v, &x) < 0)
         return -1;
-    memcpy(p, (char *)&x, sizeof x);
+    memcpy(p, (char *)&x, sizeof(NATIVELONG));
     return 0;
 }
 
@@ -605,7 +619,7 @@ np_ulong(char *p, PyObject *v, const formatdef *f)
     UREALLYLONG x;
     if (get_ulong(v, &x) < 0)
         return -1;
-    memcpy(p, (char *)&x, sizeof x);
+    memcpy(p, (char *)&x, sizeof(NATIVELONG));
     return 0;
 }
 
@@ -700,8 +714,8 @@ static formatdef native_table[] = {
     {'H',       sizeof(short),  SHORT_ALIGN,    nu_ushort,      np_ushort},
     {'i',       sizeof(int),    INT_ALIGN,      nu_int,         np_int},
     {'I',       sizeof(int),    INT_ALIGN,      nu_uint,        np_uint},
-    {'l',       sizeof(REALLYLONG),   LONG_ALIGN,     nu_long,        np_long},
-    {'L',       sizeof(REALLYLONG),   LONG_ALIGN,     nu_ulong,       np_ulong},
+    {'l',       sizeof(NATIVELONG),   LONG_ALIGN,     nu_long,        np_long},
+    {'L',       sizeof(NATIVELONG),   LONG_ALIGN,     nu_ulong,       np_ulong},
 #ifdef HAVE_LONG_LONG
     {'q',       sizeof(PY_LONG_LONG), LONG_LONG_ALIGN, nu_longlong, np_longlong},
     {'Q',       sizeof(PY_LONG_LONG), LONG_LONG_ALIGN, nu_ulonglong,np_ulonglong},
@@ -1989,13 +2003,13 @@ these can be preceded by a decimal repeat count:\n\
   x: pad byte (no data); c:char; b:signed byte; B:unsigned byte;\n\
   ?: _Bool (requires C99; if not available, char is used instead)\n\
   h:short; H:unsigned short; i:int; I:unsigned int;\n\
-  l:long; L:UREALLYLONG; f:float; d:double.\n\
+  l:long; L:unsigned long; f:float; d:double.\n\
 Special cases (preceding decimal count indicates length):\n\
   s:string (array of char); p: pascal string (with count byte).\n\
 Special case (only available in native format):\n\
   P:an integer type that is wide enough to hold a pointer.\n\
-Special case (not in native mode unless 'REALLYLONG' in platform C):\n\
-  q:REALLYLONG; Q:UREALLYLONG\n\
+Special case (not in native mode unless 'long long' in platform C):\n\
+  q:long long; Q:unsigned long long\n\
 Whitespace between formats is ignored.\n\
 \n\
 The variable struct.error is an exception raised on errors.\n");

@@ -1647,7 +1647,7 @@ c_void_p_from_param(PyObject *type, PyObject *value)
         return Py_None;
     }
     /* Should probably allow buffer interface as well */
-/* int, REALLYLONG */
+/* int, long */
     if (PyInt_Check(value) || PyLong_Check(value)) {
         PyCArgObject *parg;
         struct fielddesc *fd = _ctypes_get_fielddesc("P");

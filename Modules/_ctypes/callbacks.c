@@ -571,7 +571,7 @@ STDAPI DllGetClassObject(REFCLSID rclsid,
                          REFIID riid,
                          LPVOID *ppv)
 {
-    REALLYLONG result;
+    NATIVELONG result;
 #ifdef WITH_THREAD
     PyGILState_STATE state;
 #endif
@@ -634,7 +634,7 @@ long Call_CanUnloadNow(void)
 
 STDAPI DllCanUnloadNow(void)
 {
-    REALLYLONG result;
+    NATIVELONG result;
 #ifdef WITH_THREAD
     PyGILState_STATE state = PyGILState_Ensure();
 #endif
