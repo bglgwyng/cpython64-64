@@ -525,7 +525,7 @@ class SizeofTest(unittest.TestCase):
         check(True, size('l'))
         # buffer
         with test.test_support.check_py3k_warnings():
-            check(buffer(''), size('2P2Pil'))
+            check(buffer(''), size('2P2Piq'))  # CPython64/64
         # builtin_function_or_method
         check(len, size('3P'))
         # bytearray
@@ -675,7 +675,7 @@ class SizeofTest(unittest.TestCase):
         # PyCapsule
         # XXX
         # rangeiterator
-        check(iter(xrange(1)), size('4l'))
+        check(iter(xrange(1)), size('4q'))  # CPython64/64
         # reverse
         check(reversed(''), size('PP'))
         # set
@@ -704,8 +704,8 @@ class SizeofTest(unittest.TestCase):
         check(slice(1), size('3P'))
         # str
         vh = test.test_support._vheader
-        check('', struct.calcsize(vh + 'lic'))
-        check('abc', struct.calcsize(vh + 'lic') + 3)
+        check('', struct.calcsize(vh + 'qic'))  # CPython64/64
+        check('abc', struct.calcsize(vh + 'qic') + 3)  # CPython64/64
         # super
         check(super(int), size('3P'))
         # tuple
@@ -740,8 +740,8 @@ class SizeofTest(unittest.TestCase):
         # weakcallableproxy
         check(weakref.proxy(int), size('2Pl2P'))
         # xrange
-        check(xrange(1), size('3l'))
-        check(xrange(66000), size('3l'))
+        check(xrange(1), size('3q'))  # CPython64/64
+        check(xrange(66000), size('3q'))  # CPython64/64
 
     def test_pythontypes(self):
         # check all types defined in Python/

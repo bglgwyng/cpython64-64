@@ -13,7 +13,10 @@ import subprocess
 from test import test_support
 from collections import Hashable
 
-IS_64BIT = (struct.calcsize('l') == 8)
+# This isn't true for CPython64/64, which is 64-bit but at the same time must
+# maintain a 4-byte long in FFI.
+# IS_64BIT = (struct.calcsize('l') == 8)
+IS_64BIT = (sys.maxint == 0x7fffffffffffffff)
 
 
 class HashEqualityTestCase(unittest.TestCase):
