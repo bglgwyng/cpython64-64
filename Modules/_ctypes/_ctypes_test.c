@@ -112,7 +112,7 @@ EXPORT(void) _testfunc_v(int a, int b, int *presult)
     *presult = a + b;
 }
 
-EXPORT(int) _testfunc_i_bhilfd(signed char b, short h, int i, REALLYLONG l, float f, double d)
+EXPORT(int) _testfunc_i_bhilfd(signed char b, short h, int i, NATIVELONG l, float f, double d)
 {
 /*      printf("_testfunc_i_bhilfd got %d %d %d %ld %f %f\n",
                b, h, i, l, f, d);
@@ -120,7 +120,7 @@ EXPORT(int) _testfunc_i_bhilfd(signed char b, short h, int i, REALLYLONG l, floa
     return (int)(b + h + i + l + f + d);
 }
 
-EXPORT(float) _testfunc_f_bhilfd(signed char b, short h, int i, REALLYLONG l, float f, double d)
+EXPORT(float) _testfunc_f_bhilfd(signed char b, short h, int i, NATIVELONG l, float f, double d)
 {
 /*      printf("_testfunc_f_bhilfd got %d %d %d %ld %f %f\n",
                b, h, i, l, f, d);
@@ -128,7 +128,7 @@ EXPORT(float) _testfunc_f_bhilfd(signed char b, short h, int i, REALLYLONG l, fl
     return (float)(b + h + i + l + f + d);
 }
 
-EXPORT(double) _testfunc_d_bhilfd(signed char b, short h, int i, REALLYLONG l, float f, double d)
+EXPORT(double) _testfunc_d_bhilfd(signed char b, short h, int i, NATIVELONG l, float f, double d)
 {
 /*      printf("_testfunc_d_bhilfd got %d %d %d %ld %f %f\n",
                b, h, i, l, f, d);
@@ -136,7 +136,7 @@ EXPORT(double) _testfunc_d_bhilfd(signed char b, short h, int i, REALLYLONG l, f
     return (double)(b + h + i + l + f + d);
 }
 
-EXPORT(long double) _testfunc_D_bhilfD(signed char b, short h, int i, REALLYLONG l, float f, long double d)
+EXPORT(long double) _testfunc_D_bhilfD(signed char b, short h, int i, NATIVELONG l, float f, long double d)
 {
 /*      printf("_testfunc_d_bhilfd got %d %d %d %ld %f %f\n",
                b, h, i, l, f, d);
@@ -452,8 +452,8 @@ EXPORT(short) tf_h(short c) { S; return c/3; }
 EXPORT(unsigned short) tf_H(unsigned short c) { U; return c/3; }
 EXPORT(int) tf_i(int c) { S; return c/3; }
 EXPORT(unsigned int) tf_I(unsigned int c) { U; return c/3; }
-EXPORT(REALLYLONG) tf_l(REALLYLONG c) { S; return c/3; }
-EXPORT(UREALLYLONG) tf_L(UREALLYLONG c) { U; return c/3; }
+EXPORT(NATIVELONG) tf_l(NATIVELONG c) { S; return c/3; }
+EXPORT(UNATIVELONG) tf_L(UNATIVELONG c) { U; return c/3; }
 EXPORT(PY_LONG_LONG) tf_q(PY_LONG_LONG c) { S; return c/3; }
 EXPORT(unsigned PY_LONG_LONG) tf_Q(unsigned PY_LONG_LONG c) { U; return c/3; }
 EXPORT(float) tf_f(float c) { S; return c/3; }
@@ -467,8 +467,8 @@ EXPORT(short) __stdcall s_tf_h(short c) { S; return c/3; }
 EXPORT(unsigned short) __stdcall s_tf_H(unsigned short c) { U; return c/3; }
 EXPORT(int) __stdcall s_tf_i(int c) { S; return c/3; }
 EXPORT(unsigned int) __stdcall s_tf_I(unsigned int c) { U; return c/3; }
-EXPORT(REALLYLONG) __stdcall s_tf_l(REALLYLONG c) { S; return c/3; }
-EXPORT(UREALLYLONG) __stdcall s_tf_L(UREALLYLONG c) { U; return c/3; }
+EXPORT(NATIVELONG) __stdcall s_tf_l(NATIVELONG c) { S; return c/3; }
+EXPORT(UNATIVELONG) __stdcall s_tf_L(UNATIVELONG c) { U; return c/3; }
 EXPORT(PY_LONG_LONG) __stdcall s_tf_q(PY_LONG_LONG c) { S; return c/3; }
 EXPORT(unsigned PY_LONG_LONG) __stdcall s_tf_Q(unsigned PY_LONG_LONG c) { U; return c/3; }
 EXPORT(float) __stdcall s_tf_f(float c) { S; return c/3; }
@@ -483,8 +483,8 @@ EXPORT(short) tf_bh(signed char x, short c) { S; return c/3; }
 EXPORT(unsigned short) tf_bH(signed char x, unsigned short c) { U; return c/3; }
 EXPORT(int) tf_bi(signed char x, int c) { S; return c/3; }
 EXPORT(unsigned int) tf_bI(signed char x, unsigned int c) { U; return c/3; }
-EXPORT(REALLYLONG) tf_bl(signed char x, REALLYLONG c) { S; return c/3; }
-EXPORT(UREALLYLONG) tf_bL(signed char x, UREALLYLONG c) { U; return c/3; }
+EXPORT(NATIVELONG) tf_bl(signed char x, NATIVELONG c) { S; return c/3; }
+EXPORT(UNATIVELONG) tf_bL(signed char x, UNATIVELONG c) { U; return c/3; }
 EXPORT(PY_LONG_LONG) tf_bq(signed char x, PY_LONG_LONG c) { S; return c/3; }
 EXPORT(unsigned PY_LONG_LONG) tf_bQ(signed char x, unsigned PY_LONG_LONG c) { U; return c/3; }
 EXPORT(float) tf_bf(signed char x, float c) { S; return c/3; }
@@ -499,8 +499,8 @@ EXPORT(short) __stdcall s_tf_bh(signed char x, short c) { S; return c/3; }
 EXPORT(unsigned short) __stdcall s_tf_bH(signed char x, unsigned short c) { U; return c/3; }
 EXPORT(int) __stdcall s_tf_bi(signed char x, int c) { S; return c/3; }
 EXPORT(unsigned int) __stdcall s_tf_bI(signed char x, unsigned int c) { U; return c/3; }
-EXPORT(REALLYLONG) __stdcall s_tf_bl(signed char x, REALLYLONG c) { S; return c/3; }
-EXPORT(UREALLYLONG) __stdcall s_tf_bL(signed char x, UREALLYLONG c) { U; return c/3; }
+EXPORT(NATIVELONG) __stdcall s_tf_bl(signed char x, NATIVELONG c) { S; return c/3; }
+EXPORT(UNATIVELONG) __stdcall s_tf_bL(signed char x, UNATIVELONG c) { U; return c/3; }
 EXPORT(PY_LONG_LONG) __stdcall s_tf_bq(signed char x, PY_LONG_LONG c) { S; return c/3; }
 EXPORT(unsigned PY_LONG_LONG) __stdcall s_tf_bQ(signed char x, unsigned PY_LONG_LONG c) { U; return c/3; }
 EXPORT(float) __stdcall s_tf_bf(signed char x, float c) { S; return c/3; }
@@ -514,15 +514,15 @@ EXPORT(void) __stdcall s_tv_i(int c) { S; return; }
 #ifndef MS_WIN32
 
 typedef struct {
-    REALLYLONG x;
-    REALLYLONG y;
+    NATIVELONG x;
+    NATIVELONG y;
 } POINT;
 
 typedef struct {
-    REALLYLONG left;
-    REALLYLONG top;
-    REALLYLONG right;
-    REALLYLONG bottom;
+    NATIVELONG left;
+    NATIVELONG top;
+    NATIVELONG right;
+    NATIVELONG bottom;
 } RECT;
 
 #endif
