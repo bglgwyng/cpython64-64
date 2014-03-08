@@ -510,9 +510,17 @@ class PathsTests(unittest.TestCase):
         unload("test_trailing_slash")
 
     # Regression test for http://bugs.python.org/issue3677.
+    # Incorporated fix for issue #14637, adapted for Python 2.x:
+    # Fix the UNC import test under Windows to actually use
+    # the UNC path. Also clean up sys.path and invalidate finder caches.
     def _test_UNC_path(self):
         with open(os.path.join(self.path, 'test_trailing_slash.py'), 'w') as f:
             f.write("testdata = 'test_trailing_slash'")
+        # importlib.invalidate_caches()
+        try:
+            del sys.modules['test_trailing_slash']
+        except KeyError:
+            pass
         # Create the UNC path, like \\myhost\c$\foo\bar.
         path = os.path.abspath(self.path)
         import socket
@@ -527,10 +535,14 @@ class PathsTests(unittest.TestCase):
                 # See issue #15338
                 self.skipTest("cannot access administrative share %r" % (unc,))
             raise
-        sys.path.append(path)
-        mod = __import__("test_trailing_slash")
-        self.assertEqual(mod.testdata, 'test_trailing_slash')
-        unload("test_trailing_slash")
+        sys.path.append(unc)
+        try:
+            mod = __import__("test_trailing_slash")
+            self.assertEqual(mod.testdata, 'test_trailing_slash')
+            # unload("test_trailing_slash")
+            del sys.modules['test_trailing_slash']
+        finally:
+            sys.path.remove(unc)
 
     if sys.platform == "win32":
         test_UNC_path = _test_UNC_path
